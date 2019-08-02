@@ -1,0 +1,15 @@
+{% import "AppBundle::macros.html.twig" as macros %}
+<table class="table table-condensed" id="table-successor">
+<thead>
+<tr><th colspan="{% if decklist.successors|length %}4{% else %}1{% endif %}"><span class="fa fa-forward"></span> Inspiration for</th></tr>
+</thead>
+<tbody>
+{% if decklist.successors|length %}
+{% for successor in decklist.successors %}
+{{ macros.decklist_table_row(successor) }}
+{% endfor %}
+{% else %}
+<tr><td>None yet</td></tr>
+{% endif %}
+</tbody>
+</table>

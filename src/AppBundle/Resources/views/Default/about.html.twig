@@ -1,0 +1,21 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}About{% endblock %}
+
+{% block body %}
+<div class="main white container">
+
+<h1>{{ block('title') }}</h1>
+
+<p>This website is dedicated to providing a fast, powerful and exhaustive deck builder and search engine for {{ game_name }} cards, along with card descriptions and card images.</p>
+<p>This website is optimized for mobile browsing (WebKit).</p>
+
+<h3>Credits</h3>
+
+<p>I would like to thank especially:</p>
+<ul>
+    <li>Alsciende for making a great framework for deck builders</li>
+</ul>
+
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="text-center">
+	<ul class="pagination pagination-sm">
+	  {{ first|raw }} 
+	  {% if ellipsisbefore %}<li class="disabled"><a href="#">...</a></li>{% endif %}
+	  {{ prev|raw }}
+	  {{ current|raw }}
+	  {{ next|raw }}
+	  {% if ellipsisafter %}<li class="disabled"><a href="#">...</a></li>{% endif %}
+	  {{ last|raw }}
+	</ul>
+</div>

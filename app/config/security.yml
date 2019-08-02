@@ -1,0 +1,64 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: oauth_server_auth_login_check
+                login_path: oauth_server_auth_login
+            anonymous: true
+
+        api_oauth2:
+            pattern:    ^/api/oauth2
+            fos_oauth:  true
+            stateless:  true
+
+        dev:
+            pattern:    ^/(_(profiler|wdt|error)|css|images|js)/
+            security: false
+
+        default:
+            pattern:    ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                always_use_default_target_path: false
+                default_target_path: index
+            logout:       true
+            anonymous:    true
+            remember_me:
+                secret:   "%secret%"
+                lifetime: 31536000 # 365 jours en secondes
+                path:     /
+                domain:   ~ # Prend la valeur par défaut du domaine courant depuis $_SERVER
+            
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/remind, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/public, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/oauth2, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/js/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/deck/view/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/deck/, role: ROLE_USER }
+        - { path: ^/decks, role: ROLE_USER }
+        - { path: ^/collection, role: ROLE_USER }
+        - { path: ^/user/, role: ROLE_USER }

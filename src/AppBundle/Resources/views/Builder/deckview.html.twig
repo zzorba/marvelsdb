@@ -1,0 +1,124 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% import "AppBundle::macros.html.twig" as macros %}
+
+{% block javascripts %}
+	{% javascripts '@AppBundle/Resources/public/js/ui.deckview.js' %}
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+	app.deck && app.deck.init({{ deck|json_encode|raw }});
+	app.deck_history && app.deck_history.init({{ deck.history|json_encode|raw }});	
+	</script>
+{% endblock %}
+
+{% block body %}
+<div class="main white container">
+	
+	<div class="row">
+		<div class="col-md-12">
+			<h1 style="border-bottom:1px solid lightgray">{{ deck.name }}</h1>
+			{% if deck.problem %}
+			<div class="alert alert-danger" role="alert">{{ deck_validation_helper.problemLabel(deck.problem) }}</div>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+
+		<!-- Deck Contents -->
+		<div class="col-md-6" id="deck">
+		</div>
+		<!-- End Deck Contents -->
+
+		<!-- Build Controls -->
+		<div class="col-md-6 hidden-print">
+
+			<div style="margin-bottom:20px" id="btn-group-deck">
+				<div style="margin-bottom:5px">
+					{% if is_owner and editable %}
+					<a href="{{ path('deck_edit', {deck_id:deck_id}) }}" class="btn btn-primary"><span class="fa fa-pencil"></span> Edit</a>
+					<a href="{{ path('deck_publish_form', {deck_id:deck_id}) }}" id="btn-publish" class="btn btn-success"><span class="fa fa-share"></span> Publish</a>
+					<button type="button" id="btn-delete" class="btn btn-danger"><span class="fa fa-trash"></span> Delete {% if deck.previousDeck %}upgrade{% endif %}</button>
+					<button type="button" id="btn-upgrade" class="btn btn-danger"><span class="fa fa-arrow-up"></span> Upgrade</button>
+					{% endif %}
+					
+					<a href="{{ path('deck_clone', {deck_id:deck_id}) }}" id="btn-clone" class="btn btn-info"><span class="fa fa-clone"></span> Clone</a>
+					
+					</div>
+					<div>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+							<span class="fa fa-sort"></span> <span class="hidden-xs">Sort</span> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" id="menu-sort">
+							<li><a href="#" onclick="app.deck.change_sort('default')" id="btn-sort-default">by Type</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('name')" id="btn-sort-name">by Name</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('set')" id="btn-sort-position">by Set, then Name</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('setnumber')" id="btn-sort-position">by Set, then Number</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('faction')" id="btn-sort-faction">by Faction, then Name</a></li>		
+							<li><a href="#" onclick="app.deck.change_sort('factionnumber')" id="btn-sort-faction">by Faction, then Number</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('factionxp')" id="btn-sort-faction">by Faction, then XP</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('number')" id="btn-sort-faction">by Card Number</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('xp')" id="btn-sort-faction">by XP</a></li>
+							<li><a href="#" onclick="app.deck.change_sort('cost')" id="btn-sort-faction">by Cost</a></li>
+						</ul>
+					</div>
+					<button type="button" id="btn-print" class="btn btn-default"><span class="fa fa-print"></span> Print</button>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<span class="fa fa-download"></span> Download <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="{{ path('deck_export_text', {deck_id:deck_id}) }}">Text file</a></li>
+							<li><a {% if not octgnable %} onclick="window.alert('Warning: Some cards from this deck are missing OCTGN IDs (most likely the latest cards or the special random basic weakness card)')" {% endif %}href="{{ path('deck_export_octgn', {deck_id:deck_id}) }}">Octgn file</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<p>
+				Version {{ deck.version }}
+			</p>
+			
+			<!-- Description -->
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Description</h3>
+			  </div>
+			  <div class="panel-body" id="description">
+			  </div>
+			</div>
+			<!-- Description -->
+
+			{% include 'AppBundle:Builder:deck-charts.html.twig' %}
+			{% include 'AppBundle:Builder:draw-simulator.html.twig' %}
+
+			<!-- Published decklists Table -->
+			<table class="table table-condensed" id="table-predecessor">
+				<thead>
+					<tr><th colspan="4"><span class="fa fa-share"></span> Published versions</th></tr>
+				</thead>
+				<tbody>
+				{% if deck.children|length %}
+				{% for decklist in deck.children %}
+					{{ macros.decklist_table_row(decklist) }}
+				{% endfor %}
+				{% else %}
+					<tr><td>None.</td></tr>
+				{% endif %}
+				</tbody>
+			</table>
+			<!-- Published decklists Table -->
+
+		</div>
+		<!-- End Build Controls -->
+
+	</div><!-- .row -->
+</div><!-- .container -->
+
+{% include 'AppBundle:Modale:odds.html.twig' %}
+{% include 'AppBundle:Modale:delete.html.twig' %}
+{% include 'AppBundle:Modale:upgrade.html.twig' %}
+{% include 'AppBundle:Modale:export.html.twig' %}
+
+{% endblock %}

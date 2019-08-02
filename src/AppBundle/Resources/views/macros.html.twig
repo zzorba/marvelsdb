@@ -1,0 +1,52 @@
+{% macro integer_or_x(value) %}
+    {% if value is null %}&ndash;{% elseif value < 0 %}X{% else %}{{ value }}{% endif %}
+{% endmacro %}
+
+{% macro card_name_with_pack_no_link(card) %}
+<a class="card-tip" data-code="{{ card.code }}">{{ card.name }} <i>({{ card.pack.name }})</i></a>
+{% endmacro %}
+
+{% macro card_name_no_link(card) %}<a style="color : inherit;" class="card-tip card-preview" data-code="{{ card.code }}">{{ card.name }}</a>{% endmacro %}
+
+{% macro decklist_table_row(decklist) %}
+<tr>
+	<td class="decklist-name"><a href="{{ path('decklist_detail', { 'decklist_id': decklist.id, 'decklist_name': decklist.nameCanonical|e('url') }) }}">{{ decklist.name }}</a></td>
+	<td><span class="fa fa-heart social-icon-like"></span> {{ decklist.nbVotes }}</td>
+	<td><span class="fa fa-star social-icon-favorite"></span> {{ decklist.nbFavorites }}</td>
+	<td><span class="fa fa-comment social-icon-comment"></span> {{ decklist.nbComments }}</td>
+	<td><span class="fa fa-code-fork social-icon-version"></span> {{ decklist.version }}</td>
+</tr>
+{% endmacro %}
+
+{% macro username(user) %}
+<a href="{{ path('user_profile_public', {user_id:user.id,user_name:user.username|e('url')}) }}" class="username fg-{{ user.color }}">{{ user.username }}</a>
+{% if user.donation > 0 %}<span class="fa fa-gift donator" title="Gracious Donator"></span>{% endif %}
+ &middot; <small title="User Reputation">{{ user.reputation }}</small>
+{% endmacro %}
+
+{% macro username_colorless(user) %}
+<a href="{{ path('user_profile_public', {user_id:user.id,user_name:user.username|e('url')}) }}" class="username">{{ user.username }}</a>
+{% if user.donation > 0 %}<span class="fa fa-gift donator" title="Gracious Donator"></span>{% endif %}
+ &middot; <small title="User Reputation">{{ user.reputation }}</small>
+{% endmacro %}
+
+{% macro decklist_social_icons(decklist) %}
+<span class="social-icons">
+	<a id="social-icon-like" href="#" class="social-icon-like" data-toggle="tooltip" data-placement="bottom" title="Like">
+		<span class="fa fa-heart"></span> <span class="num">{{ decklist.nbVotes }}</span>
+	</a>
+	<a id="social-icon-favorite" href="#" class="social-icon-favorite" data-toggle="tooltip" data-placement="bottom" title="Favorite">
+		<span class="fa fa-star"></span> <span class="num">{{ decklist.nbFavorites }}</span>
+	</a>
+	<a id="social-icon-comment" href="#comment-form" class="social-icon-comment" data-toggle="tooltip" data-placement="bottom" title="Comment">
+		<span class="fa fa-comment"></span> <span class="num">{{ decklist.nbComments }}</span>
+	</a>
+	<span class="social-icon-version" data-toggle="tooltip" data-placement="bottom" title="Version">
+		<span class="fa fa-code-fork"></span> <span class="num">{{ decklist.version }}</span>
+	</a>
+</span>
+{% endmacro %}
+
+{% macro slot_with_icons(slot) %}
+{{ slot.quantity }}x <span class="icon icon-{{ slot.card.type.code }} fg-{{ slot.card.faction.code }}"></span> <a href="{{ path('cards_zoom', {card_code: slot.card.code }) }}" class="card card-tip" data-code="{{ slot.card.code }}">{{ slot.card.name }}</a>
+{% endmacro %}

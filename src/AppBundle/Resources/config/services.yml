@@ -1,0 +1,44 @@
+services:
+    # core exception listener
+    core_exception_listener:
+        class: AppBundle\Listener\CoreExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onCoreException, priority: 1000 }
+            
+    # subdomain listener
+    locale_prefix_listener:
+       class: AppBundle\Listener\LocalePrefixListener
+       tags:
+           - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    decks:
+        class: AppBundle\Services\Decks
+        arguments: ["@doctrine.orm.entity_manager", "@deck_validation_helper", "@agenda_helper", "@diff", "@logger"]
+    highlight:
+        class: AppBundle\Services\Highlight
+        arguments: ["@doctrine.orm.entity_manager"]
+    reviews:
+        class: AppBundle\Services\Reviews
+        arguments: ["@doctrine.orm.entity_manager"]
+    texts:
+        class: AppBundle\Services\Texts
+        arguments: ["%kernel.root_dir%"]
+    diff:
+        class: AppBundle\Services\Diff
+        arguments: ["@doctrine.orm.entity_manager"]
+    cards_data:
+        class: AppBundle\Services\CardsData
+        arguments: ["@doctrine", "@request_stack", "@router", "@templating.helper.assets", "@deck_validation_helper", "%kernel.root_dir%"]
+    decklist_manager:
+        class: AppBundle\Model\DecklistManager
+        shared: false
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack", "@router", "@logger"]
+    decklist_factory:
+        class: AppBundle\Model\DecklistFactory
+        arguments: ["@doctrine.orm.entity_manager", "@deck_validation_helper", "@texts"]
+    agenda_helper:
+        class: AppBundle\Helper\AgendaHelper
+        arguments: ["@doctrine.orm.entity_manager"]
+    deck_validation_helper:
+        class: AppBundle\Helper\DeckValidationHelper
+        arguments: ["@agenda_helper"]

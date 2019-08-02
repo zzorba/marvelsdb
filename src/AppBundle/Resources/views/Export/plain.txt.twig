@@ -1,0 +1,59 @@
+{{ deck.name }}
+
+{% if deck.investigator %}{{ deck.investigator.name }}{% endif %}
+
+{% set first_pack = deck.included_packs|first %}
+{% set last_pack = deck.included_packs|last %}
+Packs: {% if deck.included_packs|length > 1 %}
+From {{ first_pack.pack.name }}{% if first_pack.nb > 1 %} ({{ first_pack.nb }}){% endif %} to {{ last_pack.pack.name }}{% if last_pack.nb > 1 %} ({{ last_pack.nb }}){% endif %}
+{% else %}
+{{ first_pack.pack.name }}{% if first_pack.nb > 1 %} ({{ first_pack.nb }}){% endif %}
+{% endif %}
+
+
+{% set assets = deck.slots_by_type.asset %}
+{% if assets|length > 0 %}
+Asset{% if assets|length > 1 %}s{% endif %}
+
+{% for slot in assets %}
+{{ slot.quantity }}x {{ slot.card.name }}{% if slot.card.subname %}:{{slot.card.subname}}{% endif %}{% if slot.card.xp %} [{{slot.card.xp}}]{% endif %} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
+{% set events = deck.slots_by_type.event %}
+{% if events|length > 0 %}
+Event{% if events|length > 1 %}s{% endif %}
+
+{% for slot in events %}
+{{ slot.quantity }}x {{ slot.card.name }}{% if slot.card.subname %}:{{slot.card.subname}}{% endif %}{% if slot.card.xp %} [{{slot.card.xp}}]{% endif %} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
+{% set skills = deck.slots_by_type.skill %}
+{% if skills|length > 0 %}
+Skill{% if skills|length > 1 %}s{% endif %}
+
+{% for slot in skills %}
+{{ slot.quantity }}x {{ slot.card.name }}{% if slot.card.subname %}:{{slot.card.subname}}{% endif %}{% if slot.card.xp %} [{{slot.card.xp}}]{% endif %} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
+{% set treachery = deck.slots_by_type.treachery %}
+{% if treachery|length > 0 %}
+{% if treachery|length > 1 %}Treacheries{% else %}Treachery{% endif %}
+
+{% for slot in treachery %}
+{{ slot.quantity }}x {{ slot.card.name }}{% if slot.card.subname %}:{{slot.card.subname}}{% endif %}{% if slot.card.xp %} [{{slot.card.xp}}]{% endif %} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
+{% set enemy = deck.slots_by_type.enemy %}
+{% if enemy|length > 0 %}
+{% if enemy|length > 1 %}Enemies{% else %}Enemy{% endif %}
+
+{% for slot in enemy %}
+{{ slot.quantity }}x {{ slot.card.name }}{% if slot.card.subname %}:{{slot.card.subname}}{% endif %}{% if slot.card.xp %} [{{slot.card.xp}}]{% endif %} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
+{{ footer|default('') }}

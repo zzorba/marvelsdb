@@ -1,0 +1,40 @@
+AppBundle\Entity\Faction:
+    type: entity
+    table: faction
+    repositoryClass: AppBundle\Repository\FactionRepository
+    gedmo:
+        translation:
+            locale: locale
+    oneToMany:
+        cards:
+            targetEntity: Card
+            orderBy: {'position':'ASC'}
+            mappedBy: faction
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            nullable: false
+        name:
+            type: string
+            length: 1024
+            nullable: false
+            gedmo:
+                - translatable
+        isPrimary:
+            type: boolean
+            nullable: false
+            column: is_primary
+        octgnId:
+            type: string
+            nullable: true
+            column: octgn_id
+    uniqueConstraints:
+        faction_code_idx:
+            columns: [ code ]
+            

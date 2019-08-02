@@ -1,0 +1,58 @@
+remind_email:
+    path:     /remind/{username}
+    defaults:
+        _controller: AppBundle:User:remind
+
+user_profile_public:
+    path: /profile/{user_id}/{user_name}/{page}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:User:publicProfile
+        page: 1
+    requirements:
+        user_id: \d+
+
+user_profile_edit:
+    path: /profile_edit
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:User:editProfile
+
+user_profile_save:
+    path: /profile_save
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:User:saveProfile
+
+decklist_favorite:
+    path: /favorite
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:favorite
+
+decklist_like:
+    path: /like
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:vote
+
+decklist_comment:
+    path: /comment
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:comment
+
+decklist_comment_hide:
+    path: /hidecomment/{comment_id}/{hidden}
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:hidecomment
+
+card_reviews_list_byauthor:
+    path: /reviews/{user_id}/{page}
+    defaults:
+        _controller: AppBundle:Review:byauthor
+        page: 1
+    requirements:
+        page: \d+
+        user_id: \d+

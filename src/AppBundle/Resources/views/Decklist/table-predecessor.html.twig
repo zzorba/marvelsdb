@@ -1,0 +1,13 @@
+{% import "AppBundle::macros.html.twig" as macros %}
+<table class="table table-condensed" id="table-predecessor">
+<thead>
+<tr><th colspan="{% if decklist.precedent %}4{% else %}1{% endif %}"><span class="fa fa-backward"></span> Derived from</th></tr>
+</thead>
+<tbody>
+{% if decklist.precedent %}
+{{ macros.decklist_table_row(decklist.precedent) }}
+{% else %}
+<tr><td>None. Self-made deck here.</td></tr>
+{% endif %}
+</tbody>
+</table>

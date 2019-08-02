@@ -1,0 +1,38 @@
+
+cards_list:
+    path: /set/{pack_code}/{view}/{decks}/{sort}/{page}
+    defaults:
+        _controller: AppBundle:Search:list
+        view: list
+        decks: all
+        sort: set
+        page: 1
+
+cards_zoom:
+    path: /card/{card_code}
+    defaults:
+        _controller: AppBundle:Search:zoom
+
+cards_cycle:
+    path: /cycle/{cycle_code}/{view}/{decks}/{sort}/{page}
+    defaults:
+        _controller: AppBundle:Search:cycle
+        view: list
+        decks: all
+        sort: faction
+        page: 1
+
+cards_search:
+    path: /search
+    defaults:
+        _controller: AppBundle:Search:form
+
+cards_find:
+    path: /find
+    defaults:
+        _controller: AppBundle:Search:find
+
+cards_processSearchForm:
+    path: /process
+    defaults:
+        _controller: AppBundle:Search:process

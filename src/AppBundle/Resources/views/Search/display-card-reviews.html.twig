@@ -1,0 +1,82 @@
+{% import "AppBundle::macros.html.twig" as macros %}
+<div class="col-md-12" style="margin-top:2em">
+<form method="POST" action="{{ path('card_review_post') }}" style="clear:right" id="faq-edit-form">
+	<input type="hidden" name="card_id" value="{{ card.id }}">
+	<input type="hidden" name="review_id" value="">
+</form>
+{% if card.faqs|length %}
+	<div style="line-height:34px" id="faq-header">
+		<span style="font-size:24px">FAQs</span> (taken from the official FAQ or FFG's responses to the <a href="https://www.fantasyflightgames.com/en/contact/rules/">official rules question form</a>)
+	</div>
+
+		{% for review in card.faqs %}
+		<article class="review" data-id="{{ review.id }}" id="review-{{ review.id }}">
+			<div class="review-content">
+				<div class="review-text">
+					{{ review.textHtml|raw }}
+				</div>
+				<div class="review-date">
+					Last updated <time datetime="{{ review.dateUpdate|date('c') }}" title="{{ review.dateUpdate|date('F jS, Y') }}">{{ review.dateUpdate|date('n/j/y') }}</time>
+				</div>
+
+				{% for comment in review.comments %}
+				<div class="review-comment text-muted small">{{ comment.text|raw }}
+					&mdash;
+					<span class="username">{{ macros.username(comment.user) }}</span>
+					<time datetime="{{ comment.dateCreation|date('c') }}" title="{{ comment.dateCreation|date('F jS, Y') }}">{{ comment.dateCreation|date('n/j/y') }}</time>
+				</div>
+				{% endfor %}
+				
+			</div>
+		</article>
+		{% endfor %}
+
+{% endif %}
+</div>
+
+<div class="col-md-12" style="margin-top:2em">
+	<div style="line-height:34px" id="reviews-header">
+		<span style="font-size:24px">Reviews</span>
+	</div>
+	<form method="POST" action="{{ path('card_review_post') }}" style="clear:right" id="review-edit-form">
+		<input type="hidden" name="card_id" value="{{ card.id }}">
+		<input type="hidden" name="review_id" value="">
+	</form>
+	{% if card.reviews|length %}
+		{% for review in card.reviews %}
+		<article class="review" data-id="{{ review.id }}" id="review-{{ review.id }}">
+			<div class="review-like">
+				<a id="review-social-icon-like" href="#" class="social-icon-like" data-toggle="tooltip" data-placement="bottom" title="Like that review">
+					<span class="fa fa-heart"></span> <span class="num">{{ review.nbVotes }}</span>
+				</a>
+			</div>
+			<div class="review-content">
+				<div class="review-text">
+					{{ review.textHtml|raw }}
+				</div>
+				<div class="review-date">
+					<time datetime="{{ review.dateCreation|date('c') }}" title="{{ review.dateCreation|date('F jS, Y') }}">{{ review.dateCreation|date('n/j/y') }}</time>
+				</div>
+				<div class="review-author">
+					<span class="username">{{ macros.username(review.user) }}</span>
+				</div>
+				{% for comment in review.comments %}
+				<div class="review-comment text-muted small">{{ comment.text|raw }}
+					&mdash;
+					<span class="username">{{ macros.username(comment.user) }}</span>
+					<time datetime="{{ comment.dateCreation|date('c') }}" title="{{ comment.dateCreation|date('F jS, Y') }}">{{ comment.dateCreation|date('n/j/y') }}</time>
+				</div>
+				{% endfor %}
+				<form action="{{ path('card_reviewcomment_post') }}" method="POST" class="form-comment">
+					<input type="hidden" name="comment_review_id" value="{{ review.id }}">
+					<button class="btn btn-link btn-write-comment">Add a comment</button>
+				</form>
+			</div>
+		</article>
+		{% endfor %}
+	{% else %}
+	<p><i>No review yet for this card.</i></p>
+	{% endif %}
+</div>
+
+           

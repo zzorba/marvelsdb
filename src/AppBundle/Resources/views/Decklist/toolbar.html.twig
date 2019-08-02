@@ -1,0 +1,52 @@
+<a href="{{ path('decklist_edit', {decklist_id:decklist.id}) }}" title="Edit decklist name / description" id="decklist-edit" class="btn btn-sm btn-default" style="display:none">
+	<span class="fa fa-pencil text-primary"></span> Edit
+</a>
+<a href="#" title="Delete decklist" id="decklist-delete" class="btn btn-sm btn-default" style="display:none">
+	<span class="fa fa-trash-o text-danger"></span> Delete
+</a>
+<a href="{{ path('deck_copy', {decklist_id:decklist.id}) }}" class="btn btn-sm btn-default">
+	<span class="fa fa-save"></span> <span class="hidden-xs">Copy</span>
+</a>
+<div class="btn-group">
+	<button type="button" class="btn btn-sm btn-default dropdown-toggle " data-toggle="dropdown">
+		<span class="fa fa-download"></span> <span class="hidden-xs">Download</span> <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li><a href="#" id="btn-download-text">Text file</a></li>
+		<li><a {% if not octgnable %} onclick="window.alert('Warning: Some cards from this deck are missing OCTGN IDs (most likely the latest cards or the special random basic weakness card)')" {% endif %}href="#" id="btn-download-octgn">Octgn file</a></li>
+	</ul>
+</div>
+{#
+<div class="btn-group">
+	<button type="button" class="btn btn-sm btn-default dropdown-toggle " data-toggle="dropdown">
+		<span class="fa fa-clipboard"></span> <span class="hidden-xs">Export</span> <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li><a href="#" id="btn-export-bbcode">bbCode</a></li>
+		<li><a href="#" id="btn-export-markdown">Markdown (Reddit)</a></li>
+		<li><a href="#" id="btn-export-plaintext">plain text</a></li>
+	</ul>
+</div>
+#}
+<div class="btn-group">
+	<button type="button" class="btn btn-sm btn-default dropdown-toggle " data-toggle="dropdown">
+		<span class="fa fa-sort"></span> <span class="hidden-xs">Sort</span> <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu" id="menu-sort">
+		<li><a href="#" onclick="app.deck.change_sort('default')" id="btn-sort-default">by Type</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('name')" id="btn-sort-name">by Name</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('set')" id="btn-sort-position">by Set, then Name</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('setnumber')" id="btn-sort-position">by Set, then Number</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('faction')" id="btn-sort-faction">by Faction, then Name</a></li>		
+		<li><a href="#" onclick="app.deck.change_sort('factionnumber')" id="btn-sort-faction">by Faction, then Number</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('factionxp')" id="btn-sort-faction">by Faction, then XP</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('number')" id="btn-sort-faction">by Card Number</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('xp')" id="btn-sort-faction">by XP</a></li>
+		<li><a href="#" onclick="app.deck.change_sort('cost')" id="btn-sort-faction">by Cost</a></li>
+	</ul>
+</div>
+{#
+<button type="button" id="btn-compare" class="btn btn-sm btn-default">
+	<span class="fa fa-duplicate"></span> <span class="hidden-xs">Compare</span>
+</button>
+#}

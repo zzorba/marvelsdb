@@ -1,0 +1,30 @@
+admin_pack:
+    path:  /
+    defaults: { _controller: "AppBundle:Pack:index" }
+
+admin_pack_show:
+    path:  /{id}/show
+    defaults: { _controller: "AppBundle:Pack:show" }
+
+admin_pack_new:
+    path:  /new
+    defaults: { _controller: "AppBundle:Pack:new" }
+
+admin_pack_create:
+    path:  /create
+    defaults: { _controller: "AppBundle:Pack:create" }
+    methods: [ post ]
+
+admin_pack_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "AppBundle:Pack:edit" }
+
+admin_pack_update:
+    path:  /{id}/update
+    defaults: { _controller: "AppBundle:Pack:update" }
+    methods: [ post, put ]
+
+admin_pack_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "AppBundle:Pack:delete" }
+    methods: [ post, delete ]

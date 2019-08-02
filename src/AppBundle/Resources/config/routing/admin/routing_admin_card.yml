@@ -1,0 +1,30 @@
+admin_card:
+    path:  /
+    defaults: { _controller: "AppBundle:Card:index" }
+
+admin_card_show:
+    path:  /{id}/show
+    defaults: { _controller: "AppBundle:Card:show" }
+
+admin_card_new:
+    path:  /new
+    defaults: { _controller: "AppBundle:Card:new" }
+
+admin_card_create:
+    path:  /create
+    defaults: { _controller: "AppBundle:Card:create" }
+    methods: [ post ]
+
+admin_card_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "AppBundle:Card:edit" }
+
+admin_card_update:
+    path:  /{id}/update
+    defaults: { _controller: "AppBundle:Card:update" }
+    methods: [ post, put ]
+
+admin_card_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "AppBundle:Card:delete" }
+    methods: [ post, delete ]

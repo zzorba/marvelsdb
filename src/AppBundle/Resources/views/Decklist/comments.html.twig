@@ -1,0 +1,23 @@
+{% import "AppBundle::macros.html.twig" as macros %}
+<table class="table">
+<thead>
+<tr><th><span class="fa fa-comment"></span> {{ decklist.nbComments }} comments</th></tr>
+</thead>
+<tbody>
+{% for comment in decklist.comments %}
+<tr><td id="comment-{{ comment.id }}">
+    <div class="small comment-toggler" style="{% if not comment.isHidden %}display:none{% endif %}">
+        <a href="#div-comment-{{ comment.id }}" data-toggle="collapse" class="text-muted pull-right" style="margin-left:.5em"><span class="fa fa-eye"></span></a>
+    </div>
+    <div class="collapse{% if not comment.isHidden %} in{% endif %}" id="div-comment-{{ comment.id }}">
+    	<h4 class="comment-header">
+    		<span class="comment-date pull-right" title="{{ comment.dateCreation|date('r') }}">{{ comment.dateCreation|date('M d, Y') }}</span>
+        	<span class="comment-author">{{ macros.username(comment.user) }}</span>
+    	</h4>
+        <div class="comment-text">{{ comment.text|raw }}</div>
+    </div>
+</td></tr>
+{% endfor %}
+</tbody>
+</table>
+<a id="comment-form"></a>

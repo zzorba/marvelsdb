@@ -1,0 +1,681 @@
+
+/* fonts */
+
+body {
+
+}
+.card-content {
+	font: 16px/20px 'Amiri', serif;
+}
+.card-content abbr[title] {
+	border-bottom: none;
+}
+.card-name {
+	font-family: 'Julius Sans One', sans-serif;
+	font-weight: 700;
+}
+.card-subname {
+	padding-left : 1.75em;
+	border-top : solid rgba(255,255,255,0.1) 1px;
+	margin-top : 2px;
+}
+.card-preview {
+    color: red;
+}
+.card-type {
+	font-weight: 700;
+}
+.card-traits, .card-text i {
+	font-style: italic;
+}
+.card-text {
+	border-left-width: 2px;
+	border-left-style: solid;
+}
+.card-text p {
+	margin: 6px;
+}
+.card-flavor {
+	font-style: italic;
+}
+.card-flavor cite {
+	white-space: nowrap;
+}
+.card-flavor cite::before {
+	/* en dash followed by non-breaking zero-width space */
+	content: "\2013\FEFF";
+}
+.card-xp {
+	font-weight : bold;
+	font-size : 16px;
+	vertical-align : middle;
+}
+.victory {
+	font-weight : bold;
+}
+.vengeance {
+	font-weight : bold;
+}
+
+.taboo {
+	color : purple;
+}
+
+.table-expanded>thead>tr>th, .table-expanded>tbody>tr>th, .table-expanded>tfoot>tr>th, .table-expanded>thead>tr>td, .table-expanded>tbody>tr>td, .table-expanded>tfoot>tr>td {
+	padding: 8px 8px;
+}
+.navbar-static-top {
+	z-index: auto;
+}
+
+.display-spoiler-card {
+	margin-bottom: 1em;
+}
+.display-spoiler-card h4 {
+	border-bottom: 1px solid #ddd;
+}
+.deck-loading {
+	padding: 50px 0;
+	text-align: center;
+}
+.tab-content {
+	padding-top: 15px;
+}
+.dropdown-menu label {
+  margin: 0;
+}
+.dropdown-menu input[type=checkbox], .dropdown-menu input[type=radio] {
+  margin: -4px 8px 0 -6px;
+}
+
+html, body {
+	height: 100%;
+	min-height: 100%;
+}
+td.type, td.faction {
+	text-align:center;
+}
+.container.main {
+	margin-bottom: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.container.main.white {
+	background-color: #fff;
+}
+.container.main.admin {
+	background-color: #fff;
+	border: 1px solid red;
+}
+#wrapper {
+	min-height: 100%;
+	border-bottom: 10px solid #c0392b;
+	padding-bottom: 100px;
+}
+footer {
+	padding-top: 20px;
+	background-color: #95a5a6;
+}
+.navbar-default {
+	font-size: 16px;
+}
+
+div.tags span.tag {
+	font-size: 75%;
+	color: darkgray;
+}
+div.tags span.tag:not(:first-child)::before {
+	content: " - ";
+}
+
+.decks-actions .btn{
+	margin-bottom: 3px;
+}
+
+.social-icons>*{margin-left:5px}
+.social-icon-like{color:red}
+.social-icon-favorite{color:orange}
+.social-icon-comment{color:green}
+.social-icon-version{color:blue}
+
+/*** generic ****/
+
+.smaller {
+    font-size: 70%;
+}
+
+/********** icon-bg ***********/
+
+.icon-bg:before {
+	width: 100%;
+	height: 100%;
+	font-size: 5em;
+	text-align: center;
+	display: block;
+	position: absolute;
+	line-height:4em;
+	left: 0;
+	opacity: 0.1;
+    z-index: 0;
+}
+
+/********* ONE DECK *********/
+
+.deck-intro .media-left {
+	font-size: 96px;
+}
+.deck-intro .media-left span {
+	padding: 10px;
+}
+.deck-content {
+	margin-bottom: 15px;
+}
+.deck-content .invalid-card {
+	text-decoration: line-through;
+}
+
+.deck-content .slot-header {
+	color : rgba(100, 100, 100, 0.7);
+	border-bottom : solid 1px rgba(100, 100, 100, 0.1);
+}
+
+h4, h5 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+h4.deck-section {
+	border-bottom: solid 1px rgba(130, 160, 200, 0.5);
+	font-size: 15px;
+}
+
+
+/********** DECK EDITOR ************/
+
+#collection-grid .col-sm-6 .media, #collection-grid .col-sm-4 .media {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted lightgray;
+    overflow: hidden;
+}
+#collection-grid .col-sm-6 .media-object {
+    height: 100px;
+}
+#collection-grid .col-sm-4 .media-object {
+	height: 70px;
+}
+
+.xp_up, .xp_down {
+	cursor: pointer;
+}
+
+/********* LIST OF DECKS ************/
+
+.list-decks>tbody>tr>td {
+	vertical-align: middle;
+}
+
+#tag_toggles button {
+	margin-bottom: 4px;
+	margin-right: 4px;
+}
+
+.deck-list-investigator-image {
+	background-position: 8% 40%;
+	background-repeat: no-repeat;
+	background-size: 130px auto;
+	border-radius: 5px;
+	bottom: 0;
+	height: 120px;
+	margin: auto;
+	width: 110px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+.investigator-select .selected {
+	background-color : rgba(180, 220, 180, 1);
+}
+
+/********** NEW DECK **********/
+
+.list-factions li label {
+}
+
+/************ DECK GALLERY **********/
+
+#deck-gallery table { width: 100%; table-layout: fixed; border-collapse: collapse; overflow: hidden }
+#deck-gallery table td { padding: 0 }
+#deck-gallery table td > div { height: 100px; overflow: visible; position: relative }
+#deck-gallery table td > div > img { height: 100% ; border: 1px solid white; border-radius: 10px;}
+#deck-gallery table td > div > div { background: rgba(0, 0, 0, 0.5); position: absolute; left: 1px; bottom: 1px; color: white; width: 24px; height: 24px; line-height: 24px; font-size: 16px; font-weight: bold; text-align: center; border-radius: 15px; font-family: monospace }
+
+/********* DRAW SIMULATOR ************/
+
+#table-draw-simulator-content img {width:98px;height:136px;float:left;margin:5px;box-shadow: black 0px 0px 5px;border-radius: 5px;}
+#table-draw-simulator-content img.trashed {opacity: 0.25;box-shadow: none;}
+#table-draw-simulator-content img.trashed:hover {opacity: 0.75;}
+#table-draw-simulator-content div.card-proxy {background:#888;color:white;width:99px;height:138px;float:left;margin:5px;box-shadow: black 0px 0px 5px;border-radius: 5px;}
+#table-draw-simulator-content img.card-proxy.trashed {opacity: 0.25;box-shadow: none;}
+#table-draw-simulator-content img.card-proxy.trashed:hover {opacity: 0.75;}
+#table-draw-simulator-content div.card-proxy div{position: relative;top: 50%; transform: translateY(-50%);text-align:center}
+#draw-simulator-special {display: none;}
+
+/*********** TYPEAHEAD **************/
+
+.twitter-typeahead{width:100%;background-color:#fff}
+.twitter-typeahead .tt-hint{color:#aaa;margin-left:11px;margin-top:4px;display:none}
+.twitter-typeahead .tt-query{margin-bottom:0}
+.tt-dropdown-menu{min-width:160px;margin-top:2px;padding:5px 0;background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);*border-right-width:2px;*border-bottom-width:2px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,.2);-moz-box-shadow:0 5px 10px rgba(0,0,0,.2);box-shadow:0 5px 10px rgba(0,0,0,.2);-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box}
+.tt-suggestion{display:block;padding:3px 20px}
+.tt-suggestion.tt-cursor{color:#fff;background-color:#0081c2;background-image:-moz-linear-gradient(top,#08c,#0077b3);background-image:-webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));background-image:-webkit-linear-gradient(top,#08c,#0077b3);background-image:-o-linear-gradient(top,#08c,#0077b3);background-image:linear-gradient(to bottom,#08c,#0077b3);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)}
+.tt-suggestion.tt-cursor a{color:#fff}
+.tt-suggestion p{margin:0}
+
+/************** QTIP ****************/
+.qtip-thronesdb{border-radius:2px;min-width:250px;max-width:400px}
+.qtip-thronesdb-text{font-size:15px }
+.qtip-thronesdb-image{}
+
+
+/***************** CARD IMAGE **************/
+
+.img-vertical-card {
+	width : auto;
+	max-width : 419px;
+	max-height : 419px;
+	border-radius : 14px;
+}
+
+
+/***************** THUMBNAIL CARD IMAGE **************/
+
+.card-thumbnail{background-attachment:scroll;background-origin:padding-box;background-clip:border-box;background-repeat:no-repeat;margin:0 0 5px 5px;position:relative;border:1px solid #000;float:right}
+.card-thumbnail-static{background-attachment:scroll;background-origin:padding-box;background-clip:border-box;background-repeat:no-repeat;margin:0 0 5px 5px;position:relative;border:1px solid #000;}
+.card-thumbnail-1x{background-repeat:no-repeat;width:200px;height:200px;background-size:300px 418px}
+.card-thumbnail-2x{background-repeat:no-repeat;width:100px;height:100px;background-size:150px 209px}
+.card-thumbnail-3x{width:67px;height:67px;background-size:100px 139px}
+.card-thumbnail-4x{width:50px;height:50px;background-size:75px 105px}
+.card-thumbnail-5x{width:40px;height:40px;background-size:60px 84px}
+.card-thumbnail-1x.card-thumbnail-investigator{background-size:400px 300px;background-position: 0px -50px}
+.card-thumbnail-2x.card-thumbnail-investigator{background-size:300px 200px;background-position: -23px -32px}
+.card-thumbnail-3x.card-thumbnail-investigator{background-size:139px 100px;background-position:-5px -18px}
+.card-thumbnail-4x.card-thumbnail-investigator{background-position:-20px -5px}
+.card-thumbnail-5x.card-thumbnail-investigator{background-position:-16px -4px}
+.card-thumbnail-1x.card-thumbnail-asset{background-position:-51px -31px}
+.card-thumbnail-2x.card-thumbnail-asset{background-position:-25.5px -15.5px}
+.card-thumbnail-3x.card-thumbnail-asset{background-position:-17px -10.3px}
+.card-thumbnail-4x.card-thumbnail-asset{background-position:-12.75px -7.75px}
+.card-thumbnail-5x.card-thumbnail-asset{background-position:-10.2px -6.2px}
+.card-thumbnail-1x.card-thumbnail-event{background-position:-50px -52px}
+.card-thumbnail-2x.card-thumbnail-event{background-position:-25px -26px}
+.card-thumbnail-3x.card-thumbnail-event{background-position:-16.7px -17.3px}
+.card-thumbnail-4x.card-thumbnail-event{background-position:-12.5px -13px}
+.card-thumbnail-5x.card-thumbnail-event{background-position:-10px -10.4px}
+.card-thumbnail-1x.card-thumbnail-skill{background-position:-50px -60px}
+.card-thumbnail-2x.card-thumbnail-skill{background-position:-25px -30px}
+.card-thumbnail-3x.card-thumbnail-skill{background-position:-16.7px -20px}
+.card-thumbnail-4x.card-thumbnail-skill{background-position:-12.5px -15px}
+.card-thumbnail-5x.card-thumbnail-skill{background-position:-10px -12px}
+.card-thumbnail-1x.card-thumbnail-treachery{background-position:-92px -26px}
+.card-thumbnail-2x.card-thumbnail-treachery{background-position:-51px -13px}
+.card-thumbnail-3x.card-thumbnail-treachery{background-position:-23.3px -2.7px;background-size:120px 159px}
+.card-thumbnail-4x.card-thumbnail-treachery{background-position:-20.5px -6.5px}
+.card-thumbnail-5x.card-thumbnail-treachery{background-position:-16.4px -5.2px}
+.card-thumbnail-1x.card-thumbnail-agenda{}
+.card-thumbnail-2x.card-thumbnail-agenda{}
+.card-thumbnail-3x.card-thumbnail-agenda{}
+.card-thumbnail-4x.card-thumbnail-agenda{}
+.card-thumbnail-5x.card-thumbnail-agenda{}
+.card-thumbnail-1x.card-thumbnail-location{background-position:-51px -31px}
+.card-thumbnail-2x.card-thumbnail-location{background-position:-25.5px -15.5px}
+.card-thumbnail-3x.card-thumbnail-location{background-position:-17px -10.3px}
+.card-thumbnail-4x.card-thumbnail-location{background-position:-12.75px -7.75px}
+.card-thumbnail-5x.card-thumbnail-location{background-position:-10.2px -6.2px}
+.card-thumbnail-1x.card-thumbnail-enemy{background-position:-51px -31px}
+.card-thumbnail-2x.card-thumbnail-enemy{background-position:-25.5px -15.5px}
+.card-thumbnail-3x.card-thumbnail-enemy{background-position:-35px -100.3px; background-size:130px 169px}
+.card-thumbnail-4x.card-thumbnail-enemy{background-position:-12.75px -7.75px}
+.card-thumbnail-5x.card-thumbnail-enemy{background-position:-10.2px -6.2px}
+
+.card-thumbnail-wide.card-thumbnail-investigator {
+	background-repeat:no-repeat;
+	width:120px;height:55px;
+	background-size:270px 180px;
+	background-position: -5px -45px
+}
+
+.card-faded-background {
+	
+}
+
+.card-img-thumbnail {
+	margin-left: -50%;
+	margin-top: -50%;
+	width: 300px;
+	height: 419px;
+}
+.card-img-thumbnail-asset {
+	margin-left: -110px;
+	margin-top: -50px;
+}
+.card-img-thumbnail-event {
+	margin-left: -110px;
+	margin-top: -50px;
+}
+.card-img-thumbnail-skill {
+	margin-left: -110px;
+	margin-top: -50px;
+}
+.card-img-thumbnail-location {
+	margin-left: -120px;
+	margin-top: -70px;
+}
+.card-img-thumbnail-treachery {
+	margin-left: -120px;
+	margin-top: -70px;
+}
+.card-img-thumbnail-enemy {
+	margin-left: -100px;
+	margin-top: -260px;
+}
+.card-img-thumbnail-investigator {
+	height: 300px;
+	width: 419px;
+	margin-left: -10px;
+	margin-top: -80px;
+}
+.card-img-thumbnail-agenda {
+	height: 300px;
+	width: 419px;
+	margin-left: -10px;
+	margin-top: -140px;
+}
+.card-img-thumbnail-act {
+	height: 300px;
+	width: 419px;
+	margin-left: -10px;
+	margin-top: -140px;
+}
+
+/************** INDEX PAGE ***************/
+
+h1.site-title {
+	font-family: 'Julius Sans One', sans-serif;
+	position:relative;
+	font-size:110px;
+	text-align:center;
+	margin-top: 0;
+	margin: 0;
+	padding: 0;
+}
+div.site-slogan {
+	font-family: 'Open Sans Condensed', sans-serif;
+	position:relative;
+	font-size:30px;
+	text-align:center;
+}
+
+/************ LIST OF DECKLISTS **************/
+
+.decklist-faction-image img {
+    height: 64px;
+}
+
+/************* DECKLIST *********************/
+
+.row.title {
+	padding-top:20px;
+	padding-bottom:10px
+}
+#deck-description h1 {
+	font-size: 171%;
+}
+#deck-description h2 {
+	font-size: 143%;
+}
+#deck-description h3 {
+	font-size: 121%;
+}
+#deck-description h4 {
+	font-size: 107%;
+}
+
+/************** FACTIONS COLORS **************/
+.bg-faction a, .bg-faction span {
+	color: inherit;
+}
+.bg-guardian {
+	background-color: #2b80c5 !important;
+	color: white !important;
+}
+.bg-survivor {
+	background-color: #cc3038 !important;
+	color: white !important;
+}
+.bg-seeker {
+	background-color: #ff8f3f !important;
+}
+.bg-mystic {
+	background-color: #5d5593 !important;
+	color: white !important;
+}
+.bg-rogue {
+	background-color: #107116 !important;
+	color: white !important;
+}
+.bg-neutral {
+	background-color: #808080 !important;
+	color: white !important;
+}
+.bg-dual {
+	background-color: #c0c000 !important;
+	color: white !important;
+}
+
+
+.faint-faction a, .faint-faction span {
+	color: inherit;
+}
+.faint-guardian {
+	background-color: rgba(43, 128, 237, 0.2) !important;
+}
+.faint-survivor {
+	background-color: rgba(204, 48, 56, 0.2) !important;
+}
+.faint-seeker {
+	background-color: rgba(255, 143, 63, 0.2) !important;
+}
+.faint-mystic {
+	background-color: rgba(123, 85, 197, 0.3) !important;
+}
+.faint-rogue {
+	background-color: rgba(16, 113, 22, 0.2) !important;
+}
+.faint-neutral {
+	background-color: rgba(128, 128, 128, 0.2) !important;
+}
+
+
+
+.fg-guardian {
+	color: #2b80c5 !important;
+}
+.fg-survivor {
+	color: #cc3038 !important;
+}
+.fg-seeker {
+	color: #ec8426 !important;
+}
+.fg-mystic {
+	color: #4331b9 !important;
+}
+.fg-rogue {
+	color: #107116 !important;
+}
+.fg-neutral {
+	color: #606060 !important;
+}
+.fg-dual {
+	color: #c0c000 !important;
+}
+
+
+.border-guardian {
+	border-color: #2b80c5 !important;
+}
+.border-survivor {
+	border-color: #cc3038 !important;
+}
+.border-seeker {
+	border-color: #ff8f3f !important;
+}
+.border-mystic {
+	border-color: #6d2aa9 !important;
+}
+.border-rogue {
+	border-color: #107116 !important;
+}
+.border-neutral {
+	border-color: #808080 !important;
+}
+.border-dual {
+	border-color: #c0c000 !important;
+}
+
+.icon-guardian, .icon-mystic, .icon-seeker, .icon-rogue, .icon-survivor {
+	background-image : url("/bundles/app/images/factions/guardian.png");
+	background-repeat : no-repeat;
+	width : 16px;
+	height : 16px;
+	display : inline-block;
+	vertical-align : top;
+	margin-top: 1px;
+}
+.icon-mystic {
+	background-image : url("/bundles/app/images/factions/mystic.png");
+}
+.icon-seeker {
+	background-image : url("/bundles/app/images/factions/seeker.png");
+}
+.icon-rogue {
+	background-image : url("/bundles/app/images/factions/rogue.png");
+}
+.icon-survivor {
+	background-image : url("/bundles/app/images/factions/survivor.png");
+	margin-top: -1px;
+}
+.icon-big {
+	background-position: 100%;
+	width: 32px;
+	height: 32px;
+}
+/**************** REVIEW ON CARD PAGE ******************/
+
+article.review {
+	margin-top: 0.5em;
+	padding-top: 0.5em;
+	border-top: 1px solid #ddd;
+}
+article.review:first-child {
+	margin-top: 0;
+}
+article.review .review-like { 
+	float:left; 
+	font-size: 120%; 
+	width:50px 
+}
+article.review .review-content { 
+	margin-left: 50px 
+}
+article.review .review-text :first-child { 
+	margin-top: 0px 
+}
+article.review .review-date { 
+	clear: both; 
+	text-align: right 
+}
+article.review .review-author { 
+	text-align: right 
+}
+article.review .review-comment { 
+	border-top: 1px solid #ddd; 
+	padding: 0.5em; 
+}
+
+/****************** BOOTSTRAP MARKDOWN *******************/
+
+.md-editor.md-fullscreen-mode {
+	z-index: 99;
+}
+
+/* PRINT STYLESHEETS */
+
+@media print {
+	h1 {
+		font-size: 24px;
+	}
+  a[href]:after {
+    content: none !important;
+  }
+  #wrapper {
+  	border: none;
+  	padding: 0;
+  	min-height: auto;
+  }
+  
+	.col-print-1 {width:8%;  float:left;}
+	.col-print-2 {width:16%; float:left;}
+	.col-print-3 {width:25%; float:left;}
+	.col-print-4 {width:33%; float:left;}
+	.col-print-5 {width:42%; float:left;}
+	.col-print-6 {width:50%; float:left;}
+	.col-print-7 {width:58%; float:left;}
+	.col-print-8 {width:66%; float:left;}
+	.col-print-9 {width:75%; float:left;}
+	.col-print-10{width:83%; float:left;}
+	.col-print-11{width:92%; float:left;}
+	.col-print-12{width:100%; float:left;}
+}
+
+/*************** DECK(LIST) COMPARE *****************/
+
+.diff {
+	background: rgba(255,0,0,.5);
+}
+
+
+
+.rules-reference table.chart             { border-spacing: 10; }
+.rules-reference table.chart th          { background-color: lightgrey; padding: 5px; text-align: left; }
+.rules-reference table.chart td          { padding: 5px; }
+.rules-reference table.chart td.green    { background-color: #addfad; text-align:justify; }
+.rules-reference table.chart td.red      { background-color: #ffaaaa; }
+.rules-reference table.chart td.grey     { background-color: lightgrey; text-align:center; font-style: italic; }
+.rules-reference div#rules li            { margin-bottom: 20!important; }
+
+
+
+/** collection manager **/
+
+.btn-inner-group {
+  display: flex !important;
+  flex-direction: row !important;
+
+  :first-child {
+    flex: 1
+  }
+
+  label {
+    width: 15% !important;
+  }
+}
+
+#owned_packs {
+  .btn.active {
+    color: #FFFFFF !important;
+    background-color: #20638F !important;
+    border-color: #194F72 !important;
+  }
+}

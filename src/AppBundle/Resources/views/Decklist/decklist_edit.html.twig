@@ -1,0 +1,65 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% import "AppBundle::macros.html.twig" as macros %}
+
+{% block javascripts %}
+	{% javascripts '@AppBundle/Resources/public/js/ui.decklist_edit.js' '@AppBundle/Resources/public/js/app.deck_upgrades.js' %}
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+	app.deck.init({{ decklist|json_encode|raw }});
+	app.deck_upgrades && app.deck_upgrades.init({{ decklist.upgrades|json_encode|raw }});
+	</script>
+{% endblock %}
+
+{% block body %}
+<div class="main white container">
+	
+	<div class="row">
+		<div class="col-sm-8">
+			<form action="{{ url|raw }}" method="post" enctype="application/x-www-form-urlencoded">
+				<input type="hidden" name="deck_id" value="{% if deck is not null %}{{ deck.id }}{% endif %}">
+				<div class="form-group">
+					<label for="name">Name</label>
+					<input type="text" class="form-control" name="name" id="name" value="{{ decklist.name }}">
+				</div>
+				<div class="form-group">
+					<label>Tags</label><br>
+					<label><input type="checkbox" name="tags[]" value="solo" {% if decklist.tags.solo is defined %}checked="checked"{% endif %}> Solo</label>
+					<label><input type="checkbox" name="tags[]" value="multiplayer" {% if decklist.tags.multiplayer is defined %}checked="checked"{% endif %}> Multiplayer</label>
+					<label><input type="checkbox" name="tags[]" value="theme" {% if decklist.tags.theme is defined %}checked="checked"{% endif %}> Theme</label>
+					<label><input type="checkbox" name="tags[]" value="beginner" {% if decklist.tags.beginner is defined %}checked="checked"{% endif %}> Beginner</label>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="precedent">Derived from (copy id or address of the decklist this one is inspired from)</label>
+					<input type="text" class="form-control" name="precedent" id="precedent" value="{% if not decklist.precedent is null %}{{ decklist.precedent.id }}{% endif %}">
+				</div>
+				<div class="form-group">
+					<label for="descriptionMd">Description</label>
+					<textarea class="form-control" autocapitalize="none" autocomplete="off" rows="25" name="descriptionMd" id="descriptionMd">{{ decklist.descriptionMd }}</textarea>
+				</div>
+				<button type="submit" class="btn btn-success btn-block">Save</button>
+			</form>
+		</div>
+		<div class="col-sm-4">
+			<div class="btn-group pull-right">
+				<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
+					<span class="fa fa-sort"></span> <span class="hidden-xs">Sort Deck</span> <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" id="menu-sort">
+					<li><a href="#" onclick="app.deck.change_sort('default')" id="btn-sort-default">by Type</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('name')" id="btn-sort-name">by Name</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('set')" id="btn-sort-position">by Set, then Name</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('setnumber')" id="btn-sort-position">by Set, then Number</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('faction')" id="btn-sort-faction">by Faction, then Name</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('factionnumber')" id="btn-sort-faction">by Faction, then Number</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('number')" id="btn-sort-faction">by Card Number</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('xp')" id="btn-sort-faction">by XP</a></li>
+					<li><a href="#" onclick="app.deck.change_sort('cost')" id="btn-sort-faction">by Cost</a></li>
+				</ul>
+			</div>
+			<div id="decklist" class="small"></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

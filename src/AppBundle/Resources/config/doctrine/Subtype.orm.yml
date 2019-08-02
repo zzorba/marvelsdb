@@ -1,0 +1,32 @@
+AppBundle\Entity\Subtype:
+    type: entity
+    table: Subtype
+    repositoryClass: AppBundle\Repository\SubtypeRepository
+    gedmo:
+        translation:
+            locale: locale
+    oneToMany:
+        cards:
+            targetEntity: Card
+            orderBy: {'position':'ASC'}
+            mappedBy: subtype
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            nullable: false
+        name:
+            type: string
+            length: 1024
+            nullable: false
+            gedmo:
+                - translatable
+    uniqueConstraints:
+        type_code_idx:
+            columns: [ code ]
+            

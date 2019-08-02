@@ -1,0 +1,28 @@
+{% extends 'AppBundle:Search:display.html.twig' %}
+
+{% block main %}
+
+{% for row in 0..(cards|length-1)//3 %}
+<div class="row">
+{% for col in 0..2 %}
+{% if row*3+col < cards|length %}
+{% set card = cards[row*3+col] %}
+<div class="col-sm-4 display-spoiler-card">
+	<h4>
+		{% include 'AppBundle:Search:card-name-with-link.html.twig' %}
+	</h4>
+	<div class="card-content">
+		{% include 'AppBundle:Search:card-faction.html.twig' %}
+		{% include 'AppBundle:Search:card-info.html.twig' %}
+		{% include 'AppBundle:Search:card-text.html.twig' %}
+		{% include 'AppBundle:Search:card-flavor.html.twig' %}
+		{% include 'AppBundle:Search:card-illustrator.html.twig' %}
+		{% include 'AppBundle:Search:card-pack.html.twig' %}
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}

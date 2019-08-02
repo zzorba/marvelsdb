@@ -1,0 +1,167 @@
+
+deck_buildform:
+    path:  /new
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:buildform
+
+deck_initbuild:
+    path: /build
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:initbuild
+
+deck_save:
+    path: /save
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:save
+
+deck_edit:
+    path: /edit/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:edit
+    requirements:
+        deck_id: \d+
+
+deck_view:
+    path: /view/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:view
+    requirements:
+        deck_id: \d+
+
+deck_clone:
+    path: /clone/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:clone
+    requirements:
+        deck_id: \d+
+
+deck_upgrade:
+    path: /upgrade
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:upgrade
+
+deck_delete:
+    path: /delete
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:delete
+
+deck_delete_list:
+    path: /delete_list
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:deleteList
+
+deck_import:
+    path: /import
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:import
+
+deck_textimport:
+    path: /textimport
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:textimport
+
+deck_fileimport:
+    path: /fileimport
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:fileimport
+
+deck_meteorimport:
+    path: /meteorimport
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:meteorimport
+
+deck_copy:
+    path: /copy/{decklist_id}
+    defaults:
+        _controller: AppBundle:Builder:copy
+    requirements:
+        decklist_id: \d+
+
+deck_publish_form:
+    path: /publish/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:publishForm
+
+decks_upload_all:
+    path: /import/all
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:uploadall
+
+deck_export_octgn:
+    path: /export/octgn/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:octgnexport
+    requirements:
+        deck_id: \d+
+
+deck_export_text:
+    path: /export/text/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:textexport
+    requirements:
+        deck_id: \d+
+
+deck_export_octgn_list:
+    path: /export/octgn/list
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:octgnexportList
+
+deck_export_text_list:
+    path: /export/text/list
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:textexportList
+
+deck_email:
+    path: /export/email/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:email
+        deck_id: \d+
+
+deck_publish:
+    path: /can_publish/{deck_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:publish
+        deck_id: \d+
+
+deck_autosave:
+    path: /autosave
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Builder:autosave
+
+decks_download_all:
+    path: /export/all
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:downloadall
+        
+decks_diff:
+    path: /compare/{deck1_id}/{deck2_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:compare
+    requirements:
+        deck1_id: \d+
+        deck2_id: \d+
+        

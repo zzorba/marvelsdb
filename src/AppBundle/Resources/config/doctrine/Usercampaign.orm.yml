@@ -1,0 +1,32 @@
+AppBundle\Entity\Usercampaign:
+    type: entity
+    table: user_campaign
+    oneToMany:
+        user_scenarios:
+            nullable: true
+            targetEntity: Userscenario
+            orderBy: {'id':'ASC'}
+            mappedBy: user_campaigns
+        decks:
+            targetEntity: Deck
+            orderBy: {'dateUpdate':'DESC'}
+            mappedBy: usercampaign
+            cascade: ["remove"]
+    manyToOne:
+        user:
+            targetEntity: User
+            nullable: false
+            inversedBy: decks
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: string
+            length: 1024
+            nullable: false

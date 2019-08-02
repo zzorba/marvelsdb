@@ -1,0 +1,39 @@
+{% import "AppBundle::macros.html.twig" as macros %}
+<!-- History -->
+<div class="row">
+	<div class="col-sm-12" id="history">
+	   <div class="progress">
+	       <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="60" style="width:0%"><span class="sr-only">Time remaining</span></div>
+	   </div>
+		<table class="table">
+		  <thead>
+		      <tr>
+		          <th>Date</th>
+		          <th>Version</th>
+		          <th>Changes</th>
+		          <th>Action</th>
+		      </tr>
+		  </thead>
+		  <tbody>
+		  </tbody>
+		</table>
+	</div><!-- /.col-sm-12 -->
+</div><!-- /.row -->
+<!-- History -->
+
+<!-- Published decklists Table -->
+<table class="table table-condensed" id="table-predecessor">
+	<thead>
+		<tr><th colspan="{% if deck.children|length %}4{% else %}1{% endif %}"><span class="fa fa-share"></span> Published versions</th></tr>
+	</thead>
+	<tbody>
+	{% if deck.children|length %}
+	{% for decklist in deck.children %}
+		{{ macros.decklist_table_row(decklist) }}
+	{% endfor %}
+	{% else %}
+		<tr><td>None.</td></tr>
+	{% endif %}
+	</tbody>
+</table>
+<!-- Published decklists Table -->

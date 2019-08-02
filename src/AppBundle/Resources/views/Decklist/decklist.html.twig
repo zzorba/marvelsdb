@@ -1,0 +1,67 @@
+{% extends 'AppBundle::layout.html.twig' %}
+{% import "AppBundle::macros.html.twig" as macros %}
+
+{% block javascripts %}
+	{% javascripts '@AppBundle/Resources/public/js/ui.decklist.js' '@AppBundle/Resources/public/js/app.deck_upgrades.js' %}
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+	var Commenters = {{ commenters|json_encode|raw }};
+	app.deck.init({{ decklist|json_encode|raw }});
+	app.user.params.decklist_id = {{ decklist.id }};
+	app.deck_upgrades && app.deck_upgrades.init({{ decklist.upgrades|json_encode|raw }});
+	</script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="row title bg-faction bg-">
+		<div class="col-xs-12">
+			<h1 class="decklist-name text-center">
+				<span class="icon icon-"></span>
+				{{ decklist.name }}
+			</h1>
+		</div>
+		<div class="col-xs-12">
+			<div class="social">
+				<div class="pull-right">
+					<span class="hidden-xs">published: </span>
+					<time datetime="{{ decklist.dateCreation|date('c') }}">{{ decklist.dateCreation|date('M d, Y') }}</time>
+					{{ macros.decklist_social_icons(decklist) }}
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main white container">
+	<div class="row">
+		<div class="col-md-6">
+			<div id="deck-content" style="margin-bottom:10px"></div>
+			{% include 'AppBundle:Builder:deck-charts.html.twig' %}
+			{% include 'AppBundle:Builder:draw-simulator.html.twig' %}
+			{% include 'AppBundle:Decklist:table-predecessor.html.twig' %}
+			{% include 'AppBundle:Decklist:table-successor.html.twig' %}
+			{% include 'AppBundle:Default:google-adaptable-ad.html.twig' %}
+		</div>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="pull-right btn-group" role="group">{% include 'AppBundle:Decklist:toolbar.html.twig' %}</div>
+				</div>
+				<div class="col-md-12">
+					{% include 'AppBundle:Decklist:author-and-description.html.twig' %}
+				</div>
+				<div class="col-md-12">
+					{% include 'AppBundle:Decklist:comments.html.twig' %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% include 'AppBundle:Decklist:export-modal.html.twig' %}
+{% include 'AppBundle:Decklist:delete-modal.html.twig' %}
+{% include 'AppBundle:Modale:odds.html.twig' %}
+{% include 'AppBundle:Decklist:compare-modal.html.twig' %}
+{% endblock %}

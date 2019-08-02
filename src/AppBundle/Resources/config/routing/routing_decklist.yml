@@ -1,0 +1,54 @@
+
+decklist_export_octgn:
+    path: /export/octgn/{decklist_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:octgnexport
+    requirements:
+        decklist_id: \d+
+
+decklist_export_text:
+    path: /export/text/{decklist_id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:textexport
+    requirements:
+        decklist_id: \d+
+
+decklist_detail:
+    path: /view/{decklist_id}/{decklist_name}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:view
+        decklist_name: null
+    requirements:
+        decklist_id: \d+
+
+decklist_create:
+    path: /create
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:create
+
+decklist_edit:
+    path: /edit/{decklist_id}
+    defaults:
+        _controller: AppBundle:Social:editForm
+    requirements:
+        decklist_id: \d+
+
+decklist_save:
+    path: /save/{decklist_id}
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:save
+    requirements:
+        decklist_id: \d+
+
+decklist_delete:
+    path: /delete/{decklist_id}
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Social:delete
+    requirements:
+        decklist_id: \d+

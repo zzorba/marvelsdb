@@ -1,0 +1,105 @@
+app_admin:
+    resource: "@AppBundle/Resources/config/routing/routing_admin.yml"
+    prefix: /admin
+
+app_api:
+    resource: "@AppBundle/Resources/config/routing/routing_api.yml"
+    prefix: /api
+
+app_cards:
+    resource: "@AppBundle/Resources/config/routing/routing_cards.yml"
+#    prefix:
+
+app_deck:
+    resource: "@AppBundle/Resources/config/routing/routing_deck.yml"
+    prefix: /deck
+
+
+app_decklist:
+    resource: "@AppBundle/Resources/config/routing/routing_decklist.yml"
+    prefix: /decklist
+
+app_review:
+    resource: "@AppBundle/Resources/config/routing/routing_review.yml"
+    prefix: /review
+
+app_faqs:
+    resource: "@AppBundle/Resources/config/routing/routing_faqs.yml"
+    prefix: /faqs
+
+app_tag:
+    resource: "@AppBundle/Resources/config/routing/routing_tag.yml"
+    prefix: /tag
+
+app_user:
+    resource: "@AppBundle/Resources/config/routing/routing_user.yml"
+    prefix: /user
+
+app_collection:
+    resource: "@AppBundle/Resources/config/routing/routing_collection.yml"
+    prefix: /collection
+
+index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Default:index
+
+donators:
+    path: /donators
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:donators
+
+decks_list:
+    path: /decks
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Builder:list
+
+decklists_searchform:
+    path: /decklists/search
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:search
+
+decklists_list:
+    path: /decklists/{type}/{page}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Social:list
+        type: popular
+        page: 1
+    requirements:
+        page: \d+
+
+card_reviews_list:
+    path: /reviews/{page}
+    defaults:
+        _controller: AppBundle:Review:list
+        page: 1
+    requirements:
+        page: \d+
+
+card_faqs_list:
+    path: /faqs/{page}
+    defaults:
+        _controller: AppBundle:Review:listfaqs
+        page: 1
+    requirements:
+        page: \d+
+
+about:
+    path: /about
+    defaults:
+        _controller: AppBundle:Default:about
+
+rules:
+    path: /rules
+    defaults:
+        _controller: AppBundle:Default:rules
+
+ffg:
+    path: /ffg
+    defaults:
+        _controller: AppBundle:Default:ffg

@@ -268,19 +268,9 @@ class Deck extends \AppBundle\Model\ExportableDeck implements \JsonSerializable
     private $user;
     
     /**
-     * @var \AppBundle\Entity\Usercampaign
-     */
-    private $usercampaign;
-
-    /**
      * @var \AppBundle\Entity\Faction
      */
     private $character;
-
-    /**
-     * @var \AppBundle\Entity\Taboo
-     */
-    private $taboo;
 
     /**
      * @var \AppBundle\Entity\Pack
@@ -632,56 +622,6 @@ class Deck extends \AppBundle\Model\ExportableDeck implements \JsonSerializable
     {
         return $this->user;
     }
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\Taboo $taboo
-     *
-     * @return Deck
-     */
-    public function setTaboo(\AppBundle\Entity\Taboo $taboo = null)
-    {
-        $this->taboo = $taboo;
-
-        return $this;
-    }
-
-    /**
-     * Get Taboo
-     *
-     * @return \AppBundle\Entity\Taboo
-     */
-    public function getTaboo()
-    {
-        return $this->taboo;
-    }
-
-    /**
-     * Set usercampaign
-     *
-     * @param \AppBundle\Entity\Usercampaign $usercampaign
-     *
-     * @return Deck
-     */
-    public function setUsercampaign(\AppBundle\Entity\Usercampaign $usercampaign = null)
-    {
-        $this->usercampaign = $usercampaign;
-
-        return $this;
-    }
-
-    /**
-     * Get usercampaign
-     *
-     * @return \AppBundle\Entity\Usercampaign
-     */
-    public function getUsercampaign()
-    {
-        return $this->usercampaign;
-    }
-
-
 
     /**
      * Set character

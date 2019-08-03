@@ -15,19 +15,6 @@ AppBundle\Entity\Deck:
             joinColumn:
                 name: character_id
                 referencedColumnName: id
-        taboo:
-            targetEntity: Taboo
-            nullable: true
-            joinColumn:
-                name: taboo_id
-                referencedColumnName: id
-        usercampaign:
-            targetEntity: Usercampaign
-            inversedBy: decks
-            nullable: false
-            joinColumn:
-                name: usercampaign_id
-                referencedColumnName: id
         lastPack:
             targetEntity: Pack
             nullable: false

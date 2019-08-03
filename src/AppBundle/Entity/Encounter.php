@@ -39,11 +39,6 @@ class Encounter implements \Serializable
      */
     private $cards;
     
-     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $scenarios;
-
     /**
      * Constructor
      */

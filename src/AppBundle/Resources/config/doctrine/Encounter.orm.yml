@@ -6,11 +6,6 @@ AppBundle\Entity\Encounter:
             targetEntity: Card
             orderBy: {'position':'ASC'}
             mappedBy: encounter
-    manyToMany:
-        scenarios:
-            targetEntity: Scenario
-            orderBy: {'id':'ASC'}
-            mappedBy: encounters
     fields:
         id:
             type: integer

@@ -31,7 +31,7 @@ class ImportStdCommand extends ContainerAwareCommand
 	{
 		$this
 		->setName('app:import:std')
-		->setDescription('Import cards data file in json format from a copy of https://github.com/Kamalisk/arkhamdb-json-data')
+		->setDescription('Import cards data file in json format from a copy of https://github.com/zzorba/marvels-json-data')
 		->addArgument(
 				'path',
 				InputArgument::REQUIRED,
@@ -102,6 +102,22 @@ class ImportStdCommand extends ContainerAwareCommand
 		$this->loadCollection('Subtype');
 		$output->writeln("Done.");
 
+    // packtypes
+		
+		$output->writeln("Importing PackTypes...");
+		$packtypesFileInfo = $this->getFileInfo($path, 'packtypes.json');
+		$imported = $this->importPacktypesJsonFile($packtypesFileInfo);
+		if(count($imported)) {
+			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
+			if(!$helper->ask($input, $output, $question)) {
+				die();
+			}
+		}
+		$this->em->flush();
+		$this->loadCollection('Packtype');
+		$output->writeln("Done.");
+
+
 		// encounter sets
 		
 		$output->writeln("Importing Encounter Sets...");
@@ -135,25 +151,6 @@ class ImportStdCommand extends ContainerAwareCommand
 		$this->loadCollection('Taboo');
 		$output->writeln("Done.");
 
-
-		
-		// cycles
-
-		$output->writeln("Importing Cycles...");
-		$cyclesFileInfo = $this->getFileInfo($path, 'cycles.json');
-		$imported = $this->importCyclesJsonFile($cyclesFileInfo);
-		if(count($imported)) {
-			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
-			if(!$helper->ask($input, $output, $question)) {
-				die();
-			}
-		}
-		$this->em->flush();
-		$this->loadCollection('Cycle');
-		$output->writeln("Done.");
-		
-		
-		
 		
 		// second, packs
 
@@ -251,7 +248,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 	
-		protected function importSubtypesJsonFile(\SplFileInfo $fileinfo)
+	protected function importSubtypesJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
 	
@@ -271,7 +268,27 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 
-		protected function importEncountersJsonFile(\SplFileInfo $fileinfo)
+	protected function importPacktypesJsonFile(\SplFileInfo $fileinfo)
+	{
+		$result = [];
+	
+		$list = $this->getDataFromFile($fileinfo);
+		foreach($list as $data)
+		{
+			$type = $this->getEntityFromData('AppBundle\\Entity\\Packtype', $data, [
+					'code',
+					'name'
+			], [], []);
+			if($type) {
+				$result[] = $type;
+				$this->em->persist($type);
+			}
+		}
+	
+		return $result;
+	}
+
+	protected function importEncountersJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
 	
@@ -292,7 +309,7 @@ class ImportStdCommand extends ContainerAwareCommand
 	}
 
 
-		protected function importScenariosJsonFile(\SplFileInfo $fileinfo)
+	protected function importScenariosJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
 	
@@ -314,7 +331,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 	
-			protected function importCampaignsJsonFile(\SplFileInfo $fileinfo)
+	protected function importCampaignsJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
 	
@@ -335,27 +352,6 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 	
-	protected function importCyclesJsonFile(\SplFileInfo $fileinfo)
-	{
-		$result = [];
-	
-		$cyclesData = $this->getDataFromFile($fileinfo);
-		foreach($cyclesData as $cycleData) {
-			$cycle = $this->getEntityFromData('AppBundle\Entity\Cycle', $cycleData, [
-					'code', 
-					'name', 
-					'position', 
-					'size'
-			], [], []);
-			if($cycle) {
-				$result[] = $cycle;
-				$this->em->persist($cycle);
-			}
-		}
-		
-		return $result;
-	}
-
 	protected function importTaboosJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];

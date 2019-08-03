@@ -7,7 +7,7 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
 	public function serialize() {
 		return [
 				'code' => $this->code,
-				'cycle_code' => $this->cycle ? $this->cycle->getCode() : null,
+				'type' => $this->type ? $this->type->getCode() : null,
 				'date_release' => $this->dateRelease ? $this->dateRelease->format('Y-m-d') : null,
 				'name' => $this->name,
 				'position' => $this->position,
@@ -74,9 +74,9 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
     private $cards;
 
     /**
-     * @var \AppBundle\Entity\Cycle
+     * @var \AppBundle\Entity\Packtype
      */
-    private $cycle;
+    private $type;
 
     /**
      * Constructor
@@ -323,27 +323,27 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
-     * Set cycle
+     * Set type
      *
-     * @param \AppBundle\Entity\Cycle $cycle
+     * @param \AppBundle\Entity\PackType $type
      *
      * @return Pack
      */
-    public function setCycle(\AppBundle\Entity\Cycle $cycle = null)
+    public function setType(\AppBundle\Entity\PackType $type = null)
     {
-        $this->cycle = $cycle;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get cycle
+     * Get type
      *
-     * @return \AppBundle\Entity\Cycle
+     * @return \AppBundle\Entity\PackType
      */
-    public function getCycle()
+    public function getType()
     {
-        return $this->cycle;
+        return $this->type;
     }
 
     /*

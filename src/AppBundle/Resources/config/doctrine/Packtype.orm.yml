@@ -1,0 +1,30 @@
+AppBundle\Entity\Packtype:
+    type: entity
+    table: Packtype
+    gedmo:
+        translation:
+            locale: locale
+    oneToMany:
+        packs:
+            targetEntity: Pack
+            orderBy: {'position':'ASC'}
+            mappedBy: type
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            nullable: false
+        name:
+            type: string
+            length: '1024'
+            nullable: false
+            gedmo:
+                - translatable
+    uniqueConstraints:
+        type_code_idx:
+            columns: [ code ]

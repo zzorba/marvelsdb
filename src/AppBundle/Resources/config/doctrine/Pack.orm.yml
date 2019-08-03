@@ -6,11 +6,11 @@ AppBundle\Entity\Pack:
         translation:
             locale: locale
     manyToOne:
-        cycle:
-            targetEntity: Cycle
+        type:
+            targetEntity: Packtype
             inversedBy: packs
             joinColumn:
-                name: cycle_id
+                name: type
                 referencedColumnName: id
     oneToMany:
         cards:

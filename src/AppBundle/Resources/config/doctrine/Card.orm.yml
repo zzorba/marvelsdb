@@ -65,11 +65,6 @@ AppBundle\Entity\Card:
         position:
             type: smallint
             nullable: false
-        exceptional:
-            type: boolean
-            column: exceptional
-            options:
-                default: false
         encounterPosition:
             type: smallint
             nullable: true
@@ -104,6 +99,14 @@ AppBundle\Entity\Card:
         realText:
             type: text
             nullable: true
+        boostText:
+            type: text
+            nullable: true
+            gedmo:
+                - translatable
+        realBoostText:
+            type: text
+            nullable: true
         dateCreation:
             type: datetime
             nullable: false
@@ -121,70 +124,57 @@ AppBundle\Entity\Card:
         quantity:
             type: smallint
             nullable: false
-        skillWillpower:
+        resourceEnergy:
             type: smallint
             nullable: true
-        skillIntellect:
+        resourcePhysical:
             type: smallint
             nullable: true
-        skillCombat:
+        resourceMental:
             type: smallint
             nullable: true
-        skillAgility:
-            type: smallint
-            nullable: true
-        skillWild:
-            type: smallint
-            nullable: true
-        xp:
-            type: smallint
-            nullable: true
-        shroud:
-            type: smallint
-            nullable: true
-        clues:
-            type: smallint
-            nullable: true
-        cluesFixed:
-            type: boolean
-            nullable: true
-        doom:
+        resourceWild:
             type: smallint
             nullable: true
         health:
             type: smallint
             nullable: true
-        healthPerInvestigator:
+        healthPerHero:
             type: boolean
             nullable: true
-        sanity:
+        thwart: 
             type: smallint
             nullable: true
-        enemyDamage:
+        thwartCost:
             type: smallint
             nullable: true
-        enemyHorror:
+        scheme:
             type: smallint
             nullable: true
-        enemyFight:
+        attack:
             type: smallint
             nullable: true
-        enemyEvade:
+        attackCost:
             type: smallint
             nullable: true
-        victory:
+        defense:
             type: smallint
             nullable: true
-        vengeance:
+        defenseCost:
+            type: smallint
+            nullable: true
+        recover:
+            type: smallint
+            nullable: true
+        recoverCost:
             type: smallint
             nullable: true
         deckLimit:
             type: smallint
             nullable: true
             column: deck_limit
-        slot:
-            type: string
-            length: 50
+        kicker:
+            type: smallint
             nullable: true
         stage:
             type: smallint
@@ -201,7 +191,7 @@ AppBundle\Entity\Card:
             nullable: true
         deckRequirements:
             type: string
-            length: 255
+            length: 500
             nullable: true
         deckOptions:
             type: string
@@ -224,17 +214,9 @@ AppBundle\Entity\Card:
             type: boolean
             nullable: false
             column: is_unique
-        exile:
-            type: boolean
-            nullable: true
         hidden:
             type: boolean
             column: hidden
-            options:
-                default: false
-        permanent:
-            type: boolean
-            column: permanent
             options:
                 default: false
         doubleSided:

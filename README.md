@@ -1,4 +1,4 @@
-ArkhamDB
+MarvelsDB
 =======
 
 # Very quick guide on how to install a local copy

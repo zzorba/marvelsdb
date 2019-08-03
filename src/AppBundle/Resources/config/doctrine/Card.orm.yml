@@ -36,11 +36,11 @@ AppBundle\Entity\Card:
             joinColumn:
                 name: faction2_id
                 referencedColumnName: id
-        encounter:
-            targetEntity: Encounter
+        set:
+            targetEntity: Cardset
             inversedBy: cards
             joinColumn:
-                name: encounter_id
+                name: set_id
                 referencedColumnName: id
         linked_to:
             targetEntity: Card
@@ -65,7 +65,7 @@ AppBundle\Entity\Card:
         position:
             type: smallint
             nullable: false
-        encounterPosition:
+        setPosition:
             type: smallint
             nullable: true
         code:

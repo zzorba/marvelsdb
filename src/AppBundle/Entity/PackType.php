@@ -7,6 +7,21 @@ namespace AppBundle\Entity;
  */
 class Packtype
 {
+    public function serialize() {
+        return [
+                'code' => $this->code,
+                'name' => $this->name
+        ];
+    }
+    
+    public function unserialize($serialized) {
+        throw new \Exception("unserialize() method unsupported");
+    }
+
+    public function toString() {
+        return $this->name;
+    }
+
     /**
      * @var integer
      */
@@ -125,6 +140,16 @@ class Packtype
     public function getPacks()
     {
         return $this->packs;
+    }
+
+    /**
+     * I18N vars
+     */
+    private $locale = 'en';
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }
 

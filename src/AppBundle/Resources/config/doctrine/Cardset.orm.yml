@@ -1,6 +1,6 @@
-AppBundle\Entity\Encounter:
+AppBundle\Entity\Cardset:
     type: entity
-    table: Encounter
+    table: Cardset
     oneToMany:
         cards:
             targetEntity: Card

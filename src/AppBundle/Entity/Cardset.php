@@ -1,25 +1,28 @@
-<?php 
+<?php
 
 namespace AppBundle\Entity;
 
-class Encounter implements \Serializable
+/**
+ * Cardset
+ */
+class Cardset
 {
-	public function serialize() {
-		return [
-				'code' => $this->code,
-				'name' => $this->name
-		];
-	}
-	
-	public function unserialize($serialized) {
-		throw new \Exception("unserialize() method unsupported");
-	}
-	
-	public function toString() {
-		return $this->name;
-	}
-	
-	/**
+    public function serialize() {
+        return [
+                'code' => $this->code,
+                'name' => $this->name
+        ];
+    }
+    
+    public function unserialize($serialized) {
+        throw new \Exception("unserialize() method unsupported");
+    }
+    
+    public function toString() {
+        return $this->name;
+    }
+
+    /**
      * @var integer
      */
     private $id;
@@ -38,7 +41,7 @@ class Encounter implements \Serializable
      * @var \Doctrine\Common\Collections\Collection
      */
     private $cards;
-    
+
     /**
      * Constructor
      */
@@ -62,7 +65,7 @@ class Encounter implements \Serializable
      *
      * @param string $code
      *
-     * @return Type
+     * @return Cardset
      */
     public function setCode($code)
     {
@@ -86,7 +89,7 @@ class Encounter implements \Serializable
      *
      * @param string $name
      *
-     * @return Type
+     * @return Cardset
      */
     public function setName($name)
     {
@@ -110,7 +113,7 @@ class Encounter implements \Serializable
      *
      * @param \AppBundle\Entity\Card $card
      *
-     * @return Type
+     * @return Cardset
      */
     public function addCard(\AppBundle\Entity\Card $card)
     {
@@ -139,3 +142,4 @@ class Encounter implements \Serializable
         return $this->cards;
     }
 }
+

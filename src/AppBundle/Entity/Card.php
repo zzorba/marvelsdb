@@ -35,6 +35,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'permanent',
 				'hidden',
 				'double_sided',
+                'set_position',
 				'is_unique'
 		];
 	
@@ -85,13 +86,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				break;
 			case "treachery":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'encounter_position';
 				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'kicker';
 				break;
 			case "attachment":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'encounter_position';
 				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'kicker';
 				$optionalFields[] = 'attack';
@@ -99,7 +98,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				break;
 			case "minion":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'encounter_position';
 				$optionalFields[] = 'scheme';
 				$optionalFields[] = 'attack';
 				$optionalFields[] = 'boost_text';
@@ -107,14 +105,12 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'kicker';
 			case "sideScheme": 
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'encounter_position';
 				$optionalFields[] = 'kicker';
 				$optionalFields[] = 'scheme_type';
 				$optionalFields[] = 'base_threat';
 				break;
 			case "mainScheme": 
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'encounter_position';
 				$optionalFields[] = 'kicker';
 				$optionalFields[] = 'scheme_type';
 				$optionalFields[] = 'base_threat';
@@ -167,13 +163,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 * @var integer
 	 */
 	private $position;
-
-
-	/**
-	 * @var integer
-	 */
-	private $encounterPosition;
-
 
 	/**
 	 * @var string
@@ -409,11 +398,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	private $linked_to;
 
 	/**
-	* @var \AppBundle\Entity\Encounter
-	*/
-	private $encounter;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -454,32 +438,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	{
 		return $this->position;
 	}
-
-	/**
-	 * Set encounter position
-	 *
-	 * @param integer $encounterPosition
-	 *
-	 * @return Card
-	 */
-	public function setEncounterPosition($encounterPosition)
-	{
-		$this->encounterPosition = $encounterPosition;
-
-		return $this;
-	}
-
-	/**
-	 * Get encounter position
-	 *
-	 * @return integer
-	 */
-	public function getEncounterPosition()
-	{
-		return $this->encounterPosition;
-	}
-
-
 
 	/**
 	 * Set code
@@ -1473,30 +1431,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 		return $this->linked_to;
 	}
 	
-	 /**
-	 * set Encounter
-	 *
-	 * @param \AppBundle\Entity\Encounter $encounter
-	 *
-	 * @return Card
-	 */
-	public function setEncounter(\AppBundle\Entity\Encounter $encounter = null)
-	{
-		$this->encounter = $encounter;
-
-		return $this;
-	}
-	
-	/**
-	 * Get encounter
-	 *
-	 * @return \AppBundle\Entity\Encounter
-	 */
-	public function getEncounter()
-	{
-		return $this->encounter;
-	}
-
 	/*
 	* I18N vars
 	*/
@@ -1983,5 +1917,63 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getScheme()
     {
         return $this->scheme;
+    }
+    /**
+     * @var \AppBundle\Entity\Cardset
+     */
+    private $set;
+
+
+    /**
+     * Set set
+     *
+     * @param \AppBundle\Entity\Cardset $set
+     *
+     * @return Card
+     */
+    public function setSet(\AppBundle\Entity\Cardset $set = null)
+    {
+        $this->set = $set;
+
+        return $this;
+    }
+
+    /**
+     * Get set
+     *
+     * @return \AppBundle\Entity\Cardset
+     */
+    public function getSet()
+    {
+        return $this->set;
+    }
+    /**
+     * @var integer
+     */
+    private $setPosition;
+
+
+    /**
+     * Set setPosition
+     *
+     * @param integer $setPosition
+     *
+     * @return Card
+     */
+    public function setSetPosition($setPosition)
+    {
+        $this->setPosition = $setPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get setPosition
+     *
+     * @return integer
+     */
+    public function getSetPosition()
+    {
+        return $this->setPosition;
     }
 }

@@ -120,9 +120,9 @@ class ImportStdCommand extends ContainerAwareCommand
 
 		// encounter sets
 		
-		$output->writeln("Importing Encounter Sets...");
-		$encounterFileInfo = $this->getFileInfo($path, 'encounters.json');
-		$imported = $this->importEncountersJsonFile($encounterFileInfo);
+		$output->writeln("Importing Card Sets...");
+		$setsFileInfo = $this->getFileInfo($path, 'sets.json');
+		$imported = $this->importCardSetsJsonFile($setsFileInfo);
 		if(count($imported)) {
 			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
 			if(!$helper->ask($input, $output, $question)) {
@@ -130,27 +130,8 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 		$this->em->flush();
-		$this->loadCollection('Encounter');
+		$this->loadCollection('Cardset');
 		$output->writeln("Done.");
-		
-		
-
-		
-		// cycles
-
-		$output->writeln("Importing Taboos...");
-		$taboosFileInfo = $this->getFileInfo($path, 'taboos.json');
-		$imported = $this->importTaboosJsonFile($taboosFileInfo);
-		if(count($imported)) {
-			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
-			if(!$helper->ask($input, $output, $question)) {
-				die();
-			}
-		}
-		$this->em->flush();
-		$this->loadCollection('Taboo');
-		$output->writeln("Done.");
-
 		
 		// second, packs
 
@@ -288,14 +269,14 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 
-	protected function importEncountersJsonFile(\SplFileInfo $fileinfo)
+	protected function importCardSetsJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
 	
 		$list = $this->getDataFromFile($fileinfo);
 		foreach($list as $data)
 		{
-			$type = $this->getEntityFromData('AppBundle\\Entity\\Encounter', $data, [
+			$type = $this->getEntityFromData('AppBundle\\Entity\\Cardset', $data, [
 					'code',
 					'name'
 			], [], []);

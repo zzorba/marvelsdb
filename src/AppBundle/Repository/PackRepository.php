@@ -12,8 +12,7 @@ class PackRepository extends TranslatableRepository
 	public function findAll()
 	{
 		$qb = $this->createQueryBuilder('p')
-				->select('p, y')
-				->join('p.cycle', 'y')
+				->select('p')
 				->orderBy('p.dateRelease', 'ASC')
 				->addOrderBy('p.position', 'ASC');
 

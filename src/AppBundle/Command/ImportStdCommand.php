@@ -155,11 +155,9 @@ class ImportStdCommand extends ContainerAwareCommand
 		$imported = [];
 		// get subdirs of files and do this for each file
 		$scanned_directory = array_diff(scandir($path."/pack"), array('..', '.'));
-		foreach($scanned_directory as $dir){
-			$fileSystemIterator = $this->getFileSystemIterator($path."pack/".$dir);
-			foreach ($fileSystemIterator as $fileinfo) {
-				$imported = array_merge($imported, $this->importCardsJsonFile($fileinfo, $player_only));
-			}
+		$fileSystemIterator = $this->getFileSystemIterator($path."pack/");
+		foreach ($fileSystemIterator as $fileinfo) {
+			$imported = array_merge($imported, $this->importCardsJsonFile($fileinfo, $player_only));
 		}
 		if(count($imported)) {
 			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
@@ -369,9 +367,7 @@ class ImportStdCommand extends ContainerAwareCommand
 					'position', 
 					'size', 
 					'date_release'
-			], [
-					'cycle_code'
-			], [
+			], [], [
 					'cgdb_id'
 			]);
 			if($pack) {
@@ -409,51 +405,35 @@ class ImportStdCommand extends ContainerAwareCommand
 					'pack_code',
 					'type_code',
 					'subtype_code',
-					'encounter_code',
+					'set_code',
 					'back_card_code',
 					'front_card_code'
 			], [
 					'deck_limit',
-					'encounter_position',
+					'set_position',
 					'illustrator',
 					'flavor',
 					'traits',
 					'text',
 					'cost',
-					'skill_willpower',
-					'skill_intellect',
-					'skill_combat',
-					'skill_agility',
-					'skill_wild',
+					'resource_physical',
+					'resource_mental',
+					'resource_energy',
+					'resource_wild',
 					'health',
-					'sanity',
 					'restrictions',
 					'slot',
 					'deck_options',
 					'deck_requirements',
 					'subname',
-					'xp',
-					'enemy_evade',
-					'enemy_fight',
-					'vengeance',
-					'victory',
-					'enemy_damage',
-					'enemy_horror',
-					'doom',
-					'clues',
-					'shroud',
 					'back_text',
 					'back_flavor',
 					'back_name',
 					'double_sided',
 					'stage',
 					'is_unique',
-					'health_per_investigator',
-					'clues_fixed',
-					'hidden',
-					'permanent',
-					'exile',
-					'exceptional'
+					'health_per_hero',
+					'hidden'
 
 			]);
 			if($card) {
@@ -816,7 +796,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$iterator = new \GlobIterator("$path/*.json");
 
 		if(!$iterator->count()) {
-			throw new \Exception("No json file found at [$path/set]");
+			throw new \Exception("No json file found at [$path]");
 		}
 		
 		return $iterator;

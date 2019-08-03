@@ -172,13 +172,7 @@ class ImportCardsCommand extends ContainerAwareCommand
           	// shortcut: we already know all the cards of this pack
           	continue;
           }
-          
-          if (isset($data['xp'])){
-          	//$card = $em->getRepository('AppBundle:Card')->findOneBy(array('name' => $name, 'pack' => $pack, 'xp' => $data['xp']));
-          } else {
-          	//$card = $em->getRepository('AppBundle:Card')->findOneBy(array('name' => $name, 'pack' => $pack));
-          }
-          
+                    
           /* @var $card \AppBundle\Entity\Card */
           
           //if($card) continue;
@@ -205,13 +199,13 @@ class ImportCardsCommand extends ContainerAwareCommand
           	die();
           }
           
-          $encounter = null;
+          $cardSet = null;
           $faction = null;//$allFactions["mythos"];
           if (!isset($data['clss']) || !$data['clss']){
           	$data['clss'] = "Neutral";
           }
           //echo $data['encounter'];
-          if (isset($data['encounter']) && $data['encounter']){
+          if (isset($data['cardSet']) && $data['encounter']){
           	if ($data['encounter'] == "Weakness" || $data['encounter'] == "Basic Weakness"){
           		
           	} else {
@@ -341,7 +335,7 @@ class ImportCardsCommand extends ContainerAwareCommand
           
           $card->setQuantity($data['quantity']+0); // it looks like $data['quantity'] is wrong
 
-          $card->setSkillCombat($data['cmbt'] !== '' && $data['cmbt'] !== '0' ? $data['cmbt']+0 : null);
+          $card->setResourcePhysical($data['cmbt'] !== '' && $data['cmbt'] !== '0' ? $data['cmbt']+0 : null);
           $card->setSkillWillpower($data['will'] !== '' && $data['will'] !== '0' ? $data['will']+0 : null);
           $card->setSkillIntellect($data['int'] !== '' && $data['int'] !== '0' ? $data['int']+0 : null);
           $card->setSkillAgility($data['agi'] !== '' && $data['agi'] !== '0' ? $data['agi']+0 : null);
@@ -353,36 +347,13 @@ class ImportCardsCommand extends ContainerAwareCommand
           $card->setEnemyEvade($data['evade'] !== '' ? $data['evade']+0 : null);
           $card->setEnemyDamage($data['dmg'] !== '' ? $data['dmg']+0 : null);
           $card->setEnemyHorror($data['horr'] !== '' ? $data['horr']+0 : null);
-          
-          
-          $card->setShroud($data['shrd'] !== '' ? $data['shrd']+0 : null);
-          $card->setClues($data['clue'] !== '' ? $data['clue']+0 : null);
-        	if ($data['cluet']){
-        		$card->setClues($data['cluet']+0);
-        	}
-          $card->setDoom($data['doomt'] !== '' ? $data['doomt']+0 : null);
-          
+                    
           if ($data['subtitle']){
           	$card->setSubname($data['subtitle']);
           }
-          if ($data['deck'] == "P" && !$data['encounter']){
-          	$card->setXp($data['lvl']+0);
-          }
-          if ($data['vctry']){
-          	$card->setVictory($data['vctry'] !== '' ? $data['vctry']+0 : null);
-          }
-          
-        	if ($type->getCode() == "location"){
-        		$temp_text = $text;
-        		$text = $text_back;
-        		$text_back = $temp_text;
-        	}
           $card->setText($text);
           if ($text_back){
           	$card->setBackText($text_back);
-          	$card->setDoubleSided(true);
-          }
-          if ($type->getCode() == "location"){
           	$card->setDoubleSided(true);
           }
           if ($data['encounter']){

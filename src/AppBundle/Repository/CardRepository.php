@@ -13,13 +13,12 @@ class CardRepository extends TranslatableRepository
 	public function findAll()
 	{
 		$qb = $this->createQueryBuilder('c')
-			->select('c', 'p', 'y', 't', 'b', 'f', 'e')
+			->select('c', 'p', 't', 'b', 'f', 'e')
 			->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
-			->leftJoin('c.encounter', 'e')
+			->leftJoin('c.card_set', 'e')
 			->orderBY('c.code', 'ASC');
 
 		return $this->getResult($qb);
@@ -28,14 +27,13 @@ class CardRepository extends TranslatableRepository
 	public function findAllWithoutEncounter()
 	{
 		$qb = $this->createQueryBuilder('c')
-			->select('c', 'p', 'y', 't', 'b', 'f', 'e')
+			->select('c', 'p', 't', 'b', 'f', 'e')
 			->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
-			->leftJoin('c.encounter', 'e')
-			->andWhere('c.encounter IS NULL')
+			->leftJoin('c.card_set', 'e')
+			->andWhere('c.card_set IS NULL')
 			->orderBY('c.code', 'ASC');
 
 		return $this->getResult($qb);
@@ -69,13 +67,12 @@ class CardRepository extends TranslatableRepository
 	public function findAllByCode($code)
 	{
 		$qb = $this->createQueryBuilder('c')
-			->select('c', 'p', 'y', 't', 'b', 'f', 'e')
+			->select('c', 'p', 't', 'b', 'f', 'e')
 			->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
-			->leftJoin('c.encounter', 'e')
+			->leftJoin('c.card_set', 'e')
 			->andWhere('c.code in (?1)')
 			->orderBY('c.code', 'ASC');
 
@@ -87,13 +84,12 @@ class CardRepository extends TranslatableRepository
 	public function findAllByCodes($codes)
 	{
 		$qb = $this->createQueryBuilder('c')
-			->select('c', 'p', 'y', 't', 'b', 'f', 'e')
+			->select('c', 'p', 't', 'b', 'f', 'e')
 			->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
-			->leftJoin('c.encounter', 'e')
+			->leftJoin('c.card_set', 'e')
 			->andWhere('c.code in (?1)')
 			->orderBY('c.code', 'ASC');
 
@@ -137,13 +133,12 @@ class CardRepository extends TranslatableRepository
 	public function findInvestigators()
 	{
 		$qb = $this->createQueryBuilder('c')
-			->select('c', 'p', 'y', 't', 'b', 'f', 'e')
+			->select('c', 'p', 't', 'b', 'f', 'e')
 			->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
-			->leftJoin('c.encounter', 'e')
+			->leftJoin('c.card_set', 'e')
 			->andWhere('t.code = ?1')
 			->orderBY('c.name', 'ASC');
 

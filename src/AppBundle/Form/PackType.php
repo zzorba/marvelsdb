@@ -15,7 +15,7 @@ class PackType extends AbstractType
             ->add('name')
             ->add('dateRelease')
             ->add('size')
-            ->add('cycle', 'entity', array('class' => 'AppBundle:Cycle', 'property' => 'name'))
+            ->add('type', 'entity', array('class' => 'AppBundle:Packtype', 'property' => 'name'))
             ->add('position')
         ;
     }

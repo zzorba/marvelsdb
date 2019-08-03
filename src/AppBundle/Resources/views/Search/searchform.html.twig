@@ -310,7 +310,7 @@
         <div class="form-group">
 			<label for="m">Encounter Set</label>
 			<div>
-				<select class="form-control" name="m" id="m"><option value="">any</option>{% for encounter in encounters %}<option value="{{ encounter.code }}">{{ encounter.name }}</option>{% endfor %}</select>
+				<select class="form-control" name="m" id="m"><option value="">any</option>{% for encounter in sets %}<option value="{{ encounter.code }}">{{ encounter.name }}</option>{% endfor %}</select>
 			</div>
 		</div>
     </div>

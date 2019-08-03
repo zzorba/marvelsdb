@@ -1,6 +1,7 @@
 AppBundle\Entity\Packtype:
     type: entity
     table: Packtype
+    repositoryClass: AppBundle\Repository\PacktypeRepository
     gedmo:
         translation:
             locale: locale

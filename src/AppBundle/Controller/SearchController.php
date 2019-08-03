@@ -13,7 +13,6 @@ class SearchController extends Controller
 	public static $searchKeys = array(
 			''  => 'code',
 			'v' => 'flavor',
-			'y' => 'cycle',
 			'e' => 'pack',
 			'f' => 'faction',
 			'l' => 'illustrator',
@@ -29,13 +28,12 @@ class SearchController extends Controller
 			'b' => 'subtype',
 			'u' => 'isUnique',
 			'h' => 'health',
-			's' => 'sanity',
 			'x' => 'text',
 			'p' => 'xp',
 			'qt' => 'quantity',
 			'z' => 'slot',
 			'j' => 'victory',
-			'm' => 'encounter',
+			'm' => 'set',
 			'cl' => 'clues',
 			'dm' => 'doom',
 			'sh' => 'shroud',
@@ -92,12 +90,11 @@ class SearchController extends Controller
 
 		//$packs = $this->get('cards_data')->allsetsdata();
 
-		$cycles = $this->getDoctrine()->getRepository('AppBundle:Cycle')->findAll();
+		$sets = $this->getDoctrine()->getRepository('AppBundle:Cardset')->findAll();
 		$types = $this->getDoctrine()->getRepository('AppBundle:Type')->findAll();
 		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findAll();
 		$subtypes = $this->getDoctrine()->getRepository('AppBundle:Subtype')->findAll();
 		$factions = $this->getDoctrine()->getRepository('AppBundle:Faction')->findAllAndOrderByName();
-		$encounters = $this->getDoctrine()->getRepository('AppBundle:Encounter')->findBy([], array("id" => "ASC"));
 
 		$list_traits = $dbh->executeQuery("SELECT DISTINCT c.traits FROM card c WHERE c.traits != ''")->fetchAll();
 		//$list_traits = $dbh->executeQuery("SELECT DISTINCT c.content as traits FROM ext_translations c WHERE c.field = 'traits' and c.content != ''")->fetchAll();
@@ -124,12 +121,11 @@ class SearchController extends Controller
 				"pagetitle" => "Card Search",
 				"pagedescription" => "Find all the cards of the game, easily searchable.",
 				"packs" => $packs,
-				"cycles" => $cycles,
 				"types" => $types,
 				"subtypes" => $subtypes,
 				"factions" => $factions,
 				"traits" => $traits,
-				"encounters" => $encounters,
+				"sets" => $sets,
 				"illustrators" => $illustrators,
 				"allsets" => $allsets,
 		), $response);
@@ -193,34 +189,6 @@ class SearchController extends Controller
 				'pagetitle' => $pack->getName(),
 				'meta' => $meta,
 				'show_spoilers' => $show_spoilers
-			)
-		);
-	}
-
-	public function cycleAction($cycle_code, $view, $decks, $sort, $page, Request $request)
-	{
-		$cycle = $this->getDoctrine()->getRepository('AppBundle:Cycle')->findOneBy(array("code" => $cycle_code));
-		if(!$cycle) throw $this->createNotFoundException('This cycle does not exist');
-
-		$game_name = $this->container->getParameter('game_name');
-		$publisher_name = $this->container->getParameter('publisher_name');
-		
-		$meta = $cycle->getName().", a cycle of datapack for $game_name published by $publisher_name.";
-
-		$key = array_search('cycle', SearchController::$searchKeys);
-
-		return $this->forward(
-			'AppBundle:Search:display',
-			array(
-				'_route' => $request->attributes->get('_route'),
-				'_route_params' => $request->attributes->get('_route_params'),
-				'q' => $key.':'.$cycle->getPosition(),
-				'view' => $view,
-				'sort' => $sort,
-				'decks' => $decks,
-				'page' => $page,
-				'pagetitle' => $cycle->getName(),
-				'meta' => $meta,
 			)
 		);
 	}
@@ -297,14 +265,6 @@ class SearchController extends Controller
 		        $url = $this->get('router')->generate('cards_list', array('pack_code' => $conditions[0][2], 'view' => $view, 'decks' => $decks, 'sort' => $sort, 'page' => $page));
 		        return $this->redirect($url);
 		    }
-		    if($conditions[0][0] == array_search('cycle', SearchController::$searchKeys)) {
-		        $cycle_position = $conditions[0][2];
-		        $cycle = $this->getDoctrine()->getRepository('AppBundle:Cycle')->findOneBy(array('position' => $cycle_position));
-		        if($cycle) {
-		            $url = $this->get('router')->generate('cards_cycle', array('cycle_code' => $cycle->getCode(), 'view' => $view, 'decks' => $decks, 'sort' => $sort, 'page' => $page));
-		            return $this->redirect($url);
-		        }
-		    }
 		}
 
 		$response = $this->forward(
@@ -354,9 +314,7 @@ class SearchController extends Controller
 		{
 			$view = 'list';
 		}
-		
 
-		
 		$conditions = $this->get('cards_data')->syntax($q);
 		$conditions = $this->get('cards_data')->validateConditions($conditions);
 
@@ -386,10 +344,6 @@ class SearchController extends Controller
         			if($conditions[0][0] == "e") {
         				$pack = $this->getDoctrine()->getRepository('AppBundle:Pack')->findOneBy(array("code" => $conditions[0][2]));
         				if($pack) $pagetitle = $pack->getName();
-        			}
-        			if($conditions[0][0] == "c") {
-        				$cycle = $this->getDoctrine()->getRepository('AppBundle:Cycle')->findOneBy(array("code" => $conditions[0][2]));
-        				if($cycle) $pagetitle = $cycle->getName();
         			}
         		}
 			}

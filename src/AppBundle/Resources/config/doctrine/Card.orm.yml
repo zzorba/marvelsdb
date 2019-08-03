@@ -36,7 +36,7 @@ AppBundle\Entity\Card:
             joinColumn:
                 name: faction2_id
                 referencedColumnName: id
-        set:
+        card_set:
             targetEntity: Cardset
             inversedBy: cards
             joinColumn:

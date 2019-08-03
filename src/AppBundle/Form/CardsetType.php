@@ -6,27 +6,35 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CycleType extends AbstractType
+class CardsetType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('code')
             ->add('name')
-            ->add('position')
-            ->add('size')
         ;
     }
-
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Cycle'
+            'data_class' => 'AppBundle\Entity\Cardset'
         ));
     }
-    
+
+    /**
+     * @return string
+     */
     public function getName()
     {
-    	return 'appbundle_cycletype';
+        return 'appbundle_cardset';
     }
 }

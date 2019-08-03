@@ -8,43 +8,72 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CardType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pack', 'entity', array('class' => 'AppBundle:Pack', 'property' => 'name'))
             ->add('position')
-            ->add('quantity')
-            ->add('deck_limit')
+            ->add('setPosition')
             ->add('code')
-            ->add('type', 'entity', array('class' => 'AppBundle:Type', 'property' => 'name'))
-            ->add('subtype', 'entity', array('class' => 'AppBundle:Subtype', 'property' => 'name', 'required' => false))
-            ->add('faction', 'entity', array('class' => 'AppBundle:Faction', 'property' => 'name'))
-            ->add('encounter', 'entity', array('class' => 'AppBundle:Encounter', 'property' => 'name', 'required' => false))
             ->add('name')
-            ->add('subname')            
-            ->add('text', 'textarea', array('required' => false))
-            ->add('cost', 'number', array('required' => false))
-            ->add('skillWillpower')
-            ->add('skillIntellect')
-            ->add('skillCombat')
-            ->add('skillAgility')
-            ->add('skillWild')
-            ->add('xp')
+            ->add('realName')
+            ->add('subname')
+            ->add('cost')
+            ->add('text')
+            ->add('realText')
+            ->add('boostText')
+            ->add('realBoostText')
+            ->add('dateCreation')
+            ->add('dateUpdate')
+            ->add('quantity')
+            ->add('resourceEnergy')
+            ->add('resourcePhysical')
+            ->add('resourceMental')
+            ->add('resourceWild')
             ->add('health')
-            ->add('sanity')
+            ->add('healthPerHero')
+            ->add('thwart')
+            ->add('thwartCost')
+            ->add('scheme')
+            ->add('attack')
+            ->add('attackCost')
+            ->add('defense')
+            ->add('defenseCost')
+            ->add('recover')
+            ->add('recoverCost')
+            ->add('deckLimit')
+            ->add('kicker')
+            ->add('stage')
             ->add('traits')
-            ->add('slot')
-            ->add('restrictions')
-            ->add('flavor', 'textarea', array('required' => false))
-            ->add('illustrator')
+            ->add('realTraits')
             ->add('deckRequirements')
             ->add('deckOptions')
-            ->add('octgn_id')
-            ->add('is_unique', 'checkbox', array('required' => false))
-            ->add('file', 'file', array('label' => 'Image File', 'mapped' => false, 'required' => false))
-            ;
+            ->add('restrictions')
+            ->add('flavor')
+            ->add('illustrator')
+            ->add('isUnique')
+            ->add('hidden')
+            ->add('doubleSided')
+            ->add('backText')
+            ->add('backFlavor')
+            ->add('backName')
+            ->add('octgnId')
+            ->add('pack')
+            ->add('type')
+            ->add('subtype')
+            ->add('faction')
+            ->add('faction2')
+            ->add('card_set')
+            ->add('linked_to')
+        ;
     }
-
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -52,8 +81,11 @@ class CardType extends AbstractType
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
-    	return 'appbundle_cardtype';
+        return 'appbundle_card';
     }
 }

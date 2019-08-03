@@ -110,7 +110,7 @@ class CardsData
 		return implode(array_map(function ($l) { return "<p>$l</p>"; }, preg_split('/[\r\n]+/', $text)));	
 	}
 	
-	public function allsetsnocycledata()
+	public function allsetsdata()
 	{
 		$list_packs = $this->doctrine->getRepository('AppBundle:Pack')->findBy(array(), array("dateRelease" => "ASC", "position" => "ASC"));
 		$packs = array();
@@ -130,46 +130,6 @@ class CardsData
 		return $packs;
 	}
 	
-	public function allsetsdata()
-	{
-		$list_cycles = $this->doctrine->getRepository('AppBundle:Cycle')->findAll();
-		$cycles = array();
-		foreach($list_cycles as $cycle) {
-			$packs = array();
-			$sreal=0; $smax = 0;
-			foreach($cycle->getPacks() as $pack) {
-				$real = count($pack->getCards());
-				$sreal += $real;
-				$max = $pack->getSize();
-				$smax += $max;
-				$packs[] = array(
-						"name" => $pack->getName(),
-						"code" => $pack->getCode(),
-						"available" => $pack->getDateRelease() ? $pack->getDateRelease()->format('Y-m-d') : '',
-						"known" => intval($real),
-						"total" => $max,
-						"url" => $this->router->generate('cards_list', array('pack_code' => $pack->getCode()), UrlGeneratorInterface::ABSOLUTE_URL),
-						"search" => "e:".$pack->getCode()
-				);
-			}
-			if($cycle->getSize() === 1) {
-				$cycles[] = $packs[0];
-			}
-			else {
-				$cycles[] = array(
-						"name" => $cycle->getName(),
-						"code" => $cycle->getCode(),
-						"known" => intval($sreal),
-						"total" => $smax,
-						"url" => $this->router->generate('cards_cycle', array('cycle_code' => $cycle->getCode()), UrlGeneratorInterface::ABSOLUTE_URL),
-						"search" => 'c:'.$cycle->getCode(),
-						"packs" => $packs,
-				);
-			}
-		}
-		return $cycles;
-	}
-	
 	
 	public function getPrimaryFactions()
 	{
@@ -184,23 +144,22 @@ class CardsData
 		// construction de la requete sql
 		$repo = $this->doctrine->getRepository('AppBundle:Card');
 		$qb = $repo->createQueryBuilder('c');
-		$qb->select('c', 'p', 'y', 't', 'b', 'm', 'l', 'f', 'f2')
+		$qb->select('c', 'p', 't', 'b', 'm', 'l', 'f', 'f2')
 		    ->leftJoin('c.pack', 'p')
-			->leftJoin('p.cycle', 'y')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
-			->leftJoin('c.encounter', 'm')
+			->leftJoin('c.card_set', 'm')
 			->leftJoin('c.linked_to', 'l')
 			->leftJoin('c.faction', 'f')
 			->leftJoin('c.faction2', 'f2');
 		$qb2 = null;
 		$qb3 = null;
 		if ($encounter === "encounter"){
-			$qb->andWhere("(c.encounter IS NOT NULL)");
+			//$qb->andWhere("(c.encounter IS NOT NULL)");
 		}else if ($encounter === true || $encounter === "1"){
 			//$qb->andWhere("(c.encounter IS NULL)");
 		}else {
-			$qb->andWhere("(c.encounter IS NULL)");
+			//$qb->andWhere("(c.encounter IS NULL)");
 		}
 		$qb->andWhere("c.hidden is null or c.hidden = false");
 
@@ -271,8 +230,9 @@ class CardsData
 							}
 							$where[] = implode(" AND ", $sub_where);
 						}
-						$where_string = "(".implode(" OR ", $where).") AND c.encounter IS NULL";
-						if (count($nots) > 0){
+						$where_string = "(".implode(" OR ", $where).")";
+						// " AND c.encounter IS NULL";
+						if (count($nots) > 0) {
 							$where_string .= " AND ".implode(" AND ", $nots);
 						}
 						$qb->andWhere($where_string);
@@ -300,22 +260,7 @@ class CardsData
 				case 'integer':
 				{
 					switch($searchCode)
-					{
-						case 'y': // cycle
-						{
-							$or = [];
-							foreach($condition as $arg) {
-								switch($operator) {
-									case ':': $or[] = "(y.position = ?$i)"; break;
-									case '!': $or[] = "(y.position != ?$i)"; break;
-									case '<': $or[] = "(y.position < ?$i)"; break;
-									case '>': $or[] = "(y.position > ?$i)"; break;
-								}
-								$qb->setParameter($i++, $arg);
-							}
-							$qb->andWhere(implode($operator == '!' ? " and " : " or ", $or));
-							break;
-						}
+					{					
 						default:
 						{
 							$or = [];
@@ -519,7 +464,7 @@ class CardsData
 			return;
 		}
 		switch($sortorder) {
-			case 'set': $qb->orderBy('y.position')->addOrderBy('p.position')->addOrderBy('c.position'); break;
+			case 'set': $qb->orderBy('p.position')->addOrderBy('c.position'); break;
 			case 'faction': $qb->orderBy('c.faction')->addOrderBy('c.type'); break;
 			case 'type': $qb->orderBy('c.type')->addOrderBy('c.faction'); break;
 			case 'cost': $qb->orderBy('c.type')->addOrderBy('c.cost'); break;

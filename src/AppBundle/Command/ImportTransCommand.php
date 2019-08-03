@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Cycle;
+use AppBundle\Entity\Cardset;
 use AppBundle\Entity\Pack;
 use AppBundle\Entity\Card;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -23,7 +23,7 @@ class ImportTransCommand extends ContainerAwareCommand
 	{
 		$this
 		->setName('app:import:trans')
-		->setDescription('Import translation data in json format from a copy of https://github.com/Kamalisk/arkhamdb-json-data')
+		->setDescription('Import translation data in json format from a copy of https://github.com/zzorba/marvelsdb-json-data')
 		->addOption(
 				'locale',
 				'l',
@@ -52,7 +52,7 @@ class ImportTransCommand extends ContainerAwareCommand
 		}
 		
 		//$things = ['faction', 'type', 'subtype', 'cycle', 'pack', 'campaign', 'scenario', 'encounter'];
-		$things = ['faction', 'type', 'subtype', 'cycle', 'pack'];
+		$things = ['faction', 'type', 'subtype', 'set', 'pack'];
 
 		foreach($locales as $locale) 
 		{

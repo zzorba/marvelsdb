@@ -1,11 +1,12 @@
 AppBundle\Entity\Cardset:
     type: entity
     table: Cardset
+    repositoryClass: AppBundle\Repository\CardsetRepository
     oneToMany:
         cards:
             targetEntity: Card
             orderBy: {'position':'ASC'}
-            mappedBy: encounter
+            mappedBy: card_set
     fields:
         id:
             type: integer
@@ -20,6 +21,8 @@ AppBundle\Entity\Cardset:
             type: string
             length: 1024
             nullable: false
+            gedmo:
+                - translatable
     uniqueConstraints:
         encounter_code_idx:
             columns: [ code ]

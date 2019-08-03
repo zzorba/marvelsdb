@@ -11,7 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Cycle;
+use AppBundle\Entity\Cardset;
 use AppBundle\Entity\Pack;
 use AppBundle\Entity\Card;
 
@@ -118,7 +118,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$output->writeln("Done.");
 
 
-		// encounter sets
+		// card sets
 		
 		$output->writeln("Importing Card Sets...");
 		$setsFileInfo = $this->getFileInfo($path, 'sets.json');
@@ -422,7 +422,6 @@ class ImportStdCommand extends ContainerAwareCommand
 					'resource_wild',
 					'health',
 					'restrictions',
-					'slot',
 					'deck_options',
 					'deck_requirements',
 					'subname',
@@ -524,16 +523,6 @@ class ImportStdCommand extends ContainerAwareCommand
 				$value = false;
 			}
 		}
-		if ($key == "permanent"){
-			if (!$value){
-				$value = false;
-			}
-		}
-		if ($key == "exceptional"){
-			if (!$value){
-				$value = false;
-			}
-		}
 		
 		if ($key == "deck_options"){
 			if ($value){
@@ -545,7 +534,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			//print_r($value);
 		}
 		
-		if ($key == "health_per_investigator" || $key == "is_unique"){
+		if ($key == "health_per_hero" || $key == "is_unique"){
 			if ($value){
 				//echo $key." ".$value."\n";
 			}
@@ -570,15 +559,6 @@ class ImportStdCommand extends ContainerAwareCommand
 			// if we cant find it, try more complex methods just to check
 			// the only time this should work is if the existing name also has an _ meaning it was temporary. 
 			
-			if ($entityName == "AppBundle\Entity\Card"){
-				
-				if (isset($data['xp'])){
-					$entity = $this->em->getRepository($entityName)->findOneBy(['name' => $data['name'], 'type'=> $data['type_code'], 'xp' => $data['xp']]);				
-				}else {
-					$entity = $this->em->getRepository($entityName)->findOneBy(['name' => $data['name'], 'type'=> $data['type_code'], 'xp' => null]);
-				}
-			}
-			
 			if (!$entity){
 				$entity = new $entityName();
 			}			
@@ -597,10 +577,13 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($key === "front_card_code"){
 				$foreignEntityShortName = "Card";
 			}
+			if ($key === "set_code") {
+				$foreignEntityShortName = "Cardset";
+			}
 
 			if(!key_exists($key, $data)) {
 				// optional links to other tables 
-				if ($key === "faction2_code" || $key === "subtype_code" || $key === "encounter_code" || $key === "back_card_code" || $key === "front_card_code"){
+				if ($key === "faction2_code" || $key === "subtype_code" || $key === "set_code" || $key === "back_card_code" || $key === "front_card_code"){
 					continue;
 				}
 				throw new \Exception("Missing key [$key] in ".json_encode($data));
@@ -662,6 +645,39 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 	}
 
+	protected function importSupportData(Card $card, $data) 
+	{
+
+	}
+
+	protected function importUpgradeData(Card $card, $data) 
+	{
+
+	}
+
+	protected function importObligationData(Card $card, $data) 
+	{
+		$mandatoryKeys = [
+			'kicker',
+		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+	}
+
+	protected function importAllyData(Card $card, $data) 
+	{
+		$mandatoryKeys = [
+			'health',
+			'attack',
+			'thwart',
+		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+	}
+
+
 	protected function importEnemyData(Card $card, $data)
 	{
 		$mandatoryKeys = [
@@ -687,11 +703,6 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 	}
 	
-	protected function importStoryData(Card $card, $data)
-	{
-
-	}
-	
 
 	protected function importActData(Card $card, $data)
 	{
@@ -704,23 +715,11 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 	}
 
-	protected function importLocationData(Card $card, $data)
-	{
-		$mandatoryKeys = [
-				'shroud',
-				'clues'
-		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
-	}
-
 
 	protected function importEventData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				//'cost'
+				'cost'
 		];
 
 		foreach($mandatoryKeys as $key) {
@@ -729,15 +728,6 @@ class ImportStdCommand extends ContainerAwareCommand
 	}
 
 	protected function importSkillData(Card $card, $data)
-	{
-
-	}
-
-	protected function importAdventureData(Card $card, $data)
-	{
-
-	}
-	protected function importScenarioData(Card $card, $data)
 	{
 
 	}

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 class Card implements \Gedmo\Translatable\Translatable, \Serializable
 {
+
 	private function snakeToCamel($snake) {
 		$parts = explode('_', $snake);
 		return implode('', array_map('ucfirst', $parts));
@@ -32,9 +33,9 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'back_text',
 				'back_name',
 				'back_flavor',
-				'permanent',
 				'hidden',
 				'double_sided',
+                'card_set',
                 'set_position',
 				'is_unique'
 		];
@@ -43,6 +44,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 		        'faction',
 		        'faction2',
 				'pack',
+                "card_set",
 				'type',
 				'linked_to'
 		];
@@ -1918,35 +1920,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     {
         return $this->scheme;
     }
-    /**
-     * @var \AppBundle\Entity\Cardset
-     */
-    private $set;
-
-
-    /**
-     * Set set
-     *
-     * @param \AppBundle\Entity\Cardset $set
-     *
-     * @return Card
-     */
-    public function setSet(\AppBundle\Entity\Cardset $set = null)
-    {
-        $this->set = $set;
-
-        return $this;
-    }
-
-    /**
-     * Get set
-     *
-     * @return \AppBundle\Entity\Cardset
-     */
-    public function getSet()
-    {
-        return $this->set;
-    }
+    
     /**
      * @var integer
      */
@@ -1975,5 +1949,34 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getSetPosition()
     {
         return $this->setPosition;
+    }
+    /**
+     * @var \AppBundle\Entity\Cardset
+     */
+    private $card_set;
+
+
+    /**
+     * Set cardSet
+     *
+     * @param \AppBundle\Entity\Cardset $cardSet
+     *
+     * @return Card
+     */
+    public function setCardSet(\AppBundle\Entity\Cardset $cardSet = null)
+    {
+        $this->card_set = $cardSet;
+
+        return $this;
+    }
+
+    /**
+     * Get cardSet
+     *
+     * @return \AppBundle\Entity\Cardset
+     */
+    public function getCardSet()
+    {
+        return $this->card_set;
     }
 }

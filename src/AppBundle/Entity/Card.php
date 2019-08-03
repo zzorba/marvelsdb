@@ -82,10 +82,15 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$mandatoryFields[] = 'attack';
                 $mandatoryFields[] = 'defense';
 				$mandatoryFields[] = 'health';  
-				$mandatoryFields[] = 'recover';				
 				$mandatoryFields[] = 'hand_size';
 				$mandatoryFields[] = 'deck_requirements';
 				break;
+            case 'alter_ego':
+                $mandatoryFields[] = 'recover';
+                $mandatoryFields[] = 'health';  
+                $mandatoryFields[] = 'hand_size';
+                $mandatoryFields[] = 'deck_requirements';
+                break;
 			case "treachery":
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost_text';
@@ -1978,5 +1983,34 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getCardSet()
     {
         return $this->card_set;
+    }
+    /**
+     * @var integer
+     */
+    private $handSize;
+
+
+    /**
+     * Set handSize
+     *
+     * @param integer $handSize
+     *
+     * @return Card
+     */
+    public function setHandSize($handSize)
+    {
+        $this->handSize = $handSize;
+
+        return $this;
+    }
+
+    /**
+     * Get handSize
+     *
+     * @return integer
+     */
+    public function getHandSize()
+    {
+        return $this->handSize;
     }
 }

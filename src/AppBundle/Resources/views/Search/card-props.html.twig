@@ -12,14 +12,18 @@
 
 {% if card.type_code == 'hero' %}
 <div class="card-props">
-	{% trans %}Willpower{% endtrans %}: {{ macros.integer_or_x(card.skill_willpower) }}.
-	{% trans %}Intellect{% endtrans %}: {{ macros.integer_or_x(card.skill_intellect) }}.
-	{% trans %}Combat{% endtrans %}: {{ macros.integer_or_x(card.skill_combat) }}.
-	{% trans %}Agility{% endtrans %}: {{ macros.integer_or_x(card.skill_agility) }}.
+	{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}.
+	{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
+	{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense) }}.
 </div>
 {% if card.health %}
 	<div>
 	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}.
+	</div>
+{% endif %}
+{% if card.hand_size %}
+	<div>
+	{% trans %}Hand Size{% endtrans %}: {{ macros.integer_or_x(card.hand_size) }}.
 	</div>
 {% endif %}
 {% elseif card.type_code == 'minion' %}

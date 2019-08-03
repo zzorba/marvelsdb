@@ -616,7 +616,11 @@ class ImportStdCommand extends ContainerAwareCommand
 		// special case for Card
 		if($entityName === 'AppBundle\Entity\Card') {
 			// calling a function whose name depends on the type_code
-			$functionName = 'import' . $entity->getType()->getName() . 'Data';
+			$cleanName = $entity->getType()->getName();
+			if ($cleanName == "Alter-Ego") {
+				$cleanName = "AlterEgo";
+			}
+			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
 
@@ -659,6 +663,32 @@ class ImportStdCommand extends ContainerAwareCommand
 	{
 		$mandatoryKeys = [
 			'kicker',
+		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+	}
+
+	protected function importHeroData(Card $card, $data) 
+	{
+		$mandatoryKeys = [
+			'health',
+			'hand_size',
+			'attack',
+			'defense',
+			'thwart',
+		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+	}
+
+	protected function importAlterEgoData(Card $card, $data) 
+	{
+		$mandatoryKeys = [
+			'health',
+			'hand_size',
+			'recover',
 		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);

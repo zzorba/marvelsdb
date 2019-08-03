@@ -136,6 +136,9 @@ AppBundle\Entity\Card:
         resourceWild:
             type: smallint
             nullable: true
+        handSize:
+            type: smallint
+            nullable: true
         health:
             type: smallint
             nullable: true

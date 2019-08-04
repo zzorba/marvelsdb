@@ -10,28 +10,27 @@ var configuration = {
 	l: [ add_string_sf, 'illustrator', "Illustrator" ],
 	k: [ add_string_sf, 'traits', "Traits" ],
 	o: [ add_integer_sf, 'cost', "Cost" ],
-	w: [ add_integer_sf, 'skill_willpower', "Willpower" ],
-	c: [ add_integer_sf, 'skill_combat', "Combat" ],
-	i: [ add_integer_sf, 'skill_intellect', "Intellect" ],
-	a: [ add_integer_sf, 'skill_agility', "Agility" ],
-	d: [ add_integer_sf, 'skill_wild', "Wild" ],
+	rp: [ add_integer_sf, 'resource_physical', "Physical" ],
+	rm: [ add_integer_sf, 'resource_mental', "Mental" ],
+	re: [ add_integer_sf, 'resource_energy', "Energy" ],
+	rw: [ add_integer_sf, 'resource_wild', "Wild" ],
 	t: [ add_string_sf, 'type_code', "Type" ],
 	b: [ add_string_sf, 'subtype_code', "Subtype" ],
 	u: [ add_boolean_sf, 'is_unique', "Uniqueness" ],
 	h: [ add_integer_sf, 'health', "Health" ],
-	s: [ add_integer_sf, 'sanity', "Sanity" ],
+	atk: [ add_integer_sf, 'attack', "Attack" ],
+	def: [ add_integer_sf, 'defend', "Defend" ],
+	rec: [ add_integer_sf, 'recover', "Recover" ],
+	thw: [ add_integer_sf, 'thwart', "Thwart" ],
 	x: [ add_string_sf, 'text', "Text" ],
-	p: [ add_integer_sf, 'xp', "Experience" ],
-	qt: [ add_integer_sf, 'quantity', "Quantity in pack" ],
-	z: [ add_string_sf, 'slot', "Slot" ],
-	j: [ add_integer_sf, 'victory', "Victory" ]
+	qt: [ add_integer_sf, 'quantity', "Quantity in pack" ]
 };
 
 /**
  * called when the list is refreshed
  * @memberOf smart_filter
  */
-smart_filter.get_query =  function get_query(query) {
+smart_filter.get_query = function get_query(query) {
 	return _.extend(query, SmartFilterQuery);
 };
 
@@ -39,7 +38,7 @@ smart_filter.get_query =  function get_query(query) {
  * called when the filter input is modified
  * @memberOf smart_filter
  */
-smart_filter.update =  function update(value) {
+smart_filter.update = function update(value) {
 	var conditions = filterSyntax(value);
 	SmartFilterQuery = {};
 
@@ -152,7 +151,7 @@ function filterSyntax(query) {
 			}
 			etat = 2;
 		} else {
-			if (   query.match(/^"([^"]*)"(.*)/) // jeton "texte libre entre guillements"
+			if (query.match(/^"([^"]*)"(.*)/) // jeton "texte libre entre guillements"
 				|| query.match(/^([^\s]+)(.*)/) // jeton "texte autorisé sans guillements"
 			) {
 				if ((etat === 2 && cond.length === 2) || etat === 3) {
@@ -237,7 +236,7 @@ var configuration = {
  * called when the list is refreshed
  * @memberOf smart_filter
  */
-smart_filter.get_query =  function get_query(query) {
+smart_filter.get_query = function get_query(query) {
 	return _.extend(query, SmartFilterQuery);
 };
 
@@ -245,7 +244,7 @@ smart_filter.get_query =  function get_query(query) {
  * called when the filter input is modified
  * @memberOf smart_filter
  */
-smart_filter.update =  function update(value) {
+smart_filter.update = function update(value) {
 	var conditions = filterSyntax(value);
 	SmartFilterQuery = {};
 
@@ -358,7 +357,7 @@ function filterSyntax(query) {
 			}
 			etat = 2;
 		} else {
-			if (   query.match(/^"([^"]*)"(.*)/) // jeton "texte libre entre guillements"
+			if (query.match(/^"([^"]*)"(.*)/) // jeton "texte libre entre guillements"
 				|| query.match(/^([^\s]+)(.*)/) // jeton "texte autorisé sans guillements"
 			) {
 				if ((etat === 2 && cond.length === 2) || etat === 3) {

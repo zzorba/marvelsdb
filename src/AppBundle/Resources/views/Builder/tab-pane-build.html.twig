@@ -2,11 +2,7 @@
 <div class="row" id="global_filters">
 	
 	<div class="col-md-12 text-right" style="margin-bottom:10px">
-		<div class="btn-group">    	
-    	<button type="button" class="btn btn-xs btn-default" id="chaos">
-				<span class="fa fa-random"></span> Chaos</span>
-			</button>
-		</div>
+
     <div class="btn-group">    	
 			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
 				<span class="fa fa-sort"></span> <span class="hidden-xs">Sort Deck</span> <span class="caret"></span>
@@ -16,10 +12,9 @@
 				<li><a href="#" onclick="app.deck.change_sort('name')" id="btn-sort-name">by Name</a></li>
 				<li><a href="#" onclick="app.deck.change_sort('set')" id="btn-sort-position">by Set, then Name</a></li>
 				<li><a href="#" onclick="app.deck.change_sort('setnumber')" id="btn-sort-position">by Set, then Number</a></li>
-				<li><a href="#" onclick="app.deck.change_sort('faction')" id="btn-sort-faction">by Faction, then Name</a></li>
-				<li><a href="#" onclick="app.deck.change_sort('factionnumber')" id="btn-sort-faction">by Faction, then Number</a></li>
+				<li><a href="#" onclick="app.deck.change_sort('faction')" id="btn-sort-faction">by Aspect, then Name</a></li>
+				<li><a href="#" onclick="app.deck.change_sort('factionnumber')" id="btn-sort-faction">by Aspect, then Number</a></li>
 				<li><a href="#" onclick="app.deck.change_sort('number')" id="btn-sort-faction">by Card Number</a></li>
-				<li><a href="#" onclick="app.deck.change_sort('xp')" id="btn-sort-faction">by XP</a></li>
 				<li><a href="#" onclick="app.deck.change_sort('cost')" id="btn-sort-faction">by Cost</a></li>
 			</ul>
 		</div>
@@ -68,13 +63,10 @@
 	</div>
 	
 	
-	<div class="col-sm-8" style="margin-bottom:10px">
+	<div class="col-sm-12" style="margin-bottom:10px">
 			<div class="btn-group btn-group-justified" data-filter="type_code" data-toggle="buttons"></div>
   </div>
-  
-  <div class="col-sm-4" style="margin-bottom:10px">
-			<div class="btn-group btn-group-justified" data-filter="xp" data-toggle="buttons"></div>
-  </div>
+
   
   </div>
   

@@ -30,8 +30,8 @@ class BuilderController extends Controller
 		$collection = $user->getOwnedPacks();
 		$packs_owned = explode(",", $collection);
 
-		$type = $em->getRepository('AppBundle:Type')->findOneBy(['code' => 'investigator']);
-		$investigators = $em->getRepository('AppBundle:Card')->findBy(['type' => $type, "hidden" => false, "permanent" => false], ["name"=>"ASC" ]);
+		$type = $em->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero']);
+		$investigators = $em->getRepository('AppBundle:Card')->findBy(['type' => $type], ["name"=>"ASC" ]);
 		$my_investigators = [];
 		$other_investigators = [];
 		$all_investigators = [];
@@ -39,47 +39,49 @@ class BuilderController extends Controller
 		$my_investigators_by_class = [];
 		$all_unique_investigators = [];
 		$my_unique_investigators = [];
+		
 		foreach($investigators as $investigator){
 			$deck_requirements = $this->get('DeckValidationHelper')->parseReqString($investigator->getDeckRequirements());
-			if (isset($deck_requirements['size']) && $deck_requirements['size']){
-				$cards_to_add = [];
-				if (isset($deck_requirements['card']) && $deck_requirements['card']){
-					foreach($deck_requirements['card'] as $card_code){
-						if ($card_code){
-							$card_to_add = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $card_code));
-							if ($card_to_add){
-								$cards_to_add[] = $card_to_add;
-							}
+			/*
+			$cards_to_add = [];
+			if (isset($deck_requirements['card']) && $deck_requirements['card']){
+				foreach($deck_requirements['card'] as $card_code){
+					if ($card_code){
+						$card_to_add = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $card_code));
+						if ($card_to_add){
+							$cards_to_add[] = $card_to_add;
 						}
 					}
 				}
-				$req = [
-					"cards" => $cards_to_add,
-					"size" => $deck_requirements['size']
-				];
+			}
+			$req = [
+				"cards" => $cards_to_add,
+				"size" => $deck_requirements['size']
+			];
 
-				$investigator->setDeckRequirements($req);
-				if (in_array($investigator->getPack()->getId(), $packs_owned) && !isset($my_unique_investigators[$investigator->getName()]) ){
-					$my_investigators[] = $investigator;
-					$my_unique_investigators[$investigator->getName()] = true;
-					if (!isset($my_investigators_by_class[$investigator->getFaction()->getName()]) ) {
-						$my_investigators_by_class[$investigator->getFaction()->getName()] = [];
-					}
-					$my_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
+			$investigator->setDeckRequirements($req);
+			*/
+			if (in_array($investigator->getPack()->getId(), $packs_owned) && !isset($my_unique_investigators[$investigator->getName()]) ){
+				$my_investigators[] = $investigator;
+				$my_unique_investigators[$investigator->getName()] = true;
+				if (!isset($my_investigators_by_class[$investigator->getFaction()->getName()]) ) {
+					$my_investigators_by_class[$investigator->getFaction()->getName()] = [];
 				}
+				$my_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
+			}
+			
+			// only have one investigator per name
+			if (!isset($all_unique_investigators[$investigator->getName()])) {
+				$all_unique_investigators[$investigator->getName()] = true;
+				if (!isset($all_investigators_by_class[$investigator->getFaction()->getName()]) ) {
+					$all_investigators_by_class[$investigator->getFaction()->getName()] = [];
+				}
+				$all_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
 				
-				// only have one investigator per name
-				if (!isset($all_unique_investigators[$investigator->getName()])) {
-					$all_unique_investigators[$investigator->getName()] = true;
-					if (!isset($all_investigators_by_class[$investigator->getFaction()->getName()]) ) {
-						$all_investigators_by_class[$investigator->getFaction()->getName()] = [];
-					}
-					$all_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
-					
-					$all_investigators[] = $investigator;
-				}
+				$all_investigators[] = $investigator;
 			}
 		}
+
 		arsort($all_investigators_by_class);
 		arsort($my_investigators_by_class);
 		
@@ -99,78 +101,37 @@ class BuilderController extends Controller
 		/* @var $em \Doctrine\ORM\EntityManager */
 		$em = $this->getDoctrine()->getManager();
 
-		$investigator_code = $request->request->get('investigator');
+		$hero_code = $request->request->get('investigator');
 
-		if(!$investigator_code)
-		{
-			$this->get('session')->getFlashBag()->set('error', "An investigator is required.");
+		if(!$hero_code){
+			$this->get('session')->getFlashBag()->set('error', "A hero is required.");
 			return $this->redirect($this->generateUrl('deck_buildform'));
 		}
 
-		$investigator = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $investigator_code));
-		if(!$investigator)
-		{
-			$this->get('session')->getFlashBag()->set('error', "An investigator is required.");
+		$hero = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $hero_code));
+		if(!$hero){
+			$this->get('session')->getFlashBag()->set('error', "A hero is required.");
 			return $this->redirect($this->generateUrl('deck_buildform'));
 		}
-		$tags = [ $investigator->getFaction()->getCode() ];
+		$tags = [ ];
 
 		$cards_to_add = [];
 		// parse deck requirements and pre-fill deck with needed cards
-		if ($investigator->getDeckRequirements()){
-			$deck_requirements = $this->get('DeckValidationHelper')->parseReqString($investigator->getDeckRequirements());
-			if (isset($deck_requirements['card']) && $deck_requirements['card']){
-				foreach($deck_requirements['card'] as $card_code => $alternates){
-					if ($card_code){
-						$card_to_add = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $card_code));
-						if ($card_to_add){
-							$cards_to_add[] = $card_to_add;
-						}
-					}
-				}
-			}
-
-			// add random deck requirements here
-			// should add a flag so the user can choose to add these or not
-			if (isset($deck_requirements['random']) && $deck_requirements['random']){
-				foreach($deck_requirements['random'] as $random){
-					if (isset($random['target']) && $random['target']){
-						if ($random['target'] === "subtype"){
-							$subtype = $em->getRepository('AppBundle:Subtype')->findOneBy(array("code" => $random['value']));
-							//$valid_targets = $em->getRepository('AppBundle:Card')->findBy(array("subtype" => $subtype->getId() ));
-							$valid_targets = $em->getRepository('AppBundle:Card')->findBy(array("name" => "Random Basic Weakness" ));
-							//print_r($subtype->getId());
-							if ($valid_targets){
-								$key = array_rand($valid_targets);
-								// should disable adding random weakness
-								$cards_to_add[] = $valid_targets[$key];
-							}
-						}
-					}
+		if ($hero->getCardSet()){
+			$hero_cards = $em->getRepository('AppBundle:Card')->findBy(array("card_set" => $hero->getCardSet() ));
+			foreach($hero_cards as $card) {
+				if ($card->getType()->getCode() != "hero" && $card->getType()->getCode() != "alter_ego"){
+					$cards_to_add[] = $card;
 				}
 			}
 		}
 
-		$pack = $investigator->getPack();
-		$name = sprintf("%s", $investigator->getName());
-		if ($investigator->getFaction()->getCode() == "guardian"){
-			$name = sprintf("The Adventures of %s", $investigator->getName());
-		} else if ($investigator->getFaction()->getCode() == "seeker"){
-			$name = sprintf("%s Investigates", $investigator->getName());
-		} else if ($investigator->getFaction()->getCode() == "mystic"){
-			$name = sprintf("The %s Mysteries", $investigator->getName());
-		} else if ($investigator->getFaction()->getCode() == "rogue"){
-			$name = sprintf("The %s Job", $investigator->getName());
-		} else if ($investigator->getFaction()->getCode() == "survivor"){
-			$name = sprintf("%s on the Road", $investigator->getName());
-		} else {
-			$name = sprintf("%s is the best investigator", $investigator->getName());
-		}
-
+		$pack = $hero->getPack();
+		$name = sprintf("%s", $hero->getName());
 
 		$deck = new Deck();
 		$deck->setDescriptionMd("");
-		$deck->setCharacter($investigator);
+		$deck->setCharacter($hero);
 		$deck->setLastPack($pack);
 		$deck->setName($name);
 		$deck->setProblem('too_few_cards');
@@ -440,7 +401,6 @@ class BuilderController extends Controller
 				'name' => $deck->getName().' (clone)',
 				'faction_code' => $deck->getCharacter()->getCode(),
 				'tags' => $deck->getTags(),
-				'taboo' => $deck->getTaboo() ? $deck->getTaboo()->getId() : "",
 				'content' => json_encode($content),
 				'ignored' => json_encode($ignored),
 				'deck_id' => $deck->getParent() ? $deck->getParent()->getId() : null
@@ -514,7 +474,6 @@ class BuilderController extends Controller
 			'deck_id' => $deck->getParent() ? $deck->getParent()->getId() : null,
 			'xp' => $xp,
 			'previous_deck' => $deck,
-			'taboo' => $deck->getTaboo() ? $deck->getTaboo()->getId() : "",
 			'upgrades' => $deck->getUpgrades(),
 			'exiles_string' => implode(",",$filtered_exiles),
 			'exiles' => $filtered_exile_cards
@@ -581,17 +540,9 @@ class BuilderController extends Controller
 		$name = filter_var($request->get('name'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$problem = filter_var($request->get('problem'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$decklist_id = filter_var($request->get('decklist_id'), FILTER_SANITIZE_NUMBER_INT);
-		$xp_spent = filter_var($request->get('xp_spent', 0), FILTER_SANITIZE_NUMBER_INT);
-		$xp_adjustment = filter_var($request->get('xp_adjustment', 0), FILTER_SANITIZE_NUMBER_INT);
 		$description = trim($request->get('description'));
 		$tags = filter_var($request->get('tags'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		$taboo = filter_var($request->get('taboo', 0), FILTER_SANITIZE_NUMBER_INT);
-		if ($taboo){
-			$taboo = $em->getRepository('AppBundle:Taboo')->find($taboo);
-		}
-		if (!$taboo){
-			$taboo = null;
-		}
+
 		$meta = filter_var($request->get('meta', ""), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$meta_json = "";
 		if ($meta){
@@ -608,7 +559,7 @@ class BuilderController extends Controller
 		
 		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $investigator, $description, $tags, $content, $source_deck ? $source_deck : null, $problem, $ignored);
 		
-		$deck->setTaboo($taboo);
+
 		if ($request->get('exiles') && $request->get('exiles_string')){
 			$deck->setExiles($request->get('exiles_string'));
 		}
@@ -619,13 +570,6 @@ class BuilderController extends Controller
 			$deck->setMeta("");
 		}
 
-		if ($source_deck){
-			$source_deck->setXpSpent($xp_spent);
-			$source_deck->setXpAdjustment($xp_adjustment);
-		}
-		if ($request->get('previous_deck')){
-			$this->get('decks')->upgradeDeck($deck, $request->get('xp'), $request->get('previous_deck'), $request->get('upgrades'), $request->get('exiles'));
-		}
 		$em->flush();
 
 		if ($request->get('previous_deck')){
@@ -909,7 +853,6 @@ class BuilderController extends Controller
 				'content' => json_encode($content),
 				'ignored' => json_encode($ignored),
 				'decklist_id' => $decklist_id,
-				'taboo' => $decklist->getTaboo() ? $decklist->getTaboo()->getId() : "",
 				'meta' => $decklist->getMeta() ? $decklist->getMeta() : ""
 			)
 		);

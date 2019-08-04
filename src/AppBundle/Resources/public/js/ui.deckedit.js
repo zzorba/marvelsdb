@@ -104,12 +104,12 @@ ui.build_faction_selector = function build_faction_selector() {
 	
 	$('[data-filter=faction_code]').empty();
 	var faction_codes = app.data.cards.distinct('faction_code').sort();
-	var neutral_index = faction_codes.indexOf('neutral');
+	var neutral_index = faction_codes.indexOf('basic');
 	faction_codes.splice(neutral_index, 1);
-	faction_codes.push('neutral');
+	faction_codes.push('basic');
 	
 	faction_codes.forEach(function(faction_code) {
-		if (faction_code == "mythos"){
+		if (faction_code == "hero"){
 			return;
 		}
 		var example = app.data.cards.find({"faction_code": faction_code})[0];
@@ -151,7 +151,7 @@ ui.build_faction_selector = function build_faction_selector() {
  */
 ui.build_type_selector = function build_type_selector() {
 	$('[data-filter=type_code]').empty();
-	['asset','event','skill', 'basicweakness'].forEach(function(type_code) {
+	['upgrade','support','event', 'ally', 'resource'].forEach(function(type_code) {
 		var example = app.data.cards.find({"type_code": type_code})[0];
 		// not all card types might exist
 		if (example) {
@@ -164,43 +164,8 @@ ui.build_type_selector = function build_type_selector() {
 	});
 	$('[data-filter=type_code]').button();
 	
-
-	var label = $('<label class="btn btn-default btn-sm" data-code="'
-			+ "xp" + '" title="'+"Level 0"+'"><input type="checkbox" name="' + "xp0"
-			+ '"><span class="icon-' + "xp" + '"></span>' + "Level 0" + '</label>');
-	label.tooltip({container: 'body'});
-	$('[data-filter=xp]').append(label);
-	
-	var label = $('<label class="btn btn-default btn-sm" data-code="'
-			+ "xp" + '" title="'+"Level 1-5"+'"><input type="checkbox" name="' + "xp15"
-			+ '"><span class="icon-' + "xp" + '"></span>' + "Level 1-5" + '</label>');
-	label.tooltip({container: 'body'});
-	$('[data-filter=xp]').append(label);
-	
-	$('[data-filter=xp]').button();
 }
 
-
-/**
- * builds the pack selector
- * @memberOf ui
- */
-ui.build_taboo_selector = function build_taboo_selector() {
-	$('[data-filter=taboo_code]').empty();
-	
-	app.data.taboos.find({
-		active: {
-			'$eq': 1
-		}
-	}, {
-		$orderBy: {
-			id: 1
-		}
-	}).forEach(function(record) {
-		$('<option value="'+record.id+'">' + record.name + ' (' + record.date_start +')</option>').appendTo('[data-filter=taboo_code]');
-	});
-	$('<option value="">None</option>').appendTo('[data-filter=taboo_code]');
-}
 
 
 /**
@@ -299,20 +264,13 @@ ui.build_pack_selector = function build_pack_selector() {
  * @memberOf ui
  */
 ui.init_selectors = function init_selectors() {
-	$('[data-filter=faction_code]').find('input[name=neutral]').prop("checked", true).parent().addClass('active');
+	$('[data-filter=faction_code]').find('input[name=basic]').prop("checked", true).parent().addClass('active');
 	var investigator = app.data.cards.findById(app.deck.get_investigator_code());
 	//console.log(investigator);
 	if (investigator.faction_code){
 		$('[data-filter=faction_code]').find('input[name='+investigator.faction_code+']').prop("checked", true).parent().addClass('active');
 	}
-	$('[data-filter=subtype_code]').find('input[name=basicweakness]').prop("checked", true).parent().addClass('active');
-	$('[data-filter=xp]').find('input[name=xp0]').prop("checked", true).parent().addClass('active');
 	
-	if (app.deck.taboo_id){
-		$('[data-filter=taboo_code]').val(app.deck.taboo_id);
-	} else {
-		$('[data-filter=taboo_code]').val("");
-	}
 	if (app.deck.meta && app.deck.meta.faction_selected){
 		$('[data-filter=faction_selector]').val(app.deck.meta.faction_selected);
 	}
@@ -381,7 +339,7 @@ ui.on_input_smartfilter2 = function on_input_smartfilter2(event) {
 	var q = $(this).val();
 	if(q.match(/^\w[:<>!]/)) app.smart_filter2.update(q);
 	else app.smart_filter2.update('');
-	ui.refresh_list2();
+	
 }
 
 /**
@@ -395,8 +353,6 @@ ui.on_submit_form = function on_submit_form(event) {
 	$('input[name=content]').val(deck_json);
 	$('input[name=ignored]').val(ignored_json);
 	$('input[name=meta]').val(meta_json);
-	$('input[name=xp_spent]').val(app.deck.get_xp_spent());
-	$('input[name=xp_adjustment]').val(app.deck.get_xp_adjustment());
 	$('input[name=description]').val($('textarea[name=description_]').val());
 	$('input[name=tags]').val($('input[name=tags_]').val());
 }
@@ -458,21 +414,6 @@ ui.on_core_change = function on_core_change(event) {
 	}
 }
 
-/**
- * @memberOf ui
- * @param event
- */
-ui.on_taboo_change = function on_taboo_change(event) {
-	var name = $(this).attr('name');
-	var type = $(this).prop('type');
-	var value = $(this).prop('value');
-
-	//console.log(name, value);
-	//app.data.apply_taboos(value);
-	app.deck.taboo_id = parseInt(value);
-	ui.refresh_lists();
-	ui.on_deck_modified();
-}
 
 ui.toggle_suggestions = function toggle_suggestions() {
 	app.suggestions.number = Config['show-suggestions'];
@@ -641,10 +582,7 @@ ui.setup_event_handlers = function setup_event_handlers() {
 		change : ui.refresh_list,
 		click : ui.on_click_filter
 	}, 'label');
-	$('#personal_filters [data-filter]').on({
-		change : ui.refresh_list2,
-		click : ui.on_click_filter
-	}, 'label');
+
 	
 	$('#build_filters [data-filter=faction_selector]').on({
 		change : function(event){
@@ -680,7 +618,7 @@ ui.setup_event_handlers = function setup_event_handlers() {
 
 	$('#config-options').on('change', 'input', ui.on_config_change);
 	$('#global_filters [data-filter=pack_code]').on('change', 'input', ui.on_core_change);
-	$('[data-filter=taboo_code]').on('change',  ui.on_taboo_change);
+
 	$('#collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	$('#special-collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	
@@ -746,94 +684,27 @@ ui.get_filters = function get_filters(prefix) {
 		function(index, div) {
 			var column_name = $(div).data('filter');
 			var arr = [];
-			if(column_name == "subtype_code"){
-				if($("input[name=basicweakness]").prop('checked')) {
-					filters[column_name] = {
-						'$in': ['basicweakness']
-					};
-				} else if($("input[name=special]").prop('checked')) {
-					filters['encounter_code'] = {
-						'$exists': false
-					};
-
-					filters['$or'] = [
-						{
-							"subtype_code": {
-								'$nin': ['basicweakness']
-							}
-						},{
-							"subtype_code": {
-								'$exists': false
-							}
-						}
-					];
-					
-					//console.log(filters);
-				} else if($("input[name=specialweakness]").prop('checked')) {
-					filters['subtype_code'] = {
-						'$in': ['weakness']
-					};
-					filters['encounter_code'] = {
-						'$exists': false
-					};
-				} else if($("input[name=campaign]").prop('checked')) {
-					filters['encounter_code'] = {
-						'$exists': true
-					};
-				} else {
-					filters['xp'] = {
-						'$exists': false
-					};
+			$(div).find("input[type=checkbox]").each(
+				function(index, elt) {
+					if($(elt).prop('checked')) arr.push($(elt).attr('name'));
 				}
-			} else {
-				$(div).find("input[type=checkbox]").each(
-					function(index, elt) {
-						if ($(elt).attr('name') == "xp0"){
-							if($(elt).prop('checked')) arr.push(0);
-						} else if ($(elt).attr('name') == "xp15") {
-							// search for any xp value from 1-5 
-							if($(elt).prop('checked')) {
-								arr.push(1);
-								arr.push(2);
-								arr.push(3);
-								arr.push(4);
-								arr.push(5);
-							} 
-						} else {
-							if ($(elt).attr('name') == "core-2"){
-								if($(elt).prop('checked')) arr.push("core");
-							}else {
-								if($(elt).prop('checked')) arr.push($(elt).attr('name'));	
-							}
-							
-						}
-					}
-				);
-				if(arr.length) {
-					// check both faction codes
-					if (column_name == "faction_code"){
-						filters['$or'] = [
-							{"faction_code": { '$in': arr }},
-							{"faction2_code": { '$in': arr }}
-						];
-					} else {
-						filters[column_name] = {
-							'$in': arr
-						};
-					}
-					
+			);
+			if(arr.length) {
+				// check both faction codes
+				if (column_name == "faction_code"){
+					filters['$or'] = [
+						{"faction_code": { '$in': arr }},
+						{"faction2_code": { '$in': arr }}
+					];
+				} else {
+					filters[column_name] = {
+						'$in': arr
+					};
 				}
 			}
 		}
 	);
-	if (!filters['xp']){
-		filters['xp'] = {};
-	}
-	if (prefix){
-		filters['xp']['$exists'] = false;
-	} else {
-		filters['xp']['$exists'] = true;
-	}
+
 	filters['deck_limit'] = {};
 	filters['deck_limit']['$exists'] = true;
 	//console.log(filters);
@@ -852,7 +723,6 @@ ui.update_list_template = function update_list_template() {
 				+ '<td><div class="btn-group" data-toggle="buttons"><%= radios %></div></td>'
 				+ '<td><a class="card card-tip fg-<%= card.faction_code %> <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-code="<%= card.code %>" href="<%= url %>" data-target="#cardModal" data-remote="false" data-toggle="modal">'
 				+ '<%= card.name %></a>'
-				+ '<% if (card.taboo) { %> <span class="icon-tablet" style="color:purple;" title="Is mutated by the current taboo list"></span> <% } %>'
 				+ '<% if (card.exceptional) { %> <span class="icon-eldersign" style="color:orange;" title="Exceptional. Double xp cost and limit one per deck."></span> <% } %>'
 				+ '</td>'
 				+ '<td class="xp"><%= card.xp %></td>'
@@ -925,7 +795,6 @@ ui.reset_list = function reset_list() {
 
 ui.refresh_lists = function refresh_lists() {
 	ui.refresh_list();
-	ui.refresh_list2();
 }
 
 /**
@@ -942,7 +811,6 @@ ui.refresh_list = _.debounce(function refresh_list() {
 	var	filters = ui.get_filters();
 	var query = app.smart_filter.get_query(filters);
 	var orderBy = {};
-
 	SortKey.split('|').forEach(function (key) {
 		orderBy[key] = SortOrder;
 	});
@@ -983,61 +851,6 @@ ui.refresh_list = _.debounce(function refresh_list() {
 	});
 }, 250);
 
-
-/**
- * destroys and rebuilds the list of available cards
- * don't fire unless 250ms has passed since last invocation
- * @memberOf ui
- */
-ui.refresh_list2 = _.debounce(function refresh_list2() {
-	$('#special-collection-table').empty();
-	$('#special-collection-grid').empty();
-
-	var counter = 0,
-		container = $('#special-collection-table'),
-		filters = ui.get_filters("personal"),
-		query = app.smart_filter2.get_query(filters),
-		orderBy = {};
-
-	SortKey.split('|').forEach(function (key ) {
-		orderBy[key] = SortOrder;
-	});
-	if(SortKey !== 'name') orderBy['name'] = 1;
-	var cards = app.data.cards.find(query, {'$orderBy': orderBy});
-	var divs = CardDivs[ Config['display-column'] - 1 ];
-
-	cards.forEach(function (card) {
-		if (Config['show-only-deck'] && !card.indeck) return;
-		var unusable = !app.deck.can_include_card(card);
-		if (!Config['show-unusable'] && unusable) return;
-		
-		var row = divs[card.code];
-		if(!row) row = divs[card.code] = ui.build_row(card);
-		
-		row.data("code", card.code).addClass('card-container');
-
-		row.find('input[name="qty-' + card.code + '"]').each(
-			function(i, element) {
-				if($(element).val() == card.indeck) {
-					$(element).prop('checked', true).closest('label').addClass('active');
-				} else {
-					$(element).prop('checked', false).closest('label').removeClass('active');
-				}
-			}
-		);
-
-		if (unusable) {
-			row.find('label').addClass("disabled").find('input[type=radio]').attr("disabled", true);
-		}
-
-		if (Config['display-column'] > 1 && (counter % Config['display-column'] === 0)) {
-			container = $('<div class="row"></div>').appendTo($('#collection-grid'));
-		}
-
-		container.append(row);
-		counter++;
-	});
-}, 250);
 
 /**
  * called when the deck is modified and we don't know what has changed
@@ -1143,7 +956,6 @@ ui.on_all_loaded = function on_all_loaded() {
 	ui.build_faction_selector();
 	ui.build_type_selector();
 	ui.build_pack_selector();
-	ui.build_taboo_selector();
 	ui.init_selectors();
 	// for now this needs to be done here
 	ui.set_max_qty();

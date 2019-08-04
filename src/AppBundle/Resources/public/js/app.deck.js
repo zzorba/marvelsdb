@@ -17,7 +17,6 @@ var date_creation,
 	investigator,
 	unsaved,
 	user_id,
-	taboo_id, 
 	sort_type = "default",
 	sort_dir = 1,
 	problem_list = [],
@@ -41,10 +40,10 @@ var date_creation,
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one block view
-layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-5 col-print-6"><%= images %></div><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
+layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-6"><%= images %></div><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
 // two colum view
-layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-5 col-print-6"><%= images %></div><div class="col-sm-7 col-print-6"><%= meta %></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= assets %> <%= permanent %></div><div class="col-sm-6 col-print-6"><%= events %> <%= skills %> <%= treachery %> <%= enemy %> <%= hunches %></div></div> <div id="upgrade_changes"></div></div>');
-layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-4"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %><%= treachery %></div></div></div>');
+layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-6"><%= images %></div><div class="col-sm-9 col-print-6"><%= meta %></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %> </div></div> <div id="upgrade_changes"></div></div>');
+layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
 // single column view
 layouts[4] = _.template('<div class="deck-content"><div class="row"><%= images %></div><div class="row"><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-12 col-print-12"><%= assets %> <%= permanent %><%= events %> <%= skills %> <%= treachery %> <%= enemy %></div></div> <div id="upgrade_changes"></div></div>');
 /**
@@ -65,7 +64,6 @@ deck.init = function init(data) {
 	unsaved = data.unsaved;
 	user_id = data.user_id;
 	exile_string = data.exile_string;
-	taboo_id = null;
 	if (exile_string){
 		exiles = exile_string.split(",");
 	}
@@ -114,9 +112,6 @@ deck.onloaded = function(data){
 		}
 	}
 
-	if (data.taboo_id){
-		deck.taboo_id = data.taboo_id;
-	}
 
 	if (app.user.data && app.user.data.owned_packs) {
 		var packs = app.user.data.owned_packs.split(',');
@@ -359,8 +354,8 @@ deck.get_real_draw_deck_size = function get_real_draw_deck_size(sort) {
 deck.get_xp_usage = function get_xp_usage(sort) {
 	var xp = 0;
 	deck.get_real_draw_deck().forEach(function (card) {
-		if (card && (card.xp || card.taboo_xp) && card.ignore < card.indeck) {
-			xp += (card.xp + (card.taboo_xp ? card.taboo_xp : 0)) * (card.indeck - card.ignore) * (card.exceptional ? 2: 1);
+		if (card && (card.xp) && card.ignore < card.indeck) {
+			xp += (card.xp) * (card.indeck - card.ignore) * (card.exceptional ? 2: 1);
 		}
 	});
 	return xp;
@@ -432,7 +427,7 @@ deck.display = function display(container, options) {
 	// XXX fetch the selected sort here
 	// default is 2 it seems
 	// before displaying a deck, apply the currently active taboo list
-	app.data.apply_taboos(deck.taboo_id);
+	
 	options = _.extend({sort: 'type', cols: 2}, options);
 
 	var deck_content = deck.get_layout_data(options);
@@ -453,13 +448,11 @@ deck.get_layout_data = function get_layout_data(options) {
 	var data = {
 			images: '',
 			meta: '',
-			assets: '',
+			upgrades: '',
 			events: '',
-			skills: '',
-			treachery: '',
-			enemy: '',
-			permanent: '',
-			hunches: '',
+			allies: '',
+			supports: '',
+			resources: '',
 			cards: ''
 	};
 	
@@ -501,10 +494,7 @@ deck.get_layout_data = function get_layout_data(options) {
 	if(deck.get_tags && deck.get_tags() ) {
 		deck.update_layout_section(data, 'meta', $('<div>'+deck.get_tags().replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})+'</div>'));
 	}
-	if(deck.taboo_id && app.data.taboos.findOne({'id':deck.taboo_id})) {
-		var taboo = app.data.taboos.findOne({'id':deck.taboo_id});
-		deck.update_layout_section(data, 'meta', $('<div>'+taboo.name+' ('+taboo.date_start+')</div>'));
-	}
+	
 	if(problem) {
 		if (deck.problem_list && deck.problem_list.length > 0){
 			deck.update_layout_section(data, 'meta', $('<div class="text-danger small"><span class="fa fa-exclamation-triangle"></span> '+deck.problem_list.join(', ')+'</div>'));
@@ -548,18 +538,11 @@ deck.get_layout_data = function get_layout_data(options) {
 		layout_template = 1;
 	} else {
 		layout_template = 2;
-		deck.update_layout_section(data, 'assets', deck.get_layout_data_one_section({'type_code':'asset', permanent: false}, 'type_name'));
-		
-		if (investigator_name == "Joe Diamond") {
-			deck.update_layout_section(data, 'events', deck.get_layout_data_one_section({'type_code': 'event', '$not': {'traits':/Insight./}, permanent: false }, 'type_name'));
-			deck.update_layout_section(data, 'hunches', deck.get_layout_data_one_section({'type_code': 'event', 'traits':/Insight./, permanent: false}, 'hunches'));
-		} else {
-			deck.update_layout_section(data, 'events', deck.get_layout_data_one_section({'type_code': 'event', permanent: false}, 'type_name'));	
-		}
-		deck.update_layout_section(data, 'skills', deck.get_layout_data_one_section({'type_code': 'skill', permanent: false}, 'type_name'));
-		deck.update_layout_section(data, 'treachery', deck.get_layout_data_one_section({'type_code': 'treachery', permanent: false}, 'type_name'));
-		deck.update_layout_section(data, 'enemy', deck.get_layout_data_one_section({'type_code': 'enemy', permanent: false}, 'type_name'));
-		deck.update_layout_section(data, 'permanent', deck.get_layout_data_one_section({permanent: true}, 'type_name'));
+		deck.update_layout_section(data, 'events', deck.get_layout_data_one_section({'type_code':'event'}, 'type_name'));
+		deck.update_layout_section(data, 'upgrades', deck.get_layout_data_one_section({'type_code': 'upgrade'}, 'type_name'));
+		deck.update_layout_section(data, 'resources', deck.get_layout_data_one_section({'type_code': 'resource'}, 'type_name'));
+		deck.update_layout_section(data, 'allies', deck.get_layout_data_one_section({'type_code': 'ally'}, 'type_name'));
+		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support'}, 'type_name'));
 	}
 	if (options && options.layout) {
 		layout_template = options.layout;
@@ -614,58 +597,16 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 	var section = $('<div>');
 
 	var cards = deck.get_cards({ name: 1 }, query);
+	console.log(cards);
 	if(cards.length) {
 		var name = "";
-		if (displayLabel == "hunches") {
-			name = "Hunches";
-		} else {
-			name = cards[0][displayLabel];
-		}
-		
-		if (query.type_code == "asset"){
-			$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
-			var slots = {
-				'Hand': [],
-				'Hand x2': [],
-				'Arcane': [],
-				'Arcane x2': [],
-				'Accessory': [],
-				'Accessory': [],
-				'Body': [],
-				'Ally': [],
-				'Tarot': [],
-				'Other': []
-			};
-			
-			cards.forEach(function (card) {
-				var $div = deck.create_card(card);
+		name = cards[0][displayLabel];
+		$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
+		cards.forEach(function (card) {
+			var div = deck.create_card(card);
+			div.appendTo(section);
+		});
 
-
-				if (card.slot && slots[card.slot]){
-					slots[card.slot].push($div);
-				} else {
-					slots["Other"].push($div);
-				}
-			});
-			$.each(slots,function (index, slot) {
-				if(slot.length > 0){
-					$('<div class="slot-header small">'+index+'</div>').appendTo(section);
-					$.each(slot,function (index, div) {
-						div.appendTo(section);
-					});
-				}
-			});
-		} else {
-			if (query.permanent) {
-				$(header_tpl({code: "Permanent", name: "Permanent", quantity: deck.get_nb_cards(cards)})).appendTo(section);
-			} else {
-				$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
-			}
-			cards.forEach(function (card) {
-				var div = deck.create_card(card);
-				div.appendTo(section);
-			});
-		}
 	}
 	return section;
 }
@@ -689,20 +630,10 @@ deck.create_card = function create_card(card){
 	if(card.xp && card.xp > 0) {
 		$div.append(app.format.xp(card.xp, card.indeck));
 	}
-	if(card.taboo_xp && card.taboo_xp > 0) {
-		$div.append(app.format.xp(card.taboo_xp, card.indeck, "taboo"));
-	}
-	if(card.xp === undefined) {
-		$div.append(' <span class="fa fa-star" title="Does not count towards deck size"></span>');
-	}
-	if(card.ignore) {
-		$div.append(' <span class="fa fa-star" style="color:green;" title="'+card.ignore+' of these do not count towards deck size"></span>');
-	}
-	if(card.taboo === true) {
-		$div.append(' <span class="icon-tablet" style="color:purple;" title="Is mutated by the current taboo list"></span>');
-	}
-	if(card.exceptional === true) {
-		$div.append(' <span class="icon-eldersign" style="color:orange;" title="Exceptional. Double xp cost and limit one per deck."></span>');
+
+
+	if(card.faction_code == "hero") {
+		$div.append(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
 	}
 	
 	if (!no_collection){
@@ -874,36 +805,6 @@ deck.get_problem = function get_problem() {
 	if(deck.get_invalid_cards().length > 0) {
 		return 'invalid_cards';
 	}
-		
-
-	for (var i = 0; i < investigator.deck_options.length; i++){
-
-		if (investigator.deck_options[i].limit_count && investigator.deck_options[i].limit){
-			if (investigator.deck_options[i].limit_count > investigator.deck_options[i].limit){
-				if (investigator.deck_options[i].error){
-					deck.problem_list.push(investigator.deck_options[i].error);
-				}
-				return 'investigator';
-			}
-		}
-		
-		if (investigator.deck_options[i].atleast_count && investigator.deck_options[i].atleast){
-			if (investigator.deck_options[i].atleast.factions && investigator.deck_options[i].atleast.min){
-				var faction_count = 0;
-				$.each(investigator.deck_options[i].atleast_count, function(key, value){
-					if (value >= investigator.deck_options[i].atleast.min){
-						faction_count++;
-					}
-				})
-				if (faction_count < investigator.deck_options[i].atleast.factions){
-					if (investigator.deck_options[i].error){
-						deck.problem_list.push(investigator.deck_options[i].error);
-					}
-					return 'investigator';
-				}
-			}
-		}
-	}
 	
 		// at least 60 others cards
 	if(deck.get_draw_deck_size() < size) {
@@ -918,12 +819,7 @@ deck.get_problem = function get_problem() {
 }
 
 deck.reset_limit_count = function (){
-	if (investigator){
-		for (var i = 0; i < investigator.deck_options.length; i++){
-			investigator.deck_options[i].limit_count = 0;
-			investigator.deck_options[i].atleast_count = {};
-		}
-	}
+
 }
 
 deck.get_invalid_cards = function get_invalid_cards() {
@@ -941,7 +837,7 @@ deck.get_invalid_cards = function get_invalid_cards() {
 deck.can_include_card = function can_include_card(card, limit_count, hard_count) {
 	
 	// hide investigators
-	if (card.type_code === "investigator") {
+	if (card.type_code === "hero") {
 		return false;
 	}
 	if (card.faction_code === "mythos") {
@@ -954,7 +850,8 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	}
 	
 	//var investigator = app.data.cards.findById(investigator_code);
-	
+	console.log(card);
+	return true;
 	if (investigator && investigator.deck_options && investigator.deck_options.length) {
 		
 		for (var i = 0; i < investigator.deck_options.length; i++){

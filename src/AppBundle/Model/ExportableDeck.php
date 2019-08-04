@@ -52,7 +52,6 @@ class ExportableDeck
 			'xp' => $xp,
 			'xp_adjustment' => $xp_adjustment,
 			'exile_string' => $this->getExiles(),
-			'taboo_id' => $this->getTaboo() ? $this->getTaboo()->getId() : null,
 			'meta' => $this->getMeta() ? $this->getMeta() : "",
 			'tags' => $tags,
 			'previous_deck' => $previousDeck,

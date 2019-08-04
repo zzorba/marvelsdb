@@ -72,12 +72,8 @@ class Decks
 			if (! $latestPack) {
 				$latestPack = $pack;
 			} else {
-				if ($latestPack->getCycle ()->getPosition () < $pack->getCycle ()->getPosition ()) {
+				if ($latestPack->getPosition () < $pack->getPosition ()) {
 					$latestPack = $pack;
-				} else {
-					if ($latestPack->getCycle ()->getPosition () == $pack->getCycle ()->getPosition () && $latestPack->getPosition () < $pack->getPosition ()) {
-						$latestPack = $pack;
-					}
 				}
 			}
 			$cards [$card_code] = $card;

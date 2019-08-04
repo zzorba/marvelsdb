@@ -57,19 +57,8 @@ ui.init_config_buttons = function init_config_buttons() {
  * @memberOf ui
  */
 ui.set_max_qty = function set_max_qty() {
-	var cores = 0;
-	if($("[name=core]").is(":checked")){
-		cores++;
-	}
-	if($("[name=core-2]").is(":checked")){
-		cores++;
-	}
-	
 	app.data.cards.find().forEach(function(record) {
-		var max_qty = Math.min(2, record.deck_limit);
-		if (record.pack_code == 'core') {
-			max_qty = Math.min(max_qty, record.quantity * cores);
-		}
+		var max_qty = Math.min(3, record.deck_limit);
 		app.data.cards.updateById(record.code, {
 			maxqty : max_qty
 		});
@@ -415,6 +404,7 @@ ui.on_core_change = function on_core_change(event) {
 }
 
 
+
 ui.toggle_suggestions = function toggle_suggestions() {
 	app.suggestions.number = Config['show-suggestions'];
 	app.suggestions.show();
@@ -499,7 +489,6 @@ ui.on_list_quantity_change = function on_list_quantity_change(event) {
 	ui.on_quantity_change(code, quantity);
 }
 ui.on_suggestion_quantity_change = function on_suggestion_quantity_change(event) {
-	console.log(event);
 	var row = $(event.target).closest('.card-container');
 	var code = row.data('code');
 	var quantity = parseInt($(event.target).val(), 10);
@@ -725,7 +714,7 @@ ui.update_list_template = function update_list_template() {
 				+ '<%= card.name %></a>'
 				+ '<% if (card.exceptional) { %> <span class="icon-eldersign" style="color:orange;" title="Exceptional. Double xp cost and limit one per deck."></span> <% } %>'
 				+ '</td>'
-				+ '<td class="xp"><%= card.xp %></td>'
+				+ '<td class="resources"></td>'
 				+ '<td class="cost"><%= card.cost %></td>'
 				+ '<td class="type" style="text-align : left;"><span class="" title="<%= card.type_name %>"><%= card.type_name %></span> <% if (card.slot) { %> - <%= card.slot %> <% } %></td>'
 				+ '<td class="faction"><span class="fg-<%= card.faction_code %>" title="<%= card.faction_name %>"><%= card.faction_name %></span></td>'

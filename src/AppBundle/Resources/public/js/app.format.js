@@ -10,10 +10,10 @@ format.traits = function traits(card) {
 
 
 format.resource = function resource(value, type, css) {
-	var string = "";
+	var string = '';
 	if (value && value > 0) {
 		for (var i = 0; i < value; i++) {
-			string += '<span class="icon-'+type+'" title="'+type+'"></span>';
+			string += ' <span class="icon-'+type+' color-'+type+'" title="'+type+'"></span>';
 		}
 	}
 	return string;

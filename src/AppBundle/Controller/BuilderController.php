@@ -120,7 +120,7 @@ class BuilderController extends Controller
 		if ($hero->getCardSet()){
 			$hero_cards = $em->getRepository('AppBundle:Card')->findBy(array("card_set" => $hero->getCardSet() ));
 			foreach($hero_cards as $card) {
-				if ($card->getType()->getCode() != "hero" && $card->getType()->getCode() != "alter_ego"){
+				if ($card->getType()->getCode() != "hero" && $card->getType()->getCode() != "alter_ego" && $card->getFaction()->getCode() != "encounter"){
 					$cards_to_add[] = $card;
 				}
 			}

@@ -446,30 +446,24 @@ div.site-slogan {
 .bg-faction a, .bg-faction span {
 	color: inherit;
 }
-.bg-guardian {
+.bg-leadership {
 	background-color: #2b80c5 !important;
 	color: white !important;
 }
-.bg-survivor {
+.bg-aggression {
 	background-color: #cc3038 !important;
 	color: white !important;
 }
-.bg-seeker {
-	background-color: #ff8f3f !important;
-}
-.bg-mystic {
-	background-color: #5d5593 !important;
-	color: white !important;
-}
-.bg-rogue {
+
+.bg-protection {
 	background-color: #107116 !important;
 	color: white !important;
 }
-.bg-neutral {
+.bg-basic {
 	background-color: #808080 !important;
 	color: white !important;
 }
-.bg-dual {
+.bg-justice {
 	background-color: #c0c000 !important;
 	color: white !important;
 }
@@ -478,69 +472,54 @@ div.site-slogan {
 .faint-faction a, .faint-faction span {
 	color: inherit;
 }
-.faint-guardian {
+.faint-leadership {
 	background-color: rgba(43, 128, 237, 0.2) !important;
 }
-.faint-survivor {
+.faint-aggression {
 	background-color: rgba(204, 48, 56, 0.2) !important;
 }
-.faint-seeker {
-	background-color: rgba(255, 143, 63, 0.2) !important;
-}
-.faint-mystic {
-	background-color: rgba(123, 85, 197, 0.3) !important;
-}
-.faint-rogue {
+.faint-protection {
 	background-color: rgba(16, 113, 22, 0.2) !important;
 }
-.faint-neutral {
+.faint-basic {
 	background-color: rgba(128, 128, 128, 0.2) !important;
 }
+.faint-justice {
+	background-color: rgba(228, 228, 0, 0.2) !important;
+}
 
 
 
-.fg-guardian {
+.fg-leadership {
 	color: #2b80c5 !important;
 }
-.fg-survivor {
+.fg-aggression {
 	color: #cc3038 !important;
 }
-.fg-seeker {
-	color: #ec8426 !important;
-}
-.fg-mystic {
-	color: #4331b9 !important;
-}
-.fg-rogue {
+.fg-protection {
 	color: #107116 !important;
 }
-.fg-neutral {
+.fg-basic {
 	color: #606060 !important;
 }
-.fg-dual {
+.fg-justice {
 	color: #c0c000 !important;
 }
 
 
-.border-guardian {
+.border-leadership {
 	border-color: #2b80c5 !important;
 }
-.border-survivor {
+.border-aggression {
 	border-color: #cc3038 !important;
 }
-.border-seeker {
-	border-color: #ff8f3f !important;
-}
-.border-mystic {
-	border-color: #6d2aa9 !important;
-}
-.border-rogue {
+.border-protection {
 	border-color: #107116 !important;
 }
-.border-neutral {
+.border-basic {
 	border-color: #808080 !important;
 }
-.border-dual {
+.border-justice {
 	border-color: #c0c000 !important;
 }
 

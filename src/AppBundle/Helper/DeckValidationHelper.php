@@ -126,12 +126,13 @@ class DeckValidationHelper
 		$card = $slot->getCard();
 		$indeck = $slot->getQuantity();
 		// hide investigators
-		if ($card->getType()->getCode() === "investigator") {
+		if ($card->getType()->getCode() === "hero") {
 			return false;
 		}
 		
 		$investigator = $deck->getCharacter();
 		$restrictions = $card->getRestrictions();
+		return true;
 		if ($restrictions){
 			$parsed = $this->parseReqString($restrictions);
 			if ($parsed && $parsed['investigator'] && !isset($parsed['investigator'][$investigator->getCode()]) ){

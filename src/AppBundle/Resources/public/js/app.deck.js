@@ -42,7 +42,7 @@ var date_creation,
 // one block view
 layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-6"><%= images %></div><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
 // two colum view
-layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-6"><%= images %></div><div class="col-sm-9 col-print-6"><%= meta %></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %> </div></div> <div id="upgrade_changes"></div></div>');
+layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %> </div></div> <div id="upgrade_changes"></div></div>');
 layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
 // single column view
 layouts[4] = _.template('<div class="deck-content"><div class="row"><%= images %></div><div class="row"><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-12 col-print-12"><%= assets %> <%= permanent %><%= events %> <%= skills %> <%= treachery %> <%= enemy %></div></div> <div id="upgrade_changes"></div></div>');
@@ -300,11 +300,7 @@ deck.get_draw_deck = function get_draw_deck(sort) {
 	return deck.get_cards(sort, {
 		type_code: {
 			'$nin' : []
-		},
-		xp: {
-			'$exists': true
-		},
-		permanent: false
+		}
 	});
 }
 
@@ -327,8 +323,7 @@ deck.get_physical_draw_deck = function get_physical_draw_deck(sort) {
 	return deck.get_cards(sort, {
 		type_code: {
 			'$nin' : []
-		},
-		permanent: false
+		}
 	});
 }
 
@@ -446,7 +441,8 @@ deck.display = function display(container, options) {
 deck.get_layout_data = function get_layout_data(options) {
 	
 	var data = {
-			images: '',
+			image1: '',
+			image2: '',
 			meta: '',
 			upgrades: '',
 			events: '',
@@ -484,11 +480,11 @@ deck.get_layout_data = function get_layout_data(options) {
 		}
 	}
 
-	deck.update_layout_section(data, 'images', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+deck.get_investigator_code()+'.png" class="img-responsive">'));
+	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="'+card.imagesrc+'" class="img-responsive"></div>'));
+	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="'+card.linked_card.imagesrc+'" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+'</a></h4>'));
 	//deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold">'+investigator_name+'</h4>'));
-	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_draw_deck_size()+' cards ('+deck.get_real_draw_deck_size()+' total)</div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
-	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_xp_usage()+' experience required.</div>'));
+	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
 	var pack_string = _.map(deck.get_included_packs(), function (pack) { return pack.name+(pack.quantity > 1 ? ' ('+pack.quantity+')' : ''); }).join(', ');
 	deck.update_layout_section(data, 'meta', $('<div><span onclick="$(\'#packs_required\').toggle()" style="border-bottom: 1px dashed #cfcfcf;" title="' + pack_string + '">' + deck.get_included_packs().length + ' packs required </span>' + ' <div style="display:none;" id="packs_required">'+pack_string+'</div> </div>'));
 	if(deck.get_tags && deck.get_tags() ) {
@@ -597,7 +593,6 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 	var section = $('<div>');
 
 	var cards = deck.get_cards({ name: 1 }, query);
-	console.log(cards);
 	if(cards.length) {
 		var name = "";
 		name = cards[0][displayLabel];
@@ -627,25 +622,34 @@ deck.create_card = function create_card(card){
 	$div.append($(card_line_tpl({card:card})));
 	
 	$div.prepend(card.indeck+'x ');
-	if(card.xp && card.xp > 0) {
-		$div.append(app.format.xp(card.xp, card.indeck));
-	}
-
-
+	
+	var $span = $('<span style="float: right"></span>');
 	if(card.faction_code == "hero") {
-		$div.append(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
+		$span.append(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
 	}
+	if(card.resource_physical && card.resource_physical > 0) {
+		$span.append(app.format.resource(card.resource_physical, 'physical'));
+	}
+	if(card.resource_mental && card.resource_mental > 0) {
+		$span.append(app.format.resource(card.resource_mental, 'mental'));
+	}
+	if(card.resource_energy && card.resource_energy > 0) {
+		$span.append(app.format.resource(card.resource_energy, 'energy'));
+	}
+	if(card.resource_wild && card.resource_wild > 0) {
+		$span.append(app.format.resource(card.resource_wild, 'wild'));
+	}
+
 	
 	if (!no_collection){
 		var pack = app.data.packs.findById(card.pack_code);
 		if (!collection[pack.id]) {
-			$div.append(' <span class="fa fa-question" title="This card is not part of your collection"></span>');
+			$span.append(' <span class="fa fa-question" title="This card is not part of your collection"></span>');
 		}
 	}
 	
-	if (card.name == "Random Basic Weakness" && $("#special-collection").length > 0 ){
-		$div.append(' <a class="fa fa-random" title="Replace with randomly selected weakness from currently selected packs" data-random="'+card.code+'"> <span ></span></a> ');
-	}
+	$div.append($span);
+	
 	return $div;
 }
 
@@ -807,12 +811,12 @@ deck.get_problem = function get_problem() {
 	}
 	
 		// at least 60 others cards
-	if(deck.get_draw_deck_size() < size) {
+	if(deck.get_draw_deck_size() < 40) {
 		return 'too_few_cards';
 	}
 	
 	// at least 60 others cards
-	if(deck.get_draw_deck_size() > size) {
+	if(deck.get_draw_deck_size() > 50) {
 		return 'too_many_cards';
 	}
 	
@@ -850,7 +854,6 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	}
 	
 	//var investigator = app.data.cards.findById(investigator_code);
-	console.log(card);
 	return true;
 	if (investigator && investigator.deck_options && investigator.deck_options.length) {
 		

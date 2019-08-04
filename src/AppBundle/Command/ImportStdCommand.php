@@ -757,7 +757,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 	}
 
-	protected function importSkillData(Card $card, $data)
+	protected function importResourceData(Card $card, $data)
 	{
 
 	}

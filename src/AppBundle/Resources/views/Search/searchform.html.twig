@@ -20,8 +20,8 @@
 <fieldset>
 <legend>Name and texts</legend>
 <div class="row">
-    <div class="col-sm-12">
-        <div class="form-group">
+	<div class="col-sm-12">
+		<div class="form-group">
 			<label for="q">Name</label>
 			<div>
 				<input class="form-control" size="30" id="q" name="q" value="">
@@ -30,15 +30,15 @@
 	</div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
+	<div class="col-sm-6">
 		<div class="form-group">
 			<label for="x">Text</label>
 			<div>
 				<input class="form-control" size="40" id="x" name="x" value="">
 			</div>
 		</div>
-    </div>
-    <div class="col-sm-6">
+		</div>
+		<div class="col-sm-6">
 		<div class="form-group">
 			<label for="a">Flavor Text</label>
 			<div>
@@ -51,8 +51,8 @@
 <fieldset>
 <legend>Class</legend>
 <div class="row">
-    <div class="col-sm-12">
-        <div class="form-group">
+		<div class="col-sm-12">
+				<div class="form-group">
 			<div class="btn-group" data-toggle="buttons">
 			{% for faction in factions %}
 				<label class="btn btn-default active" title="{{ faction.name }}" data-toggle="tooltip" data-container="body">
@@ -62,15 +62,15 @@
 			{% endfor %}
 			</div>
 		</div>
-    </div>
+		</div>
 </div>
 </fieldset>
 <fieldset>
 <legend>Attributes</legend>
 
 <div class="row">
-    <div class="col-sm-4">
-        <div class="form-group">
+	<div class="col-sm-4">
+		<div class="form-group">
 			<label for="t">Type</label>
 			<div>
 				<select class="form-control" name="t" id="t">
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 	<div class="col-sm-4">
-        <div class="form-group">
+		<div class="form-group">
 			<label for="b">SubType</label>
 			<div>
 				<select class="form-control" name="b" id="b">
@@ -95,8 +95,8 @@
 			</div>
 		</div>
 	</div>
-    <div class="col-sm-4">
-        <div class="form-group">
+	<div class="col-sm-4">
+		<div class="form-group">
 			<label for="k">Traits</label>
 			<div>
 				<select class="form-control" name="k" id="k">
@@ -107,29 +107,12 @@
 				</select>
 			</div>
 		</div>
-    </div>
+	</div>
 </div>
-<div class="row">
-    <div class="col-sm-4">
-        <div class="form-group">
-			<label for="z">Slot</label>
-			<div>
-				<select class="form-control" name="z" id="z">
-					<option value="">any</option>
-					<option value="hand">One Handed</option>
-					<option value="hand x2">Two Handed</option>
-					<option value="accessory">Accessory</option>
-					<option value="ally">Ally</option>
-					<option value="arcane">One Arcane</option>
-					<option value="arcane x2">Two Arcane</option>
-					<option value="body">Body</option>
-				</select>
-			</div>
-		</div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-			<label for="e">Set</label>
+<div class="row">	
+	<div class="col-sm-4">
+		<div class="form-group">
+			<label for="e">Pack</label>
 			<div>
 				<select class="form-control" name="e" id="e">
 					<option value="">any</option>
@@ -139,9 +122,9 @@
 				</select>
 			</div>
 		</div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
+	</div>
+	<div class="col-sm-4">
+		<div class="form-group">
 			<label for="u">Unique</label>
 			<div>
 				<select class="form-control" name="u" id="u">
@@ -151,56 +134,28 @@
 				</select>
 			</div>
 		</div>
-    </div>
+	</div>
 </div>
 
 </fieldset>
 <fieldset>
 <legend>Numerics</legend>
 <div class="row">
-    <div class="col-sm-3">
-        <div class="form-group">
+	<div class="col-sm-3">
+		<div class="form-group">
 			<label for="o">Cost</label>
 			<div class="row">
-                <div class="col-xs-5">
-                    <select name="oo" id="oo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="o" name="o" value="" class="form-control">
-                </div>
+				<div class="col-xs-5">
+					<select name="oo" id="oo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="o" name="o" value="" class="form-control">
+				</div>
 			</div>
 		</div>
-    </div>
-
+	</div>	
+		
 		<div class="col-sm-3">
-			<div class="form-group">
-				<label for="p">XP</label>
-				<div class="row">
-					<div class="col-xs-5">
-						<select name="po" id="po" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-					</div>
-					<div class="col-xs-7">
-						<input id="p" name="p" value="" class="form-control">
-					</div>
-				</div>
-			</div>
-    </div>
-    
-    <div class="col-sm-3">
-			<div class="form-group">
-				<label for="j">Victory</label>
-				<div class="row">
-					<div class="col-xs-5">
-						<select name="jo" id="jo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-					</div>
-					<div class="col-xs-7">
-						<input id="j" name="j" value="" class="form-control">
-					</div>
-				</div>
-			</div>
-    </div>
-    
-    <div class="col-sm-3">
 			<div class="form-group">
 				<label for="y">Quantity</label>
 				<div class="row">
@@ -216,89 +171,117 @@
 </div>
 
 <div class="row">
-		<div class="col-sm-3">
-        <div class="form-group">
-			<label for="w"><span class="icon-willpower"></span> Willpower</label>
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="at">Attack</label>
 			<div class="row">
-                <div class="col-xs-5">
-                    <select name="wo" id="wo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="w" name="w" value="" class="form-control">
-                </div>
+				<div class="col-xs-5">
+					<select name="ato" id="ato" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="at" name="at" value="" class="form-control">
+				</div>
 			</div>
 		</div>
-    </div>
-    <div class="col-sm-3">
-        <div class="form-group">
-			<label for="s"><span class="icon-combat"></span> Combat</label>
+	</div>
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="th">Thwart</label>
 			<div class="row">
-                <div class="col-xs-5">
-                    <select name="co" id="co" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="c" name="c" value="" class="form-control">
-                </div>
+				<div class="col-xs-5">
+					<select name="tho" id="tho" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="th" name="th" value="" class="form-control">
+				</div>
 			</div>
 		</div>
-    </div>
-		<div class="col-sm-3">
-        <div class="form-group">
-			<label for="l"><span class="icon-intellect"></span> Intellect</label>
+	</div>
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="df">Defend</label>
 			<div class="row">
-                <div class="col-xs-5">
-                    <select name="io" id="io" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="i" name="i" value="" class="form-control">
-                </div>
+				<div class="col-xs-5">
+					<select name="dfo" id="dfo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="df" name="df" value="" class="form-control">
+				</div>
 			</div>
 		</div>
-    </div>
-
-    <div class="col-sm-3">
-        <div class="form-group">
-			<label for="a"><span class="icon-agility"></span> Agility</label>
-			<div class="row">
-                <div class="col-xs-5">
-                    <select name="ao" id="ao" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="a" name="a" value="" class="form-control">
-                </div>
-			</div>
-		</div>
-    </div>
+	</div>
 </div>
 
 <div class="row">
-		<div class="col-sm-3">
-        <div class="form-group">
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="rp"><span class="icon-physical"></span> Physical</label>
+			<div class="row">
+				<div class="col-xs-5">
+					<select name="rpo" id="rpo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="rp" name="rp" value="" class="form-control">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="rm"><span class="icon-mental"></span> Mental</label>
+			<div class="row">
+				<div class="col-xs-5">
+					<select name="rmo" id="rmo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="rm" name="rm" value="" class="form-control">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="re"><span class="icon-energy"></span> Energy</label>
+			<div class="row">
+				<div class="col-xs-5">
+					<select name="reo" id="reo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+					<input id="re" name="re" value="" class="form-control">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-3">
+		<div class="form-group">
+			<label for="rw"><span class="icon-wild"></span> Wild</label>
+			<div class="row">
+				<div class="col-xs-5">
+						<select name="rwo" id="rwo" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+						<input id="rw" name="rw" value="" class="form-control">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-3">
+		<div class="form-group">
 			<label for="w"><span class="icon-health"></span> Health</label>
 			<div class="row">
-                <div class="col-xs-5">
-                    <select name="ho" id="ho" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="h" name="h" value="" class="form-control">
-                </div>
+				<div class="col-xs-5">
+						<select name="ho" id="ho" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
+				</div>
+				<div class="col-xs-7">
+						<input id="h" name="h" value="" class="form-control">
+				</div>
 			</div>
 		</div>
-    </div>
-    <div class="col-sm-3">
-        <div class="form-group">
-			<label for="s"><span class="icon-sanity"></span> Sanity</label>
-			<div class="row">
-                <div class="col-xs-5">
-                    <select name="so" id="so" class="form-control"><option value=":">=</option><option value="<">&lt;</option><option value=">">&gt;</option></select>
-                </div>
-                <div class="col-xs-7">
-                    <input id="s" name="s" value="" class="form-control">
-                </div>
-			</div>
-		</div>
-    </div>
-		
+	</div>
 </div>
 
 </fieldset>
@@ -306,14 +289,14 @@
 <fieldset>
 <legend>Encounter Cards</legend>
 <div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
+		<div class="col-sm-6">
+				<div class="form-group">
 			<label for="m">Encounter Set</label>
 			<div>
 				<select class="form-control" name="m" id="m"><option value="">any</option>{% for encounter in sets %}<option value="{{ encounter.code }}">{{ encounter.name }}</option>{% endfor %}</select>
 			</div>
 		</div>
-    </div>
+		</div>
 </div>
 </fieldset>
 
@@ -321,23 +304,23 @@
 <fieldset>
 <legend>Other</legend>
 <div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
+		<div class="col-sm-6">
+				<div class="form-group">
 			<label for="l">Illustrator</label>
 			<div>
 				<select class="form-control" name="l" id="l"><option value="">any</option>{% for illustrator in illustrators %}<option value="{{ illustrator }}">{{ illustrator }}</option>{% endfor %}</select>
 			</div>
 		</div>
-    </div>
+		</div>
 </div>
 </fieldset>
 <fieldset>
 <legend>Submit</legend>
 <div class="row">
-    <div class="form-inline">
-       {% include 'AppBundle:Search:searchoptions.html.twig' %}
-       <button class="btn btn-primary form-control" type="submit">Search</button>
-    </div>
+		<div class="form-inline">
+			 {% include 'AppBundle:Search:searchoptions.html.twig' %}
+			 <button class="btn btn-primary form-control" type="submit">Search</button>
+		</div>
 </div>
 </fieldset>
 </form>

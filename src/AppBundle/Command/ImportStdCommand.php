@@ -38,12 +38,12 @@ class ImportStdCommand extends ContainerAwareCommand
 				'Path to the repository'
 				);
 
-        	$this->addOption(
-                        'player',
-                        null,
-                        InputOption::VALUE_NONE,
-                        'Only player cards'
-	        );
+		$this->addOption(
+				'player',
+				null,
+				InputOption::VALUE_NONE,
+				'Only player cards'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -102,7 +102,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$this->loadCollection('Subtype');
 		$output->writeln("Done.");
 
-    // packtypes
+	// packtypes
 		
 		$output->writeln("Importing PackTypes...");
 		$packtypesFileInfo = $this->getFileInfo($path, 'packtypes.json');
@@ -626,27 +626,6 @@ class ImportStdCommand extends ContainerAwareCommand
 
 		if($entity->serialize() !== $orig || (isset($data['back_link']) && (!$entity->getLinkedTo() || $entity->getLinkedTo()->getCode() != $data['back_link']) )) return $entity;
 
-	}
-
-	protected function importAssetData(Card $card, $data)
-	{
-
-	}
-
-	protected function importInvestigatorData(Card $card, $data)
-	{
-		$mandatoryKeys = [
-				'skill_willpower',
-				'skill_intellect',
-				'skill_combat',
-				'skill_agility',
-				'health',
-				'sanity'
-		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
 	}
 
 	protected function importSupportData(Card $card, $data) 

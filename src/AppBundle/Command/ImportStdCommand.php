@@ -702,8 +702,15 @@ class ImportStdCommand extends ContainerAwareCommand
 			'attack',
 			'thwart',
 		];
+		$optionalKeys = [
+			'attack_cost',
+			'thwart_cost',
+		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+		foreach($optionalKeys as $key) {			
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
 

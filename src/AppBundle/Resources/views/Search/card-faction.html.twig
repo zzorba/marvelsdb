@@ -1,6 +1,8 @@
+{% if card.type_code != 'hero' and card.type_code != 'alter_ego' %}
 <div class="card-faction">
 	<span class="icon-{{ card.faction_code }} fg-{{ card.faction_code }}"></span>
 	<span class="card-faction">{{ card.faction_name }}</span>
 	{% if card.faction2_code is defined %}<span class="icon-{{ card.faction2_code }} fg-{{ card.faction2_code }}"></span>
 	<span class="card-faction">{{ card.faction2_name }}</span>{% endif %}
 </div>
+{% endif %}

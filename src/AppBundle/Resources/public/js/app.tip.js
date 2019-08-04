@@ -4,57 +4,41 @@ var cards_zoom_regexp = /card\/(\d\d\d\d\d)$/,
 	mode = 'text',
 	hide_event = 'mouseout';
 
+function getCardText(card) {
+	var image = card.imagesrc ? '<div class="card-thumbnail card-thumbnail-3x card-thumbnail-'+card.type_code+'" style="background-image:url('+card.imagesrc+')"></div>' : "";		
+	var content = image
+	+ '<h4 class="card-name">' + app.format.name(card) + '</h4>'
+	+ '<div class="card-faction">' + app.format.faction(card) + '</div>'
+	+ '<div><span class="card-type">'+card.type_name+((card.type_code == "agenda" || card.type_code == "act") ? '. Stage '+card.stage : '')+(card.slot ? '. '+card.slot : "")+(card.subtype_name ? '. '+card.subtype_name : "")+'</span></div>'
+	+ '<div class="card-traits">' + app.format.traits(card) + '</div>'
+	;
+	
+
+	content += '<div class="card-info">' + app.format.info(card) + '</div>';
+	content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>';
+	if (card.taboo_text){
+		content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card, "taboo_text") + '</div>'
+	}
+	if (card.double_sided){
+		content += '<hr />';
+		if (card.back_flavor){
+			//content += '<div class="card-flavor">' + card.back_flavor + '</div>';
+		}
+		if (card.back_text){
+			content += '<div class="card-text border-'+card.faction_code+'">' + app.format.back_text(card) + '</div>';
+		}
+	}		
+	content += '<div class="card-pack">' + app.format.pack(card) + '</div>';
+	return content;
+}
+
 function display_card_on_element(card, element, event) {
 	var content;
 	if(mode == 'text') {
-		var image = card.imagesrc ? '<div class="card-thumbnail card-thumbnail-3x card-thumbnail-'+card.type_code+'" style="background-image:url('+card.imagesrc+')"></div>' : "";		
-		content = image
-		+ '<h4 class="card-name">' + app.format.name(card) + '</h4>'
-		+ '<div class="card-faction">' + app.format.faction(card) + '</div>'
-		+ '<div><span class="card-type">'+card.type_name+((card.type_code == "agenda" || card.type_code == "act") ? '. Stage '+card.stage : '')+(card.slot ? '. '+card.slot : "")+(card.subtype_name ? '. '+card.subtype_name : "")+'</span></div>'
-		+ '<div class="card-traits">' + app.format.traits(card) + '</div>'
-		;
-		
-		if (card.type_code == "agenda" || card.type_code == "act"){
-			content += '<div class="card-info">' + app.format.info(card) + '</div>';
-			content += '<div class="card-flavor">' + card.flavor + '</div><div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>' 
-		} else if (card.type_code == "location"){			
-			if (card.back_text){
-				content += '<div class="card-text">' + app.format.back_text(card) + '</div>';
-			}
-			if (card.back_flavor){
-				content += '<div class="card-flavor">' + card.back_flavor + '</div>';
-			}
-			content += '<hr />';
-			content += '<div class="card-info">' + app.format.info(card) + '</div>';
-			content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>';
-		}else {
-			content += '<div class="card-info">' + app.format.info(card) + '</div>';
-			content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>';
-			if (card.taboo_text){
-				content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card, "taboo_text") + '</div>'
-			}
-			if (card.double_sided){
-				content += '<hr />';
-				if (card.back_flavor){
-					//content += '<div class="card-flavor">' + card.back_flavor + '</div>';
-				}
-				if (card.back_text){
-					content += '<div class="card-text border-'+card.faction_code+'">' + app.format.back_text(card) + '</div>';
-				}
-			}
+		content = getCardText(card);
+		if (card.linked_card && card.linked_card.type_code == 'alter_ego') {
+			content += getCardText(card.linked_card);
 		}
-		
-		if (card.victory){
-			content += '<div class="card-type">Victory ' + card.victory + '.</div>'
-		}
-
-		if (card.vengeance){
-			content += '<div class="card-type">Vengeance ' + card.vengeance + '.</div>'
-		}
-		
-		content += '<div class="card-pack">' + app.format.pack(card) + '</div>';
-	
 	}
 	else {
 		content = card.imagesrc ? '<img src="'+card.imagesrc+'">' : "";

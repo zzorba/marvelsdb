@@ -7,25 +7,32 @@
 {% if card.type_code == 'upgrade' or card.type_code == 'event' or card.type_code == 'support' or card.type_code == 'ally' %}
 <div class="card-props">
 	{% trans %}Cost{% endtrans %}: {{ macros.integer_or_x(card.cost) }}.
-</div>
-{% endif %}
-
-{% if card.type_code == 'hero' %}
-<div class="card-props">
-	{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}.
-	{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
-	{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense) }}.
-</div>
-{% if card.health %}
+	{% if card.type_code == 'ally' %}
 	<div>
 	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}.
 	</div>
-{% endif %}
-{% if card.hand_size %}
 	<div>
-	{% trans %}Hand Size{% endtrans %}: {{ macros.integer_or_x(card.hand_size) }}.
+		{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}{% if card.attack_cost %}<span>{% for i in 1..card.attack_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
+		{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}{% if card.thwart_cost %}<span>{% for i in 1..card.thwart_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
 	</div>
+	{% endif %}
+</div>
+
 {% endif %}
+
+{% if card.type_code == 'hero' or card.type_code == 'alter_ego' %}
+	<div class="card-props">
+		{% if card.type_code == 'hero' %}
+			{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}.
+			{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
+			{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense) }}.
+		{% else %}
+			{% trans %}Recover{% endtrans %}: {{ macros.integer_or_x(card.recover) }}.
+		{% endif %}
+	</div>
+	<div>
+		{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}. {% trans %}Hand Size{% endtrans %}: {{ macros.integer_or_x(card.hand_size) }}. 
+	</div>
 {% elseif card.type_code == 'minion' %}
 	<div>
 	{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
@@ -38,16 +45,11 @@
 {% else %}	
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}
 	<div>
-	{% trans %}Resources{% endtrans %}:
+	{% trans %}Resource{% endtrans %}:
 	{% if card.resource_mental %}{% for i in 1..card.resource_mental %}<span title="Mental" class="icon icon-mental color-mental"></span>{% endfor %}{% endif %}
 	{% if card.resource_physical %}{% for i in 1..card.resource_physical %}<span title="Physical" class="icon icon-physical color-physical"></span>{% endfor %}{% endif %}
 	{% if card.resource_energy %}{% for i in 1..card.resource_energy %}<span title="Energy" class="icon icon-energy color-energy"></span>{% endfor %}{% endif %}
 	{% if card.resource_wild %}{% for i in 1..card.resource_wild %}<span title="Wild" class="icon icon-wild color-wild"></span>{% endfor %}{% endif %}
-	</div>
-	{% endif %}
-	{% if card.health %}
-	<div>
-	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}.
 	</div>
 	{% endif %}
 {% endif %}

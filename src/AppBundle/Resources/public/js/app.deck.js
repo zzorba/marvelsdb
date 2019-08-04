@@ -480,8 +480,8 @@ deck.get_layout_data = function get_layout_data(options) {
 		}
 	}
 
-	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="'+card.imagesrc+'" class="img-responsive"></div>'));
-	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="'+card.linked_card.imagesrc+'" class="img-responsive"></div>'));
+	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.code+'.png" class="img-responsive"></div>'));
+	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+'</a></h4>'));
 	//deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold">'+investigator_name+'</h4>'));
 	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
@@ -799,11 +799,6 @@ deck.get_problem = function get_problem() {
 	} else {
 		
 	}
-
-	// too many copies of one card
-	if(_.findKey(deck.get_copies_and_deck_limit(), function(value) {
-		return value.nb_copies > value.deck_limit;
-	}) != null) return 'too_many_copies';
 
 	// no invalid card
 	if(deck.get_invalid_cards().length > 0) {

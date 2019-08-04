@@ -139,30 +139,26 @@ deck_charts.chart_cost = function chart_cost() {
 }
 
 
-deck_charts.chart_skill = function chart_skill() {
+deck_charts.chart_resource = function chart_resource() {
 
 	var icons = {};
-	icons['willpower'] = {code: "willpower", "name": "Willpower", count: 0};
-	icons['intellect'] = {code: "intellect", "name": "Intellect", count: 0};
-	icons['combat'] = {code: "combat", "name": "Combat", count: 0};
-	icons['agility'] = {code: "agility", "name": "Agility", count: 0};
+	icons['physical'] = {code: "physical", "name": "Physical", count: 0};
+	icons['mental'] = {code: "mental", "name": "Mental", count: 0};
+	icons['energy'] = {code: "energy", "name": "Energy", count: 0};
 	icons['wild'] = {code: "wild", "name": "Wild", count: 0};
 	var draw_deck = app.deck.get_physical_draw_deck();
 	draw_deck.forEach(function (card) {
-		if (card.skill_willpower && card.skill_willpower > 0){
-			icons['willpower'].count += card.indeck * card.skill_willpower;
+		if (card.resource_physical && card.resource_physical > 0){
+			icons['physical'].count += card.indeck * card.resource_physical;
 		}
-		if (card.skill_intellect && card.skill_intellect > 0){
-			icons['intellect'].count += card.indeck * card.skill_intellect;
+		if (card.resource_mental && card.resource_mental > 0){
+			icons['mental'].count += card.indeck * card.resource_mental;
 		}
-		if (card.skill_combat && card.skill_combat > 0){
-			icons['combat'].count += card.indeck * card.skill_combat;
+		if (card.resource_energy && card.resource_energy > 0){
+			icons['energy'].count += card.indeck * card.resource_energy;
 		}
-		if (card.skill_agility && card.skill_agility > 0){
-			icons['agility'].count += card.indeck * card.skill_agility;
-		}
-		if (card.skill_wild && card.skill_wild > 0){
-			icons['wild'].count += card.indeck * card.skill_wild;
+		if (card.resource_wild && card.resource_wild > 0){
+			icons['wild'].count += card.indeck * card.resource_wild;
 		}
 	})
 
@@ -170,14 +166,14 @@ deck_charts.chart_skill = function chart_skill() {
 	_.each(_.values(icons), function (icon) {
 		data.push({
 			name: icon.name,
-			label: '<span class="icon icon-'+icon.code+'"></span>',
+			label: '<span class="icon icon-'+icon.code+' color-'+icon.code+'"></span>',
 			//color: faction_colors[faction.code],
 			y: icon.count
 		});
 	})
 	data = _.flatten(data).map(function (value) { return value || 0; });
 		
-	$("#deck-chart-skill").highcharts({
+	$("#deck-chart-resource").highcharts({
 		chart: {
 			type: 'column'
 		},
@@ -208,7 +204,7 @@ deck_charts.chart_skill = function chart_skill() {
 		series: [{
 			type: "column",
 			animation: false,
-			name: '# of skill icons',
+			name: '# of resources',
 			showInLegend: false,
 			data: data
 		}],
@@ -296,10 +292,10 @@ deck_charts.chart_slot = function chart_slot() {
 }
 
 deck_charts.setup = function setup(options) {
-	deck_charts.chart_faction();
+	deck_charts.chart_resource();
 	deck_charts.chart_cost();
-	deck_charts.chart_skill();
-	deck_charts.chart_slot();
+	deck_charts.chart_faction();
+	//deck_charts.chart_slot();
 }
 
 $(document).on('shown.bs.tab', 'a[data-toggle=tab]', function (e) {

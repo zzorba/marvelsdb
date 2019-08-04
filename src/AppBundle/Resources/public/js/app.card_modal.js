@@ -38,7 +38,8 @@ function fill_modal (code) {
 	);
 	
 	var qtyelt = modal.find('.modal-qty');
-	if(qtyelt && card.maxqty) {
+	if(qtyelt && card.maxqty && card.faction_code != "hero") {
+		qtyelt.closest('.row').show();
 		var qty = '';
 	  	for(var i=0; i<=card.maxqty; i++) {
 	  		qty += '<label class="btn btn-sm btn-default"><input type="radio" name="qty" value="'+i+'">'+i+'</label>';
@@ -51,7 +52,7 @@ function fill_modal (code) {
 		});
 
 	} else {
-		if(qtyelt) qtyelt.closest('.row').remove();
+		if(qtyelt) qtyelt.closest('.row').hide();
 	}
 	var qtyelt = modal.find('.modal-ignore');
 	

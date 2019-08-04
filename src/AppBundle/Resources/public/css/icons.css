@@ -1,11 +1,11 @@
 
 @font-face {
 	font-family: 'marvel-icons';
-  src:  url('../fonts/marvel-icons.eot?8g8yfq');
-  src:  url('../fonts/marvel-icons.eot?8g8yfq#iefix') format('embedded-opentype'),
-    url('../fonts/marvel-icons.ttf?8g8yfq') format('truetype'),
-    url('../fonts/marvel-icons.woff?8g8yfq') format('woff'),
-    url('../fonts/marvel-icons.svg?8g8yfq#marvel-icons') format('svg');
+  src:  url('../fonts/marvel-icons.eot?h1c2fs');
+  src:  url('../fonts/marvel-icons.eot?h1c2fs#iefix') format('embedded-opentype'),
+    url('../fonts/marvel-icons.ttf?h1c2fs') format('truetype'),
+    url('../fonts/marvel-icons.woff?h1c2fs') format('woff'),
+    url('../fonts/marvel-icons.svg?h1c2fs#marvel-icons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -24,17 +24,20 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-cost:before {
+  content: "\e904";
+}
 .icon-physical:before {
   content: "\e900";
 }
 .icon-energy:before {
   content: "\e901";
 }
-.icon-wild:before {
-  content: "\e902";
-}
 .icon-mental:before {
   content: "\e903";
+}
+.icon-wild:before {
+  content: "\e902";
 }
 
 .spoiler {
@@ -54,18 +57,18 @@
 }
 
 
-.color-will, .color-willpower {
+.color-mental {
 	color : #003961;
 }
-.color-lore, .color-intellect {
-	color : #4e1a45;
+.color-energy {
+	color : #ff8f3f;
 }
-.color-strength, .color-combat {
+.color-physical {
 	color : #661e09;
 }
-.color-agility {
+.color-wild {
 	color : #00543a;
 }
-.color-wild {
-	color : #635120;
+.color-cost {
+  color : #635120;
 }

@@ -41,6 +41,9 @@ format.name = function name(card) {
 }
 
 format.faction = function faction(card) {
+	if (card.type_code == 'hero' || card.type_code == 'alter_ego') {
+		return '';
+	}
 	var text = '<span class="fg-'+card.faction_code+' icon-'+card.faction_code+'"></span> '+ card.faction_name + '. ';
 	if (card.faction2_code) {
 		text += '<span class="fg-'+card.faction2_code+' icon-'+card.faction2_code+'"></span> '+ card.faction2_name + '. ';
@@ -52,14 +55,17 @@ format.faction = function faction(card) {
  * @memberOf format
  */
 format.pack = function pack(card) {
+	if (card.type_code == 'hero') {
+		return '';
+	}
 	var text = card.pack_name + ' #' + card.position + '. ';
-	if (card.encounter_name){
-		text += card.encounter_name;
-		if (card.encounter_position){
-			text += " #"+card.encounter_position;
+	if (card.card_set_name){
+		text += card.card_set_name;
+		if (card.set_position){
+			text += " #"+card.set_position;
 			if (card.quantity > 1){
 				text += "-";
-				text += (card.encounter_position+card.quantity-1);
+				text += (card.set_position+card.quantity-1);
 			}
 		}
 	}
@@ -93,59 +99,51 @@ format.info = function info(card) {
 			text += '. Evade: '+format.fancy_int(card.enemy_evade)+'.</div>';
 			text += '<div>Damage: '+format.fancy_int(card.enemy_damage)+'. Horror: '+format.fancy_int(card.enemy_horror)+'.</div>';
 			break;
-		case 'investigator':
-			text += '<div>Willpower: '+card.skill_willpower+'. Intellect: '+card.skill_intellect+'. Combat: '+card.skill_combat+'. Agility: '+card.skill_agility+'.</div>';
-			text += '<div>Health: '+card.health+'. Sanity: '+card.sanity+'.</div>'
+		case 'hero':
+			text += '<div>Thwart: '+card.thwart+'. Attack: '+card.attack+'. Defense: '+card.defense+'.</div>';
+			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
 			break;	
-		case 'asset':
+		case 'alter_ego':
+			text += '<div>Recover: '+card.recover+'.</div>';
+			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
+			break;	
+		case 'support':
+		case 'ally':
+		case 'upgrade':
+		case 'resource':
 		case 'event':
-			text += '<div>Cost: '+format.fancy_int(card.cost)+'. '+(card.xp ? "XP: "+card.xp+"." : "")+'</div>';
-
-			if (card.skill_willpower || card.skill_intellect || card.skill_combat || card.skill_agility || card.skill_wild){
-				text += '<div>Test Icons: ';
-				if (card.skill_willpower){
-					text += Array(card.skill_willpower+1).join('<span class="icon icon-willpower color-willpower"></span>');
+			if (card.type_code != 'resource') {
+				text += '<div>Cost: '+format.fancy_int(card.cost)+'. '+'</div>';
+			}
+			if (card.resource_physical || card.resource_mental || card.resource_energy || card.resource_wild){
+				text += '<div>Resource: ';
+				if (card.resource_physical){
+					text += Array(card.resource_physical+1).join('<span class="icon icon-physical color-physical"></span>');
 				}
-				if (card.skill_intellect){
-					text += Array(card.skill_intellect+1).join('<span class="icon icon-intellect color-intellect"></span>');
+				if (card.resource_mental){
+					text += Array(card.resource_mental+1).join('<span class="icon icon-mental color-mental"></span>');
 				}
-				if (card.skill_combat){
-					text += Array(card.skill_combat+1).join('<span class="icon icon-combat color-combat"></span>');
+				if (card.resource_energy){
+					text += Array(card.resource_energy+1).join('<span class="icon icon-energy color-energy"></span>');
 				}
-				if (card.skill_agility){
-					text += Array(card.skill_agility+1).join('<span class="icon icon-agility color-agility"></span>');
-				}
-				if (card.skill_wild){
-					text += Array(card.skill_wild+1).join('<span class="icon icon-wild color-wild"></span>');
+				if (card.resource_wild){
+					text += Array(card.resource_wild+1).join('<span class="icon icon-wild color-wild"></span>');
 				}
 				text += '</div>';
 			}
-			if (card.health || card.sanity){
-				text += '<div>Health: '+format.fancy_int(card.health)+'. Sanity: '+format.fancy_int(card.sanity)+'.</div>';
+			if (card.type_code == 'ally') {
+				text += '<div>Attack: '+format.fancy_int(card.attack);
+				if (card.attack_cost) {
+					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+				}
+				text += ' Thwart: '+format.fancy_int(card.thwart);
+				if (card.thwart_cost) {
+					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+				}
+				text += '.</div>';
 			}
-			break;
-		case 'skill':
-			if (card.xp){
-				text += '<div>'+(card.xp ? "XP: "+card.xp+"." : "")+'</div>';
-			}
-			if (card.skill_willpower || card.skill_intellect || card.skill_combat || card.skill_agility || card.skill_wild){
-				text += '<div>Test Icons: ';
-				if (card.skill_willpower){
-					text += Array(card.skill_willpower+1).join('<span class="icon icon-willpower color-willpower"></span>');
-				}
-				if (card.skill_intellect){
-					text += Array(card.skill_intellect+1).join('<span class="icon icon-intellect color-intellect"></span>');
-				}
-				if (card.skill_combat){
-					text += Array(card.skill_combat+1).join('<span class="icon icon-combat color-combat"></span>');
-				}
-				if (card.skill_agility){
-					text += Array(card.skill_agility+1).join('<span class="icon icon-agility color-agility"></span>');
-				}
-				if (card.skill_wild){
-					text += Array(card.skill_wild+1).join('<span class="icon icon-wild color-wild"></span>');
-				}
-				text += '</div>';
+			if (card.health){
+				text += '<div>Health: '+format.fancy_int(card.health)+'.</div>';
 			}
 			break;
 	}

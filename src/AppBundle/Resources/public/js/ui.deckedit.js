@@ -98,7 +98,7 @@ ui.build_faction_selector = function build_faction_selector() {
 	faction_codes.push('basic');
 	
 	faction_codes.forEach(function(faction_code) {
-		if (faction_code == "hero"){
+		if (faction_code == "hero" || faction_code == "encounter"){
 			return;
 		}
 		var example = app.data.cards.find({"faction_code": faction_code})[0];
@@ -112,26 +112,6 @@ ui.build_faction_selector = function build_faction_selector() {
 	
 	$('[data-filter=faction_code]').button();
 	
-	var label = $('<label class="btn btn-default btn-sm" data-code="'
-			+ "basicweakness" + '" title="'+"Basic Weakness"+'"><input type="checkbox" name="' + "basicweakness"
-			+ '"><span class="icon-' + "basicweakness" + '"></span>' + "Basic Weakness" + '</label>');
-	label.tooltip({container: 'body'});
-	$('[data-filter=subtype_code]').append(label);
-	
-	var label = $('<label class="btn btn-default btn-sm" data-code="'
-			+ "special" + '" title="'+"Character"+'"><input type="checkbox" name="' + "special"
-			+ '"><span class="icon-' + "special" + '"></span>' + "Character" + '</label>');
-	label.tooltip({container: 'body'});
-	$('[data-filter=subtype_code]').append(label);
-	
-	
-	var label = $('<label class="btn btn-default btn-sm" data-code="'
-			+ "campaign" + '" title="'+"Campaign"+'"><input type="checkbox" name="' + "campaign"
-			+ '"><span class="icon-' + "campaign" + '"></span>' + "Campaign" + '</label>');
-	label.tooltip({container: 'body'});
-	$('[data-filter=subtype_code]').append(label);
-	
-	$('[data-filter=subtype_code]').button();
 }
 
 /**
@@ -611,10 +591,6 @@ ui.setup_event_handlers = function setup_event_handlers() {
 	$('#collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	$('#special-collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	
-	$('#deck').on('click', 'a[data-random]', ui.select_basic_weakness);
-	$('#deck').on('click', '#xp_up', ui.on_adjust_xp_up);
-	$('#deck').on('click', '#xp_down', ui.on_adjust_xp_down);
-	
 	$('#global_filters').on('click', '#chaos', ui.chaos);
 	
 	
@@ -626,36 +602,6 @@ ui.setup_event_handlers = function setup_event_handlers() {
 
 	$('thead').on('click', 'a[data-sort]', ui.on_table_sort_click);
 
-}
-
-ui.on_adjust_xp_up = function on_adjust_xp_up() {
-	app.deck.set_xp_adjustment(app.deck.get_xp_adjustment()+1);
-	app.deck_history && app.deck_history.setup('#history');
-}
-ui.on_adjust_xp_down = function on_adjust_xp_down() {
-	app.deck.set_xp_adjustment(app.deck.get_xp_adjustment()-1);
-	app.deck_history && app.deck_history.setup('#history');
-}
-
-ui.select_basic_weakness = function select_basic_weakness() {
-	// replace the random weakness card in the deck with a random weakness
-	var weaknesses = app.data.cards.find({"subtype_code" : "basicweakness"});
-	var filtered_weaknesses = [];
-	weaknesses.forEach(function (card){
-		//console.log(card);
-		
-		if($("[name="+card.pack_code+"]").is(":checked") && card.name != "Random Basic Weakness" && card.indeck < card.maxqty){
-			filtered_weaknesses.push(card);
-		}
-	});
-	if (filtered_weaknesses.length > 0){
-		var weakness = filtered_weaknesses[ Math.round(Math.random(0, 1) * (filtered_weaknesses.length-1)) ];
-		if ($(this) && $(this).data("random")){
-			ui.on_quantity_change($(this).data("random"), 0);	
-		}
-		ui.on_quantity_change(weakness.code, weakness.indeck+1);
-	}
-	
 }
 
 
@@ -714,7 +660,7 @@ ui.update_list_template = function update_list_template() {
 				+ '<%= card.name %></a>'
 				+ '<% if (card.exceptional) { %> <span class="icon-eldersign" style="color:orange;" title="Exceptional. Double xp cost and limit one per deck."></span> <% } %>'
 				+ '</td>'
-				+ '<td class="resources"></td>'
+				+ '<td class="resources"><%= resources %></td>'
 				+ '<td class="cost"><%= card.cost %></td>'
 				+ '<td class="type" style="text-align : left;"><span class="" title="<%= card.type_name %>"><%= card.type_name %></span> <% if (card.slot) { %> - <%= card.slot %> <% } %></td>'
 				+ '<td class="faction"><span class="fg-<%= card.faction_code %>" title="<%= card.faction_name %>"><%= card.faction_name %></span></td>'
@@ -758,7 +704,19 @@ ui.build_row = function build_row(card) {
 	var radios = '', radioTpl = _.template(
 		'<label class="btn btn-xs btn-default <%= active %>"><input type="radio" name="qty-<%= card.code %>" value="<%= i %>"><%= i %></label>'
 	);
-	
+	var $span = $('<span>');
+	if(card.resource_physical && card.resource_physical > 0) {
+		$span.append(app.format.resource(card.resource_physical, 'physical'));
+	}
+	if(card.resource_mental && card.resource_mental > 0) {
+		$span.append(app.format.resource(card.resource_mental, 'mental'));
+	}
+	if(card.resource_energy && card.resource_energy > 0) {
+		$span.append(app.format.resource(card.resource_energy, 'energy'));
+	}
+	if(card.resource_wild && card.resource_wild > 0) {
+		$span.append(app.format.resource(card.resource_wild, 'wild'));
+	}
 	//console.log(card.name, card.maxqty, card.quantity);
 	for (var i = 0; i <= card.maxqty; i++) {		
 		radios += radioTpl({
@@ -770,6 +728,7 @@ ui.build_row = function build_row(card) {
 
 	var html = DisplayColumnsTpl({
 		radios: radios,
+		resources: $span.html(),
 		url: Routing.generate('cards_zoom', {card_code:card.code}),
 		card: card
 	});

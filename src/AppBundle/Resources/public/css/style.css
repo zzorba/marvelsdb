@@ -298,11 +298,7 @@ h4.deck-section {
 .card-thumbnail-3x{width:67px;height:67px;background-size:100px 139px}
 .card-thumbnail-4x{width:50px;height:50px;background-size:75px 105px}
 .card-thumbnail-5x{width:40px;height:40px;background-size:60px 84px}
-.card-thumbnail-1x.card-thumbnail-investigator{background-size:400px 300px;background-position: 0px -50px}
-.card-thumbnail-2x.card-thumbnail-investigator{background-size:300px 200px;background-position: -23px -32px}
-.card-thumbnail-3x.card-thumbnail-investigator{background-size:139px 100px;background-position:-5px -18px}
-.card-thumbnail-4x.card-thumbnail-investigator{background-position:-20px -5px}
-.card-thumbnail-5x.card-thumbnail-investigator{background-position:-16px -4px}
+
 .card-thumbnail-1x.card-thumbnail-asset{background-position:-51px -31px}
 .card-thumbnail-2x.card-thumbnail-asset{background-position:-25.5px -15.5px}
 .card-thumbnail-3x.card-thumbnail-asset{background-position:-17px -10.3px}

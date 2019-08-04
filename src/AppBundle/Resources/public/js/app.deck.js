@@ -40,7 +40,7 @@ var date_creation,
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one block view
-layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-6"><%= images %></div><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
+layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
 // two colum view
 layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %> </div></div> <div id="upgrade_changes"></div></div>');
 layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
@@ -482,7 +482,7 @@ deck.get_layout_data = function get_layout_data(options) {
 
 	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
-	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+'</a></h4>'));
+	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
 	//deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold">'+investigator_name+'</h4>'));
 	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
 	var pack_string = _.map(deck.get_included_packs(), function (pack) { return pack.name+(pack.quantity > 1 ? ' ('+pack.quantity+')' : ''); }).join(', ');

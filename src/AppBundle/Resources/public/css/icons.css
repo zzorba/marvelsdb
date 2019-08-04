@@ -29,6 +29,7 @@
 }
 .icon-physical:before {
   content: "\e900";
+  font-size: 0.85em;
 }
 .icon-energy:before {
   content: "\e901";

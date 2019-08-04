@@ -9,15 +9,12 @@ format.traits = function traits(card) {
 
 
 
-format.xp = function xp(xp, in_deck, css) {
+format.resource = function resource(value, type, css) {
 	var string = "";
-	if (xp && xp > 0)
-	{
- 		string += ' <span class="card-xp xp-'+xp+'';
- 		if (css){
- 			string += ' '+css;
- 		}
- 		string += '">'+("••••••".slice(-xp))+"</span>";
+	if (value && value > 0) {
+		for (var i = 0; i < value; i++) {
+			string += '<span class="icon-'+type+'" title="'+type+'"></span>';
+		}
 	}
 	return string;
 };

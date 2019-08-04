@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 /**
  * Packtype
  */
-class Packtype
+class Packtype implements \Gedmo\Translatable\Translatable, \Serializable
 {
     public function serialize() {
         return [

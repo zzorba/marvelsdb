@@ -1,17 +1,17 @@
 
 @font-face {
-	font-family: 'thronesdb';
-	src:url('../fonts/arkham-icons.otf?irjt2b');
-	src:url('../fonts/arkham-icons.otf?#iefixirjt2b') format('opentype'),
-	url('../fonts/arkham-icons.ttf?irjt2b') format('truetype'),
-	url('../fonts/arkham-icons.woff?irjt2b') format('woff'),
-		url('../fonts/arkham-icons.svg?irjt2b#thronesdb') format('svg');
+	font-family: 'marvel-icons';
+  src:  url('../fonts/marvel-icons.eot?8g8yfq');
+  src:  url('../fonts/marvel-icons.eot?8g8yfq#iefix') format('embedded-opentype'),
+    url('../fonts/marvel-icons.ttf?8g8yfq') format('truetype'),
+    url('../fonts/marvel-icons.woff?8g8yfq') format('woff'),
+    url('../fonts/marvel-icons.svg?8g8yfq#marvel-icons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'thronesdb';
+	font-family: 'marvel-icons';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -24,71 +24,17 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-reaction:before {
-	content: "!";
+.icon-physical:before {
+  content: "\e900";
 }
-.icon-fast:before, .icon-free:before {
-	content: "j";
-}
-.icon-eldersign:before, .icon-elder_sign:before {
-	content: "o";
-}
-.icon-lightning:before {
-	content: "j";
-}
-.icon-action:before {
-	content: "i";
-}
-.icon-strength:before, .icon-combat:before {
-	content: "c";
-}
-.icon-agility:before {
-	content: "a";
-}
-.icon-will:before, .icon-willpower:before {
-	content: "p";
-}
-.icon-lore:before, .icon-intellect:before {
-	content: "b";
+.icon-energy:before {
+  content: "\e901";
 }
 .icon-wild:before {
-	content: "?";
-	font-weight : bold;
-	padding-right : 2px;
+  content: "\e902";
 }
-.icon-unique:before {
-	content: "s";
-	font-size : 1.1em;
-}
-.icon-elder_thing:before {
-	content: "n";
-}
-.icon-skull:before {
-	content: "k";
-}
-.icon-auto_fail:before {
-	content: "m";
-}
-.icon-cultist:before {
-	content: "l";
-}
-.icon-tablet:before {
-	content: "q";
-}
-.icon-per_investigator:before {
-	content: "u";
-	vertical-align : top;
-	font-size : 12px;
-}
-.icon-null:before {
-	content: "t";
-}
-
-.icon-health:before {
-
-}
-.icon-sanity:before {
-
+.icon-mental:before {
+  content: "\e903";
 }
 
 .spoiler {

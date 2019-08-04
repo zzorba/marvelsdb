@@ -32,31 +32,10 @@ class CardsData
 	public function replaceSymbols($text)
 	{
 		static $displayTextReplacements = [
-			'[eldersign]' => '<span class="icon-eldersign" title="Elder Sign"></span>',
-			'[elder_sign]' => '<span class="icon-elder_sign" title="Elder Sign"></span>',
-			'[cultist]' => '<span class="icon-cultist" title="Cultist"></span>',
-			'[tablet]' => '<span class="icon-tablet" title="Tablet"></span>',
-			'[elder_thing]' => '<span class="icon-elder_thing" title="Elder Thing"></span>',
-			'[auto_fail]' => '<span class="icon-auto_fail" title="Auto Fail"></span>',
-			'[fail]' => '<span class="icon-auto_fail" title="Auto Fail"></span>',
-			'[skull]' => '<span class="icon-skull" title="Skull"></span>',
-			'[reaction]' => '<span class="icon-reaction" title="Reaction"></span>',
-			'[action]' => '<span class="icon-action" title="Action"></span>',
-			'[lightning]' => '<span class="icon-lightning" title="Fast Action"></span>',
-			'[fast]' => '<span class="icon-lightning" title="Fast Action"></span>',
-			'[free]' => '<span class="icon-lightning" title="Fast Action"></span>',
-			'[willpower]' => '<span class="icon-willpower" title="Willpower"></span>',
-			'[intellect]' => '<span class="icon-intellect" title="Intellect"></span>',
-			'[combat]' => '<span class="icon-combat" title="Combat"></span>',
-			'[agility]' => '<span class="icon-agility" title="Agility"></span>',
-			'[wild]' => '<span class="icon-wild" title="Any Skill"></span>',
-			'[guardian]' => '<span class="icon-guardian" title="Guardian"></span>',
-			'[survivor]' => '<span class="icon-survivor" title="Survivor"></span>',
-			'[rogue]' => '<span class="icon-rogue" title="Rogue"></span>',
-			'[seeker]' => '<span class="icon-seeker" title="Seeker"></span>',
-			'[mystic]' => '<span class="icon-mystic" title="Mystic"></span>',
-			'[neutral]' => '<span class="icon-neutral" title="Neutral">Neutral</span>',
-			'[per_investigator]' => '<span class="icon-per_investigator" title="Per Investigator"></span>'
+			'[physical]' => '<span class="icon-physical" title="Physical"></span>',
+			'[energy]' => '<span class="icon-energy" title="Energy"></span>',
+			'[wild]' => '<span class="icon-wild" title="Wild"></span>',
+			'[mental]' => '<span class="icon-mental" title="Mental"></span>',
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);

@@ -86,16 +86,10 @@ class SlotCollectionDecorator implements \AppBundle\Model\SlotCollectionInterfac
 	}
 	
 	public function getSlotsByType($excludeWeakness=0) {
-		$slotsByType = [ 'asset' => [], 'event' => [], 'skill' => [], 'treachery' => [], 'enemy' => []];
+		$slotsByType = [ 'upgrade' => [], 'ally' => [], 'support' => [], 'event' => [], 'resource' => []];
 		foreach($this->slots as $slot) {
 			if(array_key_exists($slot->getCard()->getType()->getCode(), $slotsByType)) {
-				if ($excludeWeakness){
-					if (!$slot->getCard()->getSubtype() || ($slot->getCard()->getSubtype()->getCode() != "weakness" && $slot->getCard()->getSubtype()->getCode() != "basicweakness") ){
-						$slotsByType[$slot->getCard()->getType()->getCode()][] = $slot;
-					}
-				} else {
-					$slotsByType[$slot->getCard()->getType()->getCode()][] = $slot;
-				}
+				$slotsByType[$slot->getCard()->getType()->getCode()][] = $slot;
 			}
 		}
 		return $slotsByType;
@@ -112,7 +106,7 @@ class SlotCollectionDecorator implements \AppBundle\Model\SlotCollectionInterfac
 	}
 	
 	public function getCountByType() {
-		$countByType = [ 'asset' => 0, 'event' => 0, 'skill' => 0, 'treachery' => 0, 'enemy' => 0 ];
+		$countByType = [ 'upgrade' => 0, 'ally' => 0, 'support' => 0, 'event' => 0, 'resource' => 0 ];
 		foreach($this->slots as $slot) {
 			if(array_key_exists($slot->getCard()->getType()->getCode(), $countByType)) {
 				$countByType[$slot->getCard()->getType()->getCode()] += $slot->getQuantity();
@@ -125,10 +119,11 @@ class SlotCollectionDecorator implements \AppBundle\Model\SlotCollectionInterfac
 	{
 		$drawDeck = [];
 		foreach($this->slots as $slot) {
-			if($slot->getCard()->getType()->getCode() === 'asset'
-			|| $slot->getCard()->getType()->getCode() === 'event'
-			|| $slot->getCard()->getType()->getCode() === 'skill'
-			|| $slot->getCard()->getType()->getCode() === 'treachery') {
+			if($slot->getCard()->getType()->getCode() === 'upgrade'
+			|| $slot->getCard()->getType()->getCode() === 'ally'
+			|| $slot->getCard()->getType()->getCode() === 'support'
+			|| $slot->getCard()->getType()->getCode() === 'resource'
+			|| $slot->getCard()->getType()->getCode() === 'event') {
 				$drawDeck[] = $slot;
 			}
 		}

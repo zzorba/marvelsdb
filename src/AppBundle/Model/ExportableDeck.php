@@ -81,9 +81,7 @@ class ExportableDeck
 				'investigator' => $this->getCharacter(),
 				'draw_deck_size' => $slots->getDrawDeck()->countCards(),
 				'included_packs' => $slots->getIncludedPacks(),
-				'slots_by_type' => $slots->getSlotsByType(1),
-				'basicweakness' => $slots->getSlotsBySubType("basicweakness"),
-				'weakness' => $slots->getSlotsBySubType("weakness")
+				'slots_by_type' => $slots->getSlotsByType(1)
 		];
 	}
 }

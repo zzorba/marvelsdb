@@ -31,7 +31,7 @@ var date_creation,
 		investigator: "Doesn't comply with the Investigator requirements"
 	},
 	header_tpl = _.template('<h5><span class="icon icon-<%= code %>"></span> <%= name %> (<%= quantity %>)</h5>'),
-	card_line_tpl = _.template('<span class="icon icon-<%= card.type_code %> icon-<%= card.faction_code %>"></span><% if (typeof(card.faction2_code) !== "undefined") { %><span class="icon icon-<%= card.faction2_code %>"></span> <% } %> <a href="<%= card.url %>" class="card card-tip fg-<%= card.faction_code %> <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="<%= card.code %>"><%= card.name %></a>'),
+	card_line_tpl = _.template('<span class="icon icon-<%= card.type_code %> icon-<%= card.faction_code %>"></span><% if (typeof(card.faction2_code) !== "undefined") { %><span class="icon icon-<%= card.faction2_code %>"></span> <% } %> <a href="<%= card.url %>" class="card card-tip <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="<%= card.code %>"><%= card.name %></a>'),
 	layouts = {},
 	layout_data = {};
 	
@@ -621,12 +621,16 @@ deck.create_card = function create_card(card){
 
 	$div.append($(card_line_tpl({card:card})));
 	
+	if(card.faction_code == "hero") {
+		$div.prepend(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
+	} else {
+		$div.prepend(' <span class="fa fa-circle fg-'+card.faction_code+'" title="'+card.faction_code+'"></span>');
+	}
+	
 	$div.prepend(card.indeck+'x ');
 	
 	var $span = $('<span style="float: right"></span>');
-	if(card.faction_code == "hero") {
-		$span.append(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
-	}
+	
 	if(card.resource_physical && card.resource_physical > 0) {
 		$span.append(app.format.resource(card.resource_physical, 'physical'));
 	}
@@ -818,7 +822,7 @@ deck.get_problem = function get_problem() {
 }
 
 deck.reset_limit_count = function (){
-
+	deck.meta.aspect = "";
 }
 
 deck.get_invalid_cards = function get_invalid_cards() {
@@ -839,13 +843,17 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	if (card.type_code === "hero") {
 		return false;
 	}
-	if (card.faction_code === "mythos") {
+	if (card.faction_code === "encounter") {
 		return false;
 	}
-
-	// reject cards restricted
-	if (card.restrictions && card.restrictions.investigator && !card.restrictions.investigator[investigator_code]) {
-			return false;
+	
+	
+	if (deck.meta.aspect) {
+		if (card.faction_code == "justice" || card.faction_code == "leadership" || card.faction_code == "protection" || card.faction_code == "aggression") {
+			if (deck.meta.aspect != card.faction_code) {
+				return false;
+			}
+		}
 	}
 	
 	//var investigator = app.data.cards.findById(investigator_code);

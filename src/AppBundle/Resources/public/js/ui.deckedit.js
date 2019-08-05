@@ -646,6 +646,7 @@ ui.get_filters = function get_filters(prefix) {
 	return filters;
 }
 
+
 /**
  * updates internal variables when display columns change
  * @memberOf ui
@@ -656,7 +657,7 @@ ui.update_list_template = function update_list_template() {
 		DisplayColumnsTpl = _.template(
 			'<tr>'
 				+ '<td><div class="btn-group" data-toggle="buttons"><%= radios %></div></td>'
-				+ '<td><a class="card card-tip fg-<%= card.faction_code %> <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-code="<%= card.code %>" href="<%= url %>" data-target="#cardModal" data-remote="false" data-toggle="modal">'
+				+ '<td><span class="fa fa-circle fg-<%= card.faction_code %>"></span> <a class="card card-tip <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-code="<%= card.code %>" href="<%= url %>" data-target="#cardModal" data-remote="false" data-toggle="modal">'
 				+ '<%= card.name %></a>'
 				+ '<% if (card.exceptional) { %> <span class="icon-eldersign" style="color:orange;" title="Exceptional. Double xp cost and limit one per deck."></span> <% } %>'
 				+ '</td>'

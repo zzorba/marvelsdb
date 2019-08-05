@@ -30,9 +30,9 @@
 						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>
 					</div>
 					<div>
-						Investigator: <a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
+						<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
 						<div class="small pull-right">
-						{{ macros.decklist_social_icons(data.decklist ) }}						
+						{{ macros.decklist_social_icons(data.decklist ) }}
 						</div>
 					</div>
 					<div>
@@ -61,7 +61,7 @@
 								<span class="icon icon-{{ data.faction.code }}"></span>
 								<a href="{{ path('decklist_detail',{decklist_id:data.decklist.id,decklist_name:data.decklist.nameCanonical}) }}">{{ data.decklist.name }}</a>
 							</h4>
-					</div>              
+					</div>
 				</div>
 			</div>
 			<div style="background-color: white; background-position: -50px -250px; background-size: 1200px 800px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
@@ -71,9 +71,9 @@
 						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>
 					</div>
 					<div>
-						Investigator: <a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
+						<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
 						<div class="small pull-right">
-						{{ macros.decklist_social_icons(data.decklist ) }}						
+						{{ macros.decklist_social_icons(data.decklist ) }}
 						</div>
 					</div>
 					<div>
@@ -84,7 +84,7 @@
 						<div class="small pull-right">
 						<time datetime="{{ data.decklist.dateCreation|date('c') }}">{{ data.decklist.dateCreation|date('M d, Y') }}</time>
 						</div>
-					</div>					
+					</div>
 				</div>
 			</div>
 		</div>

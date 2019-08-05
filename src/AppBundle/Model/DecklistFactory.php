@@ -51,10 +51,6 @@ class DecklistFactory
 		
 		$decklist = new Decklist();
 		$decklist->setName($name);
-		$decklist->setXp($deck->getXp());
-		$decklist->setExiles($deck->getExiles());
-		$decklist->setXpSpent($deck->getXpSpent());
-		$decklist->setXpAdjustment($deck->getXpAdjustment());
 		$decklist->setVersion($deck->getVersion());
 		$decklist->setNameCanonical($this->texts->slugify($name) . '-' . $decklist->getVersion());
 		$decklist->setDescriptionMd($descriptionMd);
@@ -63,7 +59,6 @@ class DecklistFactory
 		$decklist->setDateUpdate(new \DateTime());
 		$decklist->setSignature($new_signature);
 		$decklist->setCharacter($deck->getCharacter());
-		$decklist->setTaboo($deck->getTaboo());
 		$decklist->setLastPack($deck->getLastPack());
 		$decklist->setNbVotes(0);
 		$decklist->setNbfavorites(0);
@@ -87,16 +82,6 @@ class DecklistFactory
 		//$decklist->setParent($deck);
 
 		$deck->setMinorVersion(1);
-		
-		// try to connect decks backwards 
-		if ($nextDecklist){
-			$decklist->setNextdeck($nextDecklist);
-		}
-
-		if ($deck->getPreviousDeck()){
-			$previousDeckList = $this->createDecklistFromDeck($deck->getPreviousDeck(), $name, $descriptionMd, $decklist);
-			$decklist->setPreviousDeck($previousDeckList);
-		}
 
 		return $decklist;
 	}

@@ -29,7 +29,6 @@
 				<a href="{{ path('cards_zoom',{card_code:related.code}) }}" class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %} card-tip" data-code="{{ related.code }}">
 				{{ related.name }}{% if related.subname%}: {{ related.subname }}{% endif %}
 				{% if related.backname %}: {{ related.backname }}{% endif %}</a>
-				{% if related.xp %}<span class="xp-{{ related.xp }}"> ({{ related.xp }})</span>{% endif %} 
 				{{related.getPack().getName()}} #{{related.position}}
 				</li>
 			{% endif %}

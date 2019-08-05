@@ -622,7 +622,7 @@ deck.create_card = function create_card(card){
 	$div.append($(card_line_tpl({card:card})));
 	
 	if(card.faction_code == "hero") {
-		$div.prepend(' <span class="fa fa-user" style="color:red;" title="Hero specific cards. Cannot be removed"></span>');
+		$div.prepend(' <span class="fa fa-user" style="color:grey;" title="Hero specific cards. Cannot be removed"></span>');
 	} else {
 		$div.prepend(' <span class="fa fa-circle fg-'+card.faction_code+'" title="'+card.faction_code+'"></span>');
 	}

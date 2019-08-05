@@ -295,7 +295,7 @@ h4.deck-section {
 .card-thumbnail-static{background-attachment:scroll;background-origin:padding-box;background-clip:border-box;background-repeat:no-repeat;margin:0 0 5px 5px;position:relative;border:1px solid #000;}
 .card-thumbnail-1x{background-repeat:no-repeat;width:200px;height:200px;background-size:300px 418px}
 .card-thumbnail-2x{background-repeat:no-repeat;width:100px;height:100px;background-size:150px 209px}
-.card-thumbnail-3x{width:67px;height:67px;background-size:100px 139px}
+.card-thumbnail-3x{width:67px;height:67px;background-size:100px 139px;background-position:-20px -14px}
 .card-thumbnail-4x{width:50px;height:50px;background-size:75px 105px}
 .card-thumbnail-5x{width:40px;height:40px;background-size:60px 84px}
 
@@ -338,8 +338,8 @@ h4.deck-section {
 .card-thumbnail-wide.card-thumbnail-investigator {
 	background-repeat:no-repeat;
 	width:120px;height:55px;
-	background-size:270px 180px;
-	background-position: -5px -45px
+	background-size:180px 270px;
+	background-position: -50px -55px
 }
 
 .card-faded-background {

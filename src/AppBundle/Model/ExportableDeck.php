@@ -49,13 +49,8 @@ class ExportableDeck
 			'slots' => $slots->getContent(),
 			'ignoreDeckLimitSlots' => $slots->getIgnoreDeckLimitContent(),
 			'version' => $this->getVersion(),
-			'xp' => $xp,
-			'xp_adjustment' => $xp_adjustment,
-			'exile_string' => $this->getExiles(),
 			'meta' => $this->getMeta() ? $this->getMeta() : "",
-			'tags' => $tags,
-			'previous_deck' => $previousDeck,
-			'next_deck' => $nextDeck
+			'tags' => $tags
 		];
 	
 		return $array;

@@ -367,7 +367,9 @@ class ImportStdCommand extends ContainerAwareCommand
 					'position', 
 					'size', 
 					'date_release'
-			], [], [
+			], [
+				'pack_type_code'
+			], [
 					'cgdb_id'
 			]);
 			if($pack) {
@@ -580,6 +582,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($key === "set_code") {
 				$foreignEntityShortName = "Cardset";
 			}
+			if ($key === "pack_type_code") {
+				$foreignEntityShortName = 'Packtype';
+			}
 
 			if(!key_exists($key, $data)) {
 				// optional links to other tables 
@@ -620,6 +625,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($cleanName == "Alter-Ego") {
 				$cleanName = "AlterEgo";
 			}
+			if ($cleanName == "Side Scheme") {
+				$cleanName = "SideScheme";
+			}
 			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
@@ -640,11 +648,11 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importObligationData(Card $card, $data) 
 	{
-		$mandatoryKeys = [
-			'kicker',
+		$optionalKeys = [
+			'boost',
 		];
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
 
@@ -694,24 +702,32 @@ class ImportStdCommand extends ContainerAwareCommand
 	}
 
 
-	protected function importEnemyData(Card $card, $data)
+	protected function importMinionData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'enemy_fight',
-				'enemy_evade',
+				'attack',
+				'scheme',
 				'health'
 		];
 
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
+
+		$optionalKeys = [
+				'boost',
+				'boost_text'
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 
-	protected function importAgendaData(Card $card, $data)
+	protected function importSideSchemeData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'doom'
+				'base_threat'
 		];
 
 		foreach($mandatoryKeys as $key) {
@@ -750,7 +766,24 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importTreacheryData(Card $card, $data)
 	{
+		$optionalKeys = [
+				'boost',
+				'boost_text'
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
+	}
 
+	protected function importAttachmentData(Card $card, $data)
+	{
+		$optionalKeys = [
+				'boost',
+				'boost_text'
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 	protected function getDataFromFile(\SplFileInfo $fileinfo)

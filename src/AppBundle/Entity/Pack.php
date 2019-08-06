@@ -7,7 +7,7 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
 	public function serialize() {
 		return [
 				'code' => $this->code,
-				'type' => $this->type ? $this->type->getCode() : null,
+				'pack_type' => $this->pack_type ? $this->pack_type->getCode() : null,
 				'date_release' => $this->dateRelease ? $this->dateRelease->format('Y-m-d') : null,
 				'name' => $this->name,
 				'position' => $this->position,
@@ -72,11 +72,6 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
      * @var \Doctrine\Common\Collections\Collection
      */
     private $cards;
-
-    /**
-     * @var \AppBundle\Entity\Packtype
-     */
-    private $type;
 
     /**
      * Constructor
@@ -322,30 +317,6 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
         return $this->cards;
     }
 
-    /**
-     * Set type
-     *
-     * @param \AppBundle\Entity\PackType $type
-     *
-     * @return Pack
-     */
-    public function setType(\AppBundle\Entity\PackType $type = null)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \AppBundle\Entity\PackType
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
     /*
     * I18N vars
     */
@@ -354,5 +325,34 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+    }
+    /**
+     * @var \AppBundle\Entity\Packtype
+     */
+    private $pack_type;
+
+
+    /**
+     * Set packType
+     *
+     * @param \AppBundle\Entity\Packtype $packType
+     *
+     * @return Pack
+     */
+    public function setPackType(\AppBundle\Entity\Packtype $packType = null)
+    {
+        $this->pack_type = $packType;
+
+        return $this;
+    }
+
+    /**
+     * Get packType
+     *
+     * @return \AppBundle\Entity\Packtype
+     */
+    public function getPackType()
+    {
+        return $this->pack_type;
     }
 }

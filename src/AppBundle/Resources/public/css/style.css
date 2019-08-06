@@ -1,6 +1,13 @@
 
 /* fonts */
 
+@font-face {
+	font-family: 'marvel';
+  src:  url('../fonts/marvel-regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
 
 }
@@ -398,9 +405,10 @@ h4.deck-section {
 /************** INDEX PAGE ***************/
 
 h1.site-title {
-	font-family: 'Julius Sans One', sans-serif;
+	/*font-family: 'Julius Sans One', sans-serif;*/
+	font-family: 'marvel';
 	position:relative;
-	font-size:110px;
+	font-size:130px;
 	text-align:center;
 	margin-top: 0;
 	margin: 0;

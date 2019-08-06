@@ -236,7 +236,7 @@ class BuilderController extends Controller
 			'name' => $name
 			));
 			if ($card) {
-				if ($card->getType()->getCode() == "investigator"){
+				if ($card->getType()->getCode() == "hero"){
 					$identity = $card->getCode();
 				}else {
 					$content[$card->getCode()] = $quantity;
@@ -406,78 +406,6 @@ class BuilderController extends Controller
 				'deck_id' => $deck->getParent() ? $deck->getParent()->getId() : null
 			)
 		);
-
-	}
-
-	public function upgradeAction (Request $request)
-	{
-		/* @var $em \Doctrine\ORM\EntityManager */
-		$em = $this->getDoctrine()->getManager();
-
-		$deck_id = filter_var($request->get('upgrade_deck'), FILTER_SANITIZE_NUMBER_INT);
-		$xp = filter_var($request->get('xp'), FILTER_SANITIZE_NUMBER_INT);
-		if ($request->get('exiles')){
-			$exiles = filter_var_array($request->get('exiles'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		} else {
-			$exiles = false;
-		}
-		$filtered_exiles = [];
-		$filtered_exile_cards = [];
-		if ($exiles){
-			foreach ($exiles as $exile) {
-				$exile_card = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $exile));
-				if ($exile_card){
-					$filtered_exile_cards[] = $exile_card;
-					$filtered_exiles[] = $exile_card->getCode();
-				}
-			}
-		}
-
-		/* @var $deck \AppBundle\Entity\Deck */
-		$deck = $em->getRepository('AppBundle:Deck')->find($deck_id);
-		if (!$deck){
-			return false;
-		}
-		$is_owner = $this->getUser() && $this->getUser()->getId() == $deck->getUser()->getId();
-		if(!$is_owner) {
-			return $this->render(
-				'AppBundle:Default:error.html.twig',
-				array(
-					'pagetitle' => "Error",
-					'error' => 'You are not allowed to view this deck. To get access, you can ask the deck owner to enable "Share your decks" on their account.'
-				)
-			);
-		}
-
-		if ($deck->getXp()){
-			$xp += $deck->getXp();
-		}
-		if ($deck->getXpSpent()){
-			$xp -= $deck->getXpSpent();
-		}
-
-		$content = [];
-		$ignored = [];
-		foreach ($deck->getSlots() as $slot) {
-			$content[$slot->getCard()->getCode()] = $slot->getQuantity();
-			if ($slot->getIgnoreDeckLimit()){
-				$ignored[$slot->getCard()->getCode()] = $slot->getIgnoreDeckLimit();
-			}
-		}
-		return $this->forward('AppBundle:Builder:save',
-		array(
-			'name' => $deck->getName().'',
-			'faction_code' => $deck->getCharacter()->getCode(),
-			'tags' => $deck->getTags(),
-			'content' => json_encode($content),
-			'ignored' => json_encode($ignored),
-			'deck_id' => $deck->getParent() ? $deck->getParent()->getId() : null,
-			'xp' => $xp,
-			'previous_deck' => $deck,
-			'upgrades' => $deck->getUpgrades(),
-			'exiles_string' => implode(",",$filtered_exiles),
-			'exiles' => $filtered_exile_cards
-		));
 
 	}
 
@@ -790,30 +718,16 @@ class BuilderController extends Controller
 		if(count($decks))
 		{
 			$tags = [];
-			$previous_decks = [];
-			foreach($decks as $deck) {
-				$tags[] = $deck->getTags();
-				$temp_deck = $deck;
-				$previous_decks[$deck->getId()] = [];
-				if ($temp_deck->getPreviousDeck()){
-					while ($temp_deck->getPreviousDeck()){
-						$temp_deck = $temp_deck->getPreviousDeck();
-						$previous_decks[$deck->getId()][] = $temp_deck;
-					}
-				}
-			}
 			$tags = array_unique($tags);
 			return $this->render('AppBundle:Builder:decks.html.twig',
 			array(
 				'pagetitle' => "My Decks",
 				'pagedescription' => "Create custom decks with the help of a powerful deckbuilder.",
 				'decks' => $decks,
-				'previousdecks' => $previous_decks,
 				'tags' => $tags,
 				'nbmax' => $user->getMaxNbDecks(),
 				'nbdecks' => count($decks),
-				'cannotcreate' => $user->getMaxNbDecks() <= count($decks),
-				'tournaments' => $tournaments,
+				'cannotcreate' => $user->getMaxNbDecks() <= count($decks)
 			));
 
 		}
@@ -823,8 +737,7 @@ class BuilderController extends Controller
 				array(
 					'pagetitle' => "My Decks",
 					'pagedescription' => "Create custom decks with the help of a powerful deckbuilder.",
-					'nbmax' => $user->getMaxNbDecks(),
-					'tournaments' => $tournaments,
+					'nbmax' => $user->getMaxNbDecks()
 				)
 			);
 		}

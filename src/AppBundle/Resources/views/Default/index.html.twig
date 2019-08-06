@@ -4,9 +4,73 @@
 {% block body %}
 
 <div class="main container">
-<h1 class="site-title hidden-xs">MarvelCDB</h1>
+<h1 class="site-title hidden-xs">MARVELCDB</h1>
 <div class="site-slogan">Deckbuilder and Card Database for the Marvel Champions LCG</div>
 </div> <!-- .container -->
+
+<style>
+	.box {
+		margin:5px;
+		background:#fff;
+		border: solid black;
+		border-color: black;
+		overflow: hidden
+		/*transform: rotate(1deg);*/
+	}
+
+	/*
+	.box1 {
+		border-width: 3px 4px 3px 5px;
+		border-radius:45% 4% 92% 5%/4% 40% 6% 95%;
+		transform: rotate(0.5deg);
+	}
+	.box2 {
+		border-width: 2px 3px 2px 4px;
+		border-radius:98% 1% 92% 1%/1% 90% 1% 90%;
+		transform: rotate(-0.5deg);
+	}
+	.box3 {
+		border-width: 2px 2px 4px 5px;
+		border-radius:4% 95% 6% 95%/95% 4% 92% 5%;
+		transform: rotate(0.5deg);
+	}
+	.box4 {
+		border-width: 4px 2px 2px 4px;
+		border-radius:95% 4% 97% 5%/4% 94% 3% 95%;
+		transform: rotate(-0.5deg);
+	}
+	*/
+	
+
+	.box1 {
+		border-width: 2px 2px 2px 2px;
+		
+		transform: rotate(0.5deg);
+	}
+	.box2 {
+		border-width: 2px 2px 2px 2px;
+		
+		transform: rotate(-0.5deg);
+	}
+	.box3 {
+		border-width: 2px 2px 2px 2px;
+		
+		transform: rotate(0.5deg);
+	}
+	.box4 {
+		border-width: 2px 2px 2px 2px;
+		
+		transform: rotate(-0.5deg);
+	}
+	.box5 {
+		border-width: 2px 2px 2px 2px;
+		
+		transform: rotate(0.5deg);
+	}
+
+	
+
+</style>
 
 <div class="main container">
 	<div class="row col-md-6">
@@ -20,11 +84,11 @@
 								<span class="icon icon-{{ data.faction.code }}"></span>
 								<a href="{{ path('decklist_detail',{decklist_id:data.decklist.id,decklist_name:data.decklist.nameCanonical}) }}">{{ data.decklist.name }}</a>
 							</h4>
-					</div>              
+					</div>
 				</div>
 			</div>
-			<div style="background-color: white; background-position: -50px -250px; background-size: 1200px 800px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
-				<div style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.88);">					
+			<div class="box box{{loop.index}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
+				<div class="" style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.88);">
 					{% set character = data.decklist.getCharacter() %}					
 					<div class="pull-left" style="margin-right : 5px; margin-top : 2px;">
 						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>
@@ -43,7 +107,7 @@
 						<div class="small pull-right">
 						<time datetime="{{ data.decklist.dateCreation|date('c') }}">{{ data.decklist.dateCreation|date('M d, Y') }}</time>
 						</div>
-					</div>					
+					</div>
 				</div>
 			</div>
 		</div>
@@ -64,8 +128,8 @@
 					</div>
 				</div>
 			</div>
-			<div style="background-color: white; background-position: -50px -250px; background-size: 1200px 800px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
-				<div style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.88);">					
+			<div class="box box{{loop.index+1}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
+				<div class="" style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.88);">					
 					{% set character = data.decklist.getCharacter() %}					
 					<div class="pull-left" style="margin-right : 5px; margin-top : 2px;">
 						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>

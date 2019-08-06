@@ -99,6 +99,9 @@ AppBundle\Entity\Card:
         realText:
             type: text
             nullable: true
+        boost:
+            type: smallint
+            nullable: true
         boostText:
             type: text
             nullable: true
@@ -172,13 +175,28 @@ AppBundle\Entity\Card:
         recoverCost:
             type: smallint
             nullable: true
+        baseThreat:
+            type: smallint
+            nullable: true
+        baseThreatFixed:
+            type: boolean
+            nullable: true
+        escalationThreat:
+            type: smallint
+            nullable: true
+        escalationThreatFixed:
+            type: boolean
+            nullable: true
+        threat:
+            type: smallint
+            nullable: true
+        threatFixed:
+            type: boolean
+            nullable: true
         deckLimit:
             type: smallint
             nullable: true
             column: deck_limit
-        kicker:
-            type: smallint
-            nullable: true
         stage:
             type: smallint
             nullable: true

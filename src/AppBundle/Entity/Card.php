@@ -94,14 +94,14 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 			case "treachery":
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost_text';
-				$optionalFields[] = 'kicker';
+				$optionalFields[] = 'boost';
 				break;
 			case "attachment":
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost_text';
-				$optionalFields[] = 'kicker';
+				$optionalFields[] = 'boost';
 				$optionalFields[] = 'attack';
-				$optionalFields[] = 'thwart';
+				$optionalFields[] = 'scheme';
 				break;
 			case "minion":
 				$externalFields[] = 'subtype';
@@ -109,17 +109,14 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'attack';
 				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'health';
-				$optionalFields[] = 'kicker';
+				$optionalFields[] = 'boost';
 			case "sideScheme": 
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'kicker';
-				$optionalFields[] = 'scheme_type';
+				$optionalFields[] = 'boost';
 				$optionalFields[] = 'base_threat';
 				break;
 			case "mainScheme": 
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'kicker';
-				$optionalFields[] = 'scheme_type';
 				$optionalFields[] = 'base_threat';
 				$optionalFields[] = 'escalation_threat';
 				$optionalFields[] = 'escalation_threat_fixed';
@@ -1820,12 +1817,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     private $realBoostText;
 
     /**
-     * @var integer
-     */
-    private $kicker;
-
-
-    /**
      * Set boostText
      *
      * @param string $boostText
@@ -1873,29 +1864,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
         return $this->realBoostText;
     }
 
-    /**
-     * Set kicker
-     *
-     * @param integer $kicker
-     *
-     * @return Card
-     */
-    public function setKicker($kicker)
-    {
-        $this->kicker = $kicker;
-
-        return $this;
-    }
-
-    /**
-     * Get kicker
-     *
-     * @return integer
-     */
-    public function getKicker()
-    {
-        return $this->kicker;
-    }
     /**
      * @var integer
      */
@@ -2012,5 +1980,203 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getHandSize()
     {
         return $this->handSize;
+    }
+    /**
+     * @var integer
+     */
+    private $boost;
+
+
+    /**
+     * Set boost
+     *
+     * @param integer $boost
+     *
+     * @return Card
+     */
+    public function setBoost($boost)
+    {
+        $this->boost = $boost;
+
+        return $this;
+    }
+
+    /**
+     * Get boost
+     *
+     * @return integer
+     */
+    public function getBoost()
+    {
+        return $this->boost;
+    }
+    /**
+     * @var boolean
+     */
+    private $baseThreatFixed;
+
+    /**
+     * @var integer
+     */
+    private $escalationThreat;
+
+    /**
+     * @var boolean
+     */
+    private $escalationThreatFixed;
+
+    /**
+     * @var integer
+     */
+    private $threat;
+
+    /**
+     * @var boolean
+     */
+    private $threatFixed;
+
+
+    /**
+     * Set baseThreat
+     *
+     * @param integer $baseThreat
+     *
+     * @return Card
+     */
+    public function setBaseThreat($baseThreat)
+    {
+        $this->baseThreat = $baseThreat;
+
+        return $this;
+    }
+
+    /**
+     * Get baseThreat
+     *
+     * @return integer
+     */
+    public function getBaseThreat()
+    {
+        return $this->baseThreat;
+    }
+
+    /**
+     * Set baseThreatFixed
+     *
+     * @param boolean $baseThreatFixed
+     *
+     * @return Card
+     */
+    public function setBaseThreatFixed($baseThreatFixed)
+    {
+        $this->baseThreatFixed = $baseThreatFixed;
+
+        return $this;
+    }
+
+    /**
+     * Get baseThreatFixed
+     *
+     * @return boolean
+     */
+    public function getBaseThreatFixed()
+    {
+        return $this->baseThreatFixed;
+    }
+
+    /**
+     * Set escalationThreat
+     *
+     * @param integer $escalationThreat
+     *
+     * @return Card
+     */
+    public function setEscalationThreat($escalationThreat)
+    {
+        $this->escalationThreat = $escalationThreat;
+
+        return $this;
+    }
+
+    /**
+     * Get escalationThreat
+     *
+     * @return integer
+     */
+    public function getEscalationThreat()
+    {
+        return $this->escalationThreat;
+    }
+
+    /**
+     * Set escalationThreatFixed
+     *
+     * @param boolean $escalationThreatFixed
+     *
+     * @return Card
+     */
+    public function setEscalationThreatFixed($escalationThreatFixed)
+    {
+        $this->escalationThreatFixed = $escalationThreatFixed;
+
+        return $this;
+    }
+
+    /**
+     * Get escalationThreatFixed
+     *
+     * @return boolean
+     */
+    public function getEscalationThreatFixed()
+    {
+        return $this->escalationThreatFixed;
+    }
+
+    /**
+     * Set threat
+     *
+     * @param integer $threat
+     *
+     * @return Card
+     */
+    public function setThreat($threat)
+    {
+        $this->threat = $threat;
+
+        return $this;
+    }
+
+    /**
+     * Get threat
+     *
+     * @return integer
+     */
+    public function getThreat()
+    {
+        return $this->threat;
+    }
+
+    /**
+     * Set threatFixed
+     *
+     * @param boolean $threatFixed
+     *
+     * @return Card
+     */
+    public function setThreatFixed($threatFixed)
+    {
+        $this->threatFixed = $threatFixed;
+
+        return $this;
+    }
+
+    /**
+     * Get threatFixed
+     *
+     * @return boolean
+     */
+    public function getThreatFixed()
+    {
+        return $this->threatFixed;
     }
 }

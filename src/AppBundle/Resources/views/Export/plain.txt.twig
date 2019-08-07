@@ -38,6 +38,15 @@ Support{% if supports|length > 1 %}s{% endif %}
 {% endfor %}
 {% endif %}
 
+{% set resources = deck.slots_by_type.resource %}
+{% if resources|length > 0 %}
+Resource{% if resources|length > 1 %}s{% endif %}
+
+{% for slot in resources %}
+{{ slot.quantity }}x {{ slot.card.name }} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
+
 {% set allies = deck.slots_by_type.ally %}
 {% if allies|length > 0 %}
 

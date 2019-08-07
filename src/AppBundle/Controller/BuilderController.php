@@ -477,6 +477,13 @@ class BuilderController extends Controller
 			// if meta is set, we only allow valid json
 			try {
 				$meta_json = json_decode($meta);
+				if ($meta_json && isset($meta_json->aspect)) {
+					if ($meta_json->aspect == "leadership" || $meta_json->aspect == "protection" || $meta_json->aspect == "justice" || $meta_json->aspect == "aggression") {
+						
+					} else {
+						return false;
+					}
+				}
 			} catch (Exception $e){
 				$meta_json = "";
 			}

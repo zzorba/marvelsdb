@@ -3,7 +3,19 @@
 	
 	<div class="col-md-12 text-right" style="margin-bottom:10px">
 
-    <div class="btn-group">    	
+		<div class="btn-group">    	
+			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
+				<span class="hidden-xs">Change Aspect</span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" id="menu-sort">
+				<li><a href="#" onclick="app.deck.change_aspect('leadership')" id="btn-sort-default"><span class="fa fa-circle fg-leadership"></span> Leadership</a></li>
+				<li><a href="#" onclick="app.deck.change_aspect('protection')" id="btn-sort-name"><span class="fa fa-circle fg-protection"></span> Protection</span></a></li>
+				<li><a href="#" onclick="app.deck.change_aspect('justice')" id="btn-sort-position"><span class="fa fa-circle fg-justice"></span> Justice</a></li>
+				<li><a href="#" onclick="app.deck.change_aspect('aggression')" id="btn-sort-position"><span class="fa fa-circle fg-aggression"></span> Aggression</a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group">    	
 			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
 				<span class="fa fa-sort"></span> <span class="hidden-xs">Sort Deck</span> <span class="caret"></span>
 			</button>

@@ -282,7 +282,7 @@ class DeckValidationHelper
 				'too_few_cards' => "Contains too few cards",
 				'too_many_cards' => "Contains too many cards",
 				'too_many_copies' => "Contains too many copies of a card (by title)",
-				'invalid_cards' => "Contains forbidden cards (cards no permitted by Faction or Agenda)",
+				'invalid_cards' => "Contains forbidden cards. Must only contain cards from the chosen aspect.",
 				'deck_options_limit' => "Contains too many limited cards", 
 				'investigator' => "Doesn't comply with the Investigator requirements"
 		];

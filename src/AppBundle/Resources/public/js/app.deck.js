@@ -27,8 +27,8 @@ var date_creation,
 		too_many_cards: "Contains too many cards",
 		deck_options_limit: "Contains too many limited cards", 
 		too_many_copies: "Contains too many copies of a card (by title)",
-		invalid_cards: "Contains forbidden cards (cards not permitted by Investigator)",
-		investigator: "Doesn't comply with the Investigator requirements"
+		invalid_cards: "Contains forbidden cards. Must only contain cards from one aspect.",
+		investigator: "Doesn't comply with the hero requirements"
 	},
 	header_tpl = _.template('<h5><span class="icon icon-<%= code %>"></span> <%= name %> (<%= quantity %>)</h5>'),
 	card_line_tpl = _.template('<span class="icon icon-<%= card.type_code %> icon-<%= card.faction_code %>"></span><% if (typeof(card.faction2_code) !== "undefined") { %><span class="icon icon-<%= card.faction2_code %>"></span> <% } %> <a href="<%= card.url %>" class="card card-tip <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="<%= card.code %>"><%= card.name %></a>'),
@@ -98,20 +98,6 @@ deck.onloaded = function(data){
 	if (!deck.meta){
 		deck.meta = {};
 	}
-	// check for special deck building rules
-	// for now only if they need to select a class
-	if (investigator && investigator.deck_options && investigator.deck_options.length) {
-		for (var i = 0; i < investigator.deck_options.length; i++){
-			var option = investigator.deck_options[i];
-			if (option.faction_select){
-				deck.choices.push(option);
-				if (!deck.meta || !deck.meta.faction_selected){
-					deck.meta.faction_selected = option.faction_select[0];
-				} 
-			}
-		}
-	}
-
 
 	if (app.user.data && app.user.data.owned_packs) {
 		var packs = app.user.data.owned_packs.split(',');
@@ -415,6 +401,25 @@ deck.change_sort = function(sort_type){
 	
 }
 
+deck.change_aspect = function(aspect){
+	if (!deck.meta){
+		deck.meta = {};
+	}
+	deck.meta.aspect = aspect;
+	if ($("#deck")){
+		deck.display('#deck');
+	}
+
+	if ($("#deck-content")){
+		deck.display('#deck-content');
+	}
+	
+	if ($("#decklist")){
+		deck.display('#decklist');
+	}
+	
+}
+
 /**
  * @memberOf deck
  */
@@ -483,7 +488,11 @@ deck.get_layout_data = function get_layout_data(options) {
 	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
-	//deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold">'+investigator_name+'</h4>'));
+	if (deck.meta && deck.meta.aspect) {
+		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+'</div>'));
+	} else {
+		deck.update_layout_section(data, 'meta', $('<div>No Aspect</div>'));
+	}
 	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
 	var pack_string = _.map(deck.get_included_packs(), function (pack) { return pack.name+(pack.quantity > 1 ? ' ('+pack.quantity+')' : ''); }).join(', ');
 	deck.update_layout_section(data, 'meta', $('<div><span onclick="$(\'#packs_required\').toggle()" style="border-bottom: 1px dashed #cfcfcf;" title="' + pack_string + '">' + deck.get_included_packs().length + ' packs required </span>' + ' <div style="display:none;" id="packs_required">'+pack_string+'</div> </div>'));
@@ -621,6 +630,9 @@ deck.create_card = function create_card(card){
 
 	$div.append($(card_line_tpl({card:card})));
 	
+	if(card.is_unique == true) {
+		$div.prepend(' •');
+	}
 	if(card.faction_code == "hero") {
 		$div.prepend(' <span class="fa fa-user" style="color:grey;" title="Hero specific cards. Cannot be removed"></span>');
 	} else {
@@ -822,7 +834,7 @@ deck.get_problem = function get_problem() {
 }
 
 deck.reset_limit_count = function (){
-	deck.meta.aspect = "";
+	
 }
 
 deck.get_invalid_cards = function get_invalid_cards() {
@@ -855,155 +867,7 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 			}
 		}
 	}
-	
-	//var investigator = app.data.cards.findById(investigator_code);
 	return true;
-	if (investigator && investigator.deck_options && investigator.deck_options.length) {
-		
-		for (var i = 0; i < investigator.deck_options.length; i++){
-			var option = investigator.deck_options[i];
-			
-			var valid = false;
-
-
-			if (option.faction_select && app.deck.meta && app.deck.meta.faction_selected){
-				// if the user has selected a faction, update this option with the correct choice
-				option.faction = [];
-				option.faction.push(app.deck.meta.faction_selected);
-			}
-			
-			if (option.faction){
-				// needs to match at least one faction
-				var faction_valid = false;
-				for(var j = 0; j < option.faction.length; j++){
-					var faction = option.faction[j];
-					if (card.faction_code == faction || card.faction2_code == faction){
-						faction_valid = true;
-					}
-				}
-				
-				if (!faction_valid){
-					continue;
-				}
-			}
-			
-			if (option.type){
-				// needs to match at least one faction
-				var type_valid = false;
-				for(var j = 0; j < option.type.length; j++){
-					var type = option.type[j];
-					if (card.type_code == type){
-						type_valid = true;
-					}
-				}
-				
-				if (!type_valid){
-					continue;
-				}
-			}
-			
-			if (option.trait){
-				// needs to match at least one trait				
-				var trait_valid = false;				
-				
-				for(var j = 0; j < option.trait.length; j++){
-					var trait = option.trait[j];
-					
-					if (card.real_traits && card.real_traits.toUpperCase().indexOf(trait.toUpperCase()+".") !== -1){
-						trait_valid = true;
-					}
-				}
-				
-				if (!trait_valid){
-					continue;
-				}
-			}
-			
-			if (option.uses){
-				// needs to match at least one trait	
-				var uses_valid = false;
-				
-				for(var j = 0; j < option.uses.length; j++){
-					var uses = option.uses[j];
-					
-					if (card.real_text && card.real_text.toUpperCase().indexOf(""+uses.toUpperCase()+").") !== -1){
-						uses_valid = true;
-					}
-				}
-				
-				if (!uses_valid){
-					continue;
-				}
-
-			}
-			
-			if (option.text){
-				// match a regular custom expression on the text
-				var text_valid = false;
-				
-				for(var j = 0; j < option.text.length; j++){
-					var text = option.text[j];
-					
-					if (card.real_text && card.real_text.toLowerCase().match(text)){
-						text_valid = true;
-					}
-				}
-				
-				if (!text_valid){
-					continue;
-				}
-
-			}
-			
-			if (option.level){
-				// needs to match at least one faction
-				var level_valid = false;
-				
-				if (typeof card.xp !== 'undefined' && option.level){
-					if (card.xp >= option.level.min && card.xp <= option.level.max){
-						level_valid = true;
-					}else {
-						continue;	
-					}
-				}
-			}
-			
-			
-			if (option.not){
-				return false;
-			}else {
-				if (limit_count && option.limit){
-					if (hard_count){
-						if (option.limit_count >= option.limit) {
-
-							return false;
-						}
-						option.limit_count += 1;
-					} else {
-						option.limit_count += card.indeck;
-					}
-					
-				}
-				if (limit_count && option.atleast){
-					if (!option.atleast_count[card.faction_code]){
-						option.atleast_count[card.faction_code] = 0;
-					}
-					option.atleast_count[card.faction_code] += card.indeck;
-					if (card.faction2_code) {
-						if (!option.atleast_count[card.faction2_code]) {
-							option.atleast_count[card.faction2_code] = 0;
-						}
-						option.atleast_count[card.faction2_code] += card.indeck;
-					}
-				}
-				
-				return true;
-			}
-			
-		}
-	}
-	
-	return false;
 }
 
 })(app.deck = {}, jQuery);

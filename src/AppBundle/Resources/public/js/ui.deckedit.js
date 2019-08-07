@@ -520,6 +520,13 @@ ui.refresh_row = function refresh_row(card_code, quantity) {
  * @memberOf ui
  */
 ui.on_quantity_change = function on_quantity_change(card_code, quantity) {
+	// if no aspect is selected, select one when a card is first added
+	if (!app.deck.meta || !app.deck.meta.aspect) {
+		var card = app.data.cards.findById(card_code);
+		if (card && card.faction_code != "basic") {
+			app.deck.meta.aspect = card.faction_code;
+		}
+	}
 	var update_all = app.deck.set_card_copies(card_code, quantity);
 	ui.refresh_deck();
 	app.suggestions.compute();

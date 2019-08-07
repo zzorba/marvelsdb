@@ -362,8 +362,8 @@ class SocialController extends Controller
 		$on = 0; $off = 0;
 		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
 		foreach($packs as $pack) {
-			if ($pack->getType()) {
-				$pack_type = $pack->getType()->getName();
+			if ($pack->getPackType()) {
+				$pack_type = $pack->getPackType()->getName();
 			} else {
 				$pack_type = "Core";
 			}
@@ -1083,8 +1083,8 @@ class SocialController extends Controller
 		$on = 0; $off = 0;
 		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
 		foreach($packs as $pack) {
-			if ($pack->getType()) {
-				$pack_type = $pack->getType()->getName();
+			if ($pack->getPackType()) {
+				$pack_type = $pack->getPackType()->getName();
 			} else {
 				$pack_type = "Core";
 			}

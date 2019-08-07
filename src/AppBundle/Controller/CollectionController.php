@@ -16,8 +16,8 @@ class CollectionController extends Controller {
         }
         $list_packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], ["position" => "ASC"]);
         foreach ($list_packs as $pack) {
-            if ($pack->getType()) {
-                $pack_type = $pack->getType()->getName();
+            if ($pack->getPackType()) {
+                $pack_type = $pack->getPackType()->getName();
             } else {
                 $pack_type = "Core";
             }

@@ -29,7 +29,8 @@ class SuggestionsCommand extends ContainerAwareCommand
 			c.id,
 			c.code
 			from card c
-			where c.type_id = 1
+			inner join `type` on type.id = c.type_id
+			where type.code = 'hero'
 			order by c.id
 		")->fetchAll();
 
@@ -72,7 +73,8 @@ class SuggestionsCommand extends ContainerAwareCommand
 			count(*) nbdecks
 			from card c
 			join deckslot d on d.card_id=c.id
-			where c.xp is not null
+			inner join faction on faction.id = c.faction_id 
+			where faction.code != 'hero' 
 			group by c.id, c.code, c.faction_id
 			order by c.id
 		")->fetchAll();
@@ -105,7 +107,8 @@ class SuggestionsCommand extends ContainerAwareCommand
 			d.card_id
 			from deckslot d
 			inner join card on d.card_id = card.id
-			where d.deck_id=? and card.xp is not null
+			inner join faction on faction.id = card.faction_id 
+			where d.deck_id=? and faction.code != 'hero' 
 			order by d.card_id
 		");
 

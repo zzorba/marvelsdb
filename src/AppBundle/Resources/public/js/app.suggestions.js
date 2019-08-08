@@ -51,7 +51,7 @@ suggestions.compute = function compute() {
 		var indexes = app.data.cards.find({"indeck":{'$gt':0}}).map(function (card) {
 			return suggestions.indexFromCodes[card.code];
 		});
-		console.log(indexes);
+		//console.log(indexes);
 		// add suggestions of all used cards
 		indexes.forEach(function (i) {
 			if(suggestions.matrix[i]) {
@@ -102,7 +102,7 @@ suggestions.show = function show() {
 	for(var i=0; i<suggestions.current.length; i++) {
 		var card = app.data.cards.findById(suggestions.current[i].code);
 		if ($('input[name="'+card.pack_code+'"]').is(":checked")){
-			if(app.deck.can_include_card(card) && !card.indeck && card.xp === 0) {
+			if(app.deck.can_include_card(card) && !card.indeck) {
 				var div = suggestions.div(card);
 				div.on('click', 'button.close', suggestions.exclude.bind(this, card.code));
 				tbody.append(div);

@@ -36,6 +36,9 @@ class CardsData
 			'[energy]' => '<span class="icon-energy" title="Energy"></span>',
 			'[wild]' => '<span class="icon-wild" title="Wild"></span>',
 			'[mental]' => '<span class="icon-mental" title="Mental"></span>',
+			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
+			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
+			'[star]' => '<span title="Star">⭑</span>',
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);

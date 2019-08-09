@@ -727,11 +727,22 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importSideSchemeData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'base_threat'
+				'base_threat',
+		];
+		$optionalKeys = [
+				'boost',
+				'boost_text',
+				'scheme_acceleration',
+				'scheme_crisis',
+				'scheme_hazard',
 		];
 
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
 	

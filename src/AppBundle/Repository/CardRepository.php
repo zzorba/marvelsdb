@@ -33,7 +33,7 @@ class CardRepository extends TranslatableRepository
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.faction', 'f')
 			->leftJoin('c.card_set', 'e')
-			->andWhere('c.card_set IS NULL')
+			->andWhere('f.code != \'encounter\'')
 			->orderBY('c.code', 'ASC');
 
 		return $this->getResult($qb);

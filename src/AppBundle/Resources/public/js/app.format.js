@@ -178,7 +178,7 @@ format.text = function text(card, alternate) {
 		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p>⭑' + card.boost_text + '</p>';
+		text += '<hr/><p>⭑<b>Boost</b>: ' + card.boost_text + '</p>';
 	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
   	text += '</p><p>Scheme Icons: ';

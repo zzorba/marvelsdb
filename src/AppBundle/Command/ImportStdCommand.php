@@ -730,6 +730,9 @@ class ImportStdCommand extends ContainerAwareCommand
 				'base_threat',
 		];
 		$optionalKeys = [
+				'base_threat_fixed',
+				'escalation_threat',
+				'escalation_threat_fixed',
 				'boost',
 				'boost_text',
 				'scheme_acceleration',

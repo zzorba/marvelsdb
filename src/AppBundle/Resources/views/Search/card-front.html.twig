@@ -10,7 +10,7 @@
 			<div class="panel-body card-content">
 				{% include 'AppBundle:Search:card-faction.html.twig' %}
 				{% include 'AppBundle:Search:card-info.html.twig' %}
-				{% if card.type_code == 'agenda' or card.type_code == 'act' %}
+				{% if card.type_code == 'main_scheme' or card.type_code == 'side_scheme' %}
 				{% include 'AppBundle:Search:card-flavor.html.twig' %}
 				{% include 'AppBundle:Search:card-text.html.twig' %}
 				{% else %}

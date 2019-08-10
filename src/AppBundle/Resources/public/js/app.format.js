@@ -58,7 +58,15 @@ format.pack = function pack(card) {
 	if (card.type_code == 'hero') {
 		return '';
 	}
-	var text = card.pack_name + ' #' + card.position + '. ';
+
+	var text = '';
+	if (card.boost || card.boost_text){
+		text += '<div>Boost:' + 
+			(card.boost_text ? '<span>⭑</span>' : '') + 
+			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost"></span>') : '') + 
+			'</div>';
+	}
+	text += card.pack_name + ' #' + card.position + '. ';
 	if (card.card_set_name){
 		text += card.card_set_name;
 		if (card.set_position){
@@ -78,26 +86,30 @@ format.pack = function pack(card) {
 format.info = function info(card) {
 	var text = '';
 	switch(card.type_code) {
-		case 'agenda':
-			text += '<div>Doom: '+format.fancy_int(card.doom)+'.</div>';
+		case 'side_scheme':
+		case 'main_scheme':
+			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+'.</div>';
+			if (card.type_code == 'main_scheme') {
+				text += '<div>Threat: '+format.fancy_int(card.threat)+'.</div>';
+			}			
+
 			break;
-		case 'act':
-			text += '<div>Clues: '+format.fancy_int(card.clues)+'.</div>';
-			break;
-		case 'location':
-			if (card.clues_fixed || card.clues == 0){
-				text += '<div>Shroud: '+format.fancy_int(card.shroud)+'. Clues: '+format.fancy_int(card.clues)+'.</div>';
-			} else {
-				text += '<div>Shroud: '+format.fancy_int(card.shroud)+'. Clues: '+format.fancy_int(card.clues)+'<span class="icon icon-per_investigator"></span>.</div>';
+		case 'villain':
+		case 'minion': 
+			if (card.type_code == 'ally') {
+				text += '<div>Attack: '+format.fancy_int(card.attack);
+				if (card.attack_cost) {
+					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+				}
+				text += ' Thwart: '+format.fancy_int(card.thwart);
+				if (card.thwart_cost) {
+					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+				}
+				text += '.</div>';
 			}
 			break;
-		case 'enemy':
-			text += '<div>Fight: '+format.fancy_int(card.enemy_fight)+'. Health: '+format.fancy_int(card.health)+'';
-			if (card.health_per_investigator){
-				text += '<span class="icon icon-per_investigator"></span>';
-			}
-			text += '. Evade: '+format.fancy_int(card.enemy_evade)+'.</div>';
-			text += '<div>Damage: '+format.fancy_int(card.enemy_damage)+'. Horror: '+format.fancy_int(card.enemy_horror)+'.</div>';
+		case 'treachery':
+		case 'obligation':
 			break;
 		case 'hero':
 			text += '<div>Thwart: '+card.thwart+'. Attack: '+card.attack+'. Defense: '+card.defense+'.</div>';
@@ -161,6 +173,25 @@ format.text = function text(card, alternate) {
 	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 	text = text.split("\n").join('</p><p>');
+	if (card.boost_text) {
+		var boost_text = card.boost_text;
+		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+		boost_text = boost_text.split("\n").join('</p><p>');
+		text += '<hr/><p>⭑<b>Boost</b>: ' + card.boost_text + '</p>';
+	}
+	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
+  	text += '</p><p>Scheme Icons: ';
+  	if (card.scheme_acceleration) {
+  		text += 'Acceleration ';
+  	}
+  	if (card.scheme_crisis) {
+  		text += 'Crisis ';
+  	}
+  	if (card.scheme_hazard) {
+  		text += 'Hazard';
+  	}
+  }
 	return '<p>'+text+'</p>';
 };
 

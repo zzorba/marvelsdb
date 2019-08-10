@@ -187,6 +187,15 @@ AppBundle\Entity\Card:
         escalationThreatFixed:
             type: boolean
             nullable: true
+        schemeCrisis:
+            type: smallint
+            nullable: true
+        schemeAcceleration:
+            type: smallint
+            nullable: true
+        schemeHazard:
+            type: smallint
+            nullable: true
         threat:
             type: smallint
             nullable: true

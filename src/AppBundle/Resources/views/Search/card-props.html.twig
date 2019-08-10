@@ -33,15 +33,18 @@
 	<div>
 		{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}. {% trans %}Hand Size{% endtrans %}: {{ macros.integer_or_x(card.hand_size) }}. 
 	</div>
-{% elseif card.type_code == 'minion' %}
+{% elseif card.type_code == 'minion' or card.type_code == 'villain' %}
 	<div>
 	{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
+	{% trans %}Scheme{% endtrans %}: {{ macros.integer_or_x(card.scheme) }}.
 	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}{% if card.health_per_hero %}<span class="icon icon-per_hero"></span>{% endif %}.
 	</div>
+{% elseif card.type_code == 'side_scheme' or card.type_code == 'main_scheme' %}
 	<div>
-	{% trans %}Damage{% endtrans %}: {{ macros.integer_or_x(card.enemy_damage) }}.
-	{% trans %}Horror{% endtrans %}: {{ macros.integer_or_x(card.enemy_horror) }}.
-	</div>
+	{% trans %}Starting Threat{% endtrans %}: {{ macros.integer_or_x(card.base_threat) }}{% if not card.base_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+	{% if card.escalation_threat %}
+		{% trans %}Escalation Threat{% endtrans %}: {{ macros.integer_or_x(card.escalation_threat) }}{% if not card.escalation_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+	{% endif %}
 {% else %}	
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}
 	<div>

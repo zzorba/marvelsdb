@@ -35,16 +35,16 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'back_flavor',
 				'hidden',
 				'double_sided',
-                'card_set',
-                'set_position',
-				'is_unique'
+				'card_set',
+				'set_position',
+				'is_unique',
 		];
 	
 		$externalFields = [
-		        'faction',
-		        'faction2',
+				'faction',
+				'faction2',
 				'pack',
-                "card_set",
+				'card_set',
 				'type',
 				'linked_to'
 		];
@@ -80,17 +80,17 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 			case 'hero':
 				$mandatoryFields[] = 'thwart';
 				$mandatoryFields[] = 'attack';
-                $mandatoryFields[] = 'defense';
+				$mandatoryFields[] = 'defense';
 				$mandatoryFields[] = 'health';  
 				$mandatoryFields[] = 'hand_size';
 				$mandatoryFields[] = 'deck_requirements';
 				break;
-            case 'alter_ego':
-                $mandatoryFields[] = 'recover';
-                $mandatoryFields[] = 'health';  
-                $mandatoryFields[] = 'hand_size';
-                $mandatoryFields[] = 'deck_requirements';
-                break;
+			case 'alter_ego':
+				$mandatoryFields[] = 'recover';
+				$mandatoryFields[] = 'health';  
+				$mandatoryFields[] = 'hand_size';
+				$mandatoryFields[] = 'deck_requirements';
+				break;
 			case "treachery":
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost_text';
@@ -113,7 +113,13 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 			case "sideScheme": 
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'base_threat';
+				$optionalFields[] = 'escalation_threat';
+				$optionalFields[] = 'escalation_threat_fixed';
+				$optionalFields[] = 'scheme_acceleration';
+				$optionalFields[] = 'scheme_crisis';
+				$optionalFields[] = 'scheme_hazard';
 				break;
 			case "mainScheme": 
 				$externalFields[] = 'subtype';
@@ -122,6 +128,9 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'escalation_threat_fixed';
 				$optionalFields[] = 'threat';
 				$optionalFields[] = 'threat_fixed';
+				$optionalFields[] = 'scheme_acceleration';
+				$optionalFields[] = 'scheme_crisis';
+				$optionalFields[] = 'scheme_hazard';
 				$optionalFields[] = 'stage';
 				break;
 		}
@@ -2178,5 +2187,92 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getThreatFixed()
     {
         return $this->threatFixed;
+    }
+    /**
+     * @var integer
+     */
+    private $schemeCrisis;
+
+    /**
+     * @var integer
+     */
+    private $schemeAcceleration;
+
+    /**
+     * @var integer
+     */
+    private $schemeHazard;
+
+
+    /**
+     * Set schemeCrisis
+     *
+     * @param integer $schemeCrisis
+     *
+     * @return Card
+     */
+    public function setSchemeCrisis($schemeCrisis)
+    {
+        $this->schemeCrisis = $schemeCrisis;
+
+        return $this;
+    }
+
+    /**
+     * Get schemeCrisis
+     *
+     * @return integer
+     */
+    public function getSchemeCrisis()
+    {
+        return $this->schemeCrisis;
+    }
+
+    /**
+     * Set schemeAcceleration
+     *
+     * @param integer $schemeAcceleration
+     *
+     * @return Card
+     */
+    public function setSchemeAcceleration($schemeAcceleration)
+    {
+        $this->schemeAcceleration = $schemeAcceleration;
+
+        return $this;
+    }
+
+    /**
+     * Get schemeAcceleration
+     *
+     * @return integer
+     */
+    public function getSchemeAcceleration()
+    {
+        return $this->schemeAcceleration;
+    }
+
+    /**
+     * Set schemeHazard
+     *
+     * @param integer $schemeHazard
+     *
+     * @return Card
+     */
+    public function setSchemeHazard($schemeHazard)
+    {
+        $this->schemeHazard = $schemeHazard;
+
+        return $this;
+    }
+
+    /**
+     * Get schemeHazard
+     *
+     * @return integer
+     */
+    public function getSchemeHazard()
+    {
+        return $this->schemeHazard;
     }
 }

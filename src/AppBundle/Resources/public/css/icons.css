@@ -1,13 +1,12 @@
-
 @font-face {
-	font-family: 'marvel-icons';
-  src:  url('../fonts/marvel-icons.eot?h1c2fs');
-  src:  url('../fonts/marvel-icons.eot?h1c2fs#iefix') format('embedded-opentype'),
-    url('../fonts/marvel-icons.ttf?h1c2fs') format('truetype'),
-    url('../fonts/marvel-icons.woff?h1c2fs') format('woff'),
-    url('../fonts/marvel-icons.svg?h1c2fs#marvel-icons') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'marvel-icons';
+  src:  url('../fonts/marvel-icons.eot?957f22');
+  src:  url('../fonts/marvel-icons.eot?957f22#iefix') format('embedded-opentype'),
+    url('../fonts/marvel-icons.ttf?957f22') format('truetype'),
+    url('../fonts/marvel-icons.woff?957f22') format('woff'),
+    url('../fonts/marvel-icons.svg?957f22#marvel-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -29,7 +28,6 @@
 }
 .icon-physical:before {
   content: "\e900";
-  font-size: 0.85em;
 }
 .icon-energy:before {
   content: "\e901";
@@ -39,6 +37,15 @@
 }
 .icon-wild:before {
   content: "\e902";
+}
+.icon-per_hero:before {
+  content: "\e905";
+}
+.icon-unique:before {
+  content: "\e906";
+}
+.icon-boost:before {
+  content: "\e907";
 }
 
 .spoiler {
@@ -71,5 +78,8 @@
 	color : #00543a;
 }
 .color-cost {
+  color : #635120;
+}
+.color-boost {
   color : #635120;
 }

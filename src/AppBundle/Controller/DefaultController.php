@@ -36,7 +36,7 @@ class DefaultController extends Controller
 		while($iterator->valid() && count($decklists_by_popular) < 5)
 		{
 			$decklist = $iterator->current();
-			$decklists_by_popular[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist];
+			$decklists_by_popular[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 			$iterator->next();
 		}
 		$paginator = $decklist_manager->findDecklistsByAge();
@@ -44,7 +44,7 @@ class DefaultController extends Controller
 		while($iterator->valid() && count($decklists_by_recent) < 5)
 		{
 			$decklist = $iterator->current();
-			$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist];
+			$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 			$iterator->next();
 		}
 

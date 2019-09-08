@@ -101,20 +101,34 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'boost';
 				$optionalFields[] = 'attack';
+				$optionalFields[] = 'attack_text';
 				$optionalFields[] = 'scheme';
+				$optionalFields[] = 'scheme_text';
 				break;
+			case "villain":
+				$optionalFields[] = 'scheme';
+				$optionalFields[] = 'scheme_text';
+				$optionalFields[] = 'attack';
+				$optionalFields[] = 'attack_text';
+				$optionalFields[] = 'health';
+				$optionalFields[] = 'health_per_hero';
+				$optionalFields[] = 'stage';
 			case "minion":
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'scheme';
+				$optionalFields[] = 'scheme_text';
 				$optionalFields[] = 'attack';
-				$optionalFields[] = 'boost_text';
+				$optionalFields[] = 'attack_text';
 				$optionalFields[] = 'health';
+				$optionalFields[] = 'health_per_hero';
 				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_text';
 			case "sideScheme": 
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'boost';
 				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'base_threat';
+				$optionalFields[] = 'base_threat_fixed';
 				$optionalFields[] = 'escalation_threat';
 				$optionalFields[] = 'escalation_threat_fixed';
 				$optionalFields[] = 'scheme_acceleration';
@@ -124,13 +138,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 			case "mainScheme": 
 				$externalFields[] = 'subtype';
 				$optionalFields[] = 'base_threat';
+				$optionalFields[] = 'base_threat_fixed';
 				$optionalFields[] = 'escalation_threat';
 				$optionalFields[] = 'escalation_threat_fixed';
 				$optionalFields[] = 'threat';
 				$optionalFields[] = 'threat_fixed';
-				$optionalFields[] = 'scheme_acceleration';
-				$optionalFields[] = 'scheme_crisis';
-				$optionalFields[] = 'scheme_hazard';
 				$optionalFields[] = 'stage';
 				break;
 		}
@@ -2274,5 +2286,63 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getSchemeHazard()
     {
         return $this->schemeHazard;
+    }
+    /**
+     * @var string
+     */
+    private $schemeText;
+
+    /**
+     * @var string
+     */
+    private $attackText;
+
+
+    /**
+     * Set schemeText
+     *
+     * @param string $schemeText
+     *
+     * @return Card
+     */
+    public function setSchemeText($schemeText)
+    {
+        $this->schemeText = $schemeText;
+
+        return $this;
+    }
+
+    /**
+     * Get schemeText
+     *
+     * @return string
+     */
+    public function getSchemeText()
+    {
+        return $this->schemeText;
+    }
+
+    /**
+     * Set attackText
+     *
+     * @param string $attackText
+     *
+     * @return Card
+     */
+    public function setAttackText($attackText)
+    {
+        $this->attackText = $attackText;
+
+        return $this;
+    }
+
+    /**
+     * Get attackText
+     *
+     * @return string
+     */
+    public function getAttackText()
+    {
+        return $this->attackText;
     }
 }

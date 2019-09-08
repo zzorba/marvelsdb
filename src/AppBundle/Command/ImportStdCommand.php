@@ -628,6 +628,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($cleanName == "Side Scheme") {
 				$cleanName = "SideScheme";
 			}
+			if ($cleanName == "Main Scheme") {
+				$cleanName = "MainScheme";
+			}
 			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
@@ -707,7 +710,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$mandatoryKeys = [
 				'attack',
 				'scheme',
-				'health'
+				'health',
 		];
 
 		foreach($mandatoryKeys as $key) {
@@ -716,13 +719,20 @@ class ImportStdCommand extends ContainerAwareCommand
 
 		$optionalKeys = [
 				'boost',
-				'boost_text'
+				'boost_text',
+				'attack_text',
+				'scheme_text',
+				'health_per_hero',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
 
+	protected function importEnvironmentData(Card $card, $data) 
+	{
+		
+	}
 
 	protected function importSideSchemeData(Card $card, $data)
 	{
@@ -748,19 +758,28 @@ class ImportStdCommand extends ContainerAwareCommand
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
-	
 
-	protected function importActData(Card $card, $data)
+	protected function importMainSchemeData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'clues'
+				'threat',
+				'base_threat',
+		];
+		$optionalKeys = [
+				'threat_fixed',
+				'base_threat_fixed',
+				'escalation_threat',
+				'escalation_threat_fixed',
 		];
 
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
-	}
 
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
+	}
 
 	protected function importEventData(Card $card, $data)
 	{
@@ -776,6 +795,27 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importResourceData(Card $card, $data)
 	{
 
+	}
+
+	protected function importVillainData(Card $card, $data)
+	{
+		$mandatoryKeys = [
+				'attack',
+				'scheme',
+				'stage',
+				'health',
+		];
+		$optionalKeys = [
+				'health_per_hero',
+		];
+
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 	protected function importTreacheryData(Card $card, $data)

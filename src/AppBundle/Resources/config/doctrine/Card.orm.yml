@@ -157,9 +157,19 @@ AppBundle\Entity\Card:
         scheme:
             type: smallint
             nullable: true
+        schemeText:
+            type: text
+            nullable: true
+            gedmo:
+                - translatable
         attack:
             type: smallint
             nullable: true
+        attackText:
+            type: text
+            nullable: true
+            gedmo:
+                - translatable
         attackCost:
             type: smallint
             nullable: true

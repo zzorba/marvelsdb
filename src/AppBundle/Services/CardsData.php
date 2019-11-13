@@ -94,7 +94,7 @@ class CardsData
 	
 	public function allsetsdata()
 	{
-		$list_packs = $this->doctrine->getRepository('AppBundle:Pack')->findBy(array(), array("dateRelease" => "ASC", "position" => "ASC"));
+		$list_packs = $this->doctrine->getRepository('AppBundle:Pack')->findBy(array(), array("position" => "ASC", "dateRelease" => "ASC"));
 		$packs = array();
 		foreach($list_packs as $pack) {
 			$real = count($pack->getCards());
@@ -517,6 +517,9 @@ class CardsData
 		}
 		
 		if(isset($cardinfo['encounter_code']) && $cardinfo['encounter_code']) {
+			$cardinfo['spoiler'] = 1;
+		}
+		if(isset($cardinfo['faction_code']) && $cardinfo['faction_code'] == "encounter") {
 			$cardinfo['spoiler'] = 1;
 		}
 		

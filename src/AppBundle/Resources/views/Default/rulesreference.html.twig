@@ -116,6 +116,68 @@
 <li>The “attach to” phrase is checked for legality when the card would be attached to a game element, but it is not checked again after it is attached. If the initial “attach to” check does not pass, the card is not able to be attached, so it remains in its prior state or game area. If such a card cannot remain in its prior state or game area, discard it.</li>
 </ul>
 
+<h2 id="attack">ATTACK</h2>
+<p>Some game effects and card abilities reference an attack. There are a few different ways an attack can occur:</p>
+<ul>
+	<li>A hero can use their basic attack power to attack an enemy. A hero must exhaust to use this power. This deals damage equal to the hero’s ATK value to the enemy.</li>
+	<li>An ally can use its basic attack power to attack an enemy. This deals damage equal to the ally’s ATK value to the enemy.</li>
+	<li>If a triggered ability is labeled as an attack—such as “Hero Action (attack)”—resolving that ability is considered to attack the specified target. Unless specified by the ability’s text, a hero does not exhaust when using such an ability.</li>
+	<li>Hero and ally attacks can target any enemy, unless a card ability (such as guard) is preventing that enemy from being attacked.</li>
+	<li>Enemies can attack during step two of the villain phase.</li>
+</ul>
+<p>See also: <a href="#enemy_attacks">Enemy Attacks</a></p>
+
+<h2 id="base_value">BASE VALUE</h2>
+<p>A defined value before modifiers are applied. In most cases, it is also the printed value.</p>
+<p>See also: <a href="#modifiers">Modifiers</a>, <a href="#printed">Printed</a></p>
+
+<h2 id="boost">BOOST</h2>
+<p>Each time the villain attacks or schemes, the villain is given one facedown card from the encounter deck, as a boost card</p>
+<p>During the activation (and after any defenders are declared if the villain is attacking), all boost cards on the villain are turned face up one at a time. Add the number of boost icons on the card to the villain’s ATK value (if it is attacking) or SCH value (if it is scheming) for that activation. Boost icons are located at the bottom-right of the card</p>
+<p>If the boost field has a star icon, it indicates that the card has a boost ability. Refer to the card’s text box and resolve the boost ability when the card is turned face up. The boost ability is located beneath the divider line in the text box.</p>
+<ul>
+<li>A star icon is not itself considered a boost icon, and does not contribute to the villain’s ATK or SCH value.</li>
+<li>Only the ability text beneath the divider line is active on a card that is resolving as a boost card.</li>
+<li>If additional boost cards are resolved for an activation, the boost icons are cumulative, and all boost abilities on those cards resolve.</li>
+<li>After applying a boost card to an activation, discard it.</li>
+</ul>
+<p>See also: <a href="#enemy_attacks">Enemy Attacks</a>, <a href="#enemy_schemes">Enemy Schemes</a>, <a href="#star_icon">Star Icon</a></p>
+
+<h2 id="cancel">CANCEL</h2>
+<p>Some card abilities can cancel card or game effects.</p>
+<ul>
+<li>Cancel abilities interrupt the initiation of effects and prevent them from initiating.</li>
+<li>Anytime the effects of an ability are canceled, the ability (apart from its effects) is still regarded as initiated, and any costs are still paid. Only the effects are prevented from initiating, and do not resolve.</li>
+<li>If the effects of an event card are canceled, the card is still considered played, and it is discarded.</li>
+<li>If the effects of a treachery card are canceled, the card is still regarded as revealed, and it is still placed in the encounter discard pile</li>
+</ul>
+<p>See also: <a href="#ability">Ability</a></p>
+
+<h2 id="cannot">CANNOT</h2>
+<p>The word “cannot” is absolute and cannot be countermanded by other abilities or effects.</p>
+
+<h2 id="card_types">CARD TYPES</h2>
+<p>The game’s card types are: ally, attachment, environment, event, identity (hero and alter-ego), main scheme, minion, obligation, resource, side scheme, support, treachery, upgrade, and villain.</p>
+<ul>
+	<li>If an ability causes a card to change its card type, it loses all other card types it might possess and functions as would any card of the new card type.</li>
+</ul>
+<p></p>
+
+<h2 id="character">CHARACTER</h2>
+<p>Heroes, alter-egos, allies, villains, and minions are all characters.</p>
+
+<h2 id="choose">CHOOSE</h2>
+<p>The word “choose” indicates that a player must make a choice to resolve an ability.</p>
+<ul>
+<li>The player resolving the ability that uses the word “choose” is the player who makes the choice specified by the card.</li>
+<li>While making such a choice, the player must make a choice that could change the game, if able.</li>
+<li>If there is no valid choice for resolving the ability, the ability cannot be initiated</li>
+</ul>
+
+<h2 id="confuse">CONFUSE, CONFUSED</h2>
+<p>If an ability “confuses” a character, give that character a confused status card.</p>
+<p>See also: <a href="#status_cards">Status Cards</a></p>
+
 <h2 id="consequential_damage">CONSEQUENTIAL DAMAGE</h2>
 <p>After an ally attacks, it takes consequential damage equal to the number of pips beneath its ATK field. After an ally thwarts, it takes consequential damage equal to the number of pips beneath its THW field.</p>
 

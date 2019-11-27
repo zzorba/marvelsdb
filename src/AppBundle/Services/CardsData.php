@@ -137,11 +137,11 @@ class CardsData
 		$qb2 = null;
 		$qb3 = null;
 		if ($encounter === "encounter"){
-			//$qb->andWhere("(c.encounter IS NOT NULL)");
+			$qb->andWhere("(f.code = 'encounter')");
 		}else if ($encounter === true || $encounter === "1"){
 			//$qb->andWhere("(c.encounter IS NULL)");
 		}else {
-			//$qb->andWhere("(c.encounter IS NULL)");
+			$qb->andWhere("(f.code != 'encounter')");
 		}
 		$qb->andWhere("c.hidden is null or c.hidden = false");
 

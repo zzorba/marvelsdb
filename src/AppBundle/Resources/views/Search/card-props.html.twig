@@ -45,6 +45,7 @@
 	{% if card.escalation_threat %}
 		{% trans %}Escalation Threat{% endtrans %}: {{ macros.integer_or_x(card.escalation_threat) }}{% if not card.escalation_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
 	{% endif %}
+	</div>
 {% else %}	
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}
 	<div>

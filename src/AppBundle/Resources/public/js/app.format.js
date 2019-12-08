@@ -91,22 +91,21 @@ format.info = function info(card) {
 			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+'.</div>';
 			if (card.type_code == 'main_scheme') {
 				text += '<div>Threat: '+format.fancy_int(card.threat)+'.</div>';
-			}			
+			}
 
 			break;
 		case 'villain':
 		case 'minion': 
-			if (card.type_code == 'ally') {
+				text += '<div><b>Stage '+format.fancy_int(card.stage)+'</b></div>';
 				text += '<div>Attack: '+format.fancy_int(card.attack);
-				if (card.attack_cost) {
-					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost"></span>');
-				}
-				text += ' Thwart: '+format.fancy_int(card.thwart);
-				if (card.thwart_cost) {
-					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+				text += ' Scheme: '+format.fancy_int(card.scheme);
+
+				if (card.health_per_hero) {
+					text += ' Health per player: '+card.health;
+				} else {
+					text += ' Health: '+card.health;
 				}
 				text += '.</div>';
-			}
 			break;
 		case 'treachery':
 		case 'obligation':

@@ -1,6 +1,14 @@
 <div class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">
 <div class="card-text border-{{ card.faction_code }}">
 	{{ card.text|raw }}
+  {% if card.attack_text is defined or card.scheme_text is defined %}
+    <p>
+    {% if card.attack_text %}
+      ⭑{{ card.attack_text|raw }}
+    {% endif %}
+    {% if card.scheme_text and card.attack_text != card.scheme_text %}⭑{{ card.scheme_text|raw }}{% endif %}
+    </p>
+  {% endif %}
   {% if card.boost_text is defined and card.boost_text is not empty %}
   <hr/>
   ⭑<b>{% trans %}Boost{% endtrans %}</b>: {{ card.boost_text|raw }}

@@ -1,0 +1,5 @@
+{% if card.type_code == 'villain' %}
+ {% if card.stage == 1 %}(I){% elseif card.stage == 2 %}(II){% elseif card.stage == 3 %}(III){% elseif card.stage == 4 %}(IV){% elseif card.stage == 5 %}(V){% else %}({{ card.stage }}){% endif %}
+{% elseif card.type_code == 'main_scheme' %}
+  - {{ card.stage }}{% if is_back %}A{% else %}B{% endif %}
+{% endif %}

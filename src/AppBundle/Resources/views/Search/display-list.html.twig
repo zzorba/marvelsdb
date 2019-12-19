@@ -21,21 +21,17 @@
 	<td data-th="Name">
 		<span class="icon icon-{{ card.type_code}} fg-{{ card.faction_code }}"></span>
 		<a href="{{ card.url }}" class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %} card-tip{% if card.available == false %} card-preview{% endif %}" data-code="{{ card.code }}">
-		{{ card.name }}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
+		{{ card.name }}{% if card.type_code == 'villain' %}{% include 'AppBundle:Search:card-stage.html.twig' with { 'is_back': false } %}{% endif %}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
 	</td>
 	<td data-th="Faction" style="width : 100px;" class="fg-{{ card.faction_code }}"><span class="icon-{{card.faction_code}}"></span>{% if card.faction2_code is defined %}<span class="icon-{{card.faction2_code}}"></span> {% else %} {{ card.faction_name }} {% endif %}  </td>
 	<td data-th="Cost" style="width : 30px;">{{ card.cost }}</td>
 	<td data-th="Type" style="width : 80px;">{{ card.type_name }}</td>
 	<td data-th="Stats" style="width : 70px;">
 	<span class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">
-	{% if card.type_code == "main_scheme" %}
-	{% if card.threat %}<b>Threat</b>: {{ card.threat }}<span title="Threat" class="icon icon-threat color-threat"></span>{% endif %}
-	{% else %}
 	{% if card.resource_mental %}{% for i in 1..card.resource_mental %}<span title="Mental" class="icon icon-mental color-mental"></span> {% endfor %}{% endif %}
 	{% if card.resource_physical %}{% for i in 1..card.resource_physical %}<span title="Physical" class="icon icon-physical color-physical"></span> {% endfor %}{% endif %}
 	{% if card.resource_energy %}{% for i in 1..card.resource_energy %}<span title="Energy" class="icon icon-energy color-energy"></span> {% endfor %}{% endif %}
 	{% if card.resource_wild %}{% for i in 1..card.resource_wild %}<span title="Wild" class="icon icon-wild color-wild"></span> {% endfor %}{% endif %}
-	{% endif %}
 	</span>
 	</td>
 	<td data-th="Traits" style="width : 170px;"><span class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">{{ card.traits }}</span></td>

@@ -39,8 +39,18 @@ format.fancy_int = function traits(num, special_text) {
 /**
  * @memberOf format
  */
+format.stage = function stage(card) {
+}
+
+/**
+ * @memberOf format
+ */
 format.name = function name(card) {
 	var name = (card.is_unique ? '<span class="icon-unique"></span> ' : "") + card.name;
+	if (card.type_code == 'villain' && card.stage) {
+		const stages = ['0', 'I', 'II', 'III', 'IV', 'V'];
+		name += ' (' + (stages[card.stage] || card.stage) + ')';
+	}
 	if (card.subname){
 		name += '<div class="card-subname small">'+card.subname+'</div>';
 	}
@@ -111,7 +121,6 @@ format.info = function info(card) {
 			break;
 		case 'villain':
 		case 'minion':
-				text += '<div><b>Stage '+format.fancy_int(card.stage)+'</b></div>';
 				text += '<div>Attack: '+format.fancy_int(card.attack, card.attack_text);
 				text += ' Scheme: '+format.fancy_int(card.scheme, card.scheme_text);
 

@@ -38,12 +38,12 @@ class CardsData
 			'[mental]' => '<span class="icon-mental" title="Mental"></span>',
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
-			'[star]' => '<span title="Star">⭑</span>',
+			'[star]' => '<span class="icon-special" title="Star"></span>',
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);
 	}
-	
+
 	/**
 	 * Parse deck requirements/restrictions and convert to array
 	 * @param string $text
@@ -58,7 +58,7 @@ class CardsData
 				$matches = [];
 				//preg_match ( "/([A-Za-z0-9]+)(?::([A-Za-z0-9]+))+/" , trim($restriction), $matches );
 				$params = explode(":", $restriction);
-				//$text .= print_r($matches,1);	
+				//$text .= print_r($matches,1);
 				if (isset($params[0])){
 					$type = trim($params[0]);
 					if (!isset($return_requirements[$type])){
@@ -70,8 +70,8 @@ class CardsData
 							$req[] = trim($params[1]);
 						}else {
 							$return_requirements[$type][trim($params[1])] = trim($params[1]);
-							$req[] = trim($params[1]);	
-						}						
+							$req[] = trim($params[1]);
+						}
 					}
 					if (isset($params[2])){
 						//$req[] = $params[2];
@@ -85,13 +85,13 @@ class CardsData
 		}
 		return $return_requirements;
 	}
-	
+
 	public function splitInParagraphs($text)
 	{
 		if(empty($text)) return '';
-		return implode(array_map(function ($l) { return "<p>$l</p>"; }, preg_split('/[\r\n]+/', $text)));	
+		return implode(array_map(function ($l) { return "<p>$l</p>"; }, preg_split('/[\r\n]+/', $text)));
 	}
-	
+
 	public function allsetsdata()
 	{
 		$list_packs = $this->doctrine->getRepository('AppBundle:Pack')->findBy(array(), array("position" => "ASC", "dateRelease" => "ASC"));
@@ -111,8 +111,8 @@ class CardsData
 		}
 		return $packs;
 	}
-	
-	
+
+
 	public function getPrimaryFactions()
 	{
 		$factions = $this->doctrine->getRepository('AppBundle:Faction')->findPrimaries();
@@ -242,7 +242,7 @@ class CardsData
 				case 'integer':
 				{
 					switch($searchCode)
-					{					
+					{
 						default:
 						{
 							$or = [];
@@ -354,7 +354,7 @@ class CardsData
 									case '!': $or[] = "(c.text not like ?$i and (c.backText is null or c.backText not like ?$i) and (l.text is null or l.text not like ?$i))"; break;
 								}
 								$qb->setParameter($i++, "%$arg%");
-								
+
 							}
 							$qb->andWhere(implode($operator == '!' ? " and " : " or ", $or));
 							break;
@@ -515,15 +515,15 @@ class CardsData
 				$cardinfo['imagesrc'] = null;
 			}
 		}
-		
+
 		if(isset($cardinfo['encounter_code']) && $cardinfo['encounter_code']) {
 			$cardinfo['spoiler'] = 1;
 		}
 		if(isset($cardinfo['faction_code']) && $cardinfo['faction_code'] == "encounter") {
 			$cardinfo['spoiler'] = 1;
 		}
-		
-		
+
+
 		if(isset($cardinfo['double_sided']) && $cardinfo['double_sided']) {
 			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'b.png');
 			$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
@@ -588,7 +588,7 @@ class CardsData
 		// les suivants sont les arguments, en OR
 
 		$query = preg_replace('/\s+/u', ' ', trim($query));
-		
+
 		$list = [];
 		$cond = null;
 		// l'automate a 3 états :
@@ -599,7 +599,7 @@ class CardsData
 		// s'il tombe sur un argument alors qu'il est en recherche de type, alors le type est vide
 		$etat = 1;
 		while($query != "") {
-			
+
 			if($etat == 1) {
 				if(isset($cond) && $etat != 4 && count($cond)>2) {
 					$list[] = $cond;
@@ -612,7 +612,7 @@ class CardsData
 				} else {
 					$cond = array("", ":");
 				}
-				
+
 				$etat=2;
 			} else {
 				if( preg_match('/^"([^"]*)"(.*)/u', $query, $match) // jeton "texte libre entre guillements"
@@ -668,7 +668,7 @@ class CardsData
 				unset($conditions[$i]);
 			}
 		}
-		
+
 		return array_values($conditions);
 	}
 
@@ -697,7 +697,7 @@ class CardsData
 
         return $response;
     }
-    
+
     public function get_faqs($card)
     {
         $reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'faq' => true), array('nbVotes' => 'DESC'));
@@ -724,7 +724,7 @@ class CardsData
 
         return $response;
     }
-    
+
     public function getDistinctTraits()
     {
     	/**
@@ -736,7 +736,7 @@ class CardsData
     	$qb->select('c.traits');
     	$qb->distinct();
     	$result = $qb->getQuery()->getResult();
-    	
+
     	$traits = [];
     	foreach($result as $card) {
     		$subs = explode('.', $card["traits"]);
@@ -744,6 +744,6 @@ class CardsData
     			$traits[trim($sub)] = 1;
     		}
     	}
-    	 
+
     }
 }

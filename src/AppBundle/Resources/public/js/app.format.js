@@ -28,9 +28,9 @@ format.fancy_int = function traits(num, special_text) {
 	var string = (num != null ? (num < 0 ? "X" : num) : '&ndash;');
 	if (special_text) {
 		if (num == null) {
-			string = '⭑';
+			string = '<span class="icon icon-special"></span>';
 		} else {
-			string = string + '⭑';
+			string = string + '<span class="icon icon-special"></span>';
 		}
 	}
 	return string;
@@ -79,7 +79,7 @@ format.pack = function pack(card) {
 	var text = '';
 	if (card.boost || card.boost_text){
 		text += '<div>Boost:' +
-			(card.boost_text ? '<span>⭑</span>' : '') +
+			(card.boost_text ? '<span class="icon icon-special color-boost"></span>' : '') +
 			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost"></span>') : '') +
 			'</div>';
 	}
@@ -198,12 +198,12 @@ format.text = function text(card, alternate) {
 	text = text.split("\n").join('</p><p>');
 	if (card.attack_text || card.scheme_text) {
 		if (card.attack_text) {
-			text += '<p>⭑: ' + card.attack_text + '</p>';
+			text += '<p><span class="icon icon-special"></span>: ' + card.attack_text + '</p>';
 		}
 		if (card.scheme_text && card.attack_text != card.scheme_text) {
 			// Some characters have the same * text on both Attack and Scheme,
 			// so don't show it twice. Yon-Rogg.
-			text += '<p>⭑: ' + card.scheme_text + '</p>';
+			text += '<p><span class="icon icon-special"></span>: ' + card.scheme_text + '</p>';
 		}
 	}
 	if (card.boost_text) {
@@ -211,7 +211,7 @@ format.text = function text(card, alternate) {
 		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p>⭑<b>Boost</b>: ' + card.boost_text + '</p>';
+		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
 	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
   	text += '</p><p>Scheme Icons: ';

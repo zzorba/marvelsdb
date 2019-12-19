@@ -40,11 +40,11 @@
 	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}{% if card.health_per_hero %}<span class="icon icon-per_hero"></span>{% endif %}.
 	</div>
 {% elseif card.type_code == 'attachment' %}
-	{% if card.attack is defined and card.attack != 0 %}
-	  {% trans %}Attack{% endtrans %}: {% if card.attack > 0 %}+{% endif %}{{ macros.integer_or_x(card.attack, card.attack_text) }}
+	{% if (card.attack is defined and card.attack != 0) or (card.attack_text is defined and card.attack_text) %}
+	  <div>{% trans %}Attack{% endtrans %}: {% if card.attack > 0 %}+{% endif %}{{ macros.integer_or_x(card.attack, card.attack_text) }}</div>
 	{% endif %}
-	{% if card.scheme is defined and card.scheme != 0 %}
-	  {% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.integer_or_x(card.scheme, card.scheme_text) }}
+	{% if (card.scheme is defined and card.scheme != 0) or (card.scheme_text is defined and card.scheme_text) %}
+	  <div>{% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.integer_or_x(card.scheme, card.scheme_text) }}</div>
 	{% endif %}
 {% elseif card.type_code == 'side_scheme' or card.type_code == 'main_scheme' %}
 	<div>

@@ -28,19 +28,8 @@
 	<td data-th="Type" style="width : 80px;">{{ card.type_name }}</td>
 	<td data-th="Stats" style="width : 70px;">
 	<span class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">
-	{% if card.type_code == "investigator" %}
-	
-	{% elseif card.type_code == "enemy2" %}
-	{% if card.enemy_fight %}<b>Fight</b>: {{ card.enemy_fight }}{% endif %}
-	{% if card.health %}<b>Health</b>:{{ card.health }}{% if card.health_per_investigator %}<span class="icon icon-per_investigator"></span>{% endif %}{% endif %}
-	{% if card.enemy_evade %}<b>Evade</b>: {{ card.enemy_evade }}{% endif %}
-	{% elseif card.type_code == "location2" %}
-	{% if card.shroud %}<b>Shroud</b>: {{ card.shroud }}<span title="Shroud" class="icon icon-shroud color-shroud"></span>{% endif %}
-	{% if card.clues %}<b>Clues</b>: {{ card.clues }}<span title="Clues" class="icon icon-clues color-clues"></span>{% endif %}	
-	{% elseif card.type_code == "agenda2" %}
-	{% if card.doom %}<b>Doom</b>: {{ card.doom }}<span title="Doom" class="icon icon-doom color-doom"></span>{% endif %}
-	{% elseif card.type_code == "act2" %}
-	{% if card.clues %}<b>Clues</b>: {{ card.clues }}<span title="Clues" class="icon icon-clues color-clues"></span>{% endif %}	
+	{% if card.type_code == "main_scheme" %}
+	{% if card.threat %}<b>Threat</b>: {{ card.threat }}<span title="Threat" class="icon icon-threat color-threat"></span>{% endif %}
 	{% else %}
 	{% if card.resource_mental %}{% for i in 1..card.resource_mental %}<span title="Mental" class="icon icon-mental color-mental"></span> {% endfor %}{% endif %}
 	{% if card.resource_physical %}{% for i in 1..card.resource_physical %}<span title="Physical" class="icon icon-physical color-physical"></span> {% endfor %}{% endif %}

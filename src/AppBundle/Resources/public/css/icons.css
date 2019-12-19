@@ -51,11 +51,20 @@
 .color-boost {
   color: #635120;
 }
+.icon-crisis {
+  font-size: 32px;
+}
 .icon-crisis:before {
   content: "\e900";
 }
+.icon-acceleration {
+  font-size: 32px;
+}
 .icon-acceleration:before {
   content: "\e901";
+}
+.icon-hazard {
+  font-size: 32px;
 }
 .icon-hazard:before {
   content: "\e902";

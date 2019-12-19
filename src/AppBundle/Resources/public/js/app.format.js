@@ -214,16 +214,17 @@ format.text = function text(card, alternate) {
 		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
 	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
-  	text += '</p><p>Scheme Icons: ';
-  	if (card.scheme_acceleration) {
-  		text += 'Acceleration ';
+  	text += '<p>';
+  	for (i = 0; i < (card.scheme_acceleration || 0); i++) {
+  		text += '<span name="Acceleration" class="icon icon-acceleration"></span>';
   	}
-  	if (card.scheme_crisis) {
-  		text += 'Crisis ';
+  	for (i = 0; i < (card.scheme_crisis || 0); i++){
+  		text += '<span name="Crisis" class="icon icon-crisis"></span>';
   	}
-  	if (card.scheme_hazard) {
-  		text += 'Hazard';
+  	for (i = 0; i < (card.scheme_hazard || 0); i++){
+  		text += '<span name="Hazard" class="icon icon-hazard"></span>';
   	}
+  	text += '</p>';
   }
 	return '<p>'+text+'</p>';
 };

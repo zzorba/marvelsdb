@@ -15,10 +15,9 @@
   {% endif %}
 </div>
 {% if card.scheme_acceleration or card.scheme_crisis or card.scheme_hazard %}
-  {% trans %}Scheme Icons{% endtrans %}:
-  {%if card.scheme_acceleration %}Acceleration{% endif %}
-  {%if card.scheme_crisis %}Crisis{% endif %}
-  {%if card.scheme_hazard %}Hazard{% endif %}
+  {%if card.scheme_acceleration %}{% for i in 1..card.scheme_acceleration %}<span name="Acceleration" class="icon icon-acceleration"></span>{% endfor %}{% endif %}
+  {%if card.scheme_crisis %}{% for i in 1..card.scheme_crisis %}<span name="Crisis" class="icon icon-crisis"></span>{% endfor %}{% endif %}
+  {%if card.scheme_hazard %}{% for i in 1..card.scheme_hazard %}<span name="Hazard" class="icon icon-hazard"></span>{% endfor %}Hazard{% endif %}
 {% endif %}
 {% if (card.boost_text is defined and card.boost_text is not empty) or card.boost is defined and card.boost > 0 %}
   <div>

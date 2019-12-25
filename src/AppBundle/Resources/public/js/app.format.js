@@ -24,16 +24,33 @@ format.resource = function resource(value, type, css) {
 /**
  * @memberOf format
  */
-format.fancy_int = function traits(num) {
-	var string = (num != null ? (num < 0 ? "X" : num) : '&ndash;')
+format.fancy_int = function traits(num, special_text) {
+	var string = (num != null ? (num < 0 ? "X" : num) : '&ndash;');
+	if (special_text) {
+		if (num == null) {
+			string = '<span class="icon icon-special"></span>';
+		} else {
+			string = string + '<span class="icon icon-special"></span>';
+		}
+	}
 	return string;
 };
 
 /**
  * @memberOf format
  */
+format.stage = function stage(card) {
+}
+
+/**
+ * @memberOf format
+ */
 format.name = function name(card) {
 	var name = (card.is_unique ? '<span class="icon-unique"></span> ' : "") + card.name;
+	if (card.type_code == 'villain' && card.stage) {
+		const stages = ['0', 'I', 'II', 'III', 'IV', 'V'];
+		name += ' (' + (stages[card.stage] || card.stage) + ')';
+	}
 	if (card.subname){
 		name += '<div class="card-subname small">'+card.subname+'</div>';
 	}
@@ -61,9 +78,9 @@ format.pack = function pack(card) {
 
 	var text = '';
 	if (card.boost || card.boost_text){
-		text += '<div>Boost:' + 
-			(card.boost_text ? '<span>⭑</span>' : '') + 
-			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost"></span>') : '') + 
+		text += '<div>Boost:' +
+			(card.boost_text ? '<span class="icon icon-special color-boost"></span>' : '') +
+			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost"></span>') : '') +
 			'</div>';
 	}
 	text += card.pack_name + ' #' + card.position + '. ';
@@ -94,11 +111,18 @@ format.info = function info(card) {
 			}
 
 			break;
+		case 'attachment':
+			if (card.attack || card.attack_text) {
+				text += '<div>Attack: '+(card.attack>0?'+':'')+format.fancy_int(card.attack, card.attack_text)+'</div>';
+			}
+			if (card.scheme || card.scheme_text) {
+				text += '<div>Scheme: '+(card.scheme>0?'+':'')+format.fancy_int(card.scheme, card.scheme_text)+'</div>';
+			}
+			break;
 		case 'villain':
-		case 'minion': 
-				text += '<div><b>Stage '+format.fancy_int(card.stage)+'</b></div>';
-				text += '<div>Attack: '+format.fancy_int(card.attack);
-				text += ' Scheme: '+format.fancy_int(card.scheme);
+		case 'minion':
+				text += '<div>Attack: '+format.fancy_int(card.attack, card.attack_text);
+				text += ' Scheme: '+format.fancy_int(card.scheme, card.scheme_text);
 
 				if (card.health_per_hero) {
 					text += ' Health per player: '+card.health;
@@ -113,11 +137,11 @@ format.info = function info(card) {
 		case 'hero':
 			text += '<div>Thwart: '+card.thwart+'. Attack: '+card.attack+'. Defense: '+card.defense+'.</div>';
 			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
-			break;	
+			break;
 		case 'alter_ego':
 			text += '<div>Recover: '+card.recover+'.</div>';
 			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
-			break;	
+			break;
 		case 'support':
 		case 'ally':
 		case 'upgrade':
@@ -172,24 +196,35 @@ format.text = function text(card, alternate) {
 	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 	text = text.split("\n").join('</p><p>');
+	if (card.attack_text || card.scheme_text) {
+		if (card.attack_text) {
+			text += '<p><span class="icon icon-special"></span>: ' + card.attack_text + '</p>';
+		}
+		if (card.scheme_text && card.attack_text != card.scheme_text) {
+			// Some characters have the same * text on both Attack and Scheme,
+			// so don't show it twice. Yon-Rogg.
+			text += '<p><span class="icon icon-special"></span>: ' + card.scheme_text + '</p>';
+		}
+	}
 	if (card.boost_text) {
 		var boost_text = card.boost_text;
 		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p>⭑<b>Boost</b>: ' + card.boost_text + '</p>';
+		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
 	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
-  	text += '</p><p>Scheme Icons: ';
-  	if (card.scheme_acceleration) {
-  		text += 'Acceleration ';
+  	text += '<p>';
+  	for (i = 0; i < (card.scheme_acceleration || 0); i++) {
+  		text += '<span name="Acceleration" class="icon icon-acceleration"></span>';
   	}
-  	if (card.scheme_crisis) {
-  		text += 'Crisis ';
+  	for (i = 0; i < (card.scheme_crisis || 0); i++){
+  		text += '<span name="Crisis" class="icon icon-crisis"></span>';
   	}
-  	if (card.scheme_hazard) {
-  		text += 'Hazard';
+  	for (i = 0; i < (card.scheme_hazard || 0); i++){
+  		text += '<span name="Hazard" class="icon icon-hazard"></span>';
   	}
+  	text += '</p>';
   }
 	return '<p>'+text+'</p>';
 };

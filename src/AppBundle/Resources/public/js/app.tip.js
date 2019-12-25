@@ -5,26 +5,26 @@ var cards_zoom_regexp = /card\/(\d\d\d\d\d)$/,
 	hide_event = 'mouseout';
 
 function getCardText(card) {
-	var image = card.imagesrc ? '<div class="card-thumbnail card-thumbnail-3x card-thumbnail-'+card.type_code+'" style="background-image:url('+card.imagesrc+')"></div>' : "";		
+	var image = card.imagesrc ? '<div class="card-thumbnail card-thumbnail-3x card-thumbnail-'+card.type_code+'" style="background-image:url('+card.imagesrc+')"></div>' : "";
 	var content = image
 	+ '<h4 class="card-name">' + app.format.name(card) + '</h4>'
 	+ '<div class="card-faction">' + app.format.faction(card) + '</div>'
-	+ '<div><span class="card-type">'+card.type_name+((card.type_code == "agenda" || card.type_code == "act") ? '. Stage '+card.stage : '')+(card.slot ? '. '+card.slot : "")+(card.subtype_name ? '. '+card.subtype_name : "")+'</span></div>'
+	+ '<div><span class="card-type">'+card.type_name+((card.type_code == "main_scheme" || card.type_code == 'villain') ? '. Stage '+card.stage : '')+(card.subtype_name ? '. '+card.subtype_name : "")+'</span></div>'
 	+ '<div class="card-traits">' + app.format.traits(card) + '</div>'
 	;
-	
+
 
 	content += '<div class="card-info">' + app.format.info(card) + '</div>';
-	content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>';
 	if (card.double_sided){
-		content += '<hr />';
-		if (card.back_flavor){
-			//content += '<div class="card-flavor">' + card.back_flavor + '</div>';
-		}
+//		if (card.back_flavor){
+//			content += '<div class="card-flavor">' + card.back_flavor + '</div>';
+//		}
 		if (card.back_text){
 			content += '<div class="card-text border-'+card.faction_code+'">' + app.format.back_text(card) + '</div>';
+			content += '<hr />'
 		}
-	}		
+	}
+	content += '<div class="card-text border-'+card.faction_code+'">' + app.format.text(card) + '</div>';
 	content += '<div class="card-pack">' + app.format.pack(card) + '</div>';
 	return content;
 }
@@ -33,7 +33,7 @@ function display_card_on_element(card, element, event) {
 	var content;
 	if(mode == 'text') {
 		content = getCardText(card);
-		if (card.linked_card && card.linked_card.type_code == 'alter_ego') {
+		if (card.linked_card) {
 			content += getCardText(card.linked_card);
 		}
 	}
@@ -62,7 +62,7 @@ function display_card_on_element(card, element, event) {
 			event: hide_event
 		}
 	};
-	
+
 	$(element).qtip(qtip, event);
 }
 
@@ -70,7 +70,7 @@ function display_card_on_element(card, element, event) {
  * @memberOf tip
  * @param event
  */
-tip.display = function display(event) {	
+tip.display = function display(event) {
 	var code = $(this).data('code');
 	var card = app.data.cards.findById(code);
 	if (!card) return;
@@ -95,7 +95,7 @@ tip.display = function display(event) {
  * @memberOf tip
  * @param event
  */
-tip.reveal = function reveal(event) {	
+tip.reveal = function reveal(event) {
 	if ($(this).hasClass('spoiler')){
 		$(this).removeClass('spoiler');
 		$('.spoiler', this.parentNode.parentNode).removeClass('spoiler');
@@ -107,7 +107,7 @@ tip.reveal = function reveal(event) {
  * @memberOf tip
  * @param event
  */
-tip.update_spoiler_cookie = function update_spoiler_cookie(event) {	
+tip.update_spoiler_cookie = function update_spoiler_cookie(event) {
 	if ($(this).is(':checked')){
 		createCookie("spoilers", "hide");
 		window.location.reload(false);
@@ -176,7 +176,7 @@ $(document).on('start.app', function () {
 		mouseover : tip.display,
 		click : tip.reveal
 	}, 'a.card-tip');
-	
+
 	$('body').on({
 		click : tip.reveal
 	}, '.spoiler');
@@ -184,7 +184,7 @@ $(document).on('start.app', function () {
 	$('body').on({
 		mouseover : tip.guess
 	}, 'a:not(.card-tip)');
-	
+
 	$('body').on({
 		change : tip.update_spoiler_cookie
 	}, '#spoilers');

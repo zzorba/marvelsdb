@@ -1,85 +1,130 @@
 @font-face {
   font-family: 'marvel-icons';
-  src:  url('../fonts/marvel-icons.eot?957f22');
-  src:  url('../fonts/marvel-icons.eot?957f22#iefix') format('embedded-opentype'),
-    url('../fonts/marvel-icons.ttf?957f22') format('truetype'),
-    url('../fonts/marvel-icons.woff?957f22') format('woff'),
-    url('../fonts/marvel-icons.svg?957f22#marvel-icons') format('svg');
+  src:  url('../fonts/marvel-icons.eot?4fzpq9');
+  src:  url('../fonts/marvel-icons.eot?4fzpq9#iefix') format('embedded-opentype'),
+    url('../fonts/marvel-icons.ttf?4fzpq9') format('truetype'),
+    url('../fonts/marvel-icons.woff?4fzpq9') format('woff'),
+    url('../fonts/marvel-icons.svg?4fzpq9#marvel-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'marvel-icons';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'marvel-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-
-.icon-cost:before {
-  content: "\e904";
+.spoiler {
+  background-color : #dfdfdf;
+  color : #dfdfdf!important;
 }
-.icon-physical:before {
+.spoiler a, .spoiler div {
+  color : #dfdfdf!important;
+}
+.spoiler img {
+  filter: url(blur.svg#blur);
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+}
+.color-mental {
+  color: #003961;
+}
+.color-energy {
+  color: #ff8f3f;
+}
+.color-physical {
+  color: #661e09;
+}
+.color-wild {
+  color: #00543a;
+}
+.color-boost {
+  color: #635120;
+}
+.icon-crisis {
+  font-size: 32px;
+}
+.icon-crisis:before {
   content: "\e900";
 }
-.icon-energy:before {
+.icon-acceleration {
+  font-size: 32px;
+}
+.icon-acceleration:before {
   content: "\e901";
 }
-.icon-mental:before {
-  content: "\e903";
+.icon-hazard {
+  font-size: 32px;
 }
-.icon-wild:before {
+.icon-hazard:before {
   content: "\e902";
 }
 .icon-per_hero:before {
-  content: "\e905";
+  content: "\e903";
 }
 .icon-unique:before {
-  content: "\e906";
+  content: "\e904";
+}
+.icon-special:before {
+  content: "\e905";
 }
 .icon-boost:before {
+  content: "\e906";
+}
+.icon-cost:before {
   content: "\e907";
 }
-
-.spoiler {
-	background-color : #dfdfdf;
-	color : #dfdfdf!important;
+.icon-energy_fill:before {
+  content: "\e908";
+  color: #86671b;
 }
-.spoiler a, .spoiler div {
-	color : #dfdfdf!important;
+.icon-energy_outline:before {
+  content: "\e909";
+  color: #f6be33;
 }
-
-.spoiler img {
-
-	filter: url(blur.svg#blur);
-	-webkit-filter: blur(3px);
-	filter: blur(3px);
-	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+.icon-energy:before {
+  content: "\e90a";
 }
-
-
-.color-mental {
-	color : #003961;
+.icon-mental_fill:before {
+  content: "\e90b";
+  color: #b7c9eb;
 }
-.color-energy {
-	color : #ff8f3f;
+.icon-mental_outline:before {
+  content: "\e90c";
+  color: #5c72c1;
 }
-.color-physical {
-	color : #661e09;
+.icon-mental:before {
+  content: "\e90d";
 }
-.color-wild {
-	color : #00543a;
+.icon-physical_fill:before {
+  content: "\e90e";
+  color: #ee9080;
 }
-.color-cost {
-  color : #635120;
+.icon-physical_outline:before {
+  content: "\e90f";
+  color: #aa3220;
 }
-.color-boost {
-  color : #635120;
+.icon-physical:before {
+  content: "\e910";
+}
+.icon-wild_fill:before {
+  content: "\e911";
+  color: #45bc5c;
+}
+.icon-wild_outline:before {
+  content: "\e912";
+  color: #247034;
+}
+.icon-wild:before {
+  content: "\e913";
 }

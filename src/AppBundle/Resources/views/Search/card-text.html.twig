@@ -1,22 +1,28 @@
 <div class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">
 <div class="card-text border-{{ card.faction_code }}">
 	{{ card.text|raw }}
+  {% if card.attack_text is defined or card.scheme_text is defined %}
+    <p>
+    {% if card.attack_text %}
+      <span class="icon icon-special"></span>{{ card.attack_text|raw }}
+    {% endif %}
+    {% if card.scheme_text and card.attack_text != card.scheme_text %}<span class="icon icon-special"></span>{{ card.scheme_text|raw }}{% endif %}
+    </p>
+  {% endif %}
   {% if card.boost_text is defined and card.boost_text is not empty %}
   <hr/>
-  ⭑<b>{% trans %}Boost{% endtrans %}</b>: {{ card.boost_text|raw }}
+  <span class="icon icon-special"></span><b>{% trans %}Boost{% endtrans %}</b>: {{ card.boost_text|raw }}
   {% endif %}
 </div>
 {% if card.scheme_acceleration or card.scheme_crisis or card.scheme_hazard %}
-  {% trans %}Scheme Icons{% endtrans %}:
-  {%if card.scheme_acceleration %}Acceleration{% endif %}
-  {%if card.scheme_crisis %}Crisis{% endif %}
-  {%if card.scheme_hazard %}Hazard{% endif %}
+  {%if card.scheme_acceleration %}{% for i in 1..card.scheme_acceleration %}<span name="Acceleration" class="icon icon-acceleration"></span>{% endfor %}{% endif %}
+  {%if card.scheme_crisis %}{% for i in 1..card.scheme_crisis %}<span name="Crisis" class="icon icon-crisis"></span>{% endfor %}{% endif %}
+  {%if card.scheme_hazard %}{% for i in 1..card.scheme_hazard %}<span name="Hazard" class="icon icon-hazard"></span>{% endfor %}Hazard{% endif %}
 {% endif %}
 {% if (card.boost_text is defined and card.boost_text is not empty) or card.boost is defined and card.boost > 0 %}
   <div>
     {% trans %}Boost{% endtrans %}:
-    {% if card.boost_text is defined and card.boost_text is not empty %}<span>⭑</span>{% endif %}
-    {% if card.boost %}{% for i in 1..card.boost %}<span title="Boost" class="icon icon-boost color-boost"></span>{% endfor %}{% endif %}
+    {% if card.boost_text is defined and card.boost_text is not empty %}<span class="icon icon-special color-boost"></span>{% endif %}{% if card.boost %}{% for i in 1..card.boost %}<span title="Boost" class="icon icon-boost color-boost"></span>{% endfor %}{% endif %}
   </div>
 {% endif %}
 </div>

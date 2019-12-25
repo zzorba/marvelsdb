@@ -1,5 +1,5 @@
-{% macro integer_or_x(value) %}
-    {% if value is null %}&ndash;{% elseif value < 0 %}X{% else %}{{ value }}{% endif %}
+{% macro integer_or_x(value, special_text) %}
+{% if value is null %}{% if special_text is null%}&ndash;{% endif %}{% elseif value < 0 %}X{% else %}{{ value }}{% endif %}{% if special_text %}<span class="icon icon-special"></span>{% endif %}
 {% endmacro %}
 
 {% macro card_name_with_pack_no_link(card) %}

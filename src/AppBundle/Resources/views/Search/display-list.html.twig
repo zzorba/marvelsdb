@@ -21,32 +21,17 @@
 	<td data-th="Name">
 		<span class="icon icon-{{ card.type_code}} fg-{{ card.faction_code }}"></span>
 		<a href="{{ card.url }}" class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %} card-tip{% if card.available == false %} card-preview{% endif %}" data-code="{{ card.code }}">
-		{{ card.name }}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
+		{{ card.name }}{% if card.type_code == 'villain' %}{% include 'AppBundle:Search:card-stage.html.twig' with { 'is_back': false } %}{% endif %}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
 	</td>
 	<td data-th="Faction" style="width : 100px;" class="fg-{{ card.faction_code }}"><span class="icon-{{card.faction_code}}"></span>{% if card.faction2_code is defined %}<span class="icon-{{card.faction2_code}}"></span> {% else %} {{ card.faction_name }} {% endif %}  </td>
 	<td data-th="Cost" style="width : 30px;">{{ card.cost }}</td>
 	<td data-th="Type" style="width : 80px;">{{ card.type_name }}</td>
 	<td data-th="Stats" style="width : 70px;">
 	<span class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">
-	{% if card.type_code == "investigator" %}
-	
-	{% elseif card.type_code == "enemy2" %}
-	{% if card.enemy_fight %}<b>Fight</b>: {{ card.enemy_fight }}{% endif %}
-	{% if card.health %}<b>Health</b>:{{ card.health }}{% if card.health_per_investigator %}<span class="icon icon-per_investigator"></span>{% endif %}{% endif %}
-	{% if card.enemy_evade %}<b>Evade</b>: {{ card.enemy_evade }}{% endif %}
-	{% elseif card.type_code == "location2" %}
-	{% if card.shroud %}<b>Shroud</b>: {{ card.shroud }}<span title="Shroud" class="icon icon-shroud color-shroud"></span>{% endif %}
-	{% if card.clues %}<b>Clues</b>: {{ card.clues }}<span title="Clues" class="icon icon-clues color-clues"></span>{% endif %}	
-	{% elseif card.type_code == "agenda2" %}
-	{% if card.doom %}<b>Doom</b>: {{ card.doom }}<span title="Doom" class="icon icon-doom color-doom"></span>{% endif %}
-	{% elseif card.type_code == "act2" %}
-	{% if card.clues %}<b>Clues</b>: {{ card.clues }}<span title="Clues" class="icon icon-clues color-clues"></span>{% endif %}	
-	{% else %}
 	{% if card.resource_mental %}{% for i in 1..card.resource_mental %}<span title="Mental" class="icon icon-mental color-mental"></span> {% endfor %}{% endif %}
 	{% if card.resource_physical %}{% for i in 1..card.resource_physical %}<span title="Physical" class="icon icon-physical color-physical"></span> {% endfor %}{% endif %}
 	{% if card.resource_energy %}{% for i in 1..card.resource_energy %}<span title="Energy" class="icon icon-energy color-energy"></span> {% endfor %}{% endif %}
 	{% if card.resource_wild %}{% for i in 1..card.resource_wild %}<span title="Wild" class="icon icon-wild color-wild"></span> {% endfor %}{% endif %}
-	{% endif %}
 	</span>
 	</td>
 	<td data-th="Traits" style="width : 170px;"><span class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}">{{ card.traits }}</span></td>

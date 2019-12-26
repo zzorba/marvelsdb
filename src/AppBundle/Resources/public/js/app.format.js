@@ -48,7 +48,7 @@ format.stage = function stage(card) {
 format.name = function name(card) {
 	var name = (card.is_unique ? '<span class="icon-unique"></span> ' : "") + card.name;
 	if (card.type_code == 'villain' && card.stage) {
-		const stages = ['0', 'I', 'II', 'III', 'IV', 'V'];
+		var stages = ['0', 'I', 'II', 'III', 'IV', 'V'];
 		name += ' (' + (stages[card.stage] || card.stage) + ')';
 	}
 	if (card.subname){

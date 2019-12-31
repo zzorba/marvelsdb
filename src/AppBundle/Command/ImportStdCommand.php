@@ -770,6 +770,9 @@ class ImportStdCommand extends ContainerAwareCommand
 				'base_threat_fixed',
 				'escalation_threat',
 				'escalation_threat_fixed',
+				'scheme_acceleration',
+				'scheme_crisis',
+				'scheme_hazard',
 		];
 
 		foreach($mandatoryKeys as $key) {

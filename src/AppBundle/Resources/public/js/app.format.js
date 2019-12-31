@@ -206,13 +206,6 @@ format.text = function text(card, alternate) {
 			text += '<p><span class="icon icon-special"></span>: ' + card.scheme_text + '</p>';
 		}
 	}
-	if (card.boost_text) {
-		var boost_text = card.boost_text;
-		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
-		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
-	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
   	text += '<p>';
   	for (i = 0; i < (card.scheme_acceleration || 0); i++) {
@@ -225,6 +218,13 @@ format.text = function text(card, alternate) {
   		text += '<span name="Hazard" class="icon icon-hazard"></span>';
   	}
   	text += '</p>';
+  }
+  if (card.boost_text) {
+    var boost_text = card.boost_text;
+    boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+    boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+    boost_text = boost_text.split("\n").join('</p><p>');
+    text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
   }
 	return '<p>'+text+'</p>';
 };

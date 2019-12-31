@@ -105,9 +105,16 @@ format.info = function info(card) {
 	switch(card.type_code) {
 		case 'side_scheme':
 		case 'main_scheme':
-			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+'.</div>';
+			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+(!card.base_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.';
 			if (card.type_code == 'main_scheme') {
-				text += '<div>Threat: '+format.fancy_int(card.threat)+'.</div>';
+				if (card.escalation_threat) {
+					text += ' Escalation Threat: '+format.fancy_int(card.escalation_threat)+(!card.escalation_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+				} else {
+					text += '</div>';
+				}
+				text += '<div>Threat: '+format.fancy_int(card.threat)+(!card.threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+			} else {
+				text += '</div>';
 			}
 
 			break;
@@ -232,7 +239,7 @@ format.text = function text(card, alternate) {
 		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
+		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + boost_text + '</p>';
 	}
 	return '<p>'+text+'</p>';
 };

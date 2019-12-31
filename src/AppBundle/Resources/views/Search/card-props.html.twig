@@ -53,6 +53,9 @@
 		{% trans %}Escalation Threat{% endtrans %}: {{ macros.integer_or_x(card.escalation_threat) }}{% if not card.escalation_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
 	{% endif %}
 	</div>
+	{% if card.type_code == 'main_scheme' %}
+  	{% trans %}Threat{% endtrans %}: {{ macros.integer_or_x(card.threat) }}{% if not card.threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+	{% endif %}
 {% else %}
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}
 	<div>

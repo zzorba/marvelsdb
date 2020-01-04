@@ -105,9 +105,16 @@ format.info = function info(card) {
 	switch(card.type_code) {
 		case 'side_scheme':
 		case 'main_scheme':
-			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+'.</div>';
+			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+(!card.base_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.';
 			if (card.type_code == 'main_scheme') {
-				text += '<div>Threat: '+format.fancy_int(card.threat)+'.</div>';
+				if (card.escalation_threat) {
+					text += ' Escalation Threat: '+format.fancy_int(card.escalation_threat)+(!card.escalation_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+				} else {
+					text += '</div>';
+				}
+				text += '<div>Threat: '+format.fancy_int(card.threat)+(!card.threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+			} else {
+				text += '</div>';
 			}
 
 			break;
@@ -198,34 +205,42 @@ format.text = function text(card, alternate) {
 	text = text.split("\n").join('</p><p>');
 	if (card.attack_text || card.scheme_text) {
 		if (card.attack_text) {
-			text += '<p><span class="icon icon-special"></span>: ' + card.attack_text + '</p>';
+		var attack_text = card.attack_text;
+			attack_text = attack_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+			attack_text = attack_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+			attack_text = attack_text.split("\n").join('</p><p>')
+			text += '<p><span class="icon icon-special"></span>: ' + attack_text + '</p>';
 		}
 		if (card.scheme_text && card.attack_text != card.scheme_text) {
 			// Some characters have the same * text on both Attack and Scheme,
 			// so don't show it twice. Yon-Rogg.
-			text += '<p><span class="icon icon-special"></span>: ' + card.scheme_text + '</p>';
+			var scheme_text = card.scheme_text;
+			scheme_text = scheme_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+			scheme_text = scheme_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+			scheme_text = scheme_text.split("\n").join('</p><p>')
+			text += '<p><span class="icon icon-special"></span>: ' + scheme_text + '</p>';
 		}
+	}
+	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
+		text += '<p>';
+		for (i = 0; i < (card.scheme_acceleration || 0); i++) {
+			text += '<span name="Acceleration" class="icon icon-acceleration"></span>';
+		}
+		for (i = 0; i < (card.scheme_crisis || 0); i++){
+			text += '<span name="Crisis" class="icon icon-crisis"></span>';
+		}
+		for (i = 0; i < (card.scheme_hazard || 0); i++){
+			text += '<span name="Hazard" class="icon icon-hazard"></span>';
+		}
+		text += '</p>';
 	}
 	if (card.boost_text) {
 		var boost_text = card.boost_text;
 		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + card.boost_text + '</p>';
+		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + boost_text + '</p>';
 	}
-	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
-  	text += '<p>';
-  	for (i = 0; i < (card.scheme_acceleration || 0); i++) {
-  		text += '<span name="Acceleration" class="icon icon-acceleration"></span>';
-  	}
-  	for (i = 0; i < (card.scheme_crisis || 0); i++){
-  		text += '<span name="Crisis" class="icon icon-crisis"></span>';
-  	}
-  	for (i = 0; i < (card.scheme_hazard || 0); i++){
-  		text += '<span name="Hazard" class="icon icon-hazard"></span>';
-  	}
-  	text += '</p>';
-  }
 	return '<p>'+text+'</p>';
 };
 

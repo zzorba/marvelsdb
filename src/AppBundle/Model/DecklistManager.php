@@ -64,11 +64,7 @@ class DecklistManager
 		$qb = $this->doctrine->createQueryBuilder();
 		$qb->select('d');
 		$qb->from('AppBundle:Decklist', 'd');		
-		if($this->faction) {
-			$qb->join('d.character', 'c');
-			$qb->where('c.faction = :faction');
-			$qb->setParameter('faction', $this->faction);
-		}
+		//$qb->addSelect('JSON_EXTRACT(d.meta, "aspect") as meta');
 		$qb->setFirstResult($this->start);
 		$qb->setMaxResults($this->limit);
 		$qb->distinct();
@@ -196,6 +192,7 @@ class DecklistManager
 		$faction_code = filter_var($request->query->get('faction'), FILTER_SANITIZE_STRING);
 		if($faction_code) {
 			$faction = $this->doctrine->getRepository('AppBundle:Faction')->findOneBy(['code' => $faction_code]);
+			$faction = $faction->getCode();
 		}
 
 		$author_name = filter_var($request->query->get('author'), FILTER_SANITIZE_STRING);
@@ -210,11 +207,10 @@ class DecklistManager
 		$joinTables = [];
 		
 		if(!empty($faction)) {
-			$qb->join('d.character', 'a');
-			$qb->where('a.faction = :faction');
-			//$qb->andWhere('d.faction = :faction');
-			$qb->setParameter('faction', $faction);
+			$qb->andWhere('d.meta like :aspect');
+			$qb->setParameter('aspect', "%$faction%");
 		}
+
 		if(!empty($author_name)) {
 			$qb->innerJoin('d.user', 'u');
 			$joinTables[] = 'd.user';

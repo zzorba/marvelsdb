@@ -106,7 +106,7 @@ class SocialController extends Controller
 		/* @var $user \AppBundle\Entity\User */
 		$user = $this->getUser();
 
-		$yesterday = (new \DateTime())->modify('-24 hours');
+		$yesterday = (new \DateTime())->modify('-0 hours');
 		if($user->getDateCreation() > $yesterday) {
 			return $this->render('AppBundle:Default:error.html.twig', [
 			'pagetitle' => "Spam prevention",
@@ -360,8 +360,8 @@ class SocialController extends Controller
 
 		$categories = [];
 		$on = 0; $off = 0;
-		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
-		foreach($packs as $pack) {
+		$sets = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
+		foreach($sets as $pack) {
 			if ($pack->getPackType()) {
 				$pack_type = $pack->getPackType()->getName();
 			} else {
@@ -370,10 +370,10 @@ class SocialController extends Controller
 			if (!isset($categories[$pack_type])) {
 				$categories[$pack_type] = [ 'packs' => [], 'label' => $pack_type];
 			}
-			$checked = true;
+			$checked = count($packs) ? in_array($pack->getId(), $packs) : true;
 			if($checked) $on++;
 			else $off++;
-			$category[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
+			$categories[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
 		}
 
 		$params = array(
@@ -389,6 +389,7 @@ class SocialController extends Controller
 		f.name,
 		f.code
 		from faction f
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection') 
 		order by f.name asc")
 		->fetchAll();
 		$params['faction_selected'] = $faction_code;
@@ -1076,6 +1077,7 @@ class SocialController extends Controller
 		f.name,
 		f.code
 		from faction f
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection') 
 		order by f.name asc")
 		->fetchAll();
 
@@ -1094,7 +1096,7 @@ class SocialController extends Controller
 			$checked = true;
 			if($checked) $on++;
 			else $off++;
-			$category[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
+			$categories[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
 		}
 
 		$searchForm = $this->renderView('AppBundle:Search:form.html.twig',

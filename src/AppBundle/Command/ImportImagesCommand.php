@@ -33,9 +33,9 @@ class ImportImagesCommand extends ContainerAwareCommand
 		$output->writeln($rootDir);
 		$logfile = fopen("missing.txt", "w") or die("Unable to open file!");
 		$cards = $repo->findBy([], ['code' => 'ASC']);
-		
+
 		$backlinksCache = [];
-		
+
 		foreach($cards as $card) {
 			$card_code = $card->getCode();
 			$imageurl = $assets_helper->getUrl('bundles/cards/'.$card_code.'.png');
@@ -67,15 +67,15 @@ class ImportImagesCommand extends ContainerAwareCommand
 			}
 			// AHC01_121a.jpg
 			echo $card->getPack()->getName()." ".$card->getPack()->getId()."\n";
-			if ($card->getType()->getCode() == "location" && $card->getDoubleSided()){
-				$cgdbfile = sprintf('AHC%02d_%db.jpg', $pack_id, $card->getPosition());
+			if ($card->getType()->getCode() == "main_scheme" && $card->getDoubleSided()){
+				$cgdbfile = sprintf('MC%02den_%dB.jpg', $pack_id, $card->getPosition());
 			} else if (isset($backlinksCache[$card->getCode()])) {
-				$cgdbfile = sprintf('AHC%02d_%db.jpg', $pack_id, $card->getPosition());
+				$cgdbfile = sprintf('MC%02den_%dB.jpg', $pack_id, $card->getPosition());
 			} else {
-				$cgdbfile = sprintf('AHC%02d_%d.jpg', $pack_id, $card->getPosition());
+				$cgdbfile = sprintf('MC%02den_%d.jpg', $pack_id, $card->getPosition());
 			}
 
-			$cgdburl = "http://lcg-cdn.fantasyflightgames.com/ahlcg/" . $cgdbfile;
+			$cgdburl = "http://lcgcdn.s3.amazonaws.com/mc/" . $cgdbfile;
 
 			$dirname = dirname($imagepath);
 			$outputfile = $dirname . DIRECTORY_SEPARATOR . $card_code . ".jpg";
@@ -85,8 +85,8 @@ class ImportImagesCommand extends ContainerAwareCommand
 				file_put_contents($outputfile, $image);
 				$output->writeln("New file at $outputfile");
 			}else {
-				$cgdbfile = sprintf('AHC%02d_%da.jpg', $pack_id, $card->getPosition());
-				$cgdburl2 = "http://lcg-cdn.fantasyflightgames.com/ahlcg/" . $cgdbfile;
+				$cgdbfile = sprintf('MC%02den_%dA.jpg', $pack_id, $card->getPosition());
+				$cgdburl2 = "https://lcgcdn.s3.amazonaws.com/mc/" . $cgdbfile;
 				$dirname = dirname($imagepath);
 				$outputfile = $dirname . DIRECTORY_SEPARATOR . $card_code . ".jpg";
 
@@ -104,12 +104,12 @@ class ImportImagesCommand extends ContainerAwareCommand
 				if(file_exists($imagepath_back) || file_exists($imagepath2_back)) {
 					$output->writeln("Skip back".$card_code);
 				} else {
-					if ($card->getType()->getCode() == "location"){
-						$cgdbfile = sprintf('AHC%02d_%d.jpg', $pack_id, $card->getPosition());
+					if ($card->getType()->getCode() == "main_scheme"){
+						$cgdbfile = sprintf('MC%02den_%dA.jpg', $pack_id, $card->getPosition());
 					}else {
-						$cgdbfile = sprintf('AHC%02d_%db.jpg', $pack_id, $card->getPosition());
+						$cgdbfile = sprintf('MC%02den_%dB.jpg', $pack_id, $card->getPosition());
 					}
-					$cgdburl = "http://lcg-cdn.fantasyflightgames.com/ahlcg/" . $cgdbfile;
+					$cgdburl = "https://lcgcdn.s3.amazonaws.com/mc/" . $cgdbfile;
 					echo $cgdburl;
 					$image = @file_get_contents($cgdburl);
 					if($image !== FALSE) {

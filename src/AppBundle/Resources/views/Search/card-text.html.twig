@@ -4,9 +4,9 @@
 	{% if card.attack_text is defined or card.scheme_text is defined %}
 		<p>
 		{% if card.attack_text %}
-			<span class="icon icon-special"></span>{{ card.attack_text|raw }}
+			<div><span class="icon icon-special"></span>{{ card.attack_text|raw }}</div>
 		{% endif %}
-		{% if card.scheme_text and card.attack_text != card.scheme_text %}<span class="icon icon-special"></span>{{ card.scheme_text|raw }}{% endif %}
+		{% if card.scheme_text and card.attack_text != card.scheme_text %}<div><span class="icon icon-special"></span>{{ card.scheme_text|raw }}</div>{% endif %}
 		</p>
 	{% endif %}
 	{% if card.scheme_acceleration or card.scheme_crisis or card.scheme_hazard %}

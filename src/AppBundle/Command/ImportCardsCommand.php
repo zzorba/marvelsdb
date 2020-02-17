@@ -315,9 +315,9 @@ class ImportCardsCommand extends ContainerAwareCommand
 					
 					3) this data is not on cardgamedb, but the script should create fields for it: 
 					3.1) encounter_position 
-					3.2) "double_sided": true, (if cardtype is Scenario, Agenda, Act, or Location) 
-					3.3) stage (if cardtype is Agenda or Act) 
-					3.4) back_name (if cardtype is Agenda or Act) == this data is not on cardgamedb, need to add manually: - non-standard double-sided cards - back_name on Locations cards - victory on Locations cards - <cite> 
+					3.2) "double_sided": true, (if cardtype is Main Scheme) 
+					3.3) stage (if cardtype is Villain or Main Scheme) 
+					3.4) back_name (if cardtype is Main Scheme) == this data is not on cardgamedb, need to add manually: - non-standard double-sided cards - back_name on Locations cards - victory on Locations cards - <cite> 
 					
 					4) After extracting data, rename: 
 					4.1) <i>[ to [ 

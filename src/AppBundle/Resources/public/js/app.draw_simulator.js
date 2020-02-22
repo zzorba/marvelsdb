@@ -213,12 +213,12 @@ draw_simulator.handle_click = function handle_click(event) {
 	var alteregoCard = app.data.cards.findById(heroCard.linked_to_code)
 
 	if(command === 'hero_hand') {
-		draw_simulator.draw(heroCard.hand_size);
+		draw=heroCard.hand_size;
 	} 
-	if(command === 'alterego_hand') {
-		draw_simulator.draw(alteregoCard.hand_size);
+	else if(command === 'alterego_hand') {
+		draw=alteregoCard.hand_size;
 	} 
-	if(command === 'all') {
+	else if(command === 'all') {
 		draw = deck.length;
 	} else {
 		draw = command;

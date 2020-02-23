@@ -208,7 +208,17 @@ draw_simulator.handle_click = function handle_click(event) {
 		draw_simulator.reset();
 	}
 	var draw;
-	if(command === 'all') {
+	var identityCardCode=app.deck.get_investigator_code()
+	var heroCard = app.data.cards.findById(identityCardCode);
+	var alteregoCard = app.data.cards.findById(heroCard.linked_to_code)
+
+	if(command === 'hero_hand') {
+		draw=heroCard.hand_size;
+	} 
+	else if(command === 'alterego_hand') {
+		draw=alteregoCard.hand_size;
+	} 
+	else if(command === 'all') {
 		draw = deck.length;
 	} else {
 		draw = command;

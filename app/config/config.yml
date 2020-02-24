@@ -127,8 +127,8 @@ fos_user:
     firewall_name: main
     user_class: AppBundle\Entity\User
     from_email:
-        address: "noreply@yourcompany.com"
-        sender_name: "No Reply"
+        address: "%email_sender_address%"
+        sender_name: "%email_sender_name%"
     registration:
         confirmation:
             enabled: true

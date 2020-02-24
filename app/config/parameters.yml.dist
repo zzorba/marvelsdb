@@ -17,8 +17,8 @@ parameters:
     cache_expiration:  600
     
     # Email sender
-    email_sender_address: ~
-    email_sender_name: ~
+    email_sender_address: fake@fakemail.com
+    email_sender_name: fake name
     
     # Branding
     website_name: ~

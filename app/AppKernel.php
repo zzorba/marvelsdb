@@ -5,6 +5,18 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
     public function registerBundles()
     {
         $bundles = array(
@@ -20,7 +32,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         	new FOS\UserBundle\FOSUserBundle(),
         	new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-			new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         	new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         	new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
         	new AppBundle\AppBundle(),

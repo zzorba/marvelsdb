@@ -222,6 +222,7 @@ deck_charts.chart_resource = function chart_resource() {
 			}
 			if (card.faction_code === "hero") {
 				icons['physical'].HeroCardsCounter += card.indeck * card.resource_physical;
+				icons['physical'].count -= card.indeck * card.resource_physical;
 			}
 		}
 		if (card.resource_mental && card.resource_mental > 0) {
@@ -241,6 +242,7 @@ deck_charts.chart_resource = function chart_resource() {
 			}
 			if (card.faction_code === "hero") {
 				icons['mental'].HeroCardsCounter += card.indeck * card.resource_mental;
+				icons['mental'].count -= card.indeck * card.resource_mental;
 			}
 		}
 		if (card.resource_energy && card.resource_energy > 0) {
@@ -260,6 +262,7 @@ deck_charts.chart_resource = function chart_resource() {
 			}
 			if (card.faction_code === "hero") {
 				icons['energy'].HeroCardsCounter += card.indeck * card.resource_energy;
+				icons['energy'].count -= card.indeck * card.resource_energy;
 			}
 		}
 		if (card.resource_wild && card.resource_wild > 0) {
@@ -279,6 +282,7 @@ deck_charts.chart_resource = function chart_resource() {
 			}
 			if (card.faction_code === "hero") {
 				icons['wild'].HeroCardsCounter += card.indeck * card.resource_wild;
+				icons['wild'].count -= card.indeck * card.resource_wild;
 			}
 		}
 	})

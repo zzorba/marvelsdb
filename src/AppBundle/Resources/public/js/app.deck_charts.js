@@ -1,5 +1,12 @@
 (function app_deck_charts(deck_charts, $) {
 
+	Highcharts.setOptions({
+		lang: {
+			drillUpText: '<< Back'
+		}
+	});
+
+
 var charts = [],
 	faction_colors = {
 
@@ -140,39 +147,94 @@ deck_charts.chart_cost = function chart_cost() {
 
 
 deck_charts.chart_resource = function chart_resource() {
-
+	
 	var icons = {};
-	icons['physical'] = {code: "physical", "name": "Physical", count: 0};
-	icons['mental'] = {code: "mental", "name": "Mental", count: 0};
-	icons['energy'] = {code: "energy", "name": "Energy", count: 0};
-	icons['wild'] = {code: "wild", "name": "Wild", count: 0};
+	icons['physical'] = {code: "physical", "name": "Physical",color: "#661e09", count: 0, icondict:{single:0, double:0, triple:0}};
+	icons['mental'] = {code: "mental", "name": "Mental", color: "#003961", count: 0, icondict:{single:0, double:0, triple:0}};
+	icons['energy'] = {code: "energy", "name": "Energy", color:"#ff8f3f", count: 0, icondict:{single:0, double:0, triple:0}};
+	icons['wild'] = {code: "wild", "name": "Wild", color: "#00543a", count: 0, icondict:{single:0, double:0, triple:0}};
 	var draw_deck = app.deck.get_physical_draw_deck();
+	console.log(draw_deck)
 	draw_deck.forEach(function (card) {
 		if (card.resource_physical && card.resource_physical > 0){
-			icons['physical'].count += card.indeck * card.resource_physical;
+			switch(card.resource_physical){
+				case 1:
+					icons['physical'].count += card.indeck * card.resource_physical;
+					icons['physical'].icondict.single+=card.indeck;
+					break;
+				case 2:
+					icons['physical'].count += card.indeck * card.resource_physical;
+					icons['physical'].icondict.double+=card.indeck;
+					break;
+			}
 		}
 		if (card.resource_mental && card.resource_mental > 0){
-			icons['mental'].count += card.indeck * card.resource_mental;
+			switch(card.resource_mental){
+				case 1:
+					icons['mental'].count += card.indeck * card.resource_mental;
+					icons['mental'].icondict.single+=card.indeck;
+					break;
+				case 2:
+					icons['mental'].count += card.indeck * card.resource_mental;
+					icons['mental'].icondict.double+=card.indeck;
+					break;
+			}
 		}
 		if (card.resource_energy && card.resource_energy > 0){
-			icons['energy'].count += card.indeck * card.resource_energy;
+			switch(card.resource_energy){
+				case 1:
+					icons['energy'].count += card.indeck * card.resource_energy;
+					icons['energy'].icondict.single+=card.indeck;
+					break;
+				case 2:
+					icons['energy'].count += card.indeck * card.resource_energy;
+					icons['energy'].icondict.double+=card.indeck;
+					break;
+			}
 		}
 		if (card.resource_wild && card.resource_wild > 0){
-			icons['wild'].count += card.indeck * card.resource_wild;
+			switch(card.resource_wild){
+				case 1:
+					icons['wild'].count += card.indeck * card.resource_wild;
+					icons['wild'].icondict.single+=card.indeck;
+					break;
+				case 2:
+					icons['wild'].count += card.indeck * card.resource_wild;
+					icons['wild'].icondict.double+=card.indeck;
+					break;
+			}
 		}
 	})
-
 	var data = [];
+	drilllist=[];
 	_.each(_.values(icons), function (icon) {
 		data.push({
 			name: icon.name,
 			label: '<span class="icon icon-'+icon.code+' color-'+icon.code+'"></span>',
-			//color: faction_colors[faction.code],
-			y: icon.count
-		});
+			color: icon.color,
+			y: icon.count,
+			code: icon.code,
+			drilldown: "lama",
+		});for (var key in icon.icondict) {
+			let counter= icon.icondict[key];
+				switch(key){
+					case "single":
+						repeaticon =1
+						break;
+					case "double":
+						repeaticon = 2
+						break;
+					case "triple":
+						repeaticon = 3
+						break;
+				}
+			if (counter>0){
+			let icokey= key+" "+icon.code;
+			let label = '<span class="icon icon-'+icon.code+' color-'+icon.code+'"></span>'
+			drilllist.push({name: icokey,color:icon.color, y:counter, label: label.repeat(repeaticon) })}}
 	})
+	console.log(data)
 	data = _.flatten(data).map(function (value) { return value || 0; });
-		
 	$("#deck-chart-resource").highcharts({
 		chart: {
 			type: 'column'
@@ -183,7 +245,7 @@ deck_charts.chart_resource = function chart_resource() {
 		subtitle: {
 			text: ""
 		},
-		xAxis: {
+		xAxis: [{
 			categories: _.pluck(data, 'label'),
 			labels: {
 				useHTML: true
@@ -191,7 +253,15 @@ deck_charts.chart_resource = function chart_resource() {
 			title: {
 				text: null
 			}
-		},
+		},{
+			categories: _.pluck(drilllist, 'label'),
+			labels: {
+				useHTML: true
+			},
+			title: {
+				text: null
+			}
+		}],
 		yAxis: {
 			min: 0,
 			allowDecimals: false,
@@ -206,8 +276,26 @@ deck_charts.chart_resource = function chart_resource() {
 			animation: false,
 			name: '# of resources',
 			showInLegend: false,
-			data: data
+			data: data,
+			xAxis: 0
 		}],
+		drilldown:{
+			drillUpButton:{
+				position:{
+					y:0,
+					x:0
+				},
+
+			},
+			series:[{
+				showInLegend: false,
+				name: '# of cards',
+				xAxis: 1,
+				id: "lama",
+				data: drilllist
+
+			}]
+		},
 		plotOptions: {
 			column: {
 				borderWidth: 0,

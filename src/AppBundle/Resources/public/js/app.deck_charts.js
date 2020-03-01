@@ -2,7 +2,7 @@
 
 	Highcharts.setOptions({
 		lang: {
-			drillUpText: '<< Back'
+			drillUpText: 'X'
 		}
 	});
 
@@ -395,7 +395,11 @@ deck_charts.chart_resource = function chart_resource() {
 					y: 0,
 					x: 0
 				},
-
+				theme:{
+					width: 7,
+					height: 12,
+				},
+				relativeTo: 'spacingBox',
 			},
 			series: [{
 				showInLegend: false,

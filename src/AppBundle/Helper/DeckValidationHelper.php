@@ -232,12 +232,11 @@ class DeckValidationHelper
 						$option->limit_count += $indeck;
 					}
 					if (isset($option->atleast) && $option->atleast){
-						if (!$option->atleast_count[$card->getFaction()->getCode()]){
+						if (!isset($option->atleast_count[$card->getFaction()->getCode()])){
 							$option->atleast_count[$card->getFaction()->getCode()] = 0;
 						}
 						$option->atleast_count[$card->getFaction()->getCode()] += $indeck;
 					}
-					
 					// if we exceed the limit, the deck is invalid 
 					if (isset($option->limit_count) && $option->limit_count && $option->limit) {
 						if ($option->limit_count > $option->limit) {

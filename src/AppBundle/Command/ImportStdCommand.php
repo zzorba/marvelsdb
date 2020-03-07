@@ -434,7 +434,8 @@ class ImportStdCommand extends ContainerAwareCommand
 					'stage',
 					'is_unique',
 					'health_per_hero',
-					'hidden'
+					'hidden',
+					'octgn_id'
 
 			]);
 			if($card) {

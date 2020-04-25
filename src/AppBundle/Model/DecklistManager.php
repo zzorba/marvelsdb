@@ -245,23 +245,11 @@ class DecklistManager
 				$sub->from("AppBundle:Card","c");
 				$sub->innerJoin('AppBundle:Decklistslot', 's', 'WITH', 's.card = c');
 				$sub->where('s.decklist = d');
-				// if a second core set is included ignore check for card quantity 
-				if (in_array("1-2", $packs)){
-					$sub->andWhere($sub->expr()->notIn('c.pack', $packs));
-				} else {
-					$sub->andWhere($sub->expr()->orX(
-						$sub->expr()->notIn('c.pack', $packs),
-						$sub->expr()->gt('s.quantity', 'c.quantity')
-					));
-				}
-				//$sub->where('s.quantity >= c.quantity');
-				//$qb->expr()->or()
-				//$sub->andWhere($sub->expr()->notIn('c.pack', $packs));
-
+				$sub->andWhere($sub->expr()->notIn('c.pack', $packs));
 				$qb->andWhere($qb->expr()->not($qb->expr()->exists($sub->getDQL())));
 			}
 		}
-		
+
 		switch($sort) {
 			case 'date':
 				$qb->orderBy('d.dateCreation', 'DESC');
@@ -282,7 +270,6 @@ class DecklistManager
 				$qb->orderBy('popularity', 'DESC');
 				break;
 		}
-		
 		return $this->getPaginator($qb->getQuery());
 	}
 

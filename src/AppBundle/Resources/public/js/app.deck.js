@@ -42,7 +42,7 @@ var date_creation,
 // one block view
 layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
 // two colum view
-layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %> </div></div> <div id="upgrade_changes"></div></div>');
+layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= upgrades %><%= allies %><%= supports %></div><div class="col-sm-6 col-print-6"><%= events %><%= resources %><%= invocation %></div></div> <div id="upgrade_changes"></div></div>');
 layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
 // single column view
 layouts[4] = _.template('<div class="deck-content"><div class="row"><%= images %></div><div class="row"><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-12 col-print-12"><%= assets %> <%= permanent %><%= events %> <%= skills %> <%= treachery %> <%= enemy %></div></div> <div id="upgrade_changes"></div></div>');
@@ -454,6 +454,7 @@ deck.get_layout_data = function get_layout_data(options) {
 			allies: '',
 			supports: '',
 			resources: '',
+			invocation: '',
 			cards: ''
 	};
 	
@@ -548,6 +549,11 @@ deck.get_layout_data = function get_layout_data(options) {
 		deck.update_layout_section(data, 'resources', deck.get_layout_data_one_section({'type_code': 'resource'}, 'type_name'));
 		deck.update_layout_section(data, 'allies', deck.get_layout_data_one_section({'type_code': 'ally'}, 'type_name'));
 		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support'}, 'type_name'));
+
+		// Dr. Strange's Invocation deck
+		if (deck.get_investigator_code() == "09001a") {
+			deck.update_layout_section(data, 'invocation', deck.get_layout_data_one_section({'set_code':'invocation'}, 'invocation'));
+		}
 	}
 	if (options && options.layout) {
 		layout_template = options.layout;
@@ -604,7 +610,11 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 	var cards = deck.get_cards({ name: 1 }, query);
 	if(cards.length) {
 		var name = "";
-		name = cards[0][displayLabel];
+		if (displayLabel == "invocation") {
+			name = "Invocation";
+		} else {
+			name = cards[0][displayLabel];
+		}
 		$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
 		cards.forEach(function (card) {
 			var div = deck.create_card(card);

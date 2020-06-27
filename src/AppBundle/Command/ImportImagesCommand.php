@@ -21,7 +21,7 @@ class ImportImagesCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 
-		$assets_helper = $this->getContainer()->get('templating.helper.assets');
+		$assets_helper = $this->getContainer()->get('assets.packages');
 
 		/* @var $em \Doctrine\ORM\EntityManager */
 		$em = $this->getContainer()->get('doctrine')->getManager();

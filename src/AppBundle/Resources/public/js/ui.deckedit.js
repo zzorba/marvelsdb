@@ -409,36 +409,39 @@ ui.on_table_sort_click = function on_table_sort_click(event) {
 
 ui.chaos = function() {
 
-	if (!window.confirm("This will replace your deck with an Ultimatum of Chaos deck, are you sure you wish to continue? (This may not work for all investigators)")){
+	if (!window.confirm("This will replace your deck with an randomly generated deck, are you sure?")){
 		return;
 	}
 
 	var counter = 0;
 	var	filters = ui.get_filters("potato");
 	var query = app.smart_filter.get_query(filters);
-	//query['subtype_code'] = {'$ne': 'basicweakness'};
-	query['xp'] = 0;
-	query['permanent'] = false;
 	
 	var cards = app.data.cards.find(query);
 	var valid_cards = [];
 	
 	cards.forEach(function (card) {
-		card.indeck = 0;
-		if (app.deck.can_include_card(card)){
-			valid_cards.push(card);
+		if (card.faction_code != "hero"){
+			card.indeck = 0;
+			app.deck.set_card_copies(card.code, card.indeck);
+			if (app.deck.can_include_card(card)){
+				valid_cards.push(card);
+			}
 		}
 	});
 	app.deck.reset_limit_count();
 	
 	var size = valid_cards.length;
-	var deck_size = app.data.cards.findById(app.deck.get_investigator_code()).deck_requirements.size;
+	var deck_size = 25;
 	if (size >= deck_size){
 		while (counter < deck_size){
 			var random_id = Math.floor(Math.random() * size)
 			var random_card = valid_cards[random_id];
 			if (random_card.indeck < random_card.deck_limit){
 				if (app.deck.can_include_card(random_card, true, true)){
+					if (random_card && random_card.faction_code != "basic") {
+						app.deck.meta.aspect = random_card.faction_code;
+					}
 					random_card.indeck++;
 					//console.log(random_card.name, random_card.indeck, counter);
 					counter++;

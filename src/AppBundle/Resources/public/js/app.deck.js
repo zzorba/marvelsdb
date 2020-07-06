@@ -850,7 +850,8 @@ deck.get_invalid_cards = function get_invalid_cards() {
  * @memberOf deck
  */
 deck.can_include_card = function can_include_card(card, limit_count, hard_count) {
-	
+	var hero = app.data.cards.findById(this.get_investigator_code());
+
 	// hide investigators
 	if (card.type_code === "hero") {
 		return false;
@@ -866,6 +867,10 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 				return false;
 			}
 		}
+	}
+
+	if (card.faction_code == "hero" && card.card_set_code != hero.card_set_code) {
+		return false;	
 	}
 	return true;
 }

@@ -3,15 +3,14 @@
 namespace AppBundle\Entity;
 
 /**
- * Cardset
+ * Packtype
  */
-class Cardset
+class Cardsettype implements \Gedmo\Translatable\Translatable, \Serializable
 {
     public function serialize() {
         return [
                 'code' => $this->code,
-                'name' => $this->name,
-                'cardset_type' => $this->cardset_type ? $this->cardset_type->getCode() : null,
+                'name' => $this->name
         ];
     }
     
@@ -22,7 +21,7 @@ class Cardset
     public function toString() {
         return $this->name;
     }
-    
+
     /**
      * @var integer
      */
@@ -41,14 +40,14 @@ class Cardset
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $cards;
+    private $cardsets;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->cards = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cardsets = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -66,7 +65,7 @@ class Cardset
      *
      * @param string $code
      *
-     * @return Cardset
+     * @return Cardsettype
      */
     public function setCode($code)
     {
@@ -90,7 +89,7 @@ class Cardset
      *
      * @param string $name
      *
-     * @return Cardset
+     * @return Cardsettype
      */
     public function setName($name)
     {
@@ -110,66 +109,47 @@ class Cardset
     }
 
     /**
-     * Add card
+     * Add cardset
      *
-     * @param \AppBundle\Entity\Card $card
+     * @param \AppBundle\Entity\Cardset $cardset
      *
-     * @return Cardset
+     * @return Cardsettype
      */
-    public function addCard(\AppBundle\Entity\Card $card)
+    public function addCardset(\AppBundle\Entity\Cardset $cardset)
     {
-        $this->cards[] = $card;
+        $this->cardsets[] = $cardset;
 
         return $this;
     }
 
     /**
-     * Remove card
+     * Remove cardset
      *
-     * @param \AppBundle\Entity\Card $card
+     * @param \AppBundle\Entity\Cardset $cardset
      */
-    public function removeCard(\AppBundle\Entity\Card $card)
+    public function removePack(\AppBundle\Entity\Cardset $cardset)
     {
-        $this->cards->removeElement($card);
+        $this->cardsets->removeElement($cardset);
     }
 
     /**
-     * Get cards
+     * Get cardsets
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCards()
+    public function getCardSets()
     {
-        return $this->cards;
+        return $this->cardsets;
     }
 
     /**
-     * @var \AppBundle\Entity\Cardset
+     * I18N vars
      */
-    private $cardset_type;
+    private $locale = 'en';
 
-
-    /**
-     * Set Cardsettype
-     *
-     * @param \AppBundle\Entity\Cardsettype $cardset_type
-     *
-     * @return Pack
-     */
-    public function setCardSetType(\AppBundle\Entity\Cardsettype $cardset_type = null)
+    public function setTranslatableLocale($locale)
     {
-        $this->cardset_type = $cardset_type;
-
-        return $this;
-    }
-
-    /**
-     * Get Cardsettype
-     *
-     * @return \AppBundle\Entity\Cardsettype
-     */
-    public function getCardSetType()
-    {
-        return $this->cardset_type;
+        $this->locale = $locale;
     }
 }
+

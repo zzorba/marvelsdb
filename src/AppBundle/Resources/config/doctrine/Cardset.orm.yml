@@ -2,6 +2,13 @@ AppBundle\Entity\Cardset:
     type: entity
     table: Cardset
     repositoryClass: AppBundle\Repository\CardsetRepository
+    manyToOne:
+        cardset_type:
+            targetEntity: Cardsettype
+            inversedBy: cardsets
+            joinColumn:
+                name: cardset_type
+                referencedColumnName: id
     oneToMany:
         cards:
             targetEntity: Card

@@ -127,7 +127,7 @@ class CardsData
 		$repo = $this->doctrine->getRepository('AppBundle:Card');
 		$qb = $repo->createQueryBuilder('c');
 		$qb->select('c', 'p', 't', 'b', 'm', 'l', 'f', 'f2')
-		    ->leftJoin('c.pack', 'p')
+				->leftJoin('c.pack', 'p')
 			->leftJoin('c.type', 't')
 			->leftJoin('c.subtype', 'b')
 			->leftJoin('c.card_set', 'm')
@@ -466,28 +466,31 @@ class CardsData
 	 */
 	public function getCardInfo($card, $api = false)
 	{
-    $cardinfo = [];
+		$cardinfo = [];
 
-    $metadata = $this->doctrine->getManager()->getClassMetadata('AppBundle:Card');
-    $fieldNames = $metadata->getFieldNames();
-    $associationMappings = $metadata->getAssociationMappings();
+		$metadata = $this->doctrine->getManager()->getClassMetadata('AppBundle:Card');
+		$fieldNames = $metadata->getFieldNames();
+		$associationMappings = $metadata->getAssociationMappings();
 
-    foreach($associationMappings as $fieldName => $associationMapping)
-    {
-    	if($associationMapping['isOwningSide']) {
-    		$getter = str_replace(' ', '', ucwords(str_replace('_', ' ', "get_$fieldName")));
-    		$associationEntity = $card->$getter();
-    		if(!$associationEntity) continue;
+		foreach($associationMappings as $fieldName => $associationMapping)
+		{
+			if($associationMapping['isOwningSide']) {
+				$getter = str_replace(' ', '', ucwords(str_replace('_', ' ', "get_$fieldName")));
+				$associationEntity = $card->$getter();
+				if(!$associationEntity) continue;
 
-  			$cardinfo[$fieldName.'_code'] = $associationEntity->getCode();
-  			$cardinfo[$fieldName.'_name'] = $associationEntity->getName();
-    	}
-    }
+				$cardinfo[$fieldName.'_code'] = $associationEntity->getCode();
+				$cardinfo[$fieldName.'_name'] = $associationEntity->getName();
+				if ($fieldName == "card_set") {
+					$cardinfo[$fieldName.'_type_name_code'] = $associationEntity->getCardSetType()->getCode();
+				}
+			}
+		}
 
-    foreach($fieldNames as $fieldName)
-    {
-    	$getter = str_replace(' ', '', ucwords(str_replace('_', ' ', "get_$fieldName")));
-    	$value = $card->$getter();
+		foreach($fieldNames as $fieldName)
+		{
+			$getter = str_replace(' ', '', ucwords(str_replace('_', ' ', "get_$fieldName")));
+			$value = $card->$getter();
 			switch($metadata->getTypeOfField($fieldName)) {
 				case 'datetime':
 				case 'date':
@@ -498,8 +501,8 @@ class CardsData
 					break;
 			}
 			$fieldName = ltrim(strtolower(preg_replace('/[A-Z]/', '_$0', $fieldName)), '_');
-    	$cardinfo[$fieldName] = $value;
-    }
+			$cardinfo[$fieldName] = $value;
+		}
 
 		$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
 		$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'.png');
@@ -689,61 +692,61 @@ class CardsData
 		));
 	}
 
-    public function get_reviews($card)
-    {
-        $reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'faq' => false, 'question' => false), array('nbVotes' => 'DESC'));
+		public function get_reviews($card)
+		{
+				$reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'faq' => false, 'question' => false), array('nbVotes' => 'DESC'));
 
-        $response = $reviews;
+				$response = $reviews;
 
-        return $response;
-    }
+				return $response;
+		}
 
-    public function get_faqs($card)
-    {
-        $reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'faq' => true), array('nbVotes' => 'DESC'));
+		public function get_faqs($card)
+		{
+				$reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'faq' => true), array('nbVotes' => 'DESC'));
 
-        $response = $reviews;
+				$response = $reviews;
 
-        return $response;
-    }
+				return $response;
+		}
 
-    public function get_questions($card)
-    {
-        $reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'question' => true), array('nbVotes' => 'DESC'));
+		public function get_questions($card)
+		{
+				$reviews = $this->doctrine->getRepository('AppBundle:Review')->findBy(array('card' => $card, 'question' => true), array('nbVotes' => 'DESC'));
 
-        $response = $reviews;
+				$response = $reviews;
 
-        return $response;
-    }
+				return $response;
+		}
 
-    public function get_related($card)
-    {
-        $cards = $this->doctrine->getRepository('AppBundle:Card')->findBy(array('realName' => $card->getRealName()), array('position' => 'ASC'));
+		public function get_related($card)
+		{
+				$cards = $this->doctrine->getRepository('AppBundle:Card')->findBy(array('realName' => $card->getRealName()), array('position' => 'ASC'));
 
-        $response = $cards;
+				$response = $cards;
 
-        return $response;
-    }
+				return $response;
+		}
 
-    public function getDistinctTraits()
-    {
-    	/**
-    	 * @var $em \Doctrine\ORM\EntityManager
-    	 */
-    	$em = $this->doctrine->getManager();
-    	$qb = $em->createQueryBuilder();
-    	$qb->from('AppBundle:Card', 'c');
-    	$qb->select('c.traits');
-    	$qb->distinct();
-    	$result = $qb->getQuery()->getResult();
+		public function getDistinctTraits()
+		{
+			/**
+			 * @var $em \Doctrine\ORM\EntityManager
+			 */
+			$em = $this->doctrine->getManager();
+			$qb = $em->createQueryBuilder();
+			$qb->from('AppBundle:Card', 'c');
+			$qb->select('c.traits');
+			$qb->distinct();
+			$result = $qb->getQuery()->getResult();
 
-    	$traits = [];
-    	foreach($result as $card) {
-    		$subs = explode('.', $card["traits"]);
-    		foreach($subs as $sub) {
-    			$traits[trim($sub)] = 1;
-    		}
-    	}
+			$traits = [];
+			foreach($result as $card) {
+				$subs = explode('.', $card["traits"]);
+				foreach($subs as $sub) {
+					$traits[trim($sub)] = 1;
+				}
+			}
 
-    }
+		}
 }

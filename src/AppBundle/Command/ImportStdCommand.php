@@ -117,6 +117,18 @@ class ImportStdCommand extends ContainerAwareCommand
 		$this->loadCollection('Packtype');
 		$output->writeln("Done.");
 
+		$output->writeln("Importing CardsetTypes...");
+		$cardsettypesFileInfo = $this->getFileInfo($path, 'settypes.json');
+		$imported = $this->importCardsettypesJsonFile($cardsettypesFileInfo);
+		if(count($imported)) {
+			$question = new ConfirmationQuestion("Do you confirm? (Y/n) ", true);
+			if(!$helper->ask($input, $output, $question)) {
+				die();
+			}
+		}
+		$this->em->flush();
+		$this->loadCollection('Cardsettype');
+		$output->writeln("Done.");
 
 		// card sets
 
@@ -267,6 +279,26 @@ class ImportStdCommand extends ContainerAwareCommand
 		return $result;
 	}
 
+	protected function importCardsettypesJsonFile(\SplFileInfo $fileinfo)
+	{
+		$result = [];
+
+		$list = $this->getDataFromFile($fileinfo);
+		foreach($list as $data)
+		{
+			$type = $this->getEntityFromData('AppBundle\\Entity\\Cardsettype', $data, [
+					'code',
+					'name'
+			], [], []);
+			if($type) {
+				$result[] = $type;
+				$this->em->persist($type);
+			}
+		}
+
+		return $result;
+	}
+
 	protected function importCardSetsJsonFile(\SplFileInfo $fileinfo)
 	{
 		$result = [];
@@ -277,7 +309,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			$type = $this->getEntityFromData('AppBundle\\Entity\\Cardset', $data, [
 					'code',
 					'name'
-			], [], []);
+			], [
+				'card_set_type_code'
+			], []);
 			if($type) {
 				$result[] = $type;
 				$this->em->persist($type);
@@ -585,6 +619,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 			if ($key === "pack_type_code") {
 				$foreignEntityShortName = 'Packtype';
+			}
+			if ($key === "card_set_type_code") {
+				$foreignEntityShortName = 'Cardsettype';
 			}
 
 			if(!key_exists($key, $data)) {
@@ -908,7 +945,6 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function loadCollection($entityShortName)
 	{
 		$this->collections[$entityShortName] = [];
-
 		$entities = $this->em->getRepository('AppBundle:'.$entityShortName)->findAll();
 		//echo $entityShortName."\n";
 		foreach($entities as $entity) {

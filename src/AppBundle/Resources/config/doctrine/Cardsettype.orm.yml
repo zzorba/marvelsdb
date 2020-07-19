@@ -1,0 +1,30 @@
+AppBundle\Entity\Cardsettype:
+    type: entity
+    table: Cardsettype
+    repositoryClass: AppBundle\Repository\CardsettypeRepository
+    gedmo:
+        translation:
+            locale: locale
+    oneToMany:
+        cardsets:
+            targetEntity: Cardset
+            mappedBy: cardset_type
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            nullable: false
+        name:
+            type: string
+            length: '1024'
+            nullable: false
+            gedmo:
+                - translatable
+    uniqueConstraints:
+        type_code_idx:
+            columns: [ code ]

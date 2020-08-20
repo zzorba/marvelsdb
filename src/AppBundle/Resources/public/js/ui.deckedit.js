@@ -296,7 +296,7 @@ ui.on_click_filter = function on_click_filter(event) {
  */
 ui.on_input_smartfilter = function on_input_smartfilter(event) {
 	var q = $(this).val();
-	if(q.match(/^\w[:<>!]/)) app.smart_filter.update(q);
+	if(q.match(/^\w+[:<>!]/)) app.smart_filter.update(q);
 	else app.smart_filter.update('');
 	ui.refresh_list();
 }

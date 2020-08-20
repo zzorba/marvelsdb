@@ -124,7 +124,6 @@ function filterSyntax(query) {
 	// chaque condition est un tableau à n>1 éléments
 	// le premier est le type de condition (0 ou 1 caractère)
 	// les suivants sont les arguments, en OR
-
 	query = query.replace(/^\s*(.*?)\s*$/, "$1").replace('/\s+/', ' ');
 
 	var list = [];
@@ -143,7 +142,7 @@ function filterSyntax(query) {
 				list.push(cond);
 			}
 			// on commence par rechercher un type de condition
-			if (query.match(/^(\w)([:<>!])(.*)/)) { // jeton "condition:"
+			if (query.match(/^(\w+)([:<>!])(.*)/)) { // jeton "condition:"
 				cond = [ RegExp.$1.toLowerCase(), RegExp.$2 ];
 				query = RegExp.$3;
 			} else {

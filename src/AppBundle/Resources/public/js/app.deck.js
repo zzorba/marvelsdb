@@ -529,6 +529,12 @@ deck.get_layout_data = function get_layout_data(options) {
 	} else if (deck.sort_type == "factionnumber"){
 		deck.update_layout_section(data, "cards", deck.get_layout_section({'faction_code': 1, "pack_code":1, "position": 1}, {'faction_name': 1}, null));
 		layout_template = 1;
+	} else if (deck.sort_type == "factiontype"){
+		deck.update_layout_section(data, "cards", deck.get_layout_section({'faction_code': 1, "type_code":1, "position": 1}, {'faction_name': 1}, null));
+		layout_template = 1;
+	} else if (deck.sort_type == "factioncost"){
+		deck.update_layout_section(data, "cards", deck.get_layout_section({'faction_code': 1, "cost":1, "position": 1}, {'faction_name': 1}, null));
+		layout_template = 1;
 	} else if (deck.sort_type == "factionxp"){
 		deck.update_layout_section(data, "cards", deck.get_layout_section({'faction_code': 1, "xp":1, "name": 1}, {'faction_name': 1}, null));
 		layout_template = 1;

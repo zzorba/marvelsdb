@@ -520,6 +520,9 @@ deck.get_layout_data = function get_layout_data(options) {
 	} else if (deck.sort_type == "set"){
 		deck.update_layout_section(data, "cards", deck.get_layout_section({'pack_code': 1, "name": 1}, {'pack_name':1}, null));
 		layout_template = 1;
+	} else if (deck.sort_type == "settype"){
+		deck.update_layout_section(data, "cards", deck.get_layout_section({'pack_code': 1, "type_code": 1}, {'pack_name':1}, null));
+		layout_template = 1;
 	} else if (deck.sort_type == "setnumber"){
 		deck.update_layout_section(data, "cards", deck.get_layout_section({'pack_code': 1, "position": 1}, {'pack_name':1}, null));
 		layout_template = 1;

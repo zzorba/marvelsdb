@@ -59,7 +59,7 @@ smart_filter.get_help = function get_help() {
 	var items = _.map(configuration, function (value, key) {
 		return '<li><tt>'+key+'</tt> &ndash; '+value[2]+'</li>';
 	});
-	return '<ul>'+items.join('')+'</ul><p>Example: <tt>a:1 c>1</tt> Shows all cards with 1 Agility icon or 1 Agility and more than 1 Combat icon or 1 Combat</p>';
+	return '<ul>'+items.join('')+'</ul><p>Example: <tt>rp:1 o>1</tt> Shows all cards with 1 Physical Resource icon and a cost of more than 1</p>';
 }
 
 function add_integer_sf(key, operator, values) {
@@ -264,7 +264,7 @@ smart_filter.get_help = function get_help() {
 	var items = _.map(configuration, function (value, key) {
 		return '<li><tt>'+key+'</tt> &ndash; '+value[2]+'</li>';
 	});
-	return '<ul>'+items.join('')+'</ul><p>Example: <tt>a:1 c>1</tt> Shows all cards with 1 Agility icon or 1 Agility and more than 1 Combat icon or 1 Combat</p>';
+	return '<ul>'+items.join('')+'</ul><p>Example: <tt>rp:1 o>1</tt> Shows all cards with 1 Physical Resource icon and a cost of more than 1</p>';
 }
 
 function add_integer_sf(key, operator, values) {

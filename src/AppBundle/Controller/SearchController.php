@@ -96,9 +96,12 @@ class SearchController extends Controller
 		//$list_traits = $dbh->executeQuery("SELECT DISTINCT c.content as traits FROM ext_translations c WHERE c.field = 'traits' and c.content != ''")->fetchAll();
 		$traits = [];
 		foreach($list_traits as $card) {
-			$subs = explode('.', $card["traits"]);
-			foreach($subs as $sub) {
-				$traits[trim($sub)] = 1;
+			// parse traits by looking for period and space, or period and end of the line
+			preg_match_all('/(.*?)(?:\. |\.$)/m', $card["traits"], $matches, PREG_SET_ORDER, 0);			
+			foreach($matches as $sub) {
+				if (isset($sub[1])) {
+					$traits[trim($sub[1])] = 1;
+				}
 			}
 		}
 		$traits = array_filter(array_keys($traits));
@@ -207,6 +210,7 @@ class SearchController extends Controller
 		if($request->query->get('q') != "") {
 			$params[] = $request->query->get('q');
 		}
+
 		foreach(SearchController::$searchKeys as $key => $searchName) {
 			if ($key == "q"){
 				continue;
@@ -220,7 +224,7 @@ class SearchController extends Controller
 					if($searchName == "date_release") {
 						$op = "";
 					} else {
-						if(!preg_match('/^[\p{L}\p{N}\_\-\&]+$/u', $val, $match)) {
+						if(!preg_match('/^[\p{L}\p{N}\.\_\-\&]+$/u', $val, $match)) {
 							$val = "\"$val\"";
 						}
 						$op = $request->query->get($key."o");

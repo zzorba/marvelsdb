@@ -619,7 +619,7 @@ class CardsData
 				$etat=2;
 			} else {
 				if( preg_match('/^"([^"]*)"(.*)/u', $query, $match) // jeton "texte libre entre guillements"
-				 || preg_match('/^([_\p{L}\p{N}\-\&]+)(.*)/u', $query, $match) // jeton "texte autorisé sans guillements"
+				 || preg_match('/^([_\p{L}\p{N}\.\-\&]+)(.*)/u', $query, $match) // jeton "texte autorisé sans guillements"
 				) {
 					if(($etat == 2 && count($cond)==2) || $etat == 3) {
 						$cond[] = $match[1];
@@ -683,7 +683,7 @@ class CardsData
 					return ($l[0] ? $l[0].$l[1] : "")
 					. implode("|", array_map(
 							function ($s) {
-								return preg_match("/^[\p{L}\p{N}\-\&]+$/u", $s) ?$s : "\"$s\"";
+								return preg_match("/^[\p{L}\p{N}\.\-\&]+$/u", $s) ?$s : "\"$s\"";
 							},
 							array_slice($l, 2)
 					));

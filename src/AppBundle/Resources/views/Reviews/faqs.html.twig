@@ -37,25 +37,22 @@
 	<div class="col-lg-8 col-lg-push-2">
 {% if reviews|length > 0 %}{% for i in 0..reviews|length-1 %}{% set review = reviews[i] %}{% set card = review.card %}
 <div class="row" style="margin-bottom:1em;padding-bottom:1em;border-bottom:1px solid #ddd"><div class="col-lg-12">
-    <div class="review-header">
+    <div class="review-header">      
       <h4><a href="{{ path('cards_zoom',{card_code:review.card.code}) }}#review-{{ review.id }}" data-code="{{ review.card.code }}" class="card-tip card-name">{{ review.card.name }}</a></h4>
     </div>
 		<article class="review" data-id="{{ review.id }}" id="review-{{ review.id }}">
 			<div>
-				<div style="overflow: hidden;" class="pull-left card-thumbnail-static card-thumbnail-2x card-thumbnail-{{review.card.type.getCode()}}">
-					<img src="/bundles/cards/{{ review.card.code }}.jpg" alt="{{ review.card.name }}" class="card-img-thumbnail card-img-thumbnail-{{review.card.type.getCode()}}" style="" onerror="this.onerror=null;this.src='/bundles/cards/{{ review.card.code }}.png';">
+				<div class="review-text2">
+					<img src="/bundles/cards/{{ review.card.code }}.jpg" alt="{{ review.card.name }}" class="pull-right" style="width:120px;margin:0 0 10px 10px" onerror="this.onerror=null;this.src='/bundles/cards/{{ review.card.code }}.png';">
+					{{ review.textHtml|raw }}
 				</div>
-				<div style="margin-left : 90px;">
-					<div class="review-text2">
-						{{ review.textHtml|raw }}
-					</div>
-					<div class="review-date">
-						Last updated <time datetime="{{ review.dateUpdate|date('c') }}" title="{{ review.dateUpdate|date('F jS, Y') }}">{{ review.dateUpdate|date('n/j/y') }}</time>
-					</div>
+				<div class="review-date">
+					<time datetime="{{ review.dateCreation|date('c') }}" title="{{ review.dateCreation|date('F jS, Y') }}">{{ review.dateCreation|date('n/j/y') }}</time>
 				</div>
 			</div>
 		</article>
 </div></div>
+
 {% endfor %}{% endif %}
 </div>
 </div>

@@ -254,14 +254,6 @@ class DeckValidationHelper
 	public function findProblem($deck)
 	{
 		$investigator = $deck->getCharacter();
-		if($investigator) {
-			$req = $this->parseReqString($investigator->getDeckRequirements());
-			if ($req && $req['size']){
-				if($deck->getSlots()->getDrawDeck()->countCards() < $req['size']) {
-					return 'too_few_cards';
-				}
-			}
-		}
 
 		//foreach($deck->getSlots()->getCopiesAndDeckLimit() as $cardName => $value) {
 		//	if($value['copies'] > $value['deck_limit']) return 'too_many_copies';

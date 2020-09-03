@@ -90,6 +90,12 @@ ui.build_faction_selector = function build_faction_selector() {
 			}
 		}
 	}
+
+	if (app.deck && app.deck.requirements && app.deck.requirements.aspects) {
+		$('#aspect2_selector').show();
+	} else {
+		$('#aspect2_selector').hide();
+	}
 	
 	$('[data-filter=faction_code]').empty();
 	var faction_codes = app.data.cards.distinct('faction_code').sort();
@@ -769,6 +775,9 @@ ui.refresh_list = _.debounce(function refresh_list() {
 	var container = $('#collection-table');
 	var	filters = ui.get_filters();
 	var query = app.smart_filter.get_query(filters);
+	query['card_set_code'] = {
+		'$exists': false
+	};
 	var orderBy = {};
 	SortKey.split('|').forEach(function (key) {
 		orderBy[key] = SortOrder;

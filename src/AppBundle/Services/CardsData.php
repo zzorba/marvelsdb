@@ -552,7 +552,7 @@ class CardsData
 		if($api) {
 			unset($cardinfo['id']);
 			if (isset($cardinfo['deck_requirements']) && $cardinfo['deck_requirements']){
-				$cardinfo['deck_requirements'] = $this->deckValidationHelper->parseReqString($cardinfo['deck_requirements']);
+				$cardinfo['deck_requirements'] = json_decode($cardinfo['deck_requirements']);
 			}
 			if (isset($cardinfo['deck_options']) && $cardinfo['deck_options']){
 				$cardinfo['deck_options'] = json_decode($cardinfo['deck_options']);
@@ -569,7 +569,7 @@ class CardsData
 				$cardinfo['back_text'] = $this->splitInParagraphs($cardinfo['back_text']);
 			}
 			if (isset($cardinfo['deck_requirements']) && $cardinfo['deck_requirements']){
-				$cardinfo['deck_requirements'] = $this->deckValidationHelper->parseReqString($cardinfo['deck_requirements']);
+				$cardinfo['deck_requirements'] = json_decode($cardinfo['deck_requirements']);
 			}
 			if (isset($cardinfo['deck_options']) && $cardinfo['deck_options']){
 				$cardinfo['deck_options'] = $this->deckValidationHelper->parseReqString($cardinfo['deck_options']);

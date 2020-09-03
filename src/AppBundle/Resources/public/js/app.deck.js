@@ -92,6 +92,19 @@ deck.onloaded = function(data){
 	deck.set_slots(data.slots, data.ignoreDeckLimitSlots);
 	investigator = app.data.cards.findById(investigator_code);
 	
+	deck.requirements = {};
+	if (investigator) {
+		// if the hero has deck requirements, load them into the requirements here
+		if (investigator.deck_requirements) {
+			investigator.deck_requirements.forEach(function (req) {
+				if (req.aspects) {
+					// the user must pick X aspects, only applied if this is not just set to 1
+					deck.requirements.aspects = req.aspects;
+				}
+			})
+		}
+	}
+
 	if (data.meta){
 		deck.meta = JSON.parse(data.meta);
 	}
@@ -405,6 +418,9 @@ deck.change_aspect = function(aspect){
 	if (!deck.meta){
 		deck.meta = {};
 	}
+	if (deck.meta && deck.meta.aspect2 && deck.meta.aspect2 == aspect) {
+		return;
+	}
 	deck.meta.aspect = aspect;
 	if ($("#deck")){
 		deck.display('#deck');
@@ -416,8 +432,27 @@ deck.change_aspect = function(aspect){
 	
 	if ($("#decklist")){
 		deck.display('#decklist');
+	}	
+}
+deck.change_aspect2 = function(aspect){
+	if (!deck.meta){
+		deck.meta = {};
+	}
+	if (deck.meta && deck.meta.aspect && deck.meta.aspect == aspect) {
+		return;
+	}
+	deck.meta.aspect2 = aspect;
+	if ($("#deck")){
+		deck.display('#deck');
+	}
+
+	if ($("#deck-content")){
+		deck.display('#deck-content');
 	}
 	
+	if ($("#decklist")){
+		deck.display('#decklist');
+	}
 }
 
 /**
@@ -490,7 +525,11 @@ deck.get_layout_data = function get_layout_data(options) {
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
 	if (deck.meta && deck.meta.aspect) {
 		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+'</div>'));
-	} else {
+	}
+	if (deck.meta && deck.meta.aspect2) {
+		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect2+'" title="'+deck.meta.aspect2+'"></span> '+deck.meta.aspect2.charAt(0).toUpperCase() + deck.meta.aspect2.slice(1)+'</div>'));
+	}
+	if (!deck.meta && !deck.meta.aspect && !deck.meta.aspect2) {
 		deck.update_layout_section(data, 'meta', $('<div>No Aspect</div>'));
 	}
 	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
@@ -861,7 +900,7 @@ deck.get_invalid_cards = function get_invalid_cards() {
 deck.can_include_card = function can_include_card(card, limit_count, hard_count) {
 	var hero = app.data.cards.findById(this.get_investigator_code());
 
-	// hide investigators
+	// hide heroes
 	if (card.type_code === "hero") {
 		return false;
 	}
@@ -869,11 +908,22 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 		return false;
 	}
 	
+	// always allow their own set into the deck
+	if (card.card_set_code == hero.card_set_code) {
+		return true;
+	}
 	
 	if (deck.meta.aspect) {
 		if (card.faction_code == "justice" || card.faction_code == "leadership" || card.faction_code == "protection" || card.faction_code == "aggression") {
 			if (deck.meta.aspect != card.faction_code) {
-				return false;
+				// for now if this is set, they must have two aspects
+				if (deck.requirements && deck.requirements.aspects) {
+					if (deck.meta.aspect2 != card.faction_code) {
+						return false;
+					}
+				} else {
+					return false;
+				}
 			}
 		}
 	}

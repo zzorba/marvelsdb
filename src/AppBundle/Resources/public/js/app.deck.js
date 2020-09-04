@@ -366,6 +366,12 @@ deck.get_nb_cards = function get_nb_cards(cards) {
 	return total;
 }
 
+deck.get_aspect_count = function get_aspect_count(aspect) {
+	var cards = deck.get_cards({}, {
+		faction_code: aspect
+	});
+	return deck.get_nb_cards(cards);
+}
 
 
 
@@ -524,10 +530,10 @@ deck.get_layout_data = function get_layout_data(options) {
 	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
 	if (deck.meta && deck.meta.aspect) {
-		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+'</div>'));
+		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect)+')</div>'));
 	}
 	if (deck.meta && deck.meta.aspect2) {
-		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect2+'" title="'+deck.meta.aspect2+'"></span> '+deck.meta.aspect2.charAt(0).toUpperCase() + deck.meta.aspect2.slice(1)+'</div>'));
+		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect2+'" title="'+deck.meta.aspect2+'"></span> '+deck.meta.aspect2.charAt(0).toUpperCase() + deck.meta.aspect2.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect2)+')</div>'));
 	}
 	if (!deck.meta && !deck.meta.aspect && !deck.meta.aspect2) {
 		deck.update_layout_section(data, 'meta', $('<div>No Aspect</div>'));
@@ -879,6 +885,18 @@ deck.get_problem = function get_problem() {
 		return 'too_many_cards';
 	}
 	
+	if (deck.requirements) {
+		if (deck.requirements.aspects) {
+			// for now assume that if this is set they have to have 2 aspects with equal counts.
+			if (deck.meta && deck.meta.aspect && deck.meta.aspect2) {
+				if (deck.get_aspect_count(deck.meta.aspect) != deck.get_aspect_count(deck.meta.aspect2) ) {
+					return "investigator";
+				}
+			} else {
+				return "investigator";
+			}
+		}
+	}
 }
 
 deck.reset_limit_count = function (){
@@ -918,7 +936,7 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 			if (deck.meta.aspect != card.faction_code) {
 				// for now if this is set, they must have two aspects
 				if (deck.requirements && deck.requirements.aspects) {
-					if (deck.meta.aspect2 != card.faction_code) {
+					if (deck.meta.aspect2 && deck.meta.aspect2 != card.faction_code) {
 						return false;
 					}
 				} else {

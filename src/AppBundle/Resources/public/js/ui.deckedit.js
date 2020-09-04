@@ -535,6 +535,13 @@ ui.on_quantity_change = function on_quantity_change(card_code, quantity) {
 		if (card && card.faction_code != "basic") {
 			app.deck.meta.aspect = card.faction_code;
 		}
+	} else {
+		if (app.deck.requirements && app.deck.requirements.aspects && !app.deck.meta.aspect2) {
+			var card = app.data.cards.findById(card_code);
+			if (card && card.faction_code != "basic" && app.deck.meta.aspect != card.faction_code) {
+				app.deck.meta.aspect2 = card.faction_code;
+			}
+		}
 	}
 	var update_all = app.deck.set_card_copies(card_code, quantity);
 	ui.refresh_deck();

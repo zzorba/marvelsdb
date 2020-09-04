@@ -178,6 +178,11 @@ $(document).on('start.app', function () {
 	}, 'a.card-tip');
 
 	$('body').on({
+		mouseover : tip.display,
+		click : tip.reveal
+	}, 'div.card-tip');
+
+	$('body').on({
 		click : tip.reveal
 	}, '.spoiler');
 

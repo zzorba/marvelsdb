@@ -561,7 +561,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 
-		if ($key == "deck_options"){
+		if ($key == "deck_requirements"){
 			if ($value){
 				$value = json_encode($value);
 			}

@@ -100,7 +100,6 @@ class Oauth2Controller extends Controller
 	 *  parameters={
 	 *      {"name"="investigator", "dataType"="string", "required"=true, "description"="Code of the investigator card."},
 	 *      {"name"="name", "dataType"="string", "required"=false, "description"="Name of the Deck. A default name will be generated if it is not specified."},
-	 *      {"name"="taboo", "dataType"="integer", "required"=false, "description"="Taboo set that this deck conforms to."},
 	 *      {"name"="meta", "dataType"="string", "required"=false, "description"="JSON formatted meta data"},
 	 *  },
 	 * )
@@ -179,13 +178,6 @@ class Oauth2Controller extends Controller
 				$name = sprintf("%s on the Road", $investigator->getName());
 			}
 		}
-		$taboo = filter_var($request->get('taboo', 0), FILTER_SANITIZE_NUMBER_INT);
-		if ($taboo){
-			$taboo = $em->getRepository('AppBundle:Taboo')->find($taboo);
-		}
-		if (!$taboo){
-			$taboo = null;
-		}
 
 		$meta = filter_var($request->get('meta', ""), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$meta_json = "";
@@ -207,7 +199,6 @@ class Oauth2Controller extends Controller
 		$deck->setCharacter($investigator);
 		$deck->setLastPack($pack);
 		$deck->setName($name);
-		$deck->setTaboo($taboo);
 		if ($meta_json){
 			$deck->setMeta($meta);
 		} else {
@@ -259,7 +250,6 @@ class Oauth2Controller extends Controller
 	 *      {"name"="tags", "dataType"="string", "required"=false, "description"="Space-separated list of tags"},
 	 *      {"name"="slots", "dataType"="string", "required"=true, "description"="Content of the Decklist as a JSON object"},
 	 *      {"name"="problem", "dataType"="string", "required"=true, "description"="A short code description of the problem with the provided slots, if one exists. Must be one of: too_few_cards,too_many_cards,too_many_copies,invalid_cards,deck_options_limit,investigator"},
-	 *      {"name"="taboo", "dataType"="integer", "required"=false, "description"="Taboo set this deck conforms to"},
 	 *      {"name"="meta", "dataType"="string", "required"=false, "description"="JSON formatted meta data"},
    *  },
 	 * )

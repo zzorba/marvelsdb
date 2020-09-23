@@ -375,14 +375,6 @@ class Oauth2Controller extends Controller
 			]);
 		}
 
-		$taboo = filter_var($request->get('taboo', 0), FILTER_SANITIZE_NUMBER_INT);
-		if ($taboo){
-			$taboo = $em->getRepository('AppBundle:Taboo')->find($taboo);
-		}
-		if (!$taboo){
-			$taboo = null;
-		}
-
 		$name = filter_var($request->get('name'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(!$name) {
 			if ($deck->getName()) {
@@ -418,7 +410,6 @@ class Oauth2Controller extends Controller
 		if ($meta_json) {
 			$deck->setMeta($meta);
 		}
-		$deck->setTaboo($taboo);
 
 		// xp_spent is only read/set if there was a previousDeck.
 		if ($deck->getPreviousDeck()) {

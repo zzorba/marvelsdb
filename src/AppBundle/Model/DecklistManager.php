@@ -92,7 +92,7 @@ class DecklistManager
 	public function findDecklistsByPopularity()
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect('(1+d.nbVotes)/(1+POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1.2)) AS HIDDEN popularity');
+		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1) ) AS HIDDEN popularity');
 		$qb->orderBy('popularity', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}

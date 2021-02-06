@@ -76,11 +76,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="box box{{loop.index}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
+			<div class="box box{{loop.index}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg);">
 				<div class="" style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.85);">
 					{% set character = data.decklist.getCharacter() %}					
 					<div class="pull-left" style="margin-right : 5px; margin-top : 2px;">
-						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>
+						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
 					</div>
 					<div>
 						<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
@@ -118,11 +118,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="box box{{loop.index+1}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png);">
+			<div class="box box{{loop.index+1}}" style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg);">
 				<div class="" style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.88);">					
 					{% set character = data.decklist.getCharacter() %}					
 					<div class="pull-left" style="margin-right : 5px; margin-top : 2px;">
-						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.png)"></div>
+						<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
 					</div>
 					<div>
 						<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
@@ -149,12 +149,23 @@
 </div>
 
 <div class="main container">
-<h3>Recent Updates</h3>
-<ul>
-	<li>
-		Site Created!
-	</li>
-</ul>
+	<h3>Recent Pack Releases</h3>
+	<ul>
+		{% for pack in packs %}
+		<li>
+			{{pack.name}}
+		</li>
+		{% endfor %}
+	</ul>
+</div> <!-- .container -->
+
+<div class="main container">
+	<h3>Recent Updates</h3>
+	<ul>
+		<li>
+			Site Created!
+		</li>
+	</ul>
 </div> <!-- .container -->
 
 {% endblock %}

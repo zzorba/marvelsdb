@@ -20,7 +20,7 @@ class DefaultController extends Controller
 		* @var $decklist_manager DecklistManager
 		*/
 		$decklist_manager = $this->get('decklist_manager');
-		$decklist_manager->setLimit(5);
+		$decklist_manager->setLimit(50);
 
 		$typeNames = [];
 		foreach($this->getDoctrine()->getRepository('AppBundle:Type')->findAll() as $type) {
@@ -41,13 +41,16 @@ class DefaultController extends Controller
 		}
 		$paginator = $decklist_manager->findDecklistsByAge();
 		$iterator = $paginator->getIterator();
+		$userCheck = [];
 		while($iterator->valid() && count($decklists_by_recent) < 5)
 		{
 			$decklist = $iterator->current();
-			$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+			if (!isset($userCheck[$decklist->getUser()->getId()])){
+				$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$userCheck[$decklist->getUser()->getId()] = true;
+			}
 			$iterator->next();
 		}
-
 		$game_name = $this->container->getParameter('game_name');
 		$publisher_name = $this->container->getParameter('publisher_name');
 

@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <deck game="055c536f-adba-4bc2-acbf-9aefb9756046" sleeveid="0">
-  <section name="Hero" shared="False">
+  <section name="Cards" shared="False">
     <card qty="1" id="{{ deck.investigator.getOctgnId(1) }}">{{ deck.investigator.name }}</card>
-    <card qty="1" id="{{ deck.investigator.getOctgnId(2) }}">{{ deck.investigator.name }}</card>
-  </section>
-  <section name="Support" shared="False">
     {% for slot in deck.slots_by_type.support %}
-      <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
+    <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}
-  </section>
-  <section name="Event" shared="False">
     {% for slot in deck.slots_by_type.event %}
-      <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
+    <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}
-  </section>
-  <section name="Upgrade" shared="False">
     {% for slot in deck.slots_by_type.upgrade %}
-      <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
+    <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}
-  </section>
-   <section name="Ally" shared="False">
     {% for slot in deck.slots_by_type.ally %}
-      <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
+    <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}
-  </section>
-  <section name="Resource" shared="False">
     {% for slot in deck.slots_by_type.resource %}
     <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}

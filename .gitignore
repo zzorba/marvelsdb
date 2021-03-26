@@ -21,3 +21,4 @@ tags
 .idea/
 .DS_Store
 /web/*.json
+/var

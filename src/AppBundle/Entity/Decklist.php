@@ -59,6 +59,11 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
 
     /**
      * @var string
+    */
+    private $uuid;
+
+    /**
+     * @var string
      */
     private $name;
 
@@ -281,6 +286,30 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     public function getNameCanonical()
     {
         return $this->nameCanonical;
+    }
+
+    /**
+     * Set uuid
+     *
+     * @param string $uuid
+     *
+     * @return Decklist
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get uuid
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 
     /**

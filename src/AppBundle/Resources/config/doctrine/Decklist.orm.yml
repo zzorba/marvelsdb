@@ -65,7 +65,7 @@ AppBundle\Entity\Decklist:
         nextDeck:
             targetEntity: Decklist
             nullable: true
-            cascade: ["persist","remove"]            
+            cascade: ["persist","remove"]
             joinColumn:
                 name: next_deck
                 referencedColumnName: id
@@ -109,6 +109,11 @@ AppBundle\Entity\Decklist:
             id: true
             generator:
                 strategy: AUTO
+        uuid:
+            type: string
+            length: 36
+            unique: true
+            nullable: true
         name:
             type: string
             length: 255

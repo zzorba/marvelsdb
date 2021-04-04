@@ -24,6 +24,9 @@ class Deck extends \AppBundle\Model\ExportableDeck implements \JsonSerializable
 	public function __clone() {
 		if ($this->id) {
 			$this->id = null;
+        }
+        if ($this->uuid) {
+			$this->uuid = null;
 		}
 	}
 	/**
@@ -167,6 +170,11 @@ class Deck extends \AppBundle\Model\ExportableDeck implements \JsonSerializable
      * @var integer
      */
     private $id;
+
+    /**
+     * @var string
+    */
+    private $uuid;
 
     /**
      * @var string
@@ -326,6 +334,30 @@ class Deck extends \AppBundle\Model\ExportableDeck implements \JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set uuid
+     *
+     * @param string $uuid
+     *
+     * @return Deck
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get uuid
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 
     /**

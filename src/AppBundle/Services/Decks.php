@@ -10,6 +10,16 @@ use AppBundle\Entity\Deckchange;
 use AppBundle\Helper\DeckValidationHelper;
 use AppBundle\Helper\AgendaHelper;
 
+function Uuid() {
+	if (function_exists('com_create_guid') === true)
+					return trim(com_create_guid(), '{}');
+
+	$data = openssl_random_pseudo_bytes(16);
+	$data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+	$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+	return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
+
 class Decks
 {
 	public function __construct(EntityManager $doctrine, DeckValidationHelper $deck_validation_helper, AgendaHelper $agenda_helper, Diff $diff, Logger $logger)
@@ -53,7 +63,9 @@ class Decks
 			if ($decklist)
 				$deck->setParent ( $decklist );
 		}
-
+		if (!$deck->getUuid()) {
+			$deck->setUuid(Uuid());
+		}
 		$deck->setName ( $name );
 		$deck->setCharacter ( $faction );
 		$deck->setDescriptionMd ( $description );
@@ -83,7 +95,7 @@ class Decks
 			// tags can never be empty. if it is we put faction in
 			$tags = [  ];
 		}
-		if(is_string($tags)) 
+		if(is_string($tags))
 		{
 			$tags = preg_split( '/\s+/', $tags );
 		}
@@ -158,22 +170,22 @@ public function upgradeDeck($deck, $xp, $previous_deck, $upgrades, $exiles)
 		$deck->setPreviousDeck ( $previous_deck );
 		$deck->setUpgrades ( $upgrades+1 );
 		$deck->setDescriptionMd ( $previous_deck->getDescriptionMd() );
-		
+
 		// if any cards exiled, remove them from the deck
 		foreach ( $exiles as $exile ) {
 			foreach ( $deck->getSlots () as $slot ) {
 				if ($slot->getCard()->getCode() == $exile->getCode()){
 					if ($slot->getQuantity() <= 1){
 						$deck->removeSlot ( $slot );
-						$this->doctrine->remove ( $slot );	
+						$this->doctrine->remove ( $slot );
 					} else {
 						$slot->setQuantity ( 1 );
-					}					
+					}
 					break;
 				}
 			}
 		}
-		
+
 		$previous_deck->setNextDeck($deck);
 		$this->doctrine->persist ( $deck );
 

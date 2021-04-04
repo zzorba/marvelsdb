@@ -63,7 +63,7 @@ ui.set_max_qty = function set_max_qty() {
 			maxqty : max_qty
 		});
 	});
-	
+
 }
 
 /**
@@ -72,9 +72,9 @@ ui.set_max_qty = function set_max_qty() {
  */
 ui.build_faction_selector = function build_faction_selector() {
 	//app.deck.choices.push({'faction_select':["guardian","seeker"]});
-	
+
 	$('[data-filter=faction_selector]').hide();
-	
+
 	$('[data-filter=faction_selector]').empty();
 	if (app.deck.choices && app.deck.choices.length > 0){
 		$('[data-filter=faction_selector]').show();
@@ -96,13 +96,13 @@ ui.build_faction_selector = function build_faction_selector() {
 	} else {
 		$('#aspect2_selector').hide();
 	}
-	
+
 	$('[data-filter=faction_code]').empty();
 	var faction_codes = app.data.cards.distinct('faction_code').sort();
 	var neutral_index = faction_codes.indexOf('basic');
 	faction_codes.splice(neutral_index, 1);
 	faction_codes.push('basic');
-	
+
 	faction_codes.forEach(function(faction_code) {
 		if (faction_code == "hero" || faction_code == "encounter"){
 			return;
@@ -114,10 +114,10 @@ ui.build_faction_selector = function build_faction_selector() {
 		label.tooltip({container: 'body'});
 		$('[data-filter=faction_code]').append(label);
 	});
-	
-	
+
+
 	$('[data-filter=faction_code]').button();
-	
+
 }
 
 /**
@@ -138,7 +138,7 @@ ui.build_type_selector = function build_type_selector() {
 		}
 	});
 	$('[data-filter=type_code]').button();
-	
+
 }
 
 
@@ -149,9 +149,9 @@ ui.build_type_selector = function build_type_selector() {
  */
 ui.build_pack_selector = function build_pack_selector() {
 	$('[data-filter=pack_code]').empty();
-	
+
 	//$('<li><h2>Defaults to packs in your collection</p></h2>').appendTo('[data-filter=pack_code]');
-	
+
 	// parse pack owner string
 	var collection = {};
 	var no_collection = true;
@@ -163,8 +163,8 @@ ui.build_pack_selector = function build_pack_selector() {
       });
 			//console.log(app.user.data.owned_packs, collection);
   }
-	
-	
+
+
 	app.data.packs.find({
 		name: {
 			'$exists': true
@@ -185,7 +185,7 @@ ui.build_pack_selector = function build_pack_selector() {
 		// if user checked it previously, check pack
 		// if(localStorage && localStorage.getItem('set_code_' + record.code) !== null) checked = true;
 		// if pack used by cards in deck, check pack
-		
+
 		if (no_collection && localStorage && localStorage.getItem('set_code_' + record.code) === "true"){
 			checked = true;
 		} else if (no_collection && localStorage && localStorage.getItem('set_code_' + record.code) === "false"){
@@ -198,6 +198,9 @@ ui.build_pack_selector = function build_pack_selector() {
 			pack_code: record.code,
 			indeck: {
 				'$gt': 0
+			},
+			hidden: {
+				'$eq': false
 			}
 		});
 		if(cards.length) {
@@ -212,7 +215,7 @@ ui.build_pack_selector = function build_pack_selector() {
 			}else {
 				checked = false;
 			}
-			
+
 			if (no_collection && localStorage && localStorage.getItem('set_code_' + record.code+"-2") === "true"){
 				checked = true;
 			} else if (no_collection && localStorage && localStorage.getItem('set_code_' + record.code+"-2") === "false"){
@@ -220,7 +223,7 @@ ui.build_pack_selector = function build_pack_selector() {
 			} else if (no_collection && record.available !== ""){
 				//checked = true;
 			}
-			
+
 			var cards = app.data.cards.find({
 				pack_code: record.code,
 				indeck: {
@@ -245,11 +248,11 @@ ui.init_selectors = function init_selectors() {
 	if (investigator.faction_code){
 		$('[data-filter=faction_code]').find('input[name='+investigator.faction_code+']').prop("checked", true).parent().addClass('active');
 	}
-	
+
 	if (app.deck.meta && app.deck.meta.faction_selected){
 		$('[data-filter=faction_selector]').val(app.deck.meta.faction_selected);
 	}
-	
+
 }
 
 function uncheck_all_others() {
@@ -274,7 +277,7 @@ function check_all_inactive() {
  * @memberOf ui
  * @param event
  */
-ui.on_click_filter = function on_click_filter(event) {	
+ui.on_click_filter = function on_click_filter(event) {
 	var dropdown = $(this).closest('ul').hasClass('dropdown-menu');
 	if (dropdown) {
 		if (event.shiftKey) {
@@ -314,7 +317,7 @@ ui.on_input_smartfilter2 = function on_input_smartfilter2(event) {
 	var q = $(this).val();
 	if(q.match(/^\w[:<>!]/)) app.smart_filter2.update(q);
 	else app.smart_filter2.update('');
-	
+
 }
 
 /**
@@ -422,10 +425,10 @@ ui.chaos = function() {
 	var counter = 0;
 	var	filters = ui.get_filters("potato");
 	var query = app.smart_filter.get_query(filters);
-	
+
 	var cards = app.data.cards.find(query);
 	var valid_cards = [];
-	
+
 	cards.forEach(function (card) {
 		if (card.faction_code != "hero"){
 			card.indeck = 0;
@@ -436,7 +439,7 @@ ui.chaos = function() {
 		}
 	});
 	app.deck.reset_limit_count();
-	
+
 	var size = valid_cards.length;
 	var deck_size = 25;
 	if (size >= deck_size){
@@ -456,11 +459,11 @@ ui.chaos = function() {
 			}
 		}
 	}
-	
+
 	valid_cards.forEach(function(card){
 		app.deck.set_card_copies(card.code, card.indeck);
 	})
-	
+
 	ui.on_deck_modified();
 };
 
@@ -565,17 +568,17 @@ ui.on_ignore_quantity_change = function on_ignore_quantity_change(card_code, qua
  * @memberOf ui
  */
 ui.setup_event_handlers = function setup_event_handlers() {
-	
+
 	$('#global_filters [data-filter]').on({
 		click : ui.on_click_filter
 	}, 'label');
-	
+
 	$('#build_filters [data-filter]').on({
 		change : ui.refresh_list,
 		click : ui.on_click_filter
 	}, 'label');
 
-	
+
 	$('#build_filters [data-filter=faction_selector]').on({
 		change : function(event){
 			app.deck.meta.faction_selected = event.target.value;
@@ -613,10 +616,10 @@ ui.setup_event_handlers = function setup_event_handlers() {
 
 	$('#collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	$('#special-collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
-	
+
 	$('#global_filters').on('click', '#chaos', ui.chaos);
-	
-	
+
+
 	$('#cardModal').on('keypress', function(event) {
 		var num = parseInt(event.which, 10) - 48;
 		$('#cardModal .modal-qty input[type=radio][value=' + num + ']').trigger('change');
@@ -627,6 +630,17 @@ ui.setup_event_handlers = function setup_event_handlers() {
 
 }
 
+ui.in_selected_packs = function in_selected_packs(card, filters) {
+	var found = false;
+	if (card && filters && filters.pack_code && filters.pack_code['$in']) {
+		filters.pack_code['$in'].forEach(function(pack_code) {
+			if (pack_code == card.pack_code) {
+				found = true;
+			}
+		})
+	}
+	return found;
+}
 
 /**
  * returns the current card filters as an array
@@ -742,7 +756,7 @@ ui.build_row = function build_row(card) {
 		$span.append(app.format.resource(card.resource_wild, 'wild'));
 	}
 	//console.log(card.name, card.maxqty, card.quantity);
-	for (var i = 0; i <= card.maxqty; i++) {		
+	for (var i = 0; i <= card.maxqty; i++) {
 		radios += radioTpl({
 			i: i,
 			active: (i == card.indeck ? ' active' : ''),
@@ -792,11 +806,31 @@ ui.refresh_list = _.debounce(function refresh_list() {
 	if(SortKey !== 'name') orderBy['name'] = 1;
 	var cards = app.data.cards.find(query, {'$orderBy': orderBy});
 	var divs = CardDivs[ Config['display-column'] - 1 ];
-	
+
 	cards.forEach(function (card) {
 		if (Config['show-only-deck'] && !card.indeck) return;
 		var unusable = !app.deck.can_include_card(card);
 		if (!Config['show-unusable'] && unusable) return;
+
+				// if this card is a duplicate of another
+		// hide this card if the other card is included
+		if (card.duplicate_of_code) {
+			var dupe = app.data.cards.findById(card.duplicate_of_code);
+			if (dupe && ui.in_selected_packs(dupe, filters)) {
+				return;
+			}
+		}
+		// this card has a duplicate. set the quantity to whichever thing has the highest
+		if (card.duplicated_by && card.duplicated_by.length > 0) {
+			card.duplicated_by.forEach(function (copyId) {
+				var dupe = app.data.cards.findById(copyId);
+				if (dupe && ui.in_selected_packs(dupe, filters)) {
+					if (dupe.maxqty > card.maxqty) {
+						card.maxqty = dupe.maxqty;
+					}
+				}
+			})
+		}
 
 		var row = divs[card.code];
 		if(!row) row = divs[card.code] = ui.build_row(card);
@@ -831,7 +865,7 @@ ui.refresh_list = _.debounce(function refresh_list() {
  * called when the deck is modified and we don't know what has changed
  * @memberOf ui
  */
-ui.on_deck_modified = function on_deck_modified() {	
+ui.on_deck_modified = function on_deck_modified() {
 	ui.refresh_deck();
 	ui.refresh_lists();
 	//app.suggestions && app.suggestions.compute();
@@ -918,7 +952,7 @@ ui.on_dom_loaded = function on_dom_loaded() {
  * called when the app data is loaded
  * @memberOf ui
  */
-ui.on_data_loaded = function on_data_loaded() {	
+ui.on_data_loaded = function on_data_loaded() {
 	app.draw_simulator && app.draw_simulator.on_data_loaded();
 };
 
@@ -926,7 +960,7 @@ ui.on_data_loaded = function on_data_loaded() {
  * called when both the DOM and the data app have finished loading
  * @memberOf ui
  */
-ui.on_all_loaded = function on_all_loaded() {	
+ui.on_all_loaded = function on_all_loaded() {
 	ui.update_list_template();
 	ui.build_faction_selector();
 	ui.build_type_selector();
@@ -938,10 +972,10 @@ ui.on_all_loaded = function on_all_loaded() {
 	ui.refresh_lists(); // update the card selection lists
 	ui.setup_typeahead();
 	ui.setup_dataupdate();
-	
+
 	var investigator = app.data.cards.findById(app.deck.get_investigator_code());
 	app.suggestions.query("sugg-"+investigator.code);
-	
+
 };
 
 ui.read_config_from_storage();

@@ -46,7 +46,8 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'pack',
 				'card_set',
 				'type',
-				'linked_to'
+				'linked_to',
+				'duplicate_of'
 		];
 
 		switch($this->type->getCode()) {
@@ -388,6 +389,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	private $reviews;
 
 	/**
+	 * @var \Doctrine\Common\Collections\Collection
+	 */
+	private $duplicates;
+
+	/**
 	 * @var \AppBundle\Entity\Pack
 	 */
 	private $pack;
@@ -420,6 +426,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	/**
 	 * @var \AppBundle\Entity\Card
 	 */
+	private $duplicate_of;
+
+	/**
+	 * @var \AppBundle\Entity\Card
+	 */
 	private $linked_to;
 
 	/**
@@ -428,7 +439,8 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	public function __construct()
 	{
 	  $this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
-  	}
+		$this->duplicates = new \Doctrine\Common\Collections\ArrayCollection();
+  }
 
 	/**
 	 * Get id
@@ -1312,6 +1324,41 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 		return $this->reviews;
 	}
 
+
+	/**
+	 * Add duplicates
+	 *
+	 * @param \AppBundle\Entity\Card $duplicate
+	 *
+	 * @return Card
+	 */
+	public function addDuplicate(\AppBundle\Entity\Card $duplicate)
+	{
+		$this->duplicates[] = $duplicate;
+
+		return $this;
+	}
+
+	/**
+	 * Remove duplicates
+	 *
+	 * @param \AppBundle\Entity\Card $duplicate
+	 */
+	public function removeDuplicates(\AppBundle\Entity\Card $duplicate)
+	{
+		$this->duplicates->removeElement($duplicate);
+	}
+
+	/**
+	 * Get duplicates
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getDuplicates()
+	{
+		return $this->duplicates;
+	}
+
 	/**
 	 * Set pack
 	 *
@@ -1455,6 +1502,31 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	{
 		return $this->linked_to;
 	}
+
+
+	/**
+	 * set duplicateOf
+	 *
+	 * @param \AppBundle\Entity\Card $card
+	 *
+	 * @return Card
+	 */
+	public function setDuplicateOf(\AppBundle\Entity\Card $duplicateOf = null)
+	{
+		$this->duplicate_of = $duplicateOf;
+		return $this;
+	}
+
+	/**
+	 * Get duplicateOf
+	 *
+	 * @return \AppBundle\Entity\Card
+	 */
+	public function getDuplicateOf()
+	{
+		return $this->duplicate_of;
+	}
+
 
 	/*
 	* I18N vars

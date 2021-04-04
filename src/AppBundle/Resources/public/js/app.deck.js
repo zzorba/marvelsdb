@@ -9,7 +9,7 @@ var date_creation,
 	meta,
 	choices,
 	xp,
-	xp_spent = 0, 
+	xp_spent = 0,
 	exile_string = "",
 	exiles = [],
 	investigator_code,
@@ -25,7 +25,7 @@ var date_creation,
 	problem_labels = {
 		too_few_cards: "Contains too few cards",
 		too_many_cards: "Contains too many cards",
-		deck_options_limit: "Contains too many limited cards", 
+		deck_options_limit: "Contains too many limited cards",
 		too_many_copies: "Contains too many copies of a card (by title)",
 		invalid_cards: "Contains forbidden cards. Must only contain cards from one aspect.",
 		investigator: "Doesn't comply with the hero requirements"
@@ -34,13 +34,13 @@ var date_creation,
 	card_line_tpl = _.template('<span class="icon icon-<%= card.type_code %> icon-<%= card.faction_code %>"></span><% if (typeof(card.faction2_code) !== "undefined") { %><span class="icon icon-<%= card.faction2_code %>"></span> <% } %> <a href="<%= card.url %>" class="card card-tip <% if (typeof(card.faction2_code) !== "undefined") { %> fg-dual <% } %>" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="<%= card.code %>"><%= card.name %></a>'),
 	layouts = {},
 	layout_data = {};
-	
+
 
 /*
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one block view
-layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>'); 
+layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>');
 // two colum view
 layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= allies %><%= events %><%= resources %></div><div class="col-sm-6 col-print-6"><%= supports %><%= upgrades %> </div></div> <div id="upgrade_changes"></div></div>');
 layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
@@ -78,11 +78,11 @@ deck.init = function init(data) {
 	// parse pack owner string
 	collection = {};
 	no_collection = true;
-	
+
 	if(app.data.isLoaded) {
 		deck.onloaded(data);
 	} else {
-		$(document).on('data.app', function () { 
+		$(document).on('data.app', function () {
 			deck.onloaded(data);
 		});
 	}
@@ -91,7 +91,7 @@ deck.init = function init(data) {
 deck.onloaded = function(data){
 	deck.set_slots(data.slots, data.ignoreDeckLimitSlots);
 	investigator = app.data.cards.findById(investigator_code);
-	
+
 	deck.requirements = {};
 	if (investigator) {
 		// if the hero has deck requirements, load them into the requirements here
@@ -133,12 +133,12 @@ deck.set_slots = function set_slots(slots, ignoreSlots) {
 
 	for(code in slots) {
 		if(slots.hasOwnProperty(code)) {
-			app.data.cards.updateById(code, {indeck: slots[code]});			
+			app.data.cards.updateById(code, {indeck: slots[code]});
 		}
 	}
 	for(code in ignoreSlots) {
 		if(ignoreSlots.hasOwnProperty(code)) {
-			app.data.cards.updateById(code, {ignore: ignoreSlots[code]});			
+			app.data.cards.updateById(code, {ignore: ignoreSlots[code]});
 		}
 	}
 }
@@ -192,7 +192,7 @@ deck.get_previous_deck = function get_previous_deck() {
 deck.get_xp = function get_xp() {
 	if (xp_adjustment) {
 		return xp + xp_adjustment;
-		
+
 	} else {
 		return xp;
 	}
@@ -234,7 +234,7 @@ deck.set_xp_adjustment = function set_xp_adjustment(xp_adj) {
 	if (!xp_adjustment) {
 		xp_adjustment = 0;
 	}
-	
+
 	xp_adjustment = xp_adj;
 }
 
@@ -276,12 +276,12 @@ deck.get_description_md = function get_description_md() {
 deck.get_cards = function get_cards(sort, query, group) {
 	sort = sort || {};
 	sort['code'] = 1;
-	
+
 	query = query || {};
 	query.indeck = {
 		'$gt': 0
 	};
-	
+
 	var options = {
 		'$orderBy': sort
 	};
@@ -353,7 +353,7 @@ deck.get_xp_usage = function get_xp_usage(sort) {
 		}
 	});
 	return xp;
-	
+
 }
 
 
@@ -381,23 +381,69 @@ deck.get_aspect_count = function get_aspect_count(aspect) {
 deck.get_included_packs = function get_included_packs() {
 	var cards = deck.get_cards();
 	var nb_packs = {};
+
+	var requirements = [];
+	var req_hash = {};
+	var shared_req = [];
 	cards.forEach(function (card) {
-		nb_packs[card.pack_code] = Math.max(nb_packs[card.pack_code] || 0, card.indeck / card.quantity);
+		if (card.hidden) {
+			return
+		}
+		if (card.duplicate_of_code) {
+			var dupe = app.data.cards.findById(card.duplicate_of_code);
+			var req = {};
+			if (!req_hash[dupe.pack_code + card.pack_code]) {
+				var req = req_hash[dupe.pack_code + card.pack_code] = {
+					pack1: {code: dupe.pack_code, name: dupe.pack_name, quantity: Math.max(Math.ceil(card.indeck / dupe.quantity))},
+					pack2: {code: card.pack_code, name: card.pack_name, quantity: Math.max(Math.ceil(card.indeck / card.quantity))}
+				}
+				shared_req.push(req);
+			}
+		} else if (card.duplicated_by && card.duplicated_by.length > 0) {
+			card.duplicated_by.forEach(function(copy) {
+				var dupe = app.data.cards.findById(copy);
+				if (!req_hash[card.pack_code + dupe.pack_code]) {
+					var req = req_hash[card.pack_code + dupe.pack_code] = {
+						pack1: {code: card.pack_code, name: card.pack_name, quantity: Math.max(Math.ceil(card.indeck / card.quantity))},
+						pack2: {code: dupe.pack_code, name: dupe.pack_name, quantity: Math.max(Math.ceil(card.indeck / dupe.quantity))}
+					}
+					shared_req.push(req);
+				}
+			})
+		} else {
+			if (!req_hash[card.pack_code]) {
+				var req = req_hash[card.pack_code] = Math.max(Math.ceil(card.indeck / card.quantity));
+				requirements.push(req);
+			}
+		}
 	});
 	var pack_codes = _.uniq(_.pluck(cards, 'pack_code'));
-	var packs = app.data.packs.find({
+	var packs = app.data.packs.find({}, {
 		'code': {
 			'$in': pack_codes
-		}
-	}, {
+		},
 		'$orderBy': {
 			'available': 1
 		}
 	});
-	packs.forEach(function (pack) {
-		pack.quantity = nb_packs[pack.code] || 0;
+	var new_packs = packs.filter(function (pack) {
+		pack.quantity = req_hash[pack.code] || 0;
+		if (pack.quantity > 0) {
+			return pack
+		}
 	})
-	return packs;
+	// apply additional requirements such as alternative pack pairs
+	shared_req.forEach(function(req) {
+		if (req_hash[req.pack1.code] || req_hash[req.pack2.code]) {
+			// if any pack has another requirement no point showing this option
+			return
+		}
+		new_packs.push({
+			'name': req.pack1.name + ' / ' + req.pack2.name,
+			'quantity': 1
+		})
+	})
+	return new_packs;
 }
 
 
@@ -413,11 +459,11 @@ deck.change_sort = function(sort_type){
 	if ($("#deck-content")){
 		deck.display('#deck-content');
 	}
-	
+
 	if ($("#decklist")){
 		deck.display('#decklist');
 	}
-	
+
 }
 
 deck.change_aspect = function(aspect){
@@ -435,10 +481,10 @@ deck.change_aspect = function(aspect){
 	if ($("#deck-content")){
 		deck.display('#deck-content');
 	}
-	
+
 	if ($("#decklist")){
 		deck.display('#decklist');
-	}	
+	}
 }
 deck.change_aspect2 = function(aspect){
 	if (!deck.meta){
@@ -455,7 +501,7 @@ deck.change_aspect2 = function(aspect){
 	if ($("#deck-content")){
 		deck.display('#deck-content');
 	}
-	
+
 	if ($("#decklist")){
 		deck.display('#decklist');
 	}
@@ -468,7 +514,7 @@ deck.display = function display(container, options) {
 	// XXX fetch the selected sort here
 	// default is 2 it seems
 	// before displaying a deck, apply the currently active taboo list
-	
+
 	options = _.extend({sort: 'type', cols: 2}, options);
 
 	var deck_content = deck.get_layout_data(options);
@@ -480,12 +526,12 @@ deck.display = function display(container, options) {
 	$(container).append(deck_content);
 	if (app.deck_history){
 		app.deck_history.setup('#history');
-	} 
+	}
 
 }
 
 deck.get_layout_data = function get_layout_data(options) {
-	
+
 	var data = {
 			image1: '',
 			image2: '',
@@ -497,16 +543,16 @@ deck.get_layout_data = function get_layout_data(options) {
 			resources: '',
 			cards: ''
 	};
-	
+
 	//var investigator = deck.get_investigator();
 	var problem = deck.get_problem();
 	$("input[name=problem]").val(problem);
-	
+
 	var card = app.data.cards.findById(this.get_investigator_code());
 	var size = 30;
 	var req_count = 0;
 	var req_met_count = 0;
-	
+
 	if (card && card.deck_requirements){
 		if (card.deck_requirements.size){
 			size = card.deck_requirements.size;
@@ -544,17 +590,17 @@ deck.get_layout_data = function get_layout_data(options) {
 	if(deck.get_tags && deck.get_tags() ) {
 		deck.update_layout_section(data, 'meta', $('<div>'+deck.get_tags().replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})+'</div>'));
 	}
-	
+
 	if(problem) {
 		if (deck.problem_list && deck.problem_list.length > 0){
 			deck.update_layout_section(data, 'meta', $('<div class="text-danger small"><span class="fa fa-exclamation-triangle"></span> '+deck.problem_list.join(', ')+'</div>'));
 		} else {
 			deck.update_layout_section(data, 'meta', $('<div class="text-danger small"><span class="fa fa-exclamation-triangle"></span> '+problem_labels[problem]+'</div>'));
 		}
-		
+
 	}
 	//deck.update_layout_section(data, 'meta', $('<div class="text-danger small"><span class="fa fa-exclamation-triangle"></span> '+problem_labels[problem]+'</div>'));
-	
+
 	//var sort = "default";
 	//sort = $("#sort_deck_view").val();
 	var layout_template = 2;
@@ -606,7 +652,7 @@ deck.get_layout_data = function get_layout_data(options) {
 	if (options && options.layout) {
 		layout_template = options.layout;
 	}
-	
+
 	return layouts[layout_template](data);
 }
 
@@ -623,21 +669,21 @@ deck.get_layout_section = function(sort, group, filter){
 	}
 	// if we have a group, then send the group by to the query
 	if (group){
-		var cards = deck.get_cards(sort, query, group);	
+		var cards = deck.get_cards(sort, query, group);
 	} else {
 		var cards = deck.get_cards(sort, query);
 	}
-	
+
 	if(cards.length) {
-		
+
 		//$(header_tpl({code: "Cards", name: "Cards", quantity: deck.get_nb_cards(cards)})).appendTo(section);
 		//'<h5><span class="icon icon-<%= code %>"></span> <%= name %> (<%= quantity %>)</h5>'
 		// run through each card and display display it
 		deck.create_card_group(cards, context).appendTo(section);
-			
-	} else if (cards.constructor !== Array){		
+
+	} else if (cards.constructor !== Array){
 		$.each(cards, function (index, group_cards) {
-		//cards.forEach(function (group_cards) {			
+		//cards.forEach(function (group_cards) {
 			if (group_cards.constructor === Array){
 				$(header_tpl({code: index, name: index == "undefined" ? "Null" : index, quantity: group_cards.reduce(function(a,b){ return a + b.indeck}, 0) })).appendTo(section);
 				deck.create_card_group(group_cards, context).appendTo(section);
@@ -683,7 +729,7 @@ deck.create_card = function create_card(card){
 	var $div = $('<div>').addClass(deck.can_include_card(card) ? '' : 'invalid-card');
 
 	$div.append($(card_line_tpl({card:card})));
-	
+
 	if(card.is_unique == true) {
 		$div.prepend(' •');
 	}
@@ -692,11 +738,11 @@ deck.create_card = function create_card(card){
 	} else {
 		$div.prepend(' <span class="fa fa-circle fg-'+card.faction_code+'" title="'+card.faction_code+'"></span>');
 	}
-	
+
 	$div.prepend(card.indeck+'x ');
-	
+
 	var $span = $('<span style="float: right"></span>');
-	
+
 	if(card.resource_physical && card.resource_physical > 0) {
 		$span.append(app.format.resource(card.resource_physical, 'physical'));
 	}
@@ -710,16 +756,16 @@ deck.create_card = function create_card(card){
 		$span.append(app.format.resource(card.resource_wild, 'wild'));
 	}
 
-	
+
 	if (!no_collection){
 		var pack = app.data.packs.findById(card.pack_code);
 		if (!collection[pack.id]) {
 			$span.append(' <span class="fa fa-question" title="This card is not part of your collection"></span>');
 		}
 	}
-	
+
 	$div.append($span);
-	
+
 	return $div;
 }
 
@@ -834,11 +880,11 @@ deck.get_copies_and_deck_limit = function get_copies_and_deck_limit() {
  * @memberOf deck
  */
 deck.get_problem = function get_problem() {
-	
+
 	// get investigator data
 	var card = app.data.cards.findById(this.get_investigator_code());
 	var size = 30;
-	// store list of all problems 
+	// store list of all problems
 	deck.problem_list = [];
 	if (card && card.deck_requirements){
 		if (card.deck_requirements.size){
@@ -867,24 +913,24 @@ deck.get_problem = function get_problem() {
 			}
 		}
 	} else {
-		
+
 	}
 
 	// no invalid card
 	if(deck.get_invalid_cards().length > 0) {
 		return 'invalid_cards';
 	}
-	
+
 		// at least 60 others cards
 	if(deck.get_draw_deck_size() < 40) {
 		return 'too_few_cards';
 	}
-	
+
 	// at least 60 others cards
 	if(deck.get_draw_deck_size() > 50) {
 		return 'too_many_cards';
 	}
-	
+
 	if (deck.requirements) {
 		if (deck.requirements.aspects) {
 			// for now assume that if this is set they have to have 2 aspects with equal counts.
@@ -900,7 +946,7 @@ deck.get_problem = function get_problem() {
 }
 
 deck.reset_limit_count = function (){
-	
+
 }
 
 deck.get_invalid_cards = function get_invalid_cards() {
@@ -925,12 +971,12 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	if (card.faction_code === "encounter") {
 		return false;
 	}
-	
+
 	// always allow their own set into the deck
 	if (card.card_set_code == hero.card_set_code) {
 		return true;
 	}
-	
+
 	if (deck.meta.aspect) {
 		if (card.faction_code == "justice" || card.faction_code == "leadership" || card.faction_code == "protection" || card.faction_code == "aggression") {
 			if (deck.meta.aspect != card.faction_code) {
@@ -947,7 +993,7 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	}
 
 	if (card.faction_code == "hero" && card.card_set_code != hero.card_set_code) {
-		return false;	
+		return false;
 	}
 	return true;
 }

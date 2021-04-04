@@ -560,6 +560,15 @@ class CardsData
 			if (isset($cardinfo['restrictions']) && $cardinfo['restrictions']){
 				$cardinfo['restrictions'] = $this->deckValidationHelper->parseReqString($cardinfo['restrictions']);
 			}
+			if ($card->getDuplicates()) {
+				$dupes = $card->getDuplicates();
+				if (count($dupes) > 0) {
+					$cardinfo['duplicated_by'] = [];
+					foreach($dupes as $duplicate) {
+						$cardinfo['duplicated_by'][] = $duplicate->getCode();
+					}
+				}
+			}
 			$cardinfo = array_filter($cardinfo, function ($var) { return isset($var); });
 		} else {
 			$cardinfo['text'] = $this->replaceSymbols($cardinfo['text']);
@@ -578,6 +587,15 @@ class CardsData
 				$cardinfo['restrictions'] = $this->deckValidationHelper->parseReqString($cardinfo['restrictions']);
 			}
 			$cardinfo['flavor'] = $this->replaceSymbols($cardinfo['flavor']);
+			if ($card->getDuplicates()) {
+				$dupes = $card->getDuplicates();
+				if (count($dupes) > 0) {
+					$cardinfo['duplicated_by'] = [];
+					foreach($dupes as $duplicate) {
+						$cardinfo['duplicated_by'][] = $duplicate->getCode();
+					}
+				}
+			}
 		}
 
 		return $cardinfo;

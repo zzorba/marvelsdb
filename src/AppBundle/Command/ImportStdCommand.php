@@ -168,7 +168,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$imported = [];
 		// get subdirs of files and do this for each file
 		$scanned_directory = array_diff(scandir($path."/pack"), array('..', '.'));
-		$fileSystemIterator = $this->getFileSystemIterator($path."pack/");
+		$fileSystemIterator = $this->getFileSystemIterator($path."/pack/");
 		foreach ($fileSystemIterator as $fileinfo) {
 			$imported = array_merge($imported, $this->importCardsJsonFile($fileinfo, $player_only));
 		}

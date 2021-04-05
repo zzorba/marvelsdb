@@ -806,18 +806,34 @@ ui.refresh_list = _.debounce(function refresh_list() {
 	if(SortKey !== 'name') orderBy['name'] = 1;
 	var cards = app.data.cards.find(query, {'$orderBy': orderBy});
 	var divs = CardDivs[ Config['display-column'] - 1 ];
-
+	var dupes_hash = {};
 	cards.forEach(function (card) {
 		if (Config['show-only-deck'] && !card.indeck) return;
 		var unusable = !app.deck.can_include_card(card);
 		if (!Config['show-unusable'] && unusable) return;
 
-				// if this card is a duplicate of another
-		// hide this card if the other card is included
+		// if this card is a duplicate of another
 		if (card.duplicate_of_code) {
+			// if the parent card is included, use that over any other
 			var dupe = app.data.cards.findById(card.duplicate_of_code);
 			if (dupe && ui.in_selected_packs(dupe, filters)) {
 				return;
+			}
+
+			// otherwise check the list of duplicates and find the first one that is included
+			if (dupe && dupe.duplicated_by && dupe.duplicated_by.length > 0) {
+				var duped = [];
+				dupe.duplicated_by.forEach(function (another_id) {
+					var another_dupe = app.data.cards.findById(another_id);
+					if (another_dupe && ui.in_selected_packs(another_dupe, filters)) {
+						duped.push(another_dupe);
+					}
+				});
+				if (duped && duped.length > 0) {
+					if (duped[0] && duped[0].code != card.code) {
+						return
+					}
+				}
 			}
 		}
 		// this card has a duplicate. set the quantity to whichever thing has the highest

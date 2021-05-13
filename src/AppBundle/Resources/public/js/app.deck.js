@@ -15,6 +15,7 @@ var date_creation,
 	investigator_code,
 	investigator_name,
 	investigator,
+	deck_options,
 	unsaved,
 	user_id,
 	sort_type = "default",
@@ -103,7 +104,12 @@ deck.onloaded = function(data){
 				}
 			})
 		}
+		if (investigator && investigator.deck_options && investigator.deck_options.length) {
+			deck.deck_options = investigator.deck_options;
+		}
 	}
+
+
 
 	if (data.meta){
 		deck.meta = JSON.parse(data.meta);
@@ -943,10 +949,26 @@ deck.get_problem = function get_problem() {
 			}
 		}
 	}
+
+
 }
 
 deck.reset_limit_count = function (){
+	if (investigator){
 
+		deck.deck_options = investigator.deck_options;
+
+		if (deck.deck_options) {
+			for (var i = deck.deck_options.length - 1; i >= 0 ; i--) {
+				if (deck.deck_options[i] && deck.deck_options[i].dynamic) {
+					deck.deck_options.splice(i, 1);
+				} else {
+					deck.deck_options[i].limit_count = 0;
+					deck.deck_options[i].atleast_count = {};
+				}
+			}
+		}
+	}
 }
 
 deck.get_invalid_cards = function get_invalid_cards() {
@@ -977,25 +999,124 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 		return true;
 	}
 
+	// for now always allow basic cards!
+	if (card.faction_code == "basic") {
+		return true;
+	}
+
+	// if an aspect is set, allow that, otherwise allow all cards because
 	if (deck.meta.aspect) {
-		if (card.faction_code == "justice" || card.faction_code == "leadership" || card.faction_code == "protection" || card.faction_code == "aggression") {
-			if (deck.meta.aspect != card.faction_code) {
-				// for now if this is set, they must have two aspects
-				if (deck.requirements && deck.requirements.aspects) {
-					if (deck.meta.aspect2 && deck.meta.aspect2 != card.faction_code) {
-						return false;
+		if (deck.meta.aspect == card.faction_code) {
+			return true;
+		}
+		if (deck.requirements && deck.requirements.aspects) {
+			if ((!deck.meta.aspect2) || (deck.meta.aspect2 && deck.meta.aspect2 == card.faction_code)) {
+				return true;
+			}
+		}
+	} else {
+		return true;
+	}
+
+	var overflow = 0;
+
+	if (deck.deck_options && deck.deck_options.length) {
+
+		for (var i = 0; i < deck.deck_options.length; i++){
+			var option = deck.deck_options[i];
+
+			var valid = false;
+
+			if (option.type){
+				// needs to match at least one faction
+				var type_valid = false;
+				for(var j = 0; j < option.type.length; j++){
+					var type = option.type[j];
+					if (card.type_code == type){
+						type_valid = true;
 					}
-				} else {
-					return false;
+				}
+
+				if (!type_valid){
+					continue;
 				}
 			}
+
+			if (option.trait){
+				// needs to match at least one trait
+				var trait_valid = false;
+
+				for(var j = 0; j < option.trait.length; j++){
+					var trait = option.trait[j];
+
+					if (card.real_traits && card.real_traits.toUpperCase().indexOf(trait.toUpperCase()+".") !== -1){
+						trait_valid = true;
+					}
+				}
+
+				if (!trait_valid){
+					continue;
+				}
+			}
+
+			if (option.not){
+				return false;
+			} else {
+				if (limit_count && option.limit){
+					if (option.limit_count >= option.limit) {
+						continue;
+					}
+					if (hard_count){
+						option.limit_count += 1;
+					} else {
+						// if we have left over from previous options, use that value instead of the qty
+						if (overflow) {
+							option.limit_count += overflow;
+						} else {
+							option.limit_count += card.indeck;
+						}
+
+					}
+					if (option.limit_count > option.limit) {
+						overflow = option.limit_count - option.limit;
+						option.limit_count = option.limit;
+						continue;
+					}
+
+				}
+				if (limit_count && option.atleast){
+					if (option.atleast.factions) {
+						if (!option.atleast_count[card.faction_code]){
+							option.atleast_count[card.faction_code] = 0;
+						}
+						option.atleast_count[card.faction_code] += card.indeck;
+						if (card.faction2_code) {
+							if (!option.atleast_count[card.faction2_code]) {
+								option.atleast_count[card.faction2_code] = 0;
+							}
+							option.atleast_count[card.faction2_code] += card.indeck;
+						}
+					} else if (option.atleast.types) {
+						if (!option.atleast_count[card.type_code]) {
+							option.atleast_count[card.type_code] = 0;
+						}
+						option.atleast_count[card.type_code] += card.indeck;
+					}
+				}
+				if (option.ignore_match) {
+					continue;
+				}
+
+				return true;
+			}
+
 		}
 	}
 
-	if (card.faction_code == "hero" && card.card_set_code != hero.card_set_code) {
-		return false;
+	if (card.faction_code == "hero" && card.card_set_code == hero.card_set_code) {
+		return true;
 	}
-	return true;
+	return false;
 }
 
 })(app.deck = {}, jQuery);

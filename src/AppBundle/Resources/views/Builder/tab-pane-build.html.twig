@@ -1,13 +1,13 @@
 
 <div class="row" id="global_filters">
-	
+
 	<div class="col-md-12 text-right" style="margin-bottom:10px">
-		<div class="btn-group">    	
+		<div class="btn-group">
     	<button type="button" class="btn btn-xs btn-default" id="chaos">
 				<span class="fa fa-random"></span> Chaos</span>
 			</button>
 		</div>
-		<div class="btn-group">    	
+		<div class="btn-group" id="aspect_selector">
 			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
 				<span class="hidden-xs">Change Aspect</span> <span class="caret"></span>
 			</button>
@@ -19,7 +19,7 @@
 			</ul>
 		</div>
 
-		<div class="btn-group" id="aspect2_selector">    	
+		<div class="btn-group" id="aspect2_selector">
 			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
 				<span class="hidden-xs">Change Aspect 2</span> <span class="caret"></span>
 			</button>
@@ -31,7 +31,7 @@
 			</ul>
 		</div>
 
-		<div class="btn-group">    	
+		<div class="btn-group">
 			<button type="button" class="btn btn-xs btn-default dropdown-toggle " data-toggle="dropdown">
 				<span class="fa fa-sort"></span> <span class="hidden-xs">Sort Deck</span> <span class="caret"></span>
 			</button>
@@ -72,33 +72,33 @@
 	</div><!-- /.col-sm-6 -->
 </div><!-- /.row -->
 
-<div class="row" id="build_filters">	
+<div class="row" id="build_filters">
 
 	<!-- Search Bar -->
 	<div class="col-sm-12" style="margin-bottom:10px">
 		<input type="text" class="form-control" id="filter-text" placeholder="Find a card or filter the list" tabindex="1">
 	</div>
-	
-	
+
+
 	<!-- Search Bar -->
 	<div id="player-cards-filters">
-	
+
 	<div class="col-sm-12">
 		<select class="form-control" data-filter="faction_selector" style="display: none;"></select>
 	</div>
 	<div class="col-sm-12" style="margin-bottom:10px">
       <div class="btn-group btn-group-justified" data-filter="faction_code" data-toggle="buttons"></div>
 	</div>
-	
-	
+
+
 	<div class="col-sm-12" style="margin-bottom:10px">
 			<div class="btn-group btn-group-justified" data-filter="type_code" data-toggle="buttons"></div>
   </div>
 
-  
+
   </div>
-  
-  
+
+
 </div>
 
 <!-- Collection Table -->
@@ -110,7 +110,7 @@
 					<th style="min-width:85px"><a href="#" data-sort="indeck">Quantity</a></th>
 					<th><a href="#" data-sort="name">Name</a></th>
 					<th class="resources"><a href="#" data-sort="resources" title="Resources">Resources</a></th>
-					<th class="cost"><a href="#" data-sort="cost" title="Cost">Cost</a></th>					
+					<th class="cost"><a href="#" data-sort="cost" title="Cost">Cost</a></th>
 					<th class="type"><a href="#" data-sort="type_code" title="Type">Type</a></th>
 					<th class="faction"><a href="#" data-sort="faction_code" title="Faction">Class</a></th>
 				</tr>

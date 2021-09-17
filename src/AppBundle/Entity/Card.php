@@ -33,6 +33,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'back_text',
 				'back_name',
 				'back_flavor',
+				'permanent',
 				'hidden',
 				'double_sided',
 				'card_set',
@@ -372,6 +373,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 * @var boolean
 	 */
 	private $hidden;
+
+	/**
+	 * @var boolean
+	 */
+	private $permanent;
 
 	/**
 	 * @var boolean
@@ -1231,6 +1237,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	public function getHidden()
 	{
 		return $this->hidden;
+	}
+
+	/**
+	 * Set permanent
+	 *
+	 * @param boolean $permanent
+	 *
+	 * @return Card
+	 */
+	public function setPermanent($permanent)
+	{
+		$this->permanent = $permanent;
+
+		return $this;
+	}
+
+	/**
+	 * Get permanent
+	 *
+	 * @return boolean
+	 */
+	public function getPermanent()
+	{
+		return $this->permanent;
 	}
 
 	/**

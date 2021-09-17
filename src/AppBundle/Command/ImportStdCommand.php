@@ -492,6 +492,7 @@ class ImportStdCommand extends ContainerAwareCommand
 					'is_unique',
 					'health_per_hero',
 					'hidden',
+					'permanent',
 					'octgn_id'
 
 			]);
@@ -602,6 +603,11 @@ class ImportStdCommand extends ContainerAwareCommand
 				$value = false;
 			}
 		}
+		if ($key == "permanent"){
+			if (!$value){
+				$value = false;
+			}
+		}
 
 		if ($key == "deck_requirements"){
 			if ($value){
@@ -610,7 +616,9 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 
 		if ($key == "deck_options" && $value){
-			//print_r($value);
+			if ($value){
+				$value = json_encode($value);
+			}
 		}
 
 		if ($key == "health_per_hero" || $key == "is_unique"){

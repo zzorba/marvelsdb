@@ -269,6 +269,11 @@ AppBundle\Entity\Card:
             column: hidden
             options:
                 default: false
+        permanent:
+            type: boolean
+            column: permanent
+            options:
+                default: false
         doubleSided:
             type: boolean
             nullable: true

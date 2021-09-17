@@ -92,7 +92,12 @@ ui.build_faction_selector = function build_faction_selector() {
 	}
 
 	if (app.deck && app.deck.requirements && app.deck.requirements.aspects) {
-		$('#aspect2_selector').show();
+		if (app.deck.requirements.aspects == 4) {
+			$('#aspect_selector').hide();
+			$('#aspect2_selector').hide();
+		} else if (app.deck.requirements.aspects == 2) {
+			$('#aspect2_selector').show();
+		}
 	} else {
 		$('#aspect2_selector').hide();
 	}

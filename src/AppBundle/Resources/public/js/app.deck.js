@@ -43,7 +43,7 @@ var date_creation,
 // one block view
 layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>');
 // two colum view
-layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= allies %><%= events %><%= resources %></div><div class="col-sm-6 col-print-6"><%= supports %><%= upgrades %> </div></div> <div id="upgrade_changes"></div></div>');
+layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= allies %><%= events %><%= resources %></div><div class="col-sm-6 col-print-6"><%= supports %><%= upgrades %> <%= permanent %></div></div> <div id="upgrade_changes"></div></div>');
 layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
 // single column view
 layouts[4] = _.template('<div class="deck-content"><div class="row"><%= images %></div><div class="row"><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-12 col-print-12"><%= assets %> <%= permanent %><%= events %> <%= skills %> <%= treachery %> <%= enemy %></div></div> <div id="upgrade_changes"></div></div>');
@@ -101,6 +101,10 @@ deck.onloaded = function(data){
 				if (req.aspects) {
 					// the user must pick X aspects, only applied if this is not just set to 1
 					deck.requirements.aspects = req.aspects;
+				}
+				if (req.limit) {
+					// the user must pick X aspects, only applied if this is not just set to 1
+					deck.requirements.limit = req.limit;
 				}
 			})
 		}
@@ -305,7 +309,8 @@ deck.get_draw_deck = function get_draw_deck(sort) {
 	return deck.get_cards(sort, {
 		type_code: {
 			'$nin' : []
-		}
+		},
+		permanent: false
 	});
 }
 
@@ -328,7 +333,8 @@ deck.get_physical_draw_deck = function get_physical_draw_deck(sort) {
 	return deck.get_cards(sort, {
 		type_code: {
 			'$nin' : []
-		}
+		},
+		permanent: false
 	});
 }
 
@@ -377,6 +383,20 @@ deck.get_aspect_count = function get_aspect_count(aspect) {
 		faction_code: aspect
 	});
 	return deck.get_nb_cards(cards);
+}
+
+deck.check_limit = function get_aspect_count(limit) {
+	var cards = deck.get_cards();
+	var invalid = 0;
+	cards.forEach(function (card) {
+		if (card.faction_code != 'hero' && card.indeck != limit) {
+			invalid++;
+		}
+	})
+	if (invalid > 0) {
+		return false
+	}
+	return true
 }
 
 
@@ -545,6 +565,7 @@ deck.get_layout_data = function get_layout_data(options) {
 			upgrades: '',
 			events: '',
 			allies: '',
+			permanent: '',
 			supports: '',
 			resources: '',
 			cards: ''
@@ -581,16 +602,21 @@ deck.get_layout_data = function get_layout_data(options) {
 	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
 	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
-	if (deck.meta && deck.meta.aspect) {
-		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect)+')</div>'));
+	if (deck.requirements && deck.requirements.aspects && deck.requirements.aspects == 4){
+		deck.update_layout_section(data, 'meta', $('<div>All Aspects</div>'));
+	} else {
+		if (deck.meta && deck.meta.aspect) {
+			deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect)+')</div>'));
+		}
+		if (deck.meta && deck.meta.aspect2) {
+			deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect2+'" title="'+deck.meta.aspect2+'"></span> '+deck.meta.aspect2.charAt(0).toUpperCase() + deck.meta.aspect2.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect2)+')</div>'));
+		}
+		if (!deck.meta && !deck.meta.aspect && !deck.meta.aspect2) {
+			deck.update_layout_section(data, 'meta', $('<div>No Aspect</div>'));
+		}
 	}
-	if (deck.meta && deck.meta.aspect2) {
-		deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect2+'" title="'+deck.meta.aspect2+'"></span> '+deck.meta.aspect2.charAt(0).toUpperCase() + deck.meta.aspect2.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect2)+')</div>'));
-	}
-	if (!deck.meta && !deck.meta.aspect && !deck.meta.aspect2) {
-		deck.update_layout_section(data, 'meta', $('<div>No Aspect</div>'));
-	}
-	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_real_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
+
+	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
 	var pack_string = _.map(deck.get_included_packs(), function (pack) { return pack.name+(pack.quantity > 1 ? ' ('+pack.quantity+')' : ''); }).join(', ');
 	deck.update_layout_section(data, 'meta', $('<div><span onclick="$(\'#packs_required\').toggle()" style="border-bottom: 1px dashed #cfcfcf;" title="' + pack_string + '">' + deck.get_included_packs().length + ' packs required </span>' + ' <div style="display:none;" id="packs_required">'+pack_string+'</div> </div>'));
 	if(deck.get_tags && deck.get_tags() ) {
@@ -650,10 +676,12 @@ deck.get_layout_data = function get_layout_data(options) {
 	} else {
 		layout_template = 2;
 		deck.update_layout_section(data, 'events', deck.get_layout_data_one_section({'type_code':'event'}, 'type_name'));
-		deck.update_layout_section(data, 'upgrades', deck.get_layout_data_one_section({'type_code': 'upgrade'}, 'type_name'));
+		deck.update_layout_section(data, 'upgrades', deck.get_layout_data_one_section({'type_code': 'upgrade', permanent: false}, 'type_name'));
 		deck.update_layout_section(data, 'resources', deck.get_layout_data_one_section({'type_code': 'resource'}, 'type_name'));
 		deck.update_layout_section(data, 'allies', deck.get_layout_data_one_section({'type_code': 'ally'}, 'type_name'));
-		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support'}, 'type_name'));
+		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support', permanent: false}, 'type_name'));
+
+		deck.update_layout_section(data, 'permanent', deck.get_layout_data_one_section({permanent: true}, 'type_name'));
 	}
 	if (options && options.layout) {
 		layout_template = options.layout;
@@ -711,7 +739,11 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 	if(cards.length) {
 		var name = "";
 		name = cards[0][displayLabel];
-		$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
+		if (query.permanent) {
+			$(header_tpl({code: "Permanent", name: "Permanent", quantity: deck.get_nb_cards(cards)})).appendTo(section);
+		} else {
+			$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
+		}
 		cards.forEach(function (card) {
 			var div = deck.create_card(card);
 			div.appendTo(section);
@@ -938,7 +970,20 @@ deck.get_problem = function get_problem() {
 	}
 
 	if (deck.requirements) {
-		if (deck.requirements.aspects) {
+		if (deck.requirements.aspects && deck.requirements.aspects == 4) {
+			var counts = [
+				deck.get_aspect_count('leadership'),
+				deck.get_aspect_count('aggression'),
+				deck.get_aspect_count('protection'),
+				deck.get_aspect_count('justice')
+			]
+			if (!counts.every(function(val){
+				console.log(val)
+				return val == counts[0];
+			})) {
+				return "investigator";
+			}
+		} else if (deck.requirements.aspects) {
 			// for now assume that if this is set they have to have 2 aspects with equal counts.
 			if (deck.meta && deck.meta.aspect && deck.meta.aspect2) {
 				if (deck.get_aspect_count(deck.meta.aspect) != deck.get_aspect_count(deck.meta.aspect2) ) {
@@ -948,6 +993,12 @@ deck.get_problem = function get_problem() {
 				return "investigator";
 			}
 		}
+		if (deck.requirements.limit) {
+			if (!deck.check_limit(deck.requirements.limit)) {
+				return "investigator";
+			}
+		}
+
 	}
 
 
@@ -1010,7 +1061,10 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 			return true;
 		}
 		if (deck.requirements && deck.requirements.aspects) {
-			if ((!deck.meta.aspect2) || (deck.meta.aspect2 && deck.meta.aspect2 == card.faction_code)) {
+			if (deck.requirements.aspects == 4) {
+				// allowed all aspects basically
+				return true;
+			} if ((!deck.meta.aspect2) || (deck.meta.aspect2 && deck.meta.aspect2 == card.faction_code)) {
 				return true;
 			}
 		}

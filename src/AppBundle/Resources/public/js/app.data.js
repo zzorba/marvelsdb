@@ -8,13 +8,13 @@ var force_update = false;
  * @memberOf data
  */
 data.load = function load() {
-	
+
 	data.isLoaded = false;
 
 	var fdb = new ForerunnerDB();
 	data.db = fdb.db('marvelsdb');
 	// seems that indexedDB is failing in chrome, so switching to localstorage for now
-	data.db.persist.driver("LocalStorage");
+	data.db.persist.driver("IndexedDB");
 
 	data.masters = {
 		packs: data.db.collection('master_pack', {primaryKey:'code', changeTimestamp: true}),
@@ -28,7 +28,7 @@ data.load = function load() {
 
 	$.when(data.dfd.packs, data.dfd.cards).done(data.update_done).fail(data.update_fail);
 
-	// load pack data 
+	// load pack data
 	data.masters.packs.load(function (err) {
 		if(err) {
 			console.log('error when loading packs', err);
@@ -89,7 +89,7 @@ data.release = function release() {
 	data.cards.setData(data.masters.cards.find());
 
 	data.isLoaded = true;
-	
+
 	$(document).trigger('data.app');
 }
 

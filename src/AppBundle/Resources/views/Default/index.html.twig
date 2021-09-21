@@ -57,6 +57,11 @@
 	.box5 {
 		border-width: 2px 2px 2px 2px;
 	}
+	@media (min-width:992px){
+		.right-col {
+			margin-left: 5px;
+		}
+	}
 
 
 </style>
@@ -104,7 +109,7 @@
 		{% endfor %}
 	</div>
 	
-	<div class="row col-md-6" style="margin-left: 5px;">
+	<div class="row col-md-6 right-col">
 		<h3>Recent Decks</h3>
 		{% for data in decklists_by_recent %}
 		<div style="margin-bottom:10px; ">

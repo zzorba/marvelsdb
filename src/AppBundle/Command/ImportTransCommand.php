@@ -91,7 +91,10 @@ class ImportTransCommand extends ContainerAwareCommand
 						'subname',
 						'back_name',
 						'back_flavor',
-						'back_text'
+						'back_text',
+						'boost_text',
+						'attack_text',
+						'scheme_text'
 				]);
 			}
 

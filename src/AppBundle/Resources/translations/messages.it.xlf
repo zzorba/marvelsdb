@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="34e80a799d144cfe4af46815e103f017" resname="Reviews">
         <source>Reviews</source>
-        <target>Recensioni</target>
+        <target>Commenti</target>
       </trans-unit>
       <trans-unit id="1f4da964f8eab62e96e8cfe406e44364" resname="Rules">
         <source>Rules</source>
@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="20b4f77bd00b4f63a49ec8e08f3bf6a6" resname="Cost">
         <source>Cost</source>
-        <target>Costi</target>
+        <target>Costo</target>
       </trans-unit>
       <trans-unit id="9b57db6e9d84ba5f537ce97b13079736" resname="XP">
         <source>XP</source>
@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="605669cab962bf944d99ce89cf9e58d9" resname="Health">
         <source>Health</source>
-        <target>Salute</target>
+        <target>Punti Ferita</target>
       </trans-unit>
       <trans-unit id="ad34a9d5d87691c743dc42cbc5e8b783" resname="Sanity">
         <source>Sanity</source>

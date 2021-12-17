@@ -389,7 +389,7 @@ class SocialController extends Controller
 		f.name,
 		f.code
 		from faction f
-		where f.code IN ('justice', 'aggression', 'leadership', 'protection') 
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
 		order by f.name asc")
 		->fetchAll();
 		$params['faction_selected'] = $faction_code;
@@ -399,9 +399,12 @@ class SocialController extends Controller
 			"SELECT
 			c.name,
 			c.code,
+			c.position,
+			p.name as pack_name,
 			f.code faction_code
 			from card c
-			join faction f on f.id=c.faction_id
+			join faction f on f.id = c.faction_id
+			join pack p on p.id = c.pack_id
 			where c.code in (?)
 			order by c.code desc", array($cards_code), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY))
 			->fetchAll();
@@ -1077,7 +1080,7 @@ class SocialController extends Controller
 		f.name,
 		f.code
 		from faction f
-		where f.code IN ('justice', 'aggression', 'leadership', 'protection') 
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
 		order by f.name asc")
 		->fetchAll();
 

@@ -23,17 +23,23 @@
     		minLength: 2
     	},{
     		name : 'cardnames',
-    		displayKey: 'name',
-    		source: findMatches
+    		source: findMatches,
+			displayKey: 'name',
+			templates: {
+				suggestion: _.template('<div><strong class="fg-<%= faction_code%>"><%= name %></strong> (<%= type_name %>, <%= pack_name %> #<%= position %>)</div>')
+			}
     	});
 
 
         $('#card').on('typeahead:selected typeahead:autocompleted', function(event, data) {
             var card = app.data.cards.find({
-                name : data.name
+                code : data.code
             })[0];
-            var line = $('<p class="fg-'+card.faction_code+'" style="padding: 3px 5px;border-radius: 3px;border: 1px solid silver"><button type="button" class="close" aria-hidden="true">&times;</button><input type="hidden" name="cards[]" value="'+card.code+'">'+
-                      card.name + '</p>');
+            var line = $('<p'+
+					' style="padding: 3px 5px;border-radius: 3px;border: 1px solid silver"><button type="button" class="close" aria-hidden="true">&times;</button>'+
+					'<input type="hidden" name="cards[]" value="'+card.code+'">'+
+                    '<strong class="fg-'+card.faction_code+
+					'">' + card.name + '</strong> (' + card.pack_name + ' #' + card.position + ') </p>');
             line.on({
                 click: function(event) { line.remove(); }
             });
@@ -84,7 +90,10 @@
     		},{
     		name : 'cardnames',
     		displayKey: 'value',
-    		source: findMatches
+    		source: findMatches,
+			templates: {
+				suggestion: _.template('<div><strong>{{value}}</strong></div>')
+			}
     	});
 	};
 

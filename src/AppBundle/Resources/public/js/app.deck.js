@@ -1049,6 +1049,14 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 	if (card.card_set_code == hero.card_set_code) {
 		return true;
 	}
+	// don't let other heroes cards in
+	if (card.faction_code == "hero") {
+		if (card.card_set_code == hero.card_set_code) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	// for now always allow basic cards!
 	if (card.faction_code == "basic") {
@@ -1167,9 +1175,6 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 		}
 	}
 
-	if (card.faction_code == "hero" && card.card_set_code == hero.card_set_code) {
-		return true;
-	}
 	return false;
 }
 

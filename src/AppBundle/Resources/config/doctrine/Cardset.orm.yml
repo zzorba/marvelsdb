@@ -2,6 +2,9 @@ AppBundle\Entity\Cardset:
     type: entity
     table: Cardset
     repositoryClass: AppBundle\Repository\CardsetRepository
+    gedmo:
+        translation:
+        locale: locale
     manyToOne:
         cardset_type:
             targetEntity: Cardsettype

@@ -39,9 +39,10 @@ class BuilderController extends Controller
 		$my_investigators_by_class = [];
 		$all_unique_investigators = [];
 		$my_unique_investigators = [];
-		
+
 		foreach($investigators as $investigator){
 			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($investigator->getDeckRequirements());
+			$unique_key = $investigator->getCode();
 			/*
 			$cards_to_add = [];
 			if (isset($deck_requirements['card']) && $deck_requirements['card']){
@@ -61,30 +62,30 @@ class BuilderController extends Controller
 
 			$investigator->setDeckRequirements($req);
 			*/
-			if (in_array($investigator->getPack()->getId(), $packs_owned) && !isset($my_unique_investigators[$investigator->getName()]) ){
+			if (in_array($investigator->getPack()->getId(), $packs_owned) && !isset($my_unique_investigators[$unique_key]) ){
 				$my_investigators[] = $investigator;
-				$my_unique_investigators[$investigator->getName()] = true;
+				$my_unique_investigators[$unique_key] = true;
 				if (!isset($my_investigators_by_class[$investigator->getFaction()->getName()]) ) {
 					$my_investigators_by_class[$investigator->getFaction()->getName()] = [];
 				}
 				$my_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
 			}
-			
+
 			// only have one investigator per name
-			if (!isset($all_unique_investigators[$investigator->getName()])) {
-				$all_unique_investigators[$investigator->getName()] = true;
+			if (!isset($all_unique_investigators[$unique_key])) {
+				$all_unique_investigators[$unique_key] = true;
 				if (!isset($all_investigators_by_class[$investigator->getFaction()->getName()]) ) {
 					$all_investigators_by_class[$investigator->getFaction()->getName()] = [];
 				}
 				$all_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
-				
+
 				$all_investigators[] = $investigator;
 			}
 		}
 
 		arsort($all_investigators_by_class);
 		arsort($my_investigators_by_class);
-		
+
 		return $this->render('AppBundle:Builder:initbuild.html.twig', [
 			'pagetitle' => "New deck",
 			'investigators' => $all_investigators,
@@ -456,7 +457,7 @@ class BuilderController extends Controller
 		if (! count($content)) {
 			return new Response('Cannot import empty deck');
 		}
-		
+
 		$ignored = false;
 		if ($request->get('ignored')){
 			$ignored_array = (array) json_decode($request->get('ignored'));
@@ -464,7 +465,7 @@ class BuilderController extends Controller
 				$ignored = $ignored_array;
 			}
 		}
-		
+
 		$name = filter_var($request->get('name'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$problem = filter_var($request->get('problem'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$decklist_id = filter_var($request->get('decklist_id'), FILTER_SANITIZE_NUMBER_INT);
@@ -479,7 +480,7 @@ class BuilderController extends Controller
 				$meta_json = json_decode($meta);
 				if ($meta_json && isset($meta_json->aspect)) {
 					if ($meta_json->aspect == "leadership" || $meta_json->aspect == "protection" || $meta_json->aspect == "justice" || $meta_json->aspect == "aggression") {
-						
+
 					} else {
 						return false;
 					}
@@ -491,9 +492,9 @@ class BuilderController extends Controller
 				$meta_json = "";
 			}
 		}
-		
+
 		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $investigator, $description, $tags, $content, $source_deck ? $source_deck : null, $problem, $ignored);
-		
+
 
 		if ($request->get('exiles') && $request->get('exiles_string')){
 			$deck->setExiles($request->get('exiles_string'));
@@ -561,7 +562,7 @@ class BuilderController extends Controller
 			$deck = $em->getRepository('AppBundle:Deck')->find($id);
 			if(!$deck) continue;
 			if ($this->getUser()->getId() != $deck->getUser()->getId()) continue;
-			
+
 			if ($deck->getPreviousDeck()){
 				$deck->getPreviousDeck()->setNextDeck(null);
 			}
@@ -569,7 +570,7 @@ class BuilderController extends Controller
 				$deck->getPreviousDeck()->setNextDeck(null);
 				$deck->setPreviousDeck(null);
 			}
-			
+
 			foreach ($deck->getChildren() as $decklist) {
 				$decklist->setParent(null);
 			}

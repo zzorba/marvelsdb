@@ -11,6 +11,7 @@ use AppBundle\Entity\Pack;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use AppBundle\Entity\Faction;
+use AppBundle\Entity\Card;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -63,7 +64,7 @@ class DecklistManager
 	{
 		$qb = $this->doctrine->createQueryBuilder();
 		$qb->select('d');
-		$qb->from('AppBundle:Decklist', 'd');		
+		$qb->from('AppBundle:Decklist', 'd');
 		//$qb->addSelect('JSON_EXTRACT(d.meta, "aspect") as meta');
 		$qb->setFirstResult($this->start);
 		$qb->setMaxResults($this->limit);
@@ -123,6 +124,16 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
+	public function findDecklistsByHero(Card $character)
+	{
+		$qb = $this->getQueryBuilder();
+		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 0.5) ) AS HIDDEN popularity');
+		$qb->andWhere('d.character = :character');
+		$qb->setParameter('character', $character);
+		$qb->orderBy('popularity', 'DESC');
+		return $this->getPaginator($qb->getQuery());
+	}
+
 	public function findDecklistsInHallOfFame()
 	{
 		$qb = $this->getQueryBuilder();
@@ -155,7 +166,7 @@ class DecklistManager
 		$qb->orderBy('d.dateCreation', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
-	
+
 	public function findDecklistsInMultiplayer()
 	{
 		$qb = $this->getQueryBuilder();
@@ -163,7 +174,7 @@ class DecklistManager
 		$qb->orderBy('d.dateCreation', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
-	
+
 	public function findDecklistsInBeginner()
 	{
 		$qb = $this->getQueryBuilder();
@@ -171,7 +182,7 @@ class DecklistManager
 		$qb->orderBy('d.dateCreation', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
-	
+
 	public function findDecklistsInTheme()
 	{
 		$qb = $this->getQueryBuilder();
@@ -205,7 +216,7 @@ class DecklistManager
 
 		$qb = $this->getQueryBuilder();
 		$joinTables = [];
-		
+
 		if(!empty($faction)) {
 			$qb->andWhere('d.meta like :aspect');
 			$qb->setParameter('aspect', "%$faction%");
@@ -236,11 +247,24 @@ class DecklistManager
 						$qb->andWhere("s$i.code = :card$i");
 						$qb->setParameter("card$i", $card->getLinkedFrom()[0]->getCode());
 						$packs[] = $card->getPack()->getId();
-					} else {						
-						$qb->innerJoin('d.slots', "s$i");
-						$qb->andWhere("s$i.card = :card$i");
-						$qb->setParameter("card$i", $card);
+					} else {
 						$packs[] = $card->getPack()->getId();
+						$cardsOr = [$card];
+						$dupeToCheck = $card;
+						// if the card is a duplicate of another
+						if ($card->getDuplicateOf()) {
+							$cardsOr[] = $card->getDuplicateOf();
+							$dupeToCheck = $card->getDuplicateOf();
+						}
+						// look up what this card duplicates and search for those also
+						if ($dupeToCheck->getDuplicates()) {
+							foreach($dupeToCheck->getDuplicates() as $j => $dupe) {
+								$cardsOr[] = $dupe;
+							}
+						}
+						$qb->innerJoin('d.slots', "s$i");
+						$qb->andWhere("s$i.card IN (:card$i)");
+						$qb->setParameter("card$i", $cardsOr);
 					}
 				}
 			}

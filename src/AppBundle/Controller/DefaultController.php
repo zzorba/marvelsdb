@@ -29,25 +29,51 @@ class DefaultController extends Controller
 
 		$decklists_by_popular = [];
 		$decklists_by_recent = [];
+		$decklists_by_hero = [];
+		$dupe_deck_list = [];
+
 		$factions = $this->getDoctrine()->getRepository('AppBundle:Faction')->findBy(['isPrimary' => true], ['code' => 'ASC']);
 
-		$paginator = $decklist_manager->findDecklistsByPopularity();
-		$iterator = $paginator->getIterator();
-		while($iterator->valid() && count($decklists_by_popular) < 5)
-		{
-			$decklist = $iterator->current();
-			$decklists_by_popular[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
-			$iterator->next();
-		}
-		$paginator = $decklist_manager->findDecklistsByAge();
+		$type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
+		$card = $this->getDoctrine()->getRepository('AppBundle:Card')->findOneBy(['type' => $type], ['id' => 'ASC']);
+
+		$paginator = $decklist_manager->findDecklistsByHero($card, true);
 		$iterator = $paginator->getIterator();
 		$userCheck = [];
-		while($iterator->valid() && count($decklists_by_recent) < 5)
+		while($iterator->valid() && count($decklists_by_hero) < 9)
 		{
 			$decklist = $iterator->current();
 			if (!isset($userCheck[$decklist->getUser()->getId()])){
-				$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$decklists_by_hero[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 				$userCheck[$decklist->getUser()->getId()] = true;
+				$dupe_deck_list[$decklist->getId()] = true;
+			}
+			$iterator->next();
+		}
+
+		$paginator = $decklist_manager->findDecklistsByTrending();
+		$iterator = $paginator->getIterator();
+		while($iterator->valid() && count($decklists_by_popular) < 8)
+		{
+			$decklist = $iterator->current();
+			if ($decklist->getCharacter()->getCode() != $card->getCode() && !isset($dupe_deck_list[$decklist->getId()])) {
+				$decklists_by_popular[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$dupe_deck_list[$decklist->getId()] = true;
+			}
+			$iterator->next();
+		}
+		$paginator = $decklist_manager->findDecklistsByAge(true);
+		$iterator = $paginator->getIterator();
+		$userCheck = [];
+		while($iterator->valid() && count($decklists_by_recent) < 8)
+		{
+			$decklist = $iterator->current();
+			if (!isset($userCheck[$decklist->getUser()->getId()])){
+				if ($decklist->getCharacter()->getCode() != $card->getCode() && !isset($dupe_deck_list[$decklist->getId()])) {
+					$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+					$userCheck[$decklist->getUser()->getId()] = true;
+					$dupe_deck_list[$decklist->getId()] = true;
+				}
 			}
 			$iterator->next();
 		}
@@ -56,11 +82,15 @@ class DefaultController extends Controller
 
 		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], ['dateRelease' => 'DESC']);
 
+		// 1640210361
+
 		return $this->render('AppBundle:Default:index.html.twig', [
 		'pagetitle' =>  "$game_name Deckbuilder",
 		'pagedescription' => "Build your deck for $game_name by $publisher_name. Browse the cards and the thousand of decklists submitted by the community. Publish your own decks and get feedback.",
 		'decklists_by_popular' => $decklists_by_popular,
 		'decklists_by_recent' => $decklists_by_recent,
+		'hero_highlight' => $card,
+		'decklists_by_hero' => $decklists_by_hero,
 		'packs' => array_slice($packs, 0, 4)
 		], $response);
 	}

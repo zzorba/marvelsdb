@@ -98,9 +98,22 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
+	public function findDecklistsByTrending()
+	{
+		$qb = $this->getQueryBuilder();
+		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1) ) AS HIDDEN popularity');
+		$qb->andWhere('d.dateCreation > :twoMonthsAgo');
+		$qb->setParameter(':twoMonthsAgo', new \DateTime('-2 months'));
+		$qb->orderBy('popularity', 'DESC');
+		return $this->getPaginator($qb->getQuery());
+	}
+
 	public function findDecklistsByAge($ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();
+		if ($ignoreEmptyDescriptions){
+			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
+		}
 		$qb->orderBy('d.dateCreation', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
@@ -124,12 +137,15 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
-	public function findDecklistsByHero(Card $character)
+	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 0.5) ) AS HIDDEN popularity');
+		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 2) ) AS HIDDEN popularity');
 		$qb->andWhere('d.character = :character');
 		$qb->setParameter('character', $character);
+		if ($ignoreEmptyDescriptions){
+			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
+		}
 		$qb->orderBy('popularity', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}

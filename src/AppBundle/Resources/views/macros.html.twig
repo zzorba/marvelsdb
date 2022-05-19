@@ -50,3 +50,96 @@
 {% macro slot_with_icons(slot) %}
 {{ slot.quantity }}x <span class="icon icon-{{ slot.card.type.code }} fg-{{ slot.card.faction.code }}"></span> <a href="{{ path('cards_zoom', {card_code: slot.card.code }) }}" class="card card-tip" data-code="{{ slot.card.code }}">{{ slot.card.name }}</a>
 {% endmacro %}
+
+{% macro hero_highlight(hero, decklists) %}
+	{% import _self as macros %}
+	<div style="background-image: linear-gradient(100deg, #822925 49.5%, black 50%, black 51%, #2a377d 51.5%, #2a377d 100%); border-radius: 10px; padding: 0.5rem;">
+		<header style="display: flex; align-items: center; gap: 1rem; justify-content: space-between; color: white; padding: 1rem;">
+			<div>
+				<h5 style="font-size: 16px; color: white; padding: 0;">Hero Spotlight</h5>
+				<h4 style="font-size: 30px; display: flex; align-items: center; gap: 1rem; justify-content: space-between; color: white; margin: 0;">
+					<div>
+						<a style="color: white;" href="/decklists/find?cards%5B%5D=01001a">{{hero.name}}</a>
+					</div>
+				</h4>
+			</div>
+			<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{hero.getCode()}}.jpg)"></div>
+		</header>
+		{% for decklist in decklists %}
+			{{macros.decklist_block(decklist, true)}}
+		{% endfor %}
+	</div>
+{% endmacro %}
+
+{% macro decklist_block(data, compact) %}
+	<div class="box" style="border-radius: 10px;">
+		<div class="bg-faction faint-{{ data.meta.aspect }}" style="display: flex; align-items: center;">
+			<h4 style="font-size: 1.15em; flex: 1; margin: 0; padding: 0.5rem;">
+				<span class="icon icon-{{ data.faction.code }}"></span>
+				<a href="{{ path('decklist_detail',{decklist_id:data.decklist.id,decklist_name:data.decklist.nameCanonical}) }}">{{ data.decklist.name }}</a>
+			</h4>
+			{% if not compact %}
+			<div>
+				<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
+			</div>
+			{% endif %}
+		</div>
+		{% if compact %}
+		<div style="background-color: white; padding: 0.5rem;">
+		{% else %}
+		<div style="padding: 0.5rem;">
+		<!-- <div style="background-color: white; background-position: -200px -400px; background-size: 800px 1200px; background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg);"> -->
+		{% endif %}
+			{% set character = data.decklist.getCharacter() %}
+			<div style="display: flex; justify-content: stretch;">
+				<div style="flex: 0.5;">
+					<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
+					<div>
+					{% if data.meta.aspect is defined %}<span class="fa fa-circle fg-{{data.meta.aspect}}" title="{{data.meta.aspect}}"></span> {{data.meta.aspect|capitalize}} {% endif %}
+					{% if data.meta.aspect2 is defined %}<span class="fa fa-circle fg-{{data.meta.aspect2}}" title="{{data.meta.aspect2}}"></span> {{data.meta.aspect2|capitalize}} {% endif %}
+					</div>
+					<div style="font-size: 1.2rem;">
+						Tags: {{ data.decklist.tags | split(',') | join(', ')}}
+					</div>
+				</div>
+				<div style="flex: 0.5; text-align: right;">
+					<div class="small">
+					{{ _self.decklist_social_icons(data.decklist ) }}
+					</div>
+					<div>
+						<span class="username">by {{ _self.username_colorless(data.decklist.user) }}</span>
+					</div>
+					<div class="small pull-right">
+						<time datetime="{{ data.decklist.dateCreation|date('c') }}">{{ data.decklist.dateCreation|date('M d, Y') }}</time>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="" style="padding: 2px 5px 5px 5px; background-color: rgba(255, 255, 255, 0.85);">
+				{% if not compact %}
+				<div class="pull-left" style="margin-right : 5px; margin-top : 2px;">
+					<div class="card-thumbnail-static card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
+				</div>
+				{% endif %}
+				<div>
+					<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.decklist.getCharacter().getName()}}</a>
+					<div class="small pull-right">
+					{{ _self.decklist_social_icons(data.decklist ) }}
+					</div>
+				</div>
+				<div>
+				{% if data.meta.aspect is defined %}<span class="fa fa-circle fg-{{data.meta.aspect}}" title="{{data.meta.aspect}}"></span> {{data.meta.aspect|capitalize}} • {% endif %}
+				{% if data.meta.aspect2 is defined %}<span class="fa fa-circle fg-{{data.meta.aspect2}}" title="{{data.meta.aspect2}}"></span> {{data.meta.aspect2|capitalize}} • {% endif %}
+				Tags: {{ data.decklist.tags }}
+				</div>
+				<div>
+					Author: <span class="username">{{ _self.username_colorless(data.decklist.user) }}</span>
+					<div class="small pull-right">
+					<time datetime="{{ data.decklist.dateCreation|date('c') }}">{{ data.decklist.dateCreation|date('M d, Y') }}</time>
+					</div>
+				</div>
+			</div>
+			-->
+		</div>
+	</div>
+{% endmacro %}

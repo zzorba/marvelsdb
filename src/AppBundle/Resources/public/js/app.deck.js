@@ -40,13 +40,47 @@ var date_creation,
 /*
  * Templates for the different deck layouts, see deck.get_layout_data
  */
-// one block view
-layouts[1] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-10 col-print-10"><%= cards %></div></div> <div id="upgrade_changes"></div> </div>');
-// two colum view
-layouts[2] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3 col-print-3"><%= image1 %></div><div class="col-sm-6 col-print-6"><%= meta %></div><div class="col-sm-3 col-print-3"><%= image2 %></div></div></div><h4 class="deck-section">Deck</h4><div class="row"><div class="col-sm-6 col-print-6"><%= allies %><%= events %><%= resources %></div><div class="col-sm-6 col-print-6"><%= supports %><%= upgrades %> <%= permanent %></div></div> <div id="upgrade_changes"></div></div>');
-layouts[3] = _.template('<div class="deck-content"><div class="row"><div class="col-sm-3"><%= images %><%= meta %></div><h4 class="deck-section">Deck</h4><div class="col-sm-4"><%= assets %><%= skills %></div><div class="col-sm-4"><%= events %></div></div></div>');
-// single column view
-layouts[4] = _.template('<div class="deck-content"><div class="row"><%= images %></div><div class="row"><div class="col-sm-7 col-print-6"><%= meta %></div></div><div class="row"><h4 class="deck-section">Deck</h4><div class="col-sm-12 col-print-12"><%= assets %> <%= permanent %><%= events %> <%= skills %> <%= treachery %> <%= enemy %></div></div> <div id="upgrade_changes"></div></div>');
+// one column view
+layouts[1] = _.template(`
+	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
+		<div class="deck-header">
+			<div class="deck-meta">
+				<%= meta %>
+			</div>
+			<div class="deck-hero-image">
+				<%= image1 %><%= image2 %>
+			</div>
+		</div>
+		<div class="deck-content">
+			<div class="col-sm-10 col-print-10">
+				<%= cards %>
+			</div>
+			<div></div>
+		</div>
+	</div>
+`);
+// two colunm view (default for most)
+layouts[2] = _.template(`
+	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
+		<div class="deck-header">
+			<div class="deck-meta">
+				<%= meta %>
+			</div>
+			<div class="deck-hero-image">
+				<%= image1 %><%= image2 %>
+			</div>
+		</div>
+		<div class="deck-content">
+			<div>
+				<%= allies %><%= events %><%= resources %>
+			</div>
+			<div>
+				<%= supports %><%= upgrades %> <%= permanent %>
+			</div>
+		</div>
+	</div>
+`);
+
 /**
  * @memberOf deck
  */
@@ -91,13 +125,13 @@ deck.init = function init(data) {
 
 deck.onloaded = function(data){
 	deck.set_slots(data.slots, data.ignoreDeckLimitSlots);
-	investigator = app.data.cards.findById(investigator_code);
+	deck.investigator = app.data.cards.findById(investigator_code);
 
 	deck.requirements = {};
-	if (investigator) {
+	if (deck.investigator) {
 		// if the hero has deck requirements, load them into the requirements here
-		if (investigator.deck_requirements) {
-			investigator.deck_requirements.forEach(function (req) {
+		if (deck.investigator.deck_requirements) {
+			deck.investigator.deck_requirements.forEach(function (req) {
 				if (req.aspects) {
 					// the user must pick X aspects, only applied if this is not just set to 1
 					deck.requirements.aspects = req.aspects;
@@ -108,8 +142,8 @@ deck.onloaded = function(data){
 				}
 			})
 		}
-		if (investigator && investigator.deck_options && investigator.deck_options.length) {
-			deck.deck_options = investigator.deck_options;
+		if (deck.investigator && deck.investigator.deck_options && deck.investigator.deck_options.length) {
+			deck.deck_options = deck.investigator.deck_options;
 		}
 	}
 
@@ -568,7 +602,10 @@ deck.get_layout_data = function get_layout_data(options) {
 			permanent: '',
 			supports: '',
 			resources: '',
-			cards: ''
+			cards: '',
+			hero_color_1: '',
+			hero_color_2: '',
+			hero_color_3: ''
 	};
 
 	//var investigator = deck.get_investigator();
@@ -599,9 +636,18 @@ deck.get_layout_data = function get_layout_data(options) {
 		}
 	}
 
-	deck.update_layout_section(data, 'image1', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.code+'.png" class="img-responsive"></div>'));
-	deck.update_layout_section(data, 'image2', $('<div style="margin-bottom:10px"><img src="/bundles/cards/'+card.linked_card.code+'.png" class="img-responsive"></div>'));
-	deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' - '+card.linked_card.name+'</a></h4>'));
+	if (card.meta && card.meta.colors) {
+		data['hero_color_1'] = card.meta.colors[0];
+		data['hero_color_2'] = card.meta.colors[1];
+		data['hero_color_3'] = card.meta.colors[2];
+	}
+	deck.update_layout_section(data, 'image1', $('<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/'+card.code+'.jpg)"></div>'));
+	deck.update_layout_section(data, 'image2', $('<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/'+card.linked_card.code+'.jpg)"></div>'));
+	if (investigator_name == card.linked_card.name) {
+		deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+'</a></h4>'));
+	} else {
+		deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' ('+card.linked_card.name+')</a></h4>'));
+	}
 	if (deck.requirements && deck.requirements.aspects && deck.requirements.aspects == 4){
 		deck.update_layout_section(data, 'meta', $('<div>All Aspects</div>'));
 	} else {
@@ -772,9 +818,13 @@ deck.create_card = function create_card(card){
 		$div.prepend(' •');
 	}
 	if(card.faction_code == "hero") {
-		$div.prepend(' <span class="fa fa-user" style="color:grey;" title="Hero specific cards. Cannot be removed"></span>');
+		$div.prepend('<span class="fa fa-user" style="color:grey;" title="Hero specific cards. Cannot be removed"></span>');
 	} else {
-		$div.prepend(' <span class="fa fa-circle fg-'+card.faction_code+'" title="'+card.faction_code+'"></span>');
+		if (card.card_set_code) {
+			$div.prepend(' <span class="fa fa-user fg-'+card.faction_code+'" title="Hero specific cards. Cannot be removed"></span>');
+		} else {
+			$div.prepend(' <span class="fa fa-circle fg-'+card.faction_code+'" title="'+card.faction_code+'"></span>');
+		}
 	}
 
 	$div.prepend(card.indeck+'x ');
@@ -1005,9 +1055,9 @@ deck.get_problem = function get_problem() {
 }
 
 deck.reset_limit_count = function (){
-	if (investigator){
+	if (deck.investigator){
 
-		deck.deck_options = investigator.deck_options;
+		deck.deck_options = deck.investigator.deck_options;
 
 		if (deck.deck_options) {
 			for (var i = deck.deck_options.length - 1; i >= 0 ; i--) {

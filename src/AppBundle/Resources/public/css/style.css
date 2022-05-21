@@ -174,9 +174,59 @@ div.tags span.tag:not(:first-child)::before {
 .deck-intro .media-left span {
 	padding: 10px;
 }
-.deck-content {
+.deck-block {
 	margin-bottom: 15px;
+	background-color: #fdfdfd;
+	border-radius: 10px;
+	padding: 0.5rem;
+	border: solid rgba(245,245,245,1) 1px;
 }
+.deck-header {
+	display: flex;
+	padding: 1rem;
+	border-radius: 10px;
+	gap: 0.5rem;
+	justify-content: space-between;
+}
+.deck-meta {
+	background-color: rgba(255,255,255, 0.9);
+	border-radius: 10px;
+	padding: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	min-width: 50%;
+}
+.deck-hero-image {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+.deck-content {
+	display: flex;
+	justify-content: stretch;
+	background-color: #fdfdfd;
+	background-color: rgba(255,255,255, 1);
+	border-radius: 10px;
+	padding: 0.8rem;
+	gap: 1rem;
+	min-height: 400px;
+}
+.deck-content > div {
+	flex: 1;
+}
+@media (max-width: 768px) {
+	.deck-content {
+		flex-direction: column;
+	}
+	.deck-header {
+		flex-direction: column;
+	}
+	.deck-hero-image {
+		flex-direction: row;
+		justify-content: center;
+	}
+}
+
 .invalid-card {
 	text-decoration: line-through;
 }
@@ -355,8 +405,14 @@ h4.deck-section {
 	background-position: -50px -55px
 }
 
+.card-thumbnail-slice.card-thumbnail-investigator {
+	height:55px;
+	background-size:396px 594px;
+	background-position: -100px -135px
+}
+
 .card-faded-background {
-	
+
 }
 
 .card-img-thumbnail {
@@ -434,6 +490,11 @@ div.site-slogan {
 }
 
 /************* DECKLIST *********************/
+
+.decklist-header {
+	margin: 0.5rem;
+	padding: 0.5rem;
+}
 
 .row.title {
 	padding-top:20px;
@@ -570,27 +631,27 @@ article.review {
 article.review:first-child {
 	margin-top: 0;
 }
-article.review .review-like { 
-	float:left; 
-	font-size: 120%; 
-	width:50px 
+article.review .review-like {
+	float:left;
+	font-size: 120%;
+	width:50px
 }
-article.review .review-content { 
-	margin-left: 50px 
+article.review .review-content {
+	margin-left: 50px
 }
-article.review .review-text :first-child { 
-	margin-top: 0px 
+article.review .review-text :first-child {
+	margin-top: 0px
 }
-article.review .review-date { 
-	clear: both; 
-	text-align: right 
+article.review .review-date {
+	clear: both;
+	text-align: right
 }
-article.review .review-author { 
-	text-align: right 
+article.review .review-author {
+	text-align: right
 }
-article.review .review-comment { 
-	border-top: 1px solid #ddd; 
-	padding: 0.5em; 
+article.review .review-comment {
+	border-top: 1px solid #ddd;
+	padding: 0.5em;
 }
 
 /****************** BOOTSTRAP MARKDOWN *******************/
@@ -613,7 +674,7 @@ article.review .review-comment {
   	padding: 0;
   	min-height: auto;
   }
-  
+
 	.col-print-1 {width:8%;  float:left;}
 	.col-print-2 {width:16%; float:left;}
 	.col-print-3 {width:25%; float:left;}
@@ -671,5 +732,5 @@ article.review .review-comment {
 
 /* card draw simulator */
 .simulator-hand-card {
-	
+
 }

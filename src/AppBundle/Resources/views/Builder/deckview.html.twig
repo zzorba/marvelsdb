@@ -7,16 +7,16 @@
 	{% endjavascripts %}
 	<script type="text/javascript">
 	app.deck && app.deck.init({{ deck|json_encode|raw }});
-	app.deck_history && app.deck_history.init({{ deck.history|json_encode|raw }});	
+	app.deck_history && app.deck_history.init({{ deck.history|json_encode|raw }});
 	</script>
 {% endblock %}
 
 {% block body %}
 <div class="main white container">
-	
+
 	<div class="row">
 		<div class="col-md-12">
-			<h1 style="border-bottom:1px solid lightgray">{{ deck.name }}</h1>
+			<h1>{{ deck.name }}</h1>
 			{% if deck.problem %}
 			<div class="alert alert-danger" role="alert">{{ deck_validation_helper.problemLabel(deck.problem) }}</div>
 			{% endif %}
@@ -40,9 +40,9 @@
 					<a href="{{ path('deck_publish_form', {deck_id:deck_id}) }}" id="btn-publish" class="btn btn-success"><span class="fa fa-share"></span> Publish</a>
 					<button type="button" id="btn-delete" class="btn btn-danger"><span class="fa fa-trash"></span> Delete {% if deck.previousDeck %}upgrade{% endif %}</button>
 					{% endif %}
-					
+
 					<a href="{{ path('deck_clone', {deck_id:deck_id}) }}" id="btn-clone" class="btn btn-info"><span class="fa fa-clone"></span> Clone</a>
-					
+
 					</div>
 					<div>
 					<div class="btn-group">
@@ -79,7 +79,7 @@
 			<p>
 				Version {{ deck.version }}
 			</p>
-			
+
 			<!-- Description -->
 			<div class="panel panel-default">
 			  <div class="panel-heading">

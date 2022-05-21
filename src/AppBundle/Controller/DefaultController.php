@@ -90,6 +90,7 @@ class DefaultController extends Controller
 		'decklists_by_popular' => $decklists_by_popular,
 		'decklists_by_recent' => $decklists_by_recent,
 		'hero_highlight' => $card,
+		'hero_highlight_meta' => json_decode($card->getMeta()),
 		'decklists_by_hero' => $decklists_by_hero,
 		'packs' => array_slice($packs, 0, 4)
 		], $response);

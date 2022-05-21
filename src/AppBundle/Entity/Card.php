@@ -39,6 +39,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				'card_set',
 				'set_position',
 				'is_unique',
+				'meta'
 		];
 
 		$externalFields = [
@@ -215,6 +216,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 * @var string
 	 */
 	private $subname;
+
+	/**
+	 * @var string
+	 */
+	private $meta;
 
 	/**
 	 * @var integer
@@ -772,6 +778,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	{
 		return $this->quantity;
 	}
+
+	/**
+     * Set meta
+     *
+     * @param string $meta
+     *
+     * @return Card
+     */
+    public function setMeta($meta)
+    {
+        $this->meta = $meta;
+
+        return $this;
+    }
+
+    /**
+     * Get meta
+     *
+     * @return string
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
 
 	/**
 	 * Set health

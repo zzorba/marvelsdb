@@ -239,6 +239,10 @@ AppBundle\Entity\Card:
             type: string
             length: 255
             nullable: true
+        meta:
+            type: string
+            length: 500
+            nullable: true
         deckRequirements:
             type: string
             length: 500

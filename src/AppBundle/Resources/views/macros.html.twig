@@ -51,15 +51,15 @@
 {{ slot.quantity }}x <span class="icon icon-{{ slot.card.type.code }} fg-{{ slot.card.faction.code }}"></span> <a href="{{ path('cards_zoom', {card_code: slot.card.code }) }}" class="card card-tip" data-code="{{ slot.card.code }}">{{ slot.card.name }}</a>
 {% endmacro %}
 
-{% macro hero_highlight(hero, decklists) %}
+{% macro hero_highlight(hero, hero_meta, decklists) %}
 	{% import _self as macros %}
-	<div style="background-image: linear-gradient(100deg, #822925 49.5%, black 50%, black 51%, #2a377d 51.5%, #2a377d 100%); border-radius: 10px; padding: 0.5rem;">
-		<header style="display: flex; align-items: center; gap: 1rem; justify-content: space-between; color: white; padding: 1rem;">
+	<div style="background-image: linear-gradient(100deg, {{hero_meta.colors[0]}} 49.5%, {{hero_meta.colors[2]}} 50%, {{hero_meta.colors[2]}} 51%, {{hero_meta.colors[1]}} 51.5%, {{hero_meta.colors[1]}} 100%); border-radius: 10px; padding: 0.5rem;">
+		<header style="display: flex; align-items: center; gap: 1rem; justify-content: space-between; color: {{hero_meta.colors[3]}}; padding: 1rem;">
 			<div>
-				<h5 style="font-size: 16px; color: white; padding: 0;">Hero Spotlight</h5>
-				<h4 style="font-size: 30px; display: flex; align-items: center; gap: 1rem; justify-content: space-between; color: white; margin: 0;">
+				<h5 style="font-size: 16px; padding: 0;">Hero Spotlight</h5>
+				<h4 style="font-size: 30px; display: flex; align-items: center; gap: 1rem; justify-content: space-between; margin: 0;">
 					<div>
-						<a style="color: white;" href="/decklists/find?cards%5B%5D=01001a">{{hero.name}}</a>
+						<a style="color: {{hero_meta.colors[3]}};" href="/decklists/find?cards%5B%5D=01001a">{{hero.name}}</a>
 					</div>
 				</h4>
 			</div>
@@ -73,7 +73,7 @@
 
 {% macro decklist_block(data, compact) %}
 	<div class="box" style="border-radius: 10px;">
-		<div class="bg-faction faint-{{ data.meta.aspect }}" style="display: flex; align-items: center;">
+		<div class="bg-faction {% if data.meta.aspect is defined %}faint-{{ data.meta.aspect }}{% endif %}" style="display: flex; align-items: center;">
 			<h4 style="font-size: 1.15em; flex: 1; margin: 0; padding: 0.5rem;">
 				<span class="icon icon-{{ data.faction.code }}"></span>
 				<a href="{{ path('decklist_detail',{decklist_id:data.decklist.id,decklist_name:data.decklist.nameCanonical}) }}">{{ data.decklist.name }}</a>

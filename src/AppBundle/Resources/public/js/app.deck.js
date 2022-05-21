@@ -41,45 +41,9 @@ var date_creation,
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one column view
-layouts[1] = _.template(`
-	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
-		<div class="deck-header">
-			<div class="deck-meta">
-				<%= meta %>
-			</div>
-			<div class="deck-hero-image">
-				<%= image1 %><%= image2 %>
-			</div>
-		</div>
-		<div class="deck-content">
-			<div class="col-sm-10 col-print-10">
-				<%= cards %>
-			</div>
-			<div></div>
-		</div>
-	</div>
-`);
+layouts[1] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div class="col-sm-10 col-print-10"><%= cards %></div><div></div></div></div>');
 // two colunm view (default for most)
-layouts[2] = _.template(`
-	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
-		<div class="deck-header">
-			<div class="deck-meta">
-				<%= meta %>
-			</div>
-			<div class="deck-hero-image">
-				<%= image1 %><%= image2 %>
-			</div>
-		</div>
-		<div class="deck-content">
-			<div>
-				<%= allies %><%= events %><%= resources %>
-			</div>
-			<div>
-				<%= supports %><%= upgrades %> <%= permanent %>
-			</div>
-		</div>
-	</div>
-`);
+layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
 
 /**
  * @memberOf deck

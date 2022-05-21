@@ -42,7 +42,7 @@ class BuilderController extends Controller
 
 		foreach($investigators as $investigator){
 			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($investigator->getDeckRequirements());
-			$unique_key = $investigator->getCode();
+			$unique_key = $investigator->getCardSet()->getCode();
 			/*
 			$cards_to_add = [];
 			if (isset($deck_requirements['card']) && $deck_requirements['card']){

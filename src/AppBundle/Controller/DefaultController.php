@@ -35,7 +35,23 @@ class DefaultController extends Controller
 		$factions = $this->getDoctrine()->getRepository('AppBundle:Faction')->findBy(['isPrimary' => true], ['code' => 'ASC']);
 
 		$type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
-		$card = $this->getDoctrine()->getRepository('AppBundle:Card')->findOneBy(['type' => $type], ['id' => 'ASC']);
+		$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $type], ['id' => 'ASC']);
+
+		$date1 = strtotime('2022-05-01');
+		$date2 = time();
+
+		$year1 = date('Y', $date1);
+		$year2 = date('Y', $date2);
+
+		$month1 = date('m', $date1);
+		$month2 = date('m', $date2);
+
+		$diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+		if ($diff >= 0 && $diff < count($cards)) {
+			$card = $cards[$diff];
+		} else {
+			throw new \Exception("Ran out of heroes for spotlight.");
+		}
 
 		$paginator = $decklist_manager->findDecklistsByHero($card, true);
 		$iterator = $paginator->getIterator();
@@ -44,7 +60,7 @@ class DefaultController extends Controller
 		{
 			$decklist = $iterator->current();
 			if (!isset($userCheck[$decklist->getUser()->getId()])){
-				$decklists_by_hero[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$decklists_by_hero[] = ['hero_meta' => json_decode($decklist->getCharacter()->getMeta()), 'faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 				$userCheck[$decklist->getUser()->getId()] = true;
 				$dupe_deck_list[$decklist->getId()] = true;
 			}
@@ -57,7 +73,7 @@ class DefaultController extends Controller
 		{
 			$decklist = $iterator->current();
 			if ($decklist->getCharacter()->getCode() != $card->getCode() && !isset($dupe_deck_list[$decklist->getId()])) {
-				$decklists_by_popular[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$decklists_by_popular[] = ['hero_meta' => json_decode($decklist->getCharacter()->getMeta()), 'faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 				$dupe_deck_list[$decklist->getId()] = true;
 			}
 			$iterator->next();
@@ -70,7 +86,7 @@ class DefaultController extends Controller
 			$decklist = $iterator->current();
 			if (!isset($userCheck[$decklist->getUser()->getId()])){
 				if ($decklist->getCharacter()->getCode() != $card->getCode() && !isset($dupe_deck_list[$decklist->getId()])) {
-					$decklists_by_recent[] = ['faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+					$decklists_by_recent[] = ['hero_meta' => json_decode($decklist->getCharacter()->getMeta()), 'faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
 					$userCheck[$decklist->getUser()->getId()] = true;
 					$dupe_deck_list[$decklist->getId()] = true;
 				}

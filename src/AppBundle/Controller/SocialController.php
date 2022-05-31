@@ -359,7 +359,8 @@ class SocialController extends Controller
 		}
 
 		$categories = [];
-		$on = 0; $off = 0;
+		$on = 0;
+		$off = 0;
 		$sets = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
 		foreach($sets as $pack) {
 			if ($pack->getPackType()) {
@@ -371,29 +372,33 @@ class SocialController extends Controller
 				$categories[$pack_type] = [ 'packs' => [], 'label' => $pack_type];
 			}
 			$checked = count($packs) ? in_array($pack->getId(), $packs) : true;
-			if($checked) $on++;
-			else $off++;
+			if($checked) {
+				$on++;
+			} else {
+				$off++;
+			}
 			$categories[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
 		}
 
 		$params = array(
-		'allowed' => $categories,
-		'on' => $on,
-		'off' => $off,
-		'author' => $author_name,
-		'name' => $decklist_name
+			'allowed' => $categories,
+			'on' => $on,
+			'off' => $off,
+			'author' => $author_name,
+			'name' => $decklist_name
 		);
 		$params['sort_'.$sort] = ' selected="selected"';
 		$params['factions'] = $dbh->executeQuery(
-		"SELECT
-		f.name,
-		f.code
-		from faction f
-		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
-		order by f.name asc")
-		->fetchAll();
+			"SELECT
+			f.name,
+			f.code
+			from faction f
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			order by f.name asc")
+			->fetchAll();
 		$params['faction_selected'] = $faction_code;
 
+		$params['cards'] = '';
 		if (! empty($cards_code) && is_array($cards_code)) {
 			$cards = $dbh->executeQuery(
 			"SELECT
@@ -409,11 +414,14 @@ class SocialController extends Controller
 			order by c.code desc", array($cards_code), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY))
 			->fetchAll();
 
-			$params['cards'] = '';
 			foreach($cards as $card) {
 				$params['cards'] .= $this->renderView('AppBundle:Search:card.html.twig', $card);
 			}
+		}
 
+		$params['expanded'] = false;
+		if ($params['cards'] || $params['author'] || $params['name'] || $request->query->get('packs')) {
+			$params['expanded'] = true;
 		}
 
 		return $this->renderView('AppBundle:Search:form.html.twig', $params);
@@ -432,19 +440,74 @@ class SocialController extends Controller
 		* @var $decklist_manager DecklistManager
 		*/
 		$decklist_manager = $this->get('decklist_manager');
-		$decklist_manager->setLimit(30);
+		$decklist_manager->setLimit(12); // 12
 		$decklist_manager->setPage($page);
 
 		$request_attributes = $request->attributes->all();
 
+		$aspect_code = filter_var($request->query->get('aspect'), FILTER_SANITIZE_STRING);
+		$hero_code = filter_var($request->query->get('hero'), FILTER_SANITIZE_STRING);
+		$tag = filter_var($request->query->get('tag'), FILTER_SANITIZE_STRING);
+		$sort = filter_var($request->query->get('sort'), FILTER_SANITIZE_STRING);
+		$category = filter_var($request->query->get('category'), FILTER_SANITIZE_STRING);
+		$collection = filter_var($request->query->get('collection'), FILTER_SANITIZE_STRING);
+
+		if ($category == "mine" || $category == "favorites") {
+			$response->setPrivate();
+		}
+
 		$pagetitle = "Decklists";
 		$header = '';
+
+		$dbh = $this->getDoctrine()->getConnection();
+		$factions = $dbh->executeQuery(
+			"SELECT
+			f.name,
+			f.code
+			from faction f
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			order by f.name asc")
+			->fetchAll();
+
+		$hero_type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
+		$all_heroes = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $hero_type], ['name' => 'ASC']);
+
+		$unique_heroes = [];
+		$heroes = [];
+		foreach($all_heroes as $hero) {
+			$unique_key = $hero->getCardSet()->getCode();
+			if (isset($unique_heroes[$unique_key])) {
+				continue;
+			}
+			$unique_heroes[$unique_key] = true;
+			$heroes[] = $hero;
+		}
+		$searchForm = $this->renderView('AppBundle:Search:form-quick.html.twig',
+			array(
+				'factions' => $factions,
+				'heroes' => $heroes,
+				'aspect_code' => $aspect_code,
+				'hero_code' => $hero_code,
+				'tag' => $tag,
+				'sort' => $sort,
+				'category' => $category,
+				'collection' => $collection
+			)
+		);
+
+		$on = [];
+		$off = [];
+		$name = "";
+		$author = "";
+		$advancedSearchForm = $this->searchForm($request);
+
 
 		switch ($type) {
 			case 'find':
 			$pagetitle = "Decklist search results";
 			$header = $this->searchForm($request);
-			$paginator = $decklist_manager->findDecklistsWithComplexSearch();
+			$user = $this->getUser();
+			$paginator = $decklist_manager->findDecklistsWithComplexSearch($user);
 			break;
 			case 'favorites':
 			$response->setPrivate();
@@ -506,22 +569,95 @@ class SocialController extends Controller
 			break;
 			case 'popular':
 			default:
-			$paginator = $decklist_manager->findDecklistsByPopularity();
-			$pagetitle = "Popular Decklists";
+			$user = $this->getUser();
+			$paginator = $decklist_manager->findDecklistsWithComplexSearch($user);
+			$pagetitle = "Decklists";
 			break;
+		}
+
+		$decklists = [];
+		$iterator = $paginator->getIterator();
+		while($iterator->valid())
+		{
+			$decklist = $iterator->current();
+			$decklists[] = ['hero_meta' => json_decode($decklist->getCharacter()->getMeta()), 'faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+			$iterator->next();
 		}
 
 		return $this->render('AppBundle:Decklist:decklists.html.twig',
 		array(
 		'pagetitle' => $pagetitle,
 		'pagedescription' => "Browse the collection of thousands of premade decks.",
-		'decklists' => $paginator,
+		'decklists' => $decklists,
+		'factions' => $factions,
+		'heroes' => $heroes,
+		'name' => '',
 		'url' => $request->getRequestUri(),
-		'header' => $header,
+		'header' => $searchForm,
+		'advanced' => $advancedSearchForm,
 		'type' => $type,
 		'pages' => $decklist_manager->getClosePages(),
 		'prevurl' => $decklist_manager->getPreviousUrl(),
 		'nexturl' => $decklist_manager->getNextUrl(),
+		), $response);
+
+	}
+
+	public function searchAction (Request $request)
+	{
+		$response = new Response();
+		$response->setPublic();
+		$response->setMaxAge($this->container->getParameter('cache_expiration'));
+
+		$dbh = $this->getDoctrine()->getConnection();
+		$factions = $dbh->executeQuery(
+		"SELECT
+		f.name,
+		f.code
+		from faction f
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+		order by f.name asc")
+		->fetchAll();
+
+		$categories = [];
+		$on = 0; $off = 0;
+		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
+		foreach($packs as $pack) {
+			if ($pack->getPackType()) {
+				$pack_type = $pack->getPackType()->getName();
+			} else {
+				$pack_type = "Core";
+			}
+			if (!isset($categories[$pack_type])) {
+				$categories[$pack_type] = [ 'packs' => [], 'label' => $pack_type];
+			}
+			$checked = true;
+			if($checked) $on++;
+			else $off++;
+			$categories[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
+		}
+
+		$searchForm = $this->renderView('AppBundle:Search:form.html.twig',
+		array(
+		'factions' => $factions,
+		'allowed' => $categories,
+		'on' => $on,
+		'off' => $off,
+		'author' => '',
+		'name' => '',
+		)
+		);
+
+		return $this->render('AppBundle:Decklist:decklists.html.twig',
+		array(
+		'pagetitle' => 'Decklist Search',
+		'decklists' => null,
+		'url' => $request->getRequestUri(),
+		'header' => $searchForm,
+		'type' => 'find',
+		'pages' => null,
+		'prevurl' => null,
+		'nexturl' => null,
 		), $response);
 
 	}
@@ -1068,64 +1204,7 @@ class SocialController extends Controller
 
 	}
 
-	public function searchAction (Request $request)
-	{
-		$response = new Response();
-		$response->setPublic();
-		$response->setMaxAge($this->container->getParameter('cache_expiration'));
 
-		$dbh = $this->getDoctrine()->getConnection();
-		$factions = $dbh->executeQuery(
-		"SELECT
-		f.name,
-		f.code
-		from faction f
-		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
-		order by f.name asc")
-		->fetchAll();
-
-		$categories = [];
-		$on = 0; $off = 0;
-		$packs = $this->getDoctrine()->getRepository('AppBundle:Pack')->findBy([], array("position" => "ASC"));
-		foreach($packs as $pack) {
-			if ($pack->getPackType()) {
-				$pack_type = $pack->getPackType()->getName();
-			} else {
-				$pack_type = "Core";
-			}
-			if (!isset($categories[$pack_type])) {
-				$categories[$pack_type] = [ 'packs' => [], 'label' => $pack_type];
-			}
-			$checked = true;
-			if($checked) $on++;
-			else $off++;
-			$categories[$pack_type]['packs'][] = array("id" => $pack->getId(), "label" => $pack->getName(), "checked" => $checked, "future" => $pack->getDateRelease() === NULL);
-		}
-
-		$searchForm = $this->renderView('AppBundle:Search:form.html.twig',
-		array(
-		'factions' => $factions,
-		'allowed' => $categories,
-		'on' => $on,
-		'off' => $off,
-		'author' => '',
-		'name' => '',
-		)
-		);
-
-		return $this->render('AppBundle:Decklist:decklists.html.twig',
-		array(
-		'pagetitle' => 'Decklist Search',
-		'decklists' => null,
-		'url' => $request->getRequestUri(),
-		'header' => $searchForm,
-		'type' => 'find',
-		'pages' => null,
-		'prevurl' => null,
-		'nexturl' => null,
-		), $response);
-
-	}
 
 	public function donatorsAction (Request $request)
 	{

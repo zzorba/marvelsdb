@@ -52,21 +52,21 @@
     	});
 
 
-        $('#card').on('typeahead:selected typeahead:autocompleted', function(event, data) {
-            var card = app.data.cards.find({
-                code : data.code
-            })[0];
-            var line = $('<p'+
-					' style="padding: 3px 5px;border-radius: 3px;border: 1px solid silver"><button type="button" class="close" aria-hidden="true">&times;</button>'+
-					'<input type="hidden" name="cards[]" value="'+card.code+'">'+
-                    '<strong class="fg-'+card.faction_code+
-					'">' + card.name + '</strong> (' + card.pack_name + ' #' + card.position + ') </p>');
-            line.on({
-                click: function(event) { line.remove(); }
-            });
-            line.insertBefore($('#card'));
-            $(event.target).typeahead('val', '');
-        });
+			$('#card').on('typeahead:selected typeahead:autocompleted', function(event, data) {
+					var card = app.data.cards.find({
+							code : data.code
+					})[0];
+					var line = $('<p'+
+				' style="padding: 6px 5px;border-radius: 3px;border: 1px solid silver; background-color: #fff;"><button type="button" class="close" aria-hidden="true">&times;</button>'+
+				'<input type="hidden" name="cards[]" value="'+card.code+'">'+
+									'<strong class="fg-'+card.faction_code+
+				'">' + card.name + '</strong> (' + card.pack_name + ' #' + card.position + ') </p>');
+					line.on({
+							click: function(event) { line.remove(); }
+					});
+					line.insertBefore($('#card'));
+					$(event.target).typeahead('val', '');
+			});
 
     }
 
@@ -90,7 +90,67 @@
     		ui.handle_checkbox_change();
     		return false;
     	});
+
+			$('#decklist-quick-aspect').on('change', function (event) {
+    		ui.update_url('aspect', event.currentTarget.value);
+    		return false;
+    	});
+			$('#decklist-quick-hero').on('change', function (event) {
+    		ui.update_url('hero', event.currentTarget.value);
+    		return false;
+    	});
+			$('#decklist-quick-tag').on('change', function (event) {
+    		ui.update_url('tag', event.currentTarget.value);
+    		return false;
+    	});
+			$('#decklist-quick-sort').on('change', function (event) {
+    		ui.update_url('sort', event.currentTarget.value);
+    		return false;
+    	});
+			$('#decklist-quick-category').on('change', function (event) {
+    		ui.update_url('category', event.currentTarget.value);
+    		return false;
+    	});
+			$('#decklist-quick-collection').on('change', function (event) {
+    		ui.update_url('collection', event.currentTarget.value);
+    		return false;
+    	});
+			$('#toggle-advanced-decklist-search').on('click', function (event) {
+    		if ($('.decklists-advanced-search-expanded').length > 0) {
+					$('.decklists-advanced-search-expanded').removeClass('decklists-advanced-search-expanded');
+					$('.decklists-advanced-search-toggle span').removeClass('fa-caret-up');
+					$('.decklists-advanced-search-toggle span').addClass('fa-caret-down');
+				} else {
+					$('.decklists-advanced-search').addClass('decklists-advanced-search-expanded');
+					$('.decklists-advanced-search-toggle span').removeClass('fa-caret-down');
+					$('.decklists-advanced-search-toggle span').addClass('fa-caret-up');
+				}
+    	});
+			$('#decklist-search-form').on('submit', function (event) {
+    		$('#decklist-search-form input').each(function(index) {
+					if ($(this) && !$(this).val()) {
+						$(this).prop("disabled", true);
+					}
+				})
+				$('#decklist-search-form select').each(function(index) {
+					if ($(this) && !$(this).val()) {
+						$(this).prop("disabled", true);
+					}
+				})
+    	});
 	};
+
+	ui.update_url = function update_url(param, value) {
+		if ('URLSearchParams' in window) {
+			var searchParams = new URLSearchParams(window.location.search);
+			if (value) {
+				searchParams.set(param, value);
+			} else {
+				searchParams.delete(param);
+			}
+			window.location.search = searchParams.toString();
+		}
+	}
 
 	/**
 	 * called when the app data is loaded

@@ -327,9 +327,11 @@ h4.deck-section {
 
 /*********** TYPEAHEAD **************/
 
-.twitter-typeahead{width:100%;background-color:#fff}
+.twitter-typeahead{width:100%;background-color: transparent;}
 .twitter-typeahead .tt-hint{color:#aaa;margin-left:11px;margin-top:4px;display:none}
 .twitter-typeahead .tt-query{margin-bottom:0}
+.twitter-typeahead .tt-input{background-color: #fff!important;}
+
 .tt-dropdown-menu{min-width:160px;margin-top:2px;padding:5px 0;background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);*border-right-width:2px;*border-bottom-width:2px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,.2);-moz-box-shadow:0 5px 10px rgba(0,0,0,.2);box-shadow:0 5px 10px rgba(0,0,0,.2);-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box}
 .tt-suggestion{display:block;padding:3px 20px}
 .tt-suggestion.tt-cursor{color:#fff;background-color:#0081c2;background-image:-moz-linear-gradient(top,#08c,#0077b3);background-image:-webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));background-image:-webkit-linear-gradient(top,#08c,#0077b3);background-image:-o-linear-gradient(top,#08c,#0077b3);background-image:linear-gradient(to bottom,#08c,#0077b3);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)}
@@ -485,8 +487,108 @@ div.site-slogan {
 
 /************ LIST OF DECKLISTS **************/
 
+.decklist-header {
+	display: flex;
+	flex-direction: row;
+	gap: 0.3rem;
+	align-items: flex-end;
+	padding: 1rem;
+	padding-bottom: 0;
+	margin: 0;
+}
+.decklists {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: calc(50%) calc(50%);
+}
+@media (max-width:992px){
+	.decklists {
+		grid-template-columns: calc(100%);
+	}
+}
+.decklists li {
+	padding: 0;
+	margin: 0.5rem;
+}
+.box {
+	background: #fff;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 0px 0px 2px 2px rgba(90, 90, 90, 0.2);
+}
+.quick-search-decklists {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-between;
+	flex: 1;
+}
+@media (max-width:992px){
+	.quick-search-decklists {
+		flex-direction: column;
+
+	}
+}
+.advanced {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
 .decklist-faction-image img {
     height: 64px;
+}
+
+.decklists-advanced-search {
+	display: none;
+	flex-direction: column;
+}
+.decklists-advanced-search a {
+	cursor: pointer;
+}
+
+.decklists-advanced-search > div {
+	gap: 0.5rem;
+	justify-content: stretch;
+	flex: 1;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	display: flex;
+}
+.decklists-advanced-search > div > div {
+	flex: 1;
+}
+.decklists-advanced-search-expanded {
+	display: flex;
+}
+.decklists-advanced-search-toggle {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+}
+.decklists-advanced-search-toggle span {
+	font-size: 30px;
+}
+.decklists-advanced-packs-category {
+	display: grid;
+	grid-template-columns: calc(20%) calc(20%) calc(20%) calc(20%) calc(20%);
+	width: 100%;
+}
+.decklists-advanced-pack-checkbox input {
+	margin-right: 1rem;
+}
+@media (max-width:992px){
+	.decklists-advanced-search {
+		flex-direction: column;
+	}
+	.decklists-advanced-search > div {
+		flex-direction: column;
+	}
+	.decklists-advanced-packs-category {
+		grid-template-columns: calc(50%) calc(50%);
+	}
 }
 
 /************* DECKLIST *********************/

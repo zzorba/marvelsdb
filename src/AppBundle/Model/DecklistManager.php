@@ -27,6 +27,7 @@ class DecklistManager
 	protected $start = 0;
 	protected $limit = 30;
 	protected $maxcount = 0;
+	protected $popularityString = '(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1) )';
 
 	public function __construct(EntityManager $doctrine, RequestStack $request_stack, Router $router, LoggerInterface $logger)
 	{
@@ -93,7 +94,7 @@ class DecklistManager
 	public function findDecklistsByPopularity()
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1) ) AS HIDDEN popularity');
+		$qb->addSelect($this->$popularityString.' AS HIDDEN popularity');
 		$qb->orderBy('popularity', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
@@ -101,7 +102,7 @@ class DecklistManager
 	public function findDecklistsByTrending()
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 1) ) AS HIDDEN popularity');
+		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 		$qb->andWhere('d.dateCreation > :twoMonthsAgo');
 		$qb->setParameter(':twoMonthsAgo', new \DateTime('-2 months'));
 		$qb->orderBy('popularity', 'DESC');
@@ -140,7 +141,7 @@ class DecklistManager
 	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect('(1+d.nbVotes)/(1 + POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 2) ) AS HIDDEN popularity');
+		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 		$qb->andWhere('d.character = :character');
 		$qb->setParameter('character', $character);
 		if ($ignoreEmptyDescriptions){
@@ -207,7 +208,7 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
-	public function findDecklistsWithComplexSearch()
+	public function findDecklistsWithComplexSearch($user = false)
 	{
 		$request = $this->request_stack->getCurrentRequest();
 
@@ -222,6 +223,18 @@ class DecklistManager
 			$faction = $faction->getCode();
 		}
 
+		$aspect = false;
+		$aspect_code = filter_var($request->query->get('aspect'), FILTER_SANITIZE_STRING);
+		if($aspect_code) {
+			$aspect = $this->doctrine->getRepository('AppBundle:Faction')->findOneBy(['code' => $aspect_code]);
+		}
+
+		$hero = false;
+		$hero_code = filter_var($request->query->get('hero'), FILTER_SANITIZE_STRING);
+		if($hero_code) {
+			$hero = $this->doctrine->getRepository('AppBundle:Card')->findOneBy(['code' => $hero_code]);
+		}
+
 		$author_name = filter_var($request->query->get('author'), FILTER_SANITIZE_STRING);
 
 		$decklist_name = filter_var($request->query->get('name'), FILTER_SANITIZE_STRING);
@@ -230,12 +243,71 @@ class DecklistManager
 
 		$packs = $request->query->get('packs');
 
+		$collection = filter_var($request->query->get('collection'), FILTER_SANITIZE_STRING);
+		if (!$packs && $collection && $user) {
+			// figure out users collection and assign the packs here!
+			$owned_packs = $user->getOwnedPacks();
+			if ($owned_packs) {
+				$packs = explode(',', $owned_packs);
+			}
+		}
+
 		$qb = $this->getQueryBuilder();
 		$joinTables = [];
+
+		if($hero) {
+			$qb->innerJoin('d.character', "hero");
+			$qb->andWhere("hero.code = :hero");
+			$qb->setParameter("hero", $hero->getCode());
+		}
+
+		$tag = filter_var($request->query->get('tag'), FILTER_SANITIZE_STRING);
+		if($tag) {
+			switch($tag) {
+				case "multiplayer":
+					$qb->andWhere("d.tags like '%multiplayer%'");
+					break;
+				case "theme":
+					$qb->andWhere("d.tags like '%theme%'");
+					break;
+				case "beginner":
+					$qb->andWhere("d.tags like '%beginner%'");
+					break;
+				case "solo":
+					$qb->andWhere("d.tags like '%solo%'");
+					break;
+			}
+		}
+
+		$category = filter_var($request->query->get('category'), FILTER_SANITIZE_STRING);
+		if($category) {
+			switch($category) {
+				case "favorites":
+					$qb->leftJoin('d.favorites', 'u');
+					$qb->andWhere('u = :user');
+					$qb->setParameter('user', $user);
+					$qb->orderBy('d.dateCreation', 'DESC');
+					break;
+				case "mine":
+					if ($user) {
+						$qb->andWhere('d.user = :user');
+						$qb->setParameter('user', $user);
+						$qb->orderBy('d.dateCreation', 'DESC');
+					} else {
+						$qb->andWhere('true = false');
+					}
+					break;
+			}
+		}
 
 		if(!empty($faction)) {
 			$qb->andWhere('d.meta like :aspect');
 			$qb->setParameter('aspect', "%$faction%");
+		}
+
+		if(!empty($aspect)) {
+			$qb->andWhere('d.meta like :aspect');
+			$qb->setParameter('aspect', "%".$aspect->getCode()."%");
 		}
 
 		if(!empty($author_name)) {
@@ -302,6 +374,13 @@ class DecklistManager
 			case 'likes':
 				$qb->orderBy('d.nbVotes', 'DESC');
 				break;
+			case 'activity':
+				$qb->addSelect('(SELECT count(co) FROM AppBundle:Comment co
+					WHERE co.decklist=d AND DATE_DIFF(CURRENT_TIMESTAMP(), co.dateCreation)<1) AS HIDDEN nbRecentComments
+				');
+				$qb->orderBy('nbRecentComments', 'DESC');
+				$qb->orderBy('d.nbComments', 'DESC');
+				break;
 			case 'reputation':
 				if(!in_array('d.user', $joinTables)) {
 					$qb->innerJoin('d.user', 'u');
@@ -311,10 +390,11 @@ class DecklistManager
 				break;
 			case 'popularity':
 			default:
-				$qb->addSelect('(1+d.nbVotes)/(1+POWER(DATE_DIFF(CURRENT_TIMESTAMP(), d.dateCreation), 2)) AS HIDDEN popularity');
+				$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 				$qb->orderBy('popularity', 'DESC');
 				break;
 		}
+
 		return $this->getPaginator($qb->getQuery());
 	}
 

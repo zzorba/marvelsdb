@@ -32,7 +32,7 @@
 
 	<select class="form-control" id="decklist-quick-collection" name="collection">
 		<option {% if collection is not defined%} selected="selected"{% endif %} value="">All Cards</option>
-		<option {% if collection is defined and collection == 'mine' %} selected="selected"{% endif %} value="mine">My Collection</option>
+		<option {% if collection is defined and collection == 'mine' %} selected="selected"{% endif %} value="mine">My Collection (must be logged in)</option>
 	</select>
 
 	<select class="form-control" id="decklist-quick-sort" name="sort">

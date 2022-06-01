@@ -84,7 +84,7 @@
 				</h4>
 				{% if not compact %}
 				<div>
-					<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
+					<div class="card-thumbnail-wide card-thumbnail-investigator" style="{% if data.hero_meta.offset is defined%}background-position: {{data.hero_meta.offset}}; {% endif %}background-image:url(/bundles/cards/{{data.decklist.getCharacter().getCode()}}.jpg)"></div>
 				</div>
 				{% endif %}
 			</div>

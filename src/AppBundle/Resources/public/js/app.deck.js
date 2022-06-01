@@ -605,7 +605,11 @@ deck.get_layout_data = function get_layout_data(options) {
 		data['hero_color_2'] = card.meta.colors[1];
 		data['hero_color_3'] = card.meta.colors[2];
 	}
-	deck.update_layout_section(data, 'image1', $('<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/'+card.code+'.jpg)"></div>'));
+	var offset = "";
+	if (card.meta && card.meta.offset) {
+		offset = "background-position: "+card.meta.offset+";";
+	}
+	deck.update_layout_section(data, 'image1', $('<div class="card-thumbnail-wide card-thumbnail-investigator" style="'+offset+'background-image:url(/bundles/cards/'+card.code+'.jpg)"></div>'));
 	deck.update_layout_section(data, 'image2', $('<div class="card-thumbnail-wide card-thumbnail-investigator" style="background-image:url(/bundles/cards/'+card.linked_card.code+'.jpg)"></div>'));
 	if (investigator_name == card.linked_card.name) {
 		deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+'</a></h4>'));

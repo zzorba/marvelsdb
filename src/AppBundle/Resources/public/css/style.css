@@ -12,13 +12,12 @@ body {
 
 }
 .card-content {
-	font: 16px/20px 'Amiri', serif;
+
 }
 .card-content abbr[title] {
 	border-bottom: none;
 }
 .card-name {
-	font-family: 'Julius Sans One', sans-serif;
 	font-weight: 700;
 }
 .card-subname {
@@ -34,6 +33,11 @@ body {
 }
 .card-traits, .card-text i {
 	font-style: italic;
+}
+.card-traits {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 14px;
 }
 .card-text {
 	border-left-width: 2px;
@@ -339,9 +343,9 @@ h4.deck-section {
 .tt-suggestion p{margin:0}
 
 /************** QTIP ****************/
-.qtip-thronesdb{border-radius:2px;min-width:250px;max-width:400px}
-.qtip-thronesdb-text{font-size:15px }
-.qtip-thronesdb-image{}
+.qtip-marvel{border-radius:2px;min-width:250px;max-width:400px}
+.qtip-marvel-text{font-size:14px }
+.qtip-marvel-image{}
 
 
 /***************** CARD IMAGE **************/

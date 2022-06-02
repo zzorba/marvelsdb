@@ -46,7 +46,7 @@ function display_card_on_element(card, element, event) {
 			text : content
 		},
 		style : {
-			classes : 'card-content qtip-bootstrap qtip-thronesdb qtip-thronesdb-' + mode
+			classes : 'card-content qtip-bootstrap qtip-marvel qtip-marvel-' + mode
 		},
 		position : {
 			my : mode == 'text' ? 'center left' : 'top left',

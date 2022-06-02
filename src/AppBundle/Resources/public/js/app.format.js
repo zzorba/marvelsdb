@@ -200,13 +200,13 @@ format.text = function text(card, alternate) {
 	if (alternate){
 		text = card[alternate];
 	}
-	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 	text = text.split("\n").join('</p><p>');
 	if (card.attack_text || card.scheme_text) {
 		if (card.attack_text) {
 		var attack_text = card.attack_text;
-			attack_text = attack_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+			attack_text = attack_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 			attack_text = attack_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 			attack_text = attack_text.split("\n").join('</p><p>')
 			text += '<p><span class="icon icon-special"></span>: ' + attack_text + '</p>';
@@ -215,7 +215,7 @@ format.text = function text(card, alternate) {
 			// Some characters have the same * text on both Attack and Scheme,
 			// so don't show it twice. Yon-Rogg.
 			var scheme_text = card.scheme_text;
-			scheme_text = scheme_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+			scheme_text = scheme_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 			scheme_text = scheme_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 			scheme_text = scheme_text.split("\n").join('</p><p>')
 			text += '<p><span class="icon icon-special"></span>: ' + scheme_text + '</p>';
@@ -236,7 +236,7 @@ format.text = function text(card, alternate) {
 	}
 	if (card.boost_text) {
 		var boost_text = card.boost_text;
-		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 		boost_text = boost_text.split("\n").join('</p><p>');
 		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + boost_text + '</p>';
@@ -249,7 +249,7 @@ format.text = function text(card, alternate) {
  */
 format.back_text = function back_text(card) {
 	var text = card.back_text || '';
-	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>')
 	text = text.split("\n").join('</p><p>');
 	return '<p>'+text+'</p>';
@@ -260,7 +260,7 @@ format.back_text = function back_text(card) {
  */
 format.html_page = function back_text(element) {
 	var curInnerHTML = element.innerHTML;
-	curInnerHTML = curInnerHTML.replace(/\[\[([^\]]+)\]\]/g, '<b><i>$1</i></b>');
+	curInnerHTML = curInnerHTML.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
 	curInnerHTML = curInnerHTML.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
 	element.innerHTML = curInnerHTML;
 };

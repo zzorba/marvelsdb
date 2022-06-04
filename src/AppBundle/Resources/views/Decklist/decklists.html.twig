@@ -38,7 +38,7 @@
 
 </style>
 
-<div class="main white container">
+<div class="main white container" >
 	<!--
 	<div class="col-md-3">
 		<ul class="nav nav-pills nav-stacked" style="margin-bottom:2em">
@@ -57,10 +57,10 @@
 	</div>
 	-->
 
-	<div style="background-image: linear-gradient(100deg, rgba(159, 159, 159, 0.5) 49.5%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2) 51%, rgba(200, 200, 200, 0.5) 51.5%, rgba(200, 200, 200, 0.5) 100%); border-radius: 10px; padding: 0.5rem;">
+	<div >
 		<div>
 			<form method="GET" action="{{ path('decklists_list') }}" role="form" id="decklist-search-form">
-				<header class="decklist-header">
+				<header style="background-image: linear-gradient(100deg, rgba(159, 159, 159, 0.5) 49.5%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2) 51%, rgba(200, 200, 200, 0.5) 51.5%, rgba(200, 200, 200, 0.5) 100%); border-radius: 5px; padding: 1rem;">
 					{{ header|raw }}
 				</header>
 				<div class="advanced">
@@ -68,13 +68,14 @@
 				</div>
 			</form>
 		</div>
-
+	</div>
+	<div>
 		{% include 'AppBundle:Default:pagination.html.twig' %}
 
 		<ul class="decklists">
 			{% for decklist in decklists %}
 				<li>
-					{{ macros.decklist_block(decklist) }}</td>
+					{{ macros.decklist_block(decklist) }}
 				</li>
 			{% endfor %}
 		</ul>

@@ -37,7 +37,7 @@ class DefaultController extends Controller
 		$type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
 		$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $type], ['id' => 'ASC']);
 
-		$date1 = strtotime('2022-05-01');
+		$date1 = strtotime('2022-05-22');
 		$date2 = time();
 
 		$year1 = date('Y', $date1);
@@ -46,9 +46,11 @@ class DefaultController extends Controller
 		$month1 = date('m', $date1);
 		$month2 = date('m', $date2);
 
-		$diff = (($year2 - $year1) * 12) + ($month2 - $month1);
-		if ($diff >= 0 && $diff < count($cards)) {
-			$card = $cards[$diff];
+		// $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+		$diff = $date2 - $date1;
+		$weeks_since = ($diff / (60 * 60 * 24 * 7));
+		if ($weeks_since >= 0 && $weeks_since < count($cards)) {
+			$card = $cards[$weeks_since];
 		} else {
 			throw new \Exception("Ran out of heroes for spotlight.");
 		}

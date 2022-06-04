@@ -8,9 +8,23 @@
 	font-style: normal;
 }
 
-body {
-
+@font-face {
+	font-family: 'outfit';
+  src:  url('../fonts/outfit.ttf');
+	font-weight: normal;
+	font-style: normal;
 }
+
+body {
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.deck-quantity {
+	font-family: sans-serif;
+}
+.box, .front-block {
+	font-family: "outfit", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .card-content {
 
 }
@@ -181,20 +195,20 @@ div.tags span.tag:not(:first-child)::before {
 .deck-block {
 	margin-bottom: 15px;
 	background-color: #fdfdfd;
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 0.5rem;
 	border: solid rgba(245,245,245,1) 1px;
 }
 .deck-header {
 	display: flex;
 	padding: 1rem;
-	border-radius: 10px;
+	border-radius: 5px;
 	gap: 0.5rem;
 	justify-content: space-between;
 }
 .deck-meta {
 	background-color: rgba(255,255,255, 0.9);
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 0.5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
@@ -210,7 +224,7 @@ div.tags span.tag:not(:first-child)::before {
 	justify-content: stretch;
 	background-color: #fdfdfd;
 	background-color: rgba(255,255,255, 1);
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 0.8rem;
 	gap: 1rem;
 	min-height: 400px;
@@ -406,7 +420,7 @@ h4.deck-section {
 
 .card-thumbnail-wide.card-thumbnail-investigator {
 	background-repeat:no-repeat;
-	width:120px;height:55px;
+	width: 120px; min-height: 55px;
 	background-size:180px 270px;
 	background-position: -50px -55px
 }
@@ -506,10 +520,14 @@ div.site-slogan {
 	padding: 0;
 	display: grid;
 	grid-template-columns: calc(50%) calc(50%);
+	grid-gap: 1.2rem;
+	row-gap: 1rem;
+	grid-auto-rows: 1fr;
 }
 @media (max-width:992px){
 	.decklists {
 		grid-template-columns: calc(100%);
+		grid-auto-rows: unset;
 	}
 }
 .decklists li {
@@ -519,8 +537,20 @@ div.site-slogan {
 .box {
 	background: #fff;
 	overflow: hidden;
-	border-radius: 10px;
-	box-shadow: 0px 0px 2px 2px rgba(90, 90, 90, 0.2);
+	border-radius: 5px;
+	border: solid #767676 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+
+}
+.box > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+	height: 100%;
 }
 .quick-search-decklists {
 	display: flex;
@@ -535,8 +565,7 @@ div.site-slogan {
 	}
 }
 .advanced {
-	padding-left: 1rem;
-	padding-right: 1rem;
+
 }
 
 .decklist-faction-image img {
@@ -631,7 +660,6 @@ div.site-slogan {
 	background-color: #cc3038 !important;
 	color: white !important;
 }
-
 .bg-protection {
 	background-color: #107116 !important;
 	color: white !important;
@@ -642,7 +670,8 @@ div.site-slogan {
 }
 .bg-justice {
 	background-color: #c0c000 !important;
-	color: white !important;
+	background-color: #ead51b !important;
+	color: black !important;
 }
 
 
@@ -665,8 +694,6 @@ div.site-slogan {
 	background-color: rgba(228, 228, 0, 0.2) !important;
 }
 
-
-
 .fg-leadership {
 	color: #3499eb !important;
 }
@@ -683,7 +710,6 @@ div.site-slogan {
 	color: #f2ca00 !important;
 }
 
-
 .border-leadership {
 	border-color: #2b80c5 !important;
 }
@@ -698,6 +724,7 @@ div.site-slogan {
 }
 .border-justice {
 	border-color: #c0c000 !important;
+	border-color: #f5de11 !important;
 }
 
 .icon-guardian, .icon-mystic, .icon-seeker, .icon-rogue, .icon-survivor {

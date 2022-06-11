@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use AppBundle\Model\DeckManager;
 use AppBundle\Entity\Deck;
 use AppBundle\Entity\Deckslot;
 use AppBundle\Entity\Card;
@@ -713,7 +714,7 @@ class BuilderController extends Controller
 		]);
 	}
 
-	public function listAction ()
+	public function listAction ($page = 1, Request $request)
 	{
 		/* @var $user \AppBundle\Entity\User */
 		$user = $this->getUser();
@@ -723,19 +724,92 @@ class BuilderController extends Controller
 		$decks = $em->getRepository('AppBundle:Deck')->findBy(["user"=> $user->getId(), "nextDeck" => null], array("dateUpdate" => "DESC"));
 		$tournaments = [];
 
+		$aspect_code = filter_var($request->query->get('aspect'), FILTER_SANITIZE_STRING);
+		$hero_code = filter_var($request->query->get('hero'), FILTER_SANITIZE_STRING);
+		$tag = filter_var($request->query->get('tag'), FILTER_SANITIZE_STRING);
+		$sort = filter_var($request->query->get('sort'), FILTER_SANITIZE_STRING);
+		$category = filter_var($request->query->get('category'), FILTER_SANITIZE_STRING);
+		$collection = filter_var($request->query->get('collection'), FILTER_SANITIZE_STRING);
+
+		/**
+		* @var $deck_manager DeckManager
+		*/
+		$deck_manager = $this->get('deck_manager');
+		$deck_manager->setLimit(12); // 12
+		$deck_manager->setPage($page);
+		$deck_manager->setUser($user);
+
+		$tags = $deck_manager->getAllTags();
+		$tags = array_unique($tags);
+
+		$paginator = $deck_manager->findDecksWithComplexSearch($user);
+
+		$dbh = $this->getDoctrine()->getConnection();
+		$factions = $dbh->executeQuery(
+			"SELECT
+			f.name,
+			f.code
+			from faction f
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			order by f.name asc")
+			->fetchAll();
+
+		$hero_type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
+		$all_heroes = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $hero_type], ['name' => 'ASC']);
+
+		$unique_heroes = [];
+		$heroes = [];
+		foreach($all_heroes as $hero) {
+			$unique_key = $hero->getCardSet()->getCode();
+			if (isset($unique_heroes[$unique_key])) {
+				continue;
+			}
+			$unique_heroes[$unique_key] = true;
+			$heroes[] = $hero;
+		}
+		$header = $this->renderView('AppBundle:Builder:form-quick.html.twig',
+			array(
+				'factions' => $factions,
+				'heroes' => $heroes,
+				'aspect_code' => $aspect_code,
+				'hero_code' => $hero_code,
+				'tag' => $tag,
+				'tags' => $tags,
+				'sort' => $sort,
+				'category' => $category,
+				'collection' => $collection
+			)
+	);
+
+		$deck_data = [];
+		$iterator = $paginator->getIterator();
+		while($iterator->valid())
+		{
+			$deck = $iterator->current();
+			$deck_data[] = [
+				'hero_meta' => json_decode($deck->getCharacter()->getMeta()),
+				'faction' => $deck->getCharacter()->getFaction(),
+				'deck' => $deck,
+				'meta' => json_decode($deck->getMeta())
+			];
+			$iterator->next();
+		}
+
 		if(count($decks))
 		{
-			$tags = [];
-			$tags = array_unique($tags);
 			return $this->render('AppBundle:Builder:decks.html.twig',
 			array(
 				'pagetitle' => "My Decks",
 				'pagedescription' => "Create custom decks with the help of a powerful deckbuilder.",
-				'decks' => $decks,
+				'decks' => $deck_data,
 				'tags' => $tags,
 				'nbmax' => $user->getMaxNbDecks(),
 				'nbdecks' => count($decks),
-				'cannotcreate' => $user->getMaxNbDecks() <= count($decks)
+				'header' => $header,
+				'cannotcreate' => $user->getMaxNbDecks() <= count($decks),
+				'pages' => $deck_manager->getClosePages(),
+				'prevurl' => $deck_manager->getPreviousUrl(),
+				'nexturl' => $deck_manager->getNextUrl(),
 			));
 
 		}

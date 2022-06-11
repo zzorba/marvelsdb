@@ -72,13 +72,11 @@
 	<div>
 		{% include 'AppBundle:Default:pagination.html.twig' %}
 
-		<ul class="decklists">
+		<div class="decklists">
 			{% for decklist in decklists %}
-				<li>
-					{{ macros.decklist_block(decklist) }}
-				</li>
+				{{ macros.decklist_block(decklist) }}
 			{% endfor %}
-		</ul>
+		</div>
 
 		{% include 'AppBundle:Default:pagination.html.twig' %}
 

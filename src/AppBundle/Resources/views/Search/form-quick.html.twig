@@ -6,12 +6,13 @@
 		<option {% if category is defined and category == 'mine' %} selected="selected"{% endif %} value="mine">My decklists</option>
 	</select>
 
-	<select class="form-control" id="decklist-quick-tag" name="tag">
-		<option {% if tag is not defined %} selected="selected"{% endif %} value="">All Tags</option>
-		<option {% if tag is defined and tag == 'solo' %} selected="selected"{% endif %} value="solo">Solo</option>
-		<option {% if tag is defined and tag == 'multiplayer' %} selected="selected"{% endif %} value="multiplayer">Multiplayer</option>
-		<option {% if tag is defined and tag == 'beginner' %} selected="selected"{% endif %} value="beginner">Beginner</option>
-		<option {% if tag is defined and tag == 'theme' %} selected="selected"{% endif %} value="theme">Theme</option>
+	<select class="form-control" id="decklist-quick-hero" name="hero">
+		<option value="">Any hero</option>
+		{% for hero in heroes %}
+		<option value="{{ hero.code }}"{% if hero_code is defined and hero_code == hero.code %} selected="selected"{% endif %}>
+			{{ hero.name }} {% if hero.getLinkedTo().name != hero.name %}({{ hero.getLinkedTo().name }}){% endif %}
+		</option>
+		{% endfor %}
 	</select>
 
 	<select class="form-control" id="decklist-quick-aspect" name="aspect">
@@ -21,13 +22,12 @@
 		{% endfor %}
 	</select>
 
-	<select class="form-control" id="decklist-quick-hero" name="hero">
-		<option value="">Any hero</option>
-		{% for hero in heroes %}
-		<option value="{{ hero.code }}"{% if hero_code is defined and hero_code == hero.code %} selected="selected"{% endif %}>
-			{{ hero.name }} {% if hero.getLinkedTo().name != hero.name %}({{ hero.getLinkedTo().name }}){% endif %}
-		</option>
-		{% endfor %}
+	<select class="form-control" id="decklist-quick-tag" name="tag">
+		<option {% if tag is not defined %} selected="selected"{% endif %} value="">All Tags</option>
+		<option {% if tag is defined and tag == 'solo' %} selected="selected"{% endif %} value="solo">Solo</option>
+		<option {% if tag is defined and tag == 'multiplayer' %} selected="selected"{% endif %} value="multiplayer">Multiplayer</option>
+		<option {% if tag is defined and tag == 'beginner' %} selected="selected"{% endif %} value="beginner">Beginner</option>
+		<option {% if tag is defined and tag == 'theme' %} selected="selected"{% endif %} value="theme">Theme</option>
 	</select>
 
 	<select class="form-control" id="decklist-quick-collection" name="collection">

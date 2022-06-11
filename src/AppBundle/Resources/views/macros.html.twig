@@ -87,7 +87,7 @@
 			{% else %}
 			<div style="background-image: linear-gradient(100deg, {{data.hero_meta.colors[0]}} 49.5%, {{data.hero_meta.colors[2]}} 50%, {{data.hero_meta.colors[2]}} 51%, {{data.hero_meta.colors[1]}} 51.5%, {{data.hero_meta.colors[1]}} 100%); padding: 0.4rem;">
 			</div>
-			<div style="padding: 1rem; ">
+			<div style="padding: 1rem;">
 			{% endif %}
 				{% set character = data.decklist.getCharacter() %}
 				<div style="display: flex; justify-content: stretch;">
@@ -119,46 +119,44 @@
 {% endmacro %}
 
 {% macro deck_block(data, compact) %}
-	{% if compact %}
-		<div class="box" >
-	{% else %}
-		<div class="box" style="border-radius: 10px;">
-	{% endif %}
-		<div style="background-color: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden;">
-			<div class="bg-faction {% if data.meta.aspect is defined %}faint-{{ data.meta.aspect }}{% else %}faint-basic{% endif %}" style="display: flex; align-items: center;">
-				<h4 style="font-size: 1.15em; flex: 1; margin: 0; padding: 0.5rem;">
-					<a href="{{ path('deck_view',{deck_id:data.deck.id,deck_name:data.deck.name}) }}">{{ data.deck.name }}</a>
-					v{{ data.deck.version }}
+	<div class="box">
+		<div style="background-color: rgba(255,255,255,0.97); border-radius: 5px;">
+			<div class="bg-faction {% if data.meta.aspect is defined %}faint-{{ data.meta.aspect }}{% else %}faint-basic{% endif %}" style="display: flex; align-items: stretch;">
+				<h4 style="font-size: 1.15em; flex: 1; margin: 0; padding-left: 1rem; padding-right: 1rem; display: flex; align-items: center; gap: 1rem;">
+
+					<input class="deck_select" data-id="{{data.deck.id}}" type="checkbox" style="margin: 0;">
+
+					<a href="{{ path('deck_view',{deck_id:data.deck.id,deck_name:data.deck.name}) }}" style="line-height: normal;">
+						{{ data.deck.name }} v{{ data.deck.version }}
+					</a>
 				</h4>
-				{% if not compact %}
-				<div>
-					<div class="card-thumbnail-wide card-thumbnail-investigator" style="{% if data.hero_meta.offset is defined%}background-position: {{data.hero_meta.offset}}; {% endif %}background-image:url(/bundles/cards/{{data.deck.getCharacter().getCode()}}.jpg)"></div>
-				</div>
-				{% endif %}
+				<div class="card-thumbnail-wide card-thumbnail-investigator" style="min-height: 55px; {% if data.hero_meta.offset is defined%}background-position: {{data.hero_meta.offset}}; {% endif %}background-image:url(/bundles/cards/{{data.deck.getCharacter().getCode()}}.jpg)"></div>
 			</div>
-			{% if compact %}
-			<div style="background-color: white; padding: 0.5rem;">
-			{% else %}
 			<div style="background-image: linear-gradient(100deg, {{data.hero_meta.colors[0]}} 49.5%, {{data.hero_meta.colors[2]}} 50%, {{data.hero_meta.colors[2]}} 51%, {{data.hero_meta.colors[1]}} 51.5%, {{data.hero_meta.colors[1]}} 100%); padding: 0.4rem;">
 			</div>
-			<div style="padding: 0.5rem;">
-			{% endif %}
+			<div style="padding: 1rem; flex: 1; display: flex; justify-content: stretch;">
 				{% set character = data.deck.getCharacter() %}
-				<div style="display: flex; justify-content: stretch;">
-					<div style="flex: 0.5;">
-						<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.deck.getCharacter().getName()}}</a>
-						<div>
-						{% if data.meta.aspect is defined %}<span class="fa fa-circle fg-{{data.meta.aspect}}" title="{{data.meta.aspect}}"></span> {{data.meta.aspect|capitalize}} {% endif %}
-						{% if data.meta.aspect2 is defined %}<span class="fa fa-circle fg-{{data.meta.aspect2}}" title="{{data.meta.aspect2}}"></span> {{data.meta.aspect2|capitalize}} {% endif %}
-						</div>
-						<div style="font-size: 1.2rem;">
-							Tags: {{ data.deck.tags | split(',') | join(', ')}}
-						</div>
+				<div style="flex: 0.5; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 0.5rem;">
+					<a class="card card-tip fg-{{ character.getFaction().getCode() }}" data-code="{{ character.getCode() }}" data-toggle="modal" data-target="#cardModal" data-remote="false" href="">{{data.deck.getCharacter().getName()}}</a>
+					<div>
+					{% if data.meta.aspect is defined %}<span class="fa fa-circle fg-{{data.meta.aspect}}" title="{{data.meta.aspect}}"></span> {{data.meta.aspect|capitalize}} {% endif %}
+					{% if data.meta.aspect2 is defined %}<span class="fa fa-circle fg-{{data.meta.aspect2}}" title="{{data.meta.aspect2}}"></span> {{data.meta.aspect2|capitalize}} {% endif %}
 					</div>
-					<div style="flex: 0.5; text-align: right;">
-						<div class="small pull-right">
-							<time datetime="{{ data.deck.dateUpdate|date('c') }}">{{ data.deck.dateUpdate|date('M d, Y') }}</time>
-						</div>
+					<div style="font-size: 1.2rem;">
+						Tags: {{ data.deck.tags | split(',') | join(', ')}}
+					</div>
+				</div>
+				<div style="flex: 0.5; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 0.5rem;">
+					<div>
+						<a href="{{ path('deck_edit',{deck_id:data.deck.id}) }}" class="btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><span class="fa fa-pencil fa-fw"></span></a>
+						<a href="{{ path('deck_publish_form',{deck_id:data.deck.id}) }}" class="btn btn-xs btn-default" data-toggle="tooltip" title="Publish"><span class="fa fa-share fa-fw"></span></a>
+						<button class="btn btn-xs btn-default btn-delete-deck" data-id="{{data.deck.id}}" data-name="{{data.deck.name}}" data-toggle="tooltip" title="Delete"><span class="fa fa-trash-o fa-fw"></span></button>
+					</div>
+					{% if data.deck.problem is not null %}
+						<div class="text-danger small text-right"><span class="fa fa-exclamation-triangle"></span> {{ deck_validation_helper.getProblemLabel(data.deck.problem) }}</div>
+					{% endif %}
+					<div class="small">
+						<time datetime="{{ data.deck.dateUpdate|date('c') }}">{{ data.deck.dateUpdate|date('M d, Y') }}</time>
 					</div>
 				</div>
 			</div>

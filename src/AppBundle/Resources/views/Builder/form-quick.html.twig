@@ -1,0 +1,36 @@
+
+<div class="quick-search-decklists">
+	<select class="form-control" id="decklist-quick-hero" name="hero">
+		<option value="">Any hero</option>
+		{% for hero in heroes %}
+		<option value="{{ hero.code }}"{% if hero_code is defined and hero_code == hero.code %} selected="selected"{% endif %}>
+			{{ hero.name }} {% if hero.getLinkedTo().name != hero.name %}({{ hero.getLinkedTo().name }}){% endif %}
+		</option>
+		{% endfor %}
+	</select>
+
+	<select class="form-control" id="decklist-quick-aspect" name="aspect">
+		<option value="">Any aspect</option>
+		{% for faction in factions %}
+			<option value="{{ faction.code }}"{% if aspect_code is defined and aspect_code == faction.code %} selected="selected"{% endif %}>{{ faction.name }}</option>
+		{% endfor %}
+	</select>
+
+	<select class="form-control" id="decklist-quick-tag" name="tag">
+		<option {% if tag is not defined%} selected="selected"{% endif %} value="">Any tag</option>
+		{% for possible_tag in tags %}
+			<option value="{{ possible_tag }}"{% if tag is defined and possible_tag == tag %} selected="selected"{% endif %}>{{ possible_tag }}</option>
+		{% endfor %}
+	</select>
+
+	<select class="form-control" id="decklist-quick-collection" name="collection">
+		<option {% if collection is not defined%} selected="selected"{% endif %} value="">All Cards</option>
+		<option {% if collection is defined and collection == 'mine' %} selected="selected"{% endif %} value="mine">My Collection (must be logged in)</option>
+	</select>
+
+	<select class="form-control" id="decklist-quick-sort" name="sort">
+		<option {% if sort is not defined%} selected="selected"{% endif %} value=""{{ sort_date|default('') }}>Sort by Date</option>
+		<option {% if sort is defined and sort == 'name' %} selected="selected"{% endif %} value="name">Sort by Name</option>
+	</select>
+</div>
+

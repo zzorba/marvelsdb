@@ -4,7 +4,7 @@ services:
         class: AppBundle\Listener\CoreExceptionListener
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onCoreException, priority: 1000 }
-            
+
     # subdomain listener
     locale_prefix_listener:
        class: AppBundle\Listener\LocalePrefixListener
@@ -29,6 +29,10 @@ services:
     cards_data:
         class: AppBundle\Services\CardsData
         arguments: ["@doctrine", "@request_stack", "@router", "@assets.packages", "@deck_validation_helper", "%kernel.root_dir%"]
+    deck_manager:
+        class: AppBundle\Model\DeckManager
+        shared: false
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack", "@router", "@logger"]
     decklist_manager:
         class: AppBundle\Model\DecklistManager
         shared: false

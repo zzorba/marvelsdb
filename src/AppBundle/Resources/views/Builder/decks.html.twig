@@ -15,9 +15,10 @@
 		justify-content: space-between;
 		align-items: center;
 		margin: 1rem;
+		gap: 0.5rem;
 	}
 	.decks-header h1 {
-		margin: 0;
+		margin: 0.1rem;
 	}
 	.decks-controls {
 		display: flex;
@@ -30,6 +31,67 @@
 	}
 	.active {
 		background-color: #cbcbcb;
+	}
+	.decks {
+		display: flex;
+		flex-direction: column;
+	}
+	.decks > .box > div {
+		background-color: rgba(255,255,255,0.97);
+		border-radius: 5px;
+		display: grid;
+		grid-template-columns: 1.5fr 2fr;
+	}
+	.decks .deck-box-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+	.decks .deck-box-hero-and-header {
+		display: grid;
+		grid-template-columns: auto 1fr 120px;
+	}
+	.deck-box-meta {
+		flex: 0.5;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 1rem;
+	}
+	.deck-box-controls {
+		flex: 0.5;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 1rem;
+	}
+	.decks .hero-banner {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	@media (max-width:992px){
+		.decks > .box > div {
+			display: flex;
+		}
+		.decks .deck-box-content {
+			display: flex;
+			flex-direction: column;
+			gap: 0rem;
+		}
+		.deck-box-meta {
+			flex-direction: row;
+			justify-content: space-between;
+			padding: 0.5rem;
+		}
+		.deck-box-controls {
+			flex-direction: row;
+			justify-content: space-between;
+			padding: 0.5rem;
+		}
 	}
 </style>
 
@@ -86,9 +148,9 @@
 		</div>
 		-->
 		{% include 'AppBundle:Default:pagination.html.twig' %}
-		<div class="decklists">
+		<div class="decks">
 			{% for data in decks %}
-				{{ macros.deck_block(data) }}
+				{{ macros.deck_block(data, false, true) }}
 			{% endfor %}
 		</div>
 		{% include 'AppBundle:Default:pagination.html.twig' %}

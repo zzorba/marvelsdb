@@ -27,10 +27,18 @@
 	.front-block > div {
 		flex: 1;
 	}
+	.card-day-decklists {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
 	@media (max-width:992px){
 		.front-block {
 			flex-direction: column;
 		}
+		.card-day-decklists {
+		display: flex;
+		flex-direction: column;
+	}
 	}
 
 </style>
@@ -65,7 +73,33 @@
 			{{ macros.decklist_block(data) }}
 		{% endfor %}
 	</div>
+</div>
 
+<div class="main container">
+	<div style="background-image: linear-gradient(100deg, rgba(159, 159, 159, 0.5) 49.5%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2) 51%, rgba(200, 200, 200, 0.5) 51.5%, rgba(200, 200, 200, 0.5) 100%); border-radius: 5px; padding: 0.5rem;">
+		<div class="front-block">
+			<div style="flex: 0; padding: 0.5rem;">
+				<header style="display: flex; align-items: center; gap: 1rem; justify-content: space-between; padding: 0.5rem;">
+					<div>
+						<h5 style="font-size: 16px; padding: 0;">Card of the day</h5>
+						<h4 style="font-size: 30px; display: flex; align-items: center; gap: 1rem; justify-content: space-between; margin: 0;">
+							<a href="/decklists?sort=popular&cards[]={{card_of_the_day.code}}">{{card_of_the_day.name}}{% if card_of_the_day.subname %}: {{card_of_the_day.subname}}{% endif %}</a>
+						</h4>
+					</div>
+				</header>
+				{% if card_of_the_day.imagesrc %}
+					<img src="{{ card_of_the_day.imagesrc }}" alt="{{ card_of_the_day.name }}" class="img-responsive img-vertical-card" style="margin:auto">
+				{% else %}
+					<div class="no-image" style="margin:auto"><div class="no-image-text">No image</div></div>
+				{% endif %}
+			</div>
+			<div class="card-day-decklists">
+				{% for data in card_of_the_day_decklists %}
+					{{ macros.decklist_block(data) }}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="main container">

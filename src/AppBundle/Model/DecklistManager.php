@@ -138,6 +138,21 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
+	public function findDecklistsByCard(Card $card, $ignoreEmptyDescriptions = FALSE)
+	{
+		$qb = $this->getQueryBuilder();
+		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
+		$qb->innerJoin('d.slots', "s");
+		$qb->andWhere("s.card = :card");
+		$qb->setParameter("card", $card);
+		if ($ignoreEmptyDescriptions){
+			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
+		}
+		$qb->addOrderBy('popularity', 'DESC');
+		$qb->addOrderBy('d.dateCreation', 'DESC');
+		return $this->getPaginator($qb->getQuery());
+	}
+
 	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();

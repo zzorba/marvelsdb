@@ -58,7 +58,7 @@ class DefaultController extends Controller
 		$paginator = $decklist_manager->findDecklistsByHero($card, true);
 		$iterator = $paginator->getIterator();
 		$userCheck = [];
-		while($iterator->valid() && count($decklists_by_hero) < 9)
+		while($iterator->valid() && count($decklists_by_hero) < 10)
 		{
 			$decklist = $iterator->current();
 			if (!isset($userCheck[$decklist->getUser()->getId()])){
@@ -95,6 +95,48 @@ class DefaultController extends Controller
 			}
 			$iterator->next();
 		}
+
+		$date1 = strtotime('2022-06-19');
+		$date2 = time();
+
+		$year1 = date('Y', $date1);
+		$year2 = date('Y', $date2);
+
+		$month1 = date('m', $date1);
+		$month2 = date('m', $date2);
+
+		// $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+		$diff = $date2 - $date1;
+		$days_since = ($diff / (60 * 60 * 24));
+		$cards_offset = [0,10,20];
+		if ($days_since >= 0) {
+			$card_offset = $cards_offset[$days_since % 3] + (floor($days_since / 3));
+			$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['card_set' => null], ['id' => 'ASC'], 1, $card_offset);
+			if (count($cards) > 0) {
+				$card_of_the_day = $cards[0];
+			} else {
+				throw new \Exception("Ran out of heroes for spotlight.");
+			}
+		} else {
+			throw new \Exception("Ran out of heroes for spotlight.");
+		}
+
+		$card_of_the_day_info = $this->get('cards_data')->getCardInfo($card_of_the_day, false, false);
+		$paginator = $decklist_manager->findDecklistsByCard($card_of_the_day, true);
+		$iterator = $paginator->getIterator();
+		$card_of_the_day_decklists = [];
+		$no_dupe_heroes = [];
+		while($iterator->valid() && count($card_of_the_day_decklists) < 8)
+		{
+			$decklist = $iterator->current();
+			if (!isset($no_dupe_heroes[$decklist->getCharacter()->getId()]) && !isset($dupe_deck_list[$decklist->getId()])) {
+				$card_of_the_day_decklists[] = ['hero_meta' => json_decode($decklist->getCharacter()->getMeta()), 'faction' => $decklist->getCharacter()->getFaction(), 'decklist' => $decklist, 'meta' => json_decode($decklist->getMeta()) ];
+				$dupe_deck_list[$decklist->getId()] = true;
+				$no_dupe_heroes[$decklist->getCharacter()->getId()] = true;
+			}
+			$iterator->next();
+		}
+
 		$game_name = $this->container->getParameter('game_name');
 		$publisher_name = $this->container->getParameter('publisher_name');
 
@@ -109,6 +151,8 @@ class DefaultController extends Controller
 		'decklists_by_recent' => $decklists_by_recent,
 		'hero_highlight' => $card,
 		'hero_highlight_meta' => json_decode($card->getMeta()),
+		'card_of_the_day' => $card_of_the_day_info,
+		'card_of_the_day_decklists' => $card_of_the_day_decklists,
 		'decklists_by_hero' => $decklists_by_hero,
 		'packs' => array_slice($packs, 0, 4)
 		], $response);

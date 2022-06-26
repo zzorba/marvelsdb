@@ -234,8 +234,11 @@ class DeckManager
 				$qb->orderBy('d.name', 'ASC');
 				break;
 			case 'date':
-			default:
 				$qb->orderBy('d.dateCreation', 'DESC');
+				break;
+			case 'updated':
+			default:
+				$qb->orderBy('d.dateUpdate', 'DESC');
 				break;
 		}
 

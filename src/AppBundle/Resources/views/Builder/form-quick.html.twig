@@ -29,7 +29,8 @@
 	</select>
 
 	<select class="form-control" id="decklist-quick-sort" name="sort">
-		<option {% if sort is not defined%} selected="selected"{% endif %} value=""{{ sort_date|default('') }}>Sort by Date</option>
+		<option {% if sort is not defined%} selected="selected"{% endif %} value=""{{ sort_date|default('') }}>Sort by Updated</option>
+		<option {% if sort is defined and sort == 'date' %} selected="selected"{% endif %} value="date">Sort by Created</option>
 		<option {% if sort is defined and sort == 'name' %} selected="selected"{% endif %} value="name">Sort by Name</option>
 	</select>
 </div>

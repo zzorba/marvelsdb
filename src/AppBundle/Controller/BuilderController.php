@@ -56,7 +56,7 @@ class BuilderController extends Controller
 				if (!isset($my_investigators_by_class[$faction_name]) ) {
 					$my_investigators_by_class[$faction_name] = [];
 				}
-				$my_investigators_by_class[$faction_name][] = ["meta" => $hero_meta, "card" => $investigator];
+				$my_investigators_by_class[$faction_name][] = $investigator;
 			}
 
 			// only have one investigator per name
@@ -65,9 +65,9 @@ class BuilderController extends Controller
 				if (!isset($all_investigators_by_class[$faction_name]) ) {
 					$all_investigators_by_class[$faction_name] = [];
 				}
-				$all_investigators_by_class[$faction_name][] = ["meta" => $hero_meta, "card" => $investigator];
+				$all_investigators_by_class[$faction_name][] = $investigator;
 
-				$all_investigators[] = ["meta" => $hero_meta, "card" => $investigator];
+				$all_investigators[] = $investigator;
 			}
 		}
 

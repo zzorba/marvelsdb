@@ -41,46 +41,33 @@ class BuilderController extends Controller
 		$all_unique_investigators = [];
 		$my_unique_investigators = [];
 
+		// 'hero_meta' => json_decode($decklist->getCharacter()->getMeta())
+
 		foreach($investigators as $investigator){
 			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($investigator->getDeckRequirements());
 			$unique_key = $investigator->getCardSet()->getCode();
-			/*
-			$cards_to_add = [];
-			if (isset($deck_requirements['card']) && $deck_requirements['card']){
-				foreach($deck_requirements['card'] as $card_code){
-					if ($card_code){
-						$card_to_add = $em->getRepository('AppBundle:Card')->findOneBy(array("code" => $card_code));
-						if ($card_to_add){
-							$cards_to_add[] = $card_to_add;
-						}
-					}
-				}
-			}
-			$req = [
-				"cards" => $cards_to_add,
-				"size" => $deck_requirements['size']
-			];
+			$faction_name = $investigator->getFaction()->getName();
+			$pack_id = $investigator->getPack()->getId();
+			$hero_meta = json_decode($investigator->getMeta());
 
-			$investigator->setDeckRequirements($req);
-			*/
-			if (in_array($investigator->getPack()->getId(), $packs_owned) && !isset($my_unique_investigators[$unique_key]) ){
-				$my_investigators[] = $investigator;
+			if (in_array($pack_id, $packs_owned) && !isset($my_unique_investigators[$unique_key]) ){
+				$my_investigators[] = ["meta" => $hero_meta, "card" => $investigator];
 				$my_unique_investigators[$unique_key] = true;
-				if (!isset($my_investigators_by_class[$investigator->getFaction()->getName()]) ) {
-					$my_investigators_by_class[$investigator->getFaction()->getName()] = [];
+				if (!isset($my_investigators_by_class[$faction_name]) ) {
+					$my_investigators_by_class[$faction_name] = [];
 				}
-				$my_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
+				$my_investigators_by_class[$faction_name][] = ["meta" => $hero_meta, "card" => $investigator];
 			}
 
 			// only have one investigator per name
 			if (!isset($all_unique_investigators[$unique_key])) {
 				$all_unique_investigators[$unique_key] = true;
-				if (!isset($all_investigators_by_class[$investigator->getFaction()->getName()]) ) {
-					$all_investigators_by_class[$investigator->getFaction()->getName()] = [];
+				if (!isset($all_investigators_by_class[$faction_name]) ) {
+					$all_investigators_by_class[$faction_name] = [];
 				}
-				$all_investigators_by_class[$investigator->getFaction()->getName()][] = $investigator;
+				$all_investigators_by_class[$faction_name][] = ["meta" => $hero_meta, "card" => $investigator];
 
-				$all_investigators[] = $investigator;
+				$all_investigators[] = ["meta" => $hero_meta, "card" => $investigator];
 			}
 		}
 
@@ -122,7 +109,7 @@ class BuilderController extends Controller
 		if ($hero->getCardSet()){
 			$hero_cards = $em->getRepository('AppBundle:Card')->findBy(array("card_set" => $hero->getCardSet() ));
 			foreach($hero_cards as $card) {
-				if ($card->getType()->getCode() != "hero" && $card->getType()->getCode() != "alter_ego" && $card->getFaction()->getCode() != "encounter"){
+				if (!$card->getHidden() && $card->getType()->getCode() != "hero" && $card->getType()->getCode() != "alter_ego" && $card->getFaction()->getCode() != "encounter"){
 					$cards_to_add[] = $card;
 				}
 			}

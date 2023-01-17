@@ -51,6 +51,12 @@ class DefaultController extends Controller
 		$weeks_since = ($diff / (60 * 60 * 24 * 7));
 		if ($weeks_since >= 0 && $weeks_since < count($cards)) {
 			$card = $cards[$weeks_since];
+			if (!$card->getMeta()) {
+				$card = $cards[$weeks_since - 1];
+			}
+			if (!$card->getMeta()) {
+				$card = $cards[$weeks_since - 2];
+			}
 		} else {
 			throw new \Exception("Ran out of heroes for spotlight.");
 		}

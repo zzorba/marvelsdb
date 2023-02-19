@@ -581,6 +581,9 @@ class CardsData
 				$cardinfo['back_text'] = $this->replaceSymbols($cardinfo['back_text']);
 				$cardinfo['back_text'] = $this->splitInParagraphs($cardinfo['back_text']);
 			}
+			if (isset($cardinfo['boost_text'])){
+				$cardinfo['boost_text'] = $this->replaceSymbols($cardinfo['boost_text']);
+			}
 			if (isset($cardinfo['deck_requirements']) && $cardinfo['deck_requirements']){
 				$cardinfo['deck_requirements'] = json_decode($cardinfo['deck_requirements']);
 			}

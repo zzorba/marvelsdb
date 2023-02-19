@@ -39,6 +39,7 @@ class CardsData
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
 			'[star]' => '<span class="icon-special" title="Star"></span>',
+			'[boost]' => '<span class="icon-special" title="Star"></span>'
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b class="card-traits"><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);

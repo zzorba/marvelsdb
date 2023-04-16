@@ -723,6 +723,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($cleanName == "Main Scheme") {
 				$cleanName = "MainScheme";
 			}
+			if ($cleanName == "Player Side Scheme") {
+				$cleanName = "PlayerSideScheme";
+			}
 			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
@@ -865,6 +868,24 @@ class ImportStdCommand extends ContainerAwareCommand
 				'scheme_acceleration',
 				'scheme_crisis',
 				'scheme_hazard',
+		];
+
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
+	}
+
+	protected function importPlayerSideSchemeData(Card $card, $data)
+	{
+		$mandatoryKeys = [
+			'base_threat',
+		];
+		$optionalKeys = [
+			'base_threat_fixed'
 		];
 
 		foreach($mandatoryKeys as $key) {

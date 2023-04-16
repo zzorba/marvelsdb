@@ -17,7 +17,15 @@
 	</div>
 	{% endif %}
 </div>
+{% endif %}
 
+{% if card.type_code == 'player_side_scheme' %}
+<div class="card-props">
+  {% trans %}Cost{% endtrans %}: {{ macros.integer_or_x(card.cost) }}.
+	<div>
+		{% trans %}Threat{% endtrans %}: {{ macros.integer_or_x(card.base_threat) }}{% if not card.base_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+	</div>
+</div>
 {% endif %}
 
 {% if card.type_code == 'hero' or card.type_code == 'alter_ego' %}

@@ -615,6 +615,12 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 
+		if ($key == "meta"){
+			if ($value){
+				$value = json_encode($value);
+			}
+		}
+
 		if ($key == "deck_options" && $value){
 			if ($value){
 				$value = json_encode($value);
@@ -759,6 +765,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			'attack',
 			'defense',
 			'thwart',
+			'meta'
 		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);

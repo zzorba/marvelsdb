@@ -42,8 +42,8 @@ var date_creation,
  */
 // one column view
 layouts[1] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div class="col-sm-10 col-print-10"><%= cards %></div><div></div></div></div>');
-// two colunm view (default for most)
-layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
+// two column view (default for most)
+layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
 
 /**
  * @memberOf deck
@@ -552,6 +552,7 @@ deck.get_layout_data = function get_layout_data(options) {
 			events: '',
 			allies: '',
 			permanent: '',
+			player_side_schemes: '',
 			supports: '',
 			resources: '',
 			cards: '',
@@ -684,6 +685,7 @@ deck.get_layout_data = function get_layout_data(options) {
 		deck.update_layout_section(data, 'resources', deck.get_layout_data_one_section({'type_code': 'resource'}, 'type_name'));
 		deck.update_layout_section(data, 'allies', deck.get_layout_data_one_section({'type_code': 'ally'}, 'type_name'));
 		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support', permanent: false}, 'type_name'));
+		deck.update_layout_section(data, 'player_side_schemes', deck.get_layout_data_one_section({'type_code': 'player_side_scheme', permanent: false}, 'type_name'));
 
 		deck.update_layout_section(data, 'permanent', deck.get_layout_data_one_section({permanent: true}, 'type_name'));
 	}

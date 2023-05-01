@@ -68,6 +68,14 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'resource_mental';
 				$optionalFields[] = 'resource_wild';
 				break;
+			case 'player_side_scheme':
+				$mandatoryFields[] = 'cost';
+				$mandatoryFields[] = 'base_threat';
+				$optionalFields[] = 'base_threat_fixed';
+				$optionalFields[] = 'resource_energy';
+				$optionalFields[] = 'resource_physical';
+				$optionalFields[] = 'resource_mental';
+				$optionalFields[] = 'resource_wild';
 			case 'ally':
 				$mandatoryFields[] = 'cost';
 				$optionalFields[] = 'thwart';

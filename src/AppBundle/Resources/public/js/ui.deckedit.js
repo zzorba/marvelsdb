@@ -131,13 +131,18 @@ ui.build_faction_selector = function build_faction_selector() {
  */
 ui.build_type_selector = function build_type_selector() {
 	$('[data-filter=type_code]').empty();
-	['upgrade','support','event', 'ally', 'resource'].forEach(function(type_code) {
+	['ally', 'event', 'player_side_scheme', 'resource', 'support', 'upgrade'].forEach(function(type_code) {
 		var example = app.data.cards.find({"type_code": type_code})[0];
 		// not all card types might exist
 		if (example) {
+			var displayedTypeName = example.type_name;
+			if (type_code == 'player_side_scheme') {
+				// Player Side Scheme is too long to fit in the button without overflowing
+				displayedTypeName = 'Side Scheme';
+			}
 			var label = $('<label class="btn btn-default btn-sm" data-code="'
 					+ type_code + '" title="'+example.type_name+'"><input type="checkbox" name="' + type_code
-					+ '"><span class="icon-' + type_code + '"></span>' + example.type_name + '</label>');
+					+ '"><span class="icon-' + type_code + '"></span>' + displayedTypeName + '</label>');
 			label.tooltip({container: 'body'});
 			$('[data-filter=type_code]').append(label);
 		}

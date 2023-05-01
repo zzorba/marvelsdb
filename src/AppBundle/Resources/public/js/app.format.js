@@ -154,8 +154,12 @@ format.info = function info(card) {
 		case 'upgrade':
 		case 'resource':
 		case 'event':
+		case 'player_side_scheme':
 			if (card.type_code != 'resource') {
 				text += '<div>Cost: '+format.fancy_int(card.cost)+'. '+'</div>';
+			}
+			if (card.type_code == 'player_side_scheme') {
+				text += '<div>Threat: '+format.fancy_int(card.base_threat)+(!card.base_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.';
 			}
 			if (card.resource_physical || card.resource_mental || card.resource_energy || card.resource_wild){
 				text += '<div>Resource: ';

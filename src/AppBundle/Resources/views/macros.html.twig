@@ -125,7 +125,7 @@
 	<div class="box" style="margin-bottom: 1rem;">
 		<div style="">
 			<div class="deck-box-hero-and-header">
-				<div class="hero-banner" style="background-image: linear-gradient(350deg, {{data.hero_meta.colors[0]}} 48%, {{data.hero_meta.colors[2]}} 49%, {{data.hero_meta.colors[2]}} 51%, {{data.hero_meta.colors[1]}} 53%, {{data.hero_meta.colors[1]}} 100%); padding: 0.4rem;">
+				<div class="hero-banner" style="padding: 0.4rem;{% if data.hero_meta.colors is defined %}background-image: linear-gradient(350deg, {{data.hero_meta.colors[0]}} 48%, {{data.hero_meta.colors[2]}} 49%, {{data.hero_meta.colors[2]}} 51%, {{data.hero_meta.colors[1]}} 53%, {{data.hero_meta.colors[1]}} 100%);{% endif %}">
 					<input class="deck_select" data-id="{{data.deck.id}}" type="checkbox" style="margin: 0;">
 				</div>
 

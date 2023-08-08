@@ -748,7 +748,7 @@ class BuilderController extends Controller
 		$heroes = [];
 		foreach($all_heroes as $hero) {
 			$unique_key = $hero->getCardSet()->getCode();
-			if (isset($unique_heroes[$unique_key])) {
+			if (isset($unique_heroes[$unique_key]) || !$hero->getMeta()) {
 				continue;
 			}
 			$unique_heroes[$unique_key] = true;

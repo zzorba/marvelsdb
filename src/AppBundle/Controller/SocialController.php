@@ -476,6 +476,10 @@ class SocialController extends Controller
 		$heroes = [];
 		foreach($all_heroes as $hero) {
 			$unique_key = $hero->getCardSet()->getCode();
+
+			if (!$hero->getMeta()) {
+				continue;
+			}
 			if (isset($unique_heroes[$unique_key])) {
 				continue;
 			}

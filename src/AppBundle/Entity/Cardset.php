@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 /**
  * Cardset
  */
-class Cardset
+class Cardset implements \Gedmo\Translatable\Translatable, \Serializable
 {
     public function serialize() {
         return [
@@ -171,5 +171,15 @@ class Cardset
     public function getCardSetType()
     {
         return $this->cardset_type;
+    }
+
+    /*
+     * I18N vars
+     */
+    private $locale = 'en';
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

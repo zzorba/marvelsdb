@@ -483,6 +483,7 @@ class ImportStdCommand extends ContainerAwareCommand
 					'restrictions',
 					'deck_options',
 					'deck_requirements',
+					'meta',
 					'subname',
 					'back_text',
 					'back_flavor',
@@ -615,6 +616,12 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 
+		if ($key == "meta"){
+			if ($value){
+				$value = json_encode($value);
+			}
+		}
+
 		if ($key == "deck_options" && $value){
 			if ($value){
 				$value = json_encode($value);
@@ -723,6 +730,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($cleanName == "Main Scheme") {
 				$cleanName = "MainScheme";
 			}
+			if ($cleanName == "Player Side Scheme") {
+				$cleanName = "PlayerSideScheme";
+			}
 			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
@@ -800,9 +810,7 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importMinionData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'attack',
-				'scheme',
-				'health',
+
 		];
 
 		foreach($mandatoryKeys as $key) {
@@ -810,6 +818,9 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 
 		$optionalKeys = [
+				'attack',
+				'scheme',
+				'health',
 				'boost',
 				'boost_text',
 				'attack_text',
@@ -829,9 +840,10 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importSideSchemeData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'base_threat',
+
 		];
 		$optionalKeys = [
+				'base_threat',
 				'base_threat_fixed',
 				'escalation_threat',
 				'escalation_threat_fixed',
@@ -854,10 +866,11 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importMainSchemeData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'threat',
-				'base_threat',
+
 		];
 		$optionalKeys = [
+				'threat',
+				'base_threat',
 				'threat_fixed',
 				'base_threat_fixed',
 				'escalation_threat',
@@ -865,6 +878,24 @@ class ImportStdCommand extends ContainerAwareCommand
 				'scheme_acceleration',
 				'scheme_crisis',
 				'scheme_hazard',
+		];
+
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
+	}
+
+	protected function importPlayerSideSchemeData(Card $card, $data)
+	{
+		$mandatoryKeys = [
+			'base_threat',
+		];
+		$optionalKeys = [
+			'base_threat_fixed'
 		];
 
 		foreach($mandatoryKeys as $key) {
@@ -895,12 +926,12 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importVillainData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'attack',
-				'scheme',
-				'stage',
 				'health',
 		];
 		$optionalKeys = [
+				'attack',
+				'scheme',
+				'stage',
 				'attack_text',
 				'scheme_text',
 				'health_per_hero',

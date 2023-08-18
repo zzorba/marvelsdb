@@ -39,6 +39,7 @@ class CardsData
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
 			'[star]' => '<span class="icon-special" title="Star"></span>',
+			'[boost]' => '<span class="icon-boost" title="Boost"></span>'
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b class="card-traits"><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);
@@ -579,6 +580,9 @@ class CardsData
 			if (isset($cardinfo['back_text'])){
 				$cardinfo['back_text'] = $this->replaceSymbols($cardinfo['back_text']);
 				$cardinfo['back_text'] = $this->splitInParagraphs($cardinfo['back_text']);
+			}
+			if (isset($cardinfo['boost_text'])){
+				$cardinfo['boost_text'] = $this->replaceSymbols($cardinfo['boost_text']);
 			}
 			if (isset($cardinfo['deck_requirements']) && $cardinfo['deck_requirements']){
 				$cardinfo['deck_requirements'] = json_decode($cardinfo['deck_requirements']);

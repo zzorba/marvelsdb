@@ -52,7 +52,7 @@ class ImportTransCommand extends ContainerAwareCommand
 		}
 
 		//$things = ['faction', 'type', 'subtype', 'cycle', 'pack', 'campaign', 'scenario', 'encounter'];
-		$things = ['faction', 'type', 'subtype', 'pack'];
+		$things = ['faction', 'type', 'subtype', 'pack', ['set', 'cardset']];
 
 		foreach($locales as $locale)
 		{
@@ -60,9 +60,18 @@ class ImportTransCommand extends ContainerAwareCommand
 			$output->writeln("Importing translations for <info>${locale}</info>");
 			foreach($things as $thing)
 			{
-				$output->writeln("Importing translations for <info>${thing}s</info> in <info>${locale}</info>");
-				$fileInfo = $this->getFileInfo("${path}/translations/${locale}", "${thing}s.json");
-				$this->importThingsJsonFile($fileInfo, $locale, $thing);
+				$jsonName = null;
+				$entityName = null;
+				if(!is_array($thing)) {
+					$jsonName = $thing;
+					$entityName = $thing;
+				} else {
+					$jsonName = $thing[0];
+					$entityName = $thing[1];
+				}
+				$output->writeln("Importing translations for <info>${jsonName}s</info> in <info>${locale}</info>");
+				$fileInfo = $this->getFileInfo("${path}/translations/${locale}", "${jsonName}s.json");
+				$this->importThingsJsonFile($fileInfo, $locale, $entityName);
 			}
 			$this->em->flush();
 

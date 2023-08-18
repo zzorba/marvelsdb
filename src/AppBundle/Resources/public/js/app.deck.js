@@ -42,8 +42,8 @@ var date_creation,
  */
 // one column view
 layouts[1] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div class="col-sm-10 col-print-10"><%= cards %></div><div></div></div></div>');
-// two colunm view (default for most)
-layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
+// two column view (default for most)
+layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
 
 /**
  * @memberOf deck
@@ -403,71 +403,59 @@ deck.check_limit = function get_aspect_count(limit) {
  * @memberOf deck
  */
 deck.get_included_packs = function get_included_packs() {
-	var cards = deck.get_cards();
-	var nb_packs = {};
+	var cards = deck.get_cards()
 
-	var requirements = [];
-	var req_hash = {};
-	var shared_req = [];
-	cards.forEach(function (card) {
-		if (card.hidden) {
-			return
+	// Set up a list of all of the packs that are the only pack where a card is available
+	// and a list of arrays where there are a choice of pack to get a given card
+	// for example Chase Them Down is in multiple packs, so each of those packs would appear together in an array in "packs_with_options"
+	// and Angel is only in cyclops (as of feb 2023) so that would put 'cyclops' in packs_required
+	var packs_required = []
+	var packs_with_options = []
+	cards.forEach(function(card){
+		if(card.duplicated_by) {
+			packs_with_options.push(
+				[card.pack_code].concat(_.uniq(_.pluck(app.data.cards.find({'code': { '$in': card.duplicated_by}}), 'pack_code')))
+			)
+		} else if(card.duplicate_of_code) {
+			packs_with_options.push(
+				[card.pack_code].concat(_.uniq(_.pluck(app.data.cards.find({'code': { '$in': card.duplicated_of_code}}), 'pack_code')))
+			)
+		} else if(!packs_required.includes(card.pack_code)) {
+			packs_required.push(card.pack_code)
 		}
-		if (card.duplicate_of_code) {
-			var dupe = app.data.cards.findById(card.duplicate_of_code);
-			var req = {};
-			if (!req_hash[dupe.pack_code + card.pack_code]) {
-				var req = req_hash[dupe.pack_code + card.pack_code] = {
-					pack1: {code: dupe.pack_code, name: dupe.pack_name, quantity: Math.max(Math.ceil(card.indeck / dupe.quantity))},
-					pack2: {code: card.pack_code, name: card.pack_name, quantity: Math.max(Math.ceil(card.indeck / card.quantity))}
-				}
-				shared_req.push(req);
+	})
+	var pack_names = _.pluck(
+		app.data.packs.find(
+			{
+				'code': {'$in': packs_required}
+			},
+			{
+				'$orderby': {'available': 1}
 			}
-		} else if (card.duplicated_by && card.duplicated_by.length > 0) {
-			card.duplicated_by.forEach(function(copy) {
-				var dupe = app.data.cards.findById(copy);
-				if (!req_hash[card.pack_code + dupe.pack_code]) {
-					var req = req_hash[card.pack_code + dupe.pack_code] = {
-						pack1: {code: card.pack_code, name: card.pack_name, quantity: Math.max(Math.ceil(card.indeck / card.quantity))},
-						pack2: {code: dupe.pack_code, name: dupe.pack_name, quantity: Math.max(Math.ceil(card.indeck / dupe.quantity))}
+		),
+		'name'
+	)
+	packs_with_options.forEach(function(pack_code_list) {
+		//first, check if one of the options is already in the required list. If it is, we don't need to add this
+		if(_.isEmpty(_.intersection(packs_required, pack_code_list))) {
+			// make a list of all of the possible pack choices, separated by '/'
+			option_string = _.pluck(
+				app.data.packs.find(
+					{
+						'code': {'$in': pack_code_list}
+					},
+					{
+						'$orderby': {'available': 1}
 					}
-					shared_req.push(req);
-				}
-			})
-		} else {
-			if (!req_hash[card.pack_code]) {
-				var req = req_hash[card.pack_code] = Math.max(Math.ceil(card.indeck / card.quantity));
-				requirements.push(req);
-			}
-		}
-	});
-	var pack_codes = _.uniq(_.pluck(cards, 'pack_code'));
-	var packs = app.data.packs.find({}, {
-		'code': {
-			'$in': pack_codes
-		},
-		'$orderBy': {
-			'available': 1
-		}
-	});
-	var new_packs = packs.filter(function (pack) {
-		pack.quantity = req_hash[pack.code] || 0;
-		if (pack.quantity > 0) {
-			return pack
+				),
+				'name'
+			).join(' / ')
+
+			// add it to our master list
+			pack_names.push(option_string)
 		}
 	})
-	// apply additional requirements such as alternative pack pairs
-	shared_req.forEach(function(req) {
-		if (req_hash[req.pack1.code] || req_hash[req.pack2.code]) {
-			// if any pack has another requirement no point showing this option
-			return
-		}
-		new_packs.push({
-			'name': req.pack1.name + ' / ' + req.pack2.name,
-			'quantity': 1
-		})
-	})
-	return new_packs;
+	return pack_names
 }
 
 
@@ -564,6 +552,7 @@ deck.get_layout_data = function get_layout_data(options) {
 			events: '',
 			allies: '',
 			permanent: '',
+			player_side_schemes: '',
 			supports: '',
 			resources: '',
 			cards: '',
@@ -631,8 +620,10 @@ deck.get_layout_data = function get_layout_data(options) {
 	}
 
 	deck.update_layout_section(data, 'meta', $('<div>'+deck.get_draw_deck_size()+' cards </div>').addClass(deck.get_draw_deck_size() < size ? 'text-danger': ''));
-	var pack_string = _.map(deck.get_included_packs(), function (pack) { return pack.name+(pack.quantity > 1 ? ' ('+pack.quantity+')' : ''); }).join(', ');
-	deck.update_layout_section(data, 'meta', $('<div><span onclick="$(\'#packs_required\').toggle()" style="border-bottom: 1px dashed #cfcfcf;" title="' + pack_string + '">' + deck.get_included_packs().length + ' packs required </span>' + ' <div style="display:none;" id="packs_required">'+pack_string+'</div> </div>'));
+	var packs = deck.get_included_packs();
+	var pack_string = packs.join(', ');
+	var pack_count = packs.length
+	deck.update_layout_section(data, 'meta', $('<div><span onclick="$(\'#packs_required\').toggle()" style="border-bottom: 1px dashed #cfcfcf;" title="' + pack_string + '">' + pack_count + ' packs required </span>' + ' <div style="display:none;" id="packs_required">'+pack_string+'</div> </div>'));
 	if(deck.get_tags && deck.get_tags() ) {
 		deck.update_layout_section(data, 'meta', $('<div>'+deck.get_tags().replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})+'</div>'));
 	}
@@ -694,6 +685,7 @@ deck.get_layout_data = function get_layout_data(options) {
 		deck.update_layout_section(data, 'resources', deck.get_layout_data_one_section({'type_code': 'resource'}, 'type_name'));
 		deck.update_layout_section(data, 'allies', deck.get_layout_data_one_section({'type_code': 'ally'}, 'type_name'));
 		deck.update_layout_section(data, 'supports', deck.get_layout_data_one_section({'type_code': 'support', permanent: false}, 'type_name'));
+		deck.update_layout_section(data, 'player_side_schemes', deck.get_layout_data_one_section({'type_code': 'player_side_scheme', permanent: false}, 'type_name'));
 
 		deck.update_layout_section(data, 'permanent', deck.get_layout_data_one_section({permanent: true}, 'type_name'));
 	}

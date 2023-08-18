@@ -50,6 +50,10 @@ class BuilderController extends Controller
 			$pack_id = $investigator->getPack()->getId();
 			$hero_meta = json_decode($investigator->getMeta());
 
+			if (!$hero_meta) {
+				continue;
+			}
+
 			if (in_array($pack_id, $packs_owned) && !isset($my_unique_investigators[$unique_key]) ){
 				$my_investigators[] = ["meta" => $hero_meta, "card" => $investigator];
 				$my_unique_investigators[$unique_key] = true;
@@ -748,7 +752,7 @@ class BuilderController extends Controller
 		$heroes = [];
 		foreach($all_heroes as $hero) {
 			$unique_key = $hero->getCardSet()->getCode();
-			if (isset($unique_heroes[$unique_key])) {
+			if (isset($unique_heroes[$unique_key]) || !$hero->getMeta()) {
 				continue;
 			}
 			$unique_heroes[$unique_key] = true;

@@ -103,7 +103,9 @@ class ImportTransCommand extends ContainerAwareCommand
 						'back_text',
 						'boost_text',
 						'attack_text',
-						'scheme_text'
+						'defense_text',
+						'scheme_text',
+						'thwart_text'
 				]);
 			}
 
@@ -156,7 +158,9 @@ class ImportTransCommand extends ContainerAwareCommand
 					'back_text',
 					'boost_text',
 					'attack_text',
-					'scheme_text'
+					'defense_text',
+					'scheme_text',
+					'thwart_text'
 			]);
 		}
 

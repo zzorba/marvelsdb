@@ -142,7 +142,7 @@ format.info = function info(card) {
 		case 'obligation':
 			break;
 		case 'hero':
-			text += '<div>Thwart: '+card.thwart+'. Attack: '+card.attack+'. Defense: '+card.defense+'.</div>';
+			text += '<div>Thwart: '+format.fancy_int(card.thwart, card.thwart_text)+'. Attack: '+format.fancy_int(card.attack, card.attack_text)+'. Defense: '+format.fancy_int(card.defense, card.defense_text)+'.</div>';
 			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
 			break;
 		case 'alter_ego':
@@ -178,11 +178,11 @@ format.info = function info(card) {
 				text += '</div>';
 			}
 			if (card.type_code == 'ally') {
-				text += '<div>Attack: '+format.fancy_int(card.attack);
+				text += '<div>Attack: '+format.fancy_int(card.attack, card.attack_text);
 				if (card.attack_cost) {
 					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost"></span>');
 				}
-				text += ' Thwart: '+format.fancy_int(card.thwart);
+				text += ' Thwart: '+format.fancy_int(card.thwart, card.thwart_text);
 				if (card.thwart_cost) {
 					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost"></span>');
 				}
@@ -197,6 +197,17 @@ format.info = function info(card) {
 };
 
 /**
+ * Replaces special characters for traits, icons, and newlines with HTML elements in a given text.
+ */
+function replaceSpecialCharactersInText(text) {
+	var new_text = text;
+	new_text = new_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
+	new_text = new_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+	new_text = new_text.split("\n").join('</p><p>')
+	return new_text;
+}
+
+/**
  * @memberOf format
  */
 format.text = function text(card, alternate) {
@@ -204,25 +215,22 @@ format.text = function text(card, alternate) {
 	if (alternate){
 		text = card[alternate];
 	}
-	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-	text = text.split("\n").join('</p><p>');
-	if (card.attack_text || card.scheme_text) {
+	text = replaceSpecialCharactersInText(text);
+	if (card.attack_text || card.defense_text || card.scheme_text || card.thwart_text) {
 		if (card.attack_text) {
-		var attack_text = card.attack_text;
-			attack_text = attack_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-			attack_text = attack_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-			attack_text = attack_text.split("\n").join('</p><p>')
-			text += '<p><span class="icon icon-special"></span>: ' + attack_text + '</p>';
+			text += '<p><span class="icon icon-special"></span>: ' + replaceSpecialCharactersInText(card.attack_text) + '</p>';
+		}
+		if (card.defense_text && card.attack_text != card.defense_text) {
+			// Some characters (Psylocke) have the same * text on both Attack and Defense, so don't show it twice.
+			text += '<p><span class="icon icon-special"></span>: ' + replaceSpecialCharactersInText(card.defense_text) + '</p>';
 		}
 		if (card.scheme_text && card.attack_text != card.scheme_text) {
-			// Some characters have the same * text on both Attack and Scheme,
-			// so don't show it twice. Yon-Rogg.
-			var scheme_text = card.scheme_text;
-			scheme_text = scheme_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-			scheme_text = scheme_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-			scheme_text = scheme_text.split("\n").join('</p><p>')
-			text += '<p><span class="icon icon-special"></span>: ' + scheme_text + '</p>';
+			// Some characters (Madame Hydra) have the same * text on both Attack and Scheme, so don't show it twice.
+			text += '<p><span class="icon icon-special"></span>: ' + replaceSpecialCharactersInText(card.scheme_text) + '</p>';
+		}
+		if (card.thwart_text && card.attack_text != card.thwart_text && card.defense_text != card.thwart_text) {
+			// Some characters (Psylocke) have the same * text on both Attack/Defense/Thwart, so don't show it twice.
+			text += '<p><span class="icon icon-special"></span>: ' + replaceSpecialCharactersInText(card.thwart_text) + '</p>';
 		}
 	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
@@ -239,11 +247,7 @@ format.text = function text(card, alternate) {
 		text += '</p>';
 	}
 	if (card.boost_text) {
-		var boost_text = card.boost_text;
-		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + boost_text + '</p>';
+		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + replaceSpecialCharactersInText(card.boost_text) + '</p>';
 	}
 	return '<p>'+text+'</p>';
 };
@@ -252,21 +256,7 @@ format.text = function text(card, alternate) {
  * @memberOf format
  */
 format.back_text = function back_text(card) {
-	var text = card.back_text || '';
-	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>')
-	text = text.split("\n").join('</p><p>');
-	return '<p>'+text+'</p>';
-};
-
-/**
- * @memberOf format
- */
-format.html_page = function back_text(element) {
-	var curInnerHTML = element.innerHTML;
-	curInnerHTML = curInnerHTML.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-	curInnerHTML = curInnerHTML.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-	element.innerHTML = curInnerHTML;
+	return '<p>' + replaceSpecialCharactersInText(card.back_text || '') + '</p>';
 };
 
 

@@ -80,8 +80,10 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$mandatoryFields[] = 'cost';
 				$optionalFields[] = 'thwart';
 				$optionalFields[] = 'thwart_cost';
+				$optionalFields[] = 'thwart_text';
 				$optionalFields[] = 'attack';
 				$optionalFields[] = 'attack_cost';
+				$optionalFields[] = 'attack_text';
 				$optionalFields[] = 'health';
 				$optionalFields[] = 'resource_energy';
 				$optionalFields[] = 'resource_physical';
@@ -95,6 +97,9 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$mandatoryFields[] = 'health';
 				$mandatoryFields[] = 'hand_size';
 				$mandatoryFields[] = 'deck_requirements';
+				$optionalFields[] = 'attack_text';
+				$optionalFields[] = 'defense_text';
+				$optionalFields[] = 'thwart_text';
 				break;
 			case 'alter_ego':
 				$mandatoryFields[] = 'recover';
@@ -301,25 +306,35 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 */
 	private $attack;
 
-    /**
-     * @var integer
-     */
-    private $attackCost;
+	/**
+	 * @var integer
+	 */
+	private $attackCost;
 
 	/**
 	 * @var integer
 	 */
 	private $thwart;
 
-    /**
-     * @var integer
-     */
-    private $thwartCost;
+	/**
+	 * @var integer
+	 */
+	private $thwartCost;
+
+	/**
+	 * @var string
+	 */
+	private $thwartText;
 
 	/**
 	 * @var integer
 	 */
 	private $defense;
+
+	/**
+	 * @var string
+	 */
+	private $defenseText;
 
 
 	/**
@@ -1825,6 +1840,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
+     * Set thwartText
+     *
+     * @param string $thwartText
+     *
+     * @return Card
+     */
+    public function setThwartText($thwartText)
+    {
+        $this->thwartText = $thwartText;
+
+        return $this;
+    }
+
+    /**
+     * Get thwartText
+     *
+     * @return string
+     */
+    public function getThwartText()
+    {
+        return $this->thwartText;
+    }
+
+    /**
      * Set attack
      *
      * @param integer $attack
@@ -1918,6 +1957,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getDefenseCost()
     {
         return $this->defenseCost;
+    }
+
+    /**
+     * Set defenseText
+     *
+     * @param string $defenseText
+     *
+     * @return Card
+     */
+    public function setDefenseText($defenseText)
+    {
+        $this->defenseText = $defenseText;
+
+        return $this;
+    }
+
+    /**
+     * Get defenseText
+     *
+     * @return string
+     */
+    public function getDefenseText()
+    {
+        return $this->defenseText;
     }
 
     /**

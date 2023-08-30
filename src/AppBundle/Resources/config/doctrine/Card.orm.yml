@@ -164,6 +164,11 @@ AppBundle\Entity\Card:
         thwartCost:
             type: smallint
             nullable: true
+        thwartText:
+            type: text
+            nullable: true
+            gedmo:
+                - translatable
         scheme:
             type: smallint
             nullable: true
@@ -189,6 +194,11 @@ AppBundle\Entity\Card:
         defenseCost:
             type: smallint
             nullable: true
+        defenseText:
+            type: text
+            nullable: true
+            gedmo:
+                - translatable
         recover:
             type: smallint
             nullable: true

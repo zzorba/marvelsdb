@@ -12,8 +12,8 @@
 	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}.
 	</div>
 	<div>
-		{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}{% if card.attack_cost %}<span>{% for i in 1..card.attack_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
-		{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}{% if card.thwart_cost %}<span>{% for i in 1..card.thwart_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
+		{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack, card.attack_text) }}{% if card.attack_cost %}<span>{% for i in 1..card.attack_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
+		{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart, card.thwart_text) }}{% if card.thwart_cost %}<span>{% for i in 1..card.thwart_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
 	</div>
 	{% endif %}
 </div>
@@ -31,9 +31,9 @@
 {% if card.type_code == 'hero' or card.type_code == 'alter_ego' %}
 	<div class="card-props">
 		{% if card.type_code == 'hero' %}
-			{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}.
-			{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
-			{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense) }}.
+			{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart, card.thwart_text) }}.
+			{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack, card.attack_text) }}.
+			{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense, card.defense_text) }}.
 		{% else %}
 			{% trans %}Recover{% endtrans %}: {{ macros.integer_or_x(card.recover) }}.
 		{% endif %}

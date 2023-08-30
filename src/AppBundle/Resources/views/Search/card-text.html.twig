@@ -1,12 +1,14 @@
 <div class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %}"><!-- div 3 -->
 <div class="card-text border-{{ card.faction_code }}"><!-- div 1 -->
 	{{ card.text|raw }}
-	{% if card.attack_text is defined or card.scheme_text is defined %}
+	{% if card.attack_text is defined or card.defense_text is defined or card.scheme_text is defined or card.thwart_text is defined %}
 		<p>
 		{% if card.attack_text %}
 			<div><span class="icon icon-special"></span>{{ card.attack_text|raw }}</div>
 		{% endif %}
+		{% if card.defense_text and card.attack_text != card.defense_text %}<div><span class="icon icon-special"></span>{{ card.defense_text|raw }}</div>{% endif %}
 		{% if card.scheme_text and card.attack_text != card.scheme_text %}<div><span class="icon icon-special"></span>{{ card.scheme_text|raw }}</div>{% endif %}
+		{% if card.thwart_text and card.attack_text != card.thwart_text and card.defense_text != card.thwart_text %}<div><span class="icon icon-special"></span>{{ card.thwart_text|raw }}</div>{% endif %}
 		</p>
 	{% endif %}
 	{% if card.scheme_acceleration or card.scheme_crisis or card.scheme_hazard %}

@@ -76,6 +76,9 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'resource_physical';
 				$optionalFields[] = 'resource_mental';
 				$optionalFields[] = 'resource_wild';
+				$optionalFields[] = 'scheme_acceleration';
+				$optionalFields[] = 'scheme_crisis';
+				$optionalFields[] = 'scheme_hazard';
 			case 'ally':
 				$mandatoryFields[] = 'cost';
 				$optionalFields[] = 'thwart';

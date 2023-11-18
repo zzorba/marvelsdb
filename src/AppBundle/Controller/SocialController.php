@@ -393,7 +393,7 @@ class SocialController extends Controller
 			f.name,
 			f.code
 			from faction f
-			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection', 'pool')
 			order by f.name asc")
 			->fetchAll();
 		$params['faction_selected'] = $faction_code;
@@ -465,7 +465,7 @@ class SocialController extends Controller
 			f.name,
 			f.code
 			from faction f
-			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection', 'pool')
 			order by f.name asc")
 			->fetchAll();
 
@@ -619,7 +619,7 @@ class SocialController extends Controller
 		f.name,
 		f.code
 		from faction f
-		where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+		where f.code IN ('justice', 'aggression', 'leadership', 'protection', 'pool')
 		order by f.name asc")
 		->fetchAll();
 

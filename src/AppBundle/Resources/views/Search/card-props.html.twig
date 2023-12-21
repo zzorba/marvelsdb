@@ -6,14 +6,14 @@
 
 {% if card.type_code == 'upgrade' or card.type_code == 'event' or card.type_code == 'support' or card.type_code == 'ally' %}
 <div class="card-props">
-	{% trans %}Cost{% endtrans %}: {{ macros.integer_or_x(card.cost) }}.
+	{% trans %}Cost{% endtrans %}: {{ macros.format_integer(card.cost) }}.
 	{% if card.type_code == 'ally' %}
 	<div>
-	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}.
+	{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star) }}.
 	</div>
 	<div>
-		{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}{% if card.attack_cost %}<span>{% for i in 1..card.attack_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
-		{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}{% if card.thwart_cost %}<span>{% for i in 1..card.thwart_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
+		{% trans %}Attack{% endtrans %}: {{ macros.format_integer(card.attack, card.attack_star) }}{% if card.attack_cost %}<span>{% for i in 1..card.attack_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
+		{% trans %}Thwart{% endtrans %}: {{ macros.format_integer(card.thwart, card.thwart_star) }}{% if card.thwart_cost %}<span>{% for i in 1..card.thwart_cost %}<span title="Cost" class="icon icon-cost color-cost"></span>{% endfor %}</span>{% endif %}.
 	</div>
 	{% endif %}
 </div>
@@ -21,9 +21,9 @@
 
 {% if card.type_code == 'player_side_scheme' %}
 <div class="card-props">
-  {% trans %}Cost{% endtrans %}: {{ macros.integer_or_x(card.cost) }}.
+  {% trans %}Cost{% endtrans %}: {{ macros.format_integer(card.cost) }}.
 	<div>
-		{% trans %}Threat{% endtrans %}: {{ macros.integer_or_x(card.base_threat) }}{% if not card.base_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+		{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
 	</div>
 </div>
 {% endif %}
@@ -31,38 +31,38 @@
 {% if card.type_code == 'hero' or card.type_code == 'alter_ego' %}
 	<div class="card-props">
 		{% if card.type_code == 'hero' %}
-			{% trans %}Thwart{% endtrans %}: {{ macros.integer_or_x(card.thwart) }}.
-			{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack) }}.
-			{% trans %}Defense{% endtrans %}: {{ macros.integer_or_x(card.defense) }}.
+			{% trans %}Thwart{% endtrans %}: {{ macros.format_integer(card.thwart, card.thwart_star) }}.
+			{% trans %}Attack{% endtrans %}: {{ macros.format_integer(card.attack, card.attack_star) }}.
+			{% trans %}Defense{% endtrans %}: {{ macros.format_integer(card.defense, card.defense_star) }}.
 		{% else %}
-			{% trans %}Recover{% endtrans %}: {{ macros.integer_or_x(card.recover) }}.
+			{% trans %}Recover{% endtrans %}: {{ macros.format_integer(card.recover, card.recover_star) }}.
 		{% endif %}
 	</div>
 	<div>
-		{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}. {% trans %}Hand Size{% endtrans %}: {{ macros.integer_or_x(card.hand_size) }}.
+		{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star) }}. {% trans %}Hand Size{% endtrans %}: {{ macros.format_integer(card.hand_size) }}.
 	</div>
 {% elseif card.type_code == 'minion' or card.type_code == 'villain' %}
 	<div>
-	{% trans %}Attack{% endtrans %}: {{ macros.integer_or_x(card.attack, card.attack_text) }}.
-	{% trans %}Scheme{% endtrans %}: {{ macros.integer_or_x(card.scheme, card.scheme_text) }}.
-	{% trans %}Health{% endtrans %}: {{ macros.integer_or_x(card.health) }}{% if card.health_per_hero %}<span class="icon icon-per_hero"></span>{% endif %}.
+	{% trans %}Attack{% endtrans %}: {{ macros.format_integer(card.attack, card.attack_star) }}.
+	{% trans %}Scheme{% endtrans %}: {{ macros.format_integer(card.scheme, card.scheme_star) }}.
+	{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star, card.health_per_hero) }}.
 	</div>
 {% elseif card.type_code == 'attachment' %}
-	{% if (card.attack is defined and card.attack != 0) or (card.attack_text is defined and card.attack_text) %}
-	  <div>{% trans %}Attack{% endtrans %}: {% if card.attack > 0 %}+{% endif %}{{ macros.integer_or_x(card.attack, card.attack_text) }}</div>
+	{% if (card.attack is defined and card.attack != 0) or (card.attack_star) %}
+	  <div>{% trans %}Attack{% endtrans %}: {% if card.attack > 0 %}+{% endif %}{{ macros.format_integer(card.attack, card.attack_star) }}</div>
 	{% endif %}
-	{% if (card.scheme is defined and card.scheme != 0) or (card.scheme_text is defined and card.scheme_text) %}
-	  <div>{% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.integer_or_x(card.scheme, card.scheme_text) }}</div>
+	{% if (card.scheme is defined and card.scheme != 0) or (card.scheme_star) %}
+	  <div>{% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.format_integer(card.scheme, card.scheme_star) }}</div>
 	{% endif %}
 {% elseif card.type_code == 'side_scheme' or card.type_code == 'main_scheme' %}
 	<div>
-	{% trans %}Starting Threat{% endtrans %}: {{ macros.integer_or_x(card.base_threat) }}{% if not card.base_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
 	{% if card.escalation_threat %}
-		{% trans %}Escalation Threat{% endtrans %}: {{ macros.integer_or_x(card.escalation_threat) }}{% if not card.escalation_threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+		{% trans %}Escalation Threat{% endtrans %}: {{ macros.format_integer(card.escalation_threat, card.escalation_threat_star, not card.escalation_threat_fixed) }}.
 	{% endif %}
 	</div>
 	{% if card.type_code == 'main_scheme' %}
-  	{% trans %}Threat{% endtrans %}: {{ macros.integer_or_x(card.threat) }}{% if not card.threat_fixed %}<span class="icon icon-per_hero"></span>{% endif %}.
+  	{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.threat, card.threat_star, not card.threat_fixed) }}.
 	{% endif %}
 {% else %}
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}

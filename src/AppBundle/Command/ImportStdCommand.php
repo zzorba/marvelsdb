@@ -454,47 +454,44 @@ class ImportStdCommand extends ContainerAwareCommand
 
 		foreach($cardsData as $cardData) {
 			$card = $this->getEntityFromData('AppBundle\Entity\Card', $cardData, [
-					'code',
-					'position',
-					'quantity',
-					'name'
+				'code',
+				'position',
+				'quantity',
+				'name'
 			], [
-					'faction_code',
-					'faction2_code',
-					'pack_code',
-					'type_code',
-					'subtype_code',
-					'set_code',
-					'back_card_code',
-					'front_card_code'
+				'faction_code',
+				'faction2_code',
+				'pack_code',
+				'type_code',
+				'subtype_code',
+				'set_code',
+				'back_card_code',
+				'front_card_code'
 			], [
-					'deck_limit',
-					'set_position',
-					'illustrator',
-					'flavor',
-					'traits',
-					'text',
-					'cost',
-					'resource_physical',
-					'resource_mental',
-					'resource_energy',
-					'resource_wild',
-					'health',
-					'restrictions',
-					'deck_options',
-					'deck_requirements',
-					'meta',
-					'subname',
-					'back_text',
-					'back_flavor',
-					'back_name',
-					'double_sided',
-					'stage',
-					'is_unique',
-					'health_per_hero',
-					'hidden',
-					'permanent',
-					'octgn_id'
+				'deck_limit',
+				'set_position',
+				'illustrator',
+				'flavor',
+				'traits',
+				'text',
+				'cost',
+				'resource_physical',
+				'resource_mental',
+				'resource_energy',
+				'resource_wild',
+				'restrictions',
+				'deck_options',
+				'deck_requirements',
+				'meta',
+				'subname',
+				'back_text',
+				'back_flavor',
+				'back_name',
+				'double_sided',
+				'is_unique',
+				'hidden',
+				'permanent',
+				'octgn_id'
 
 			]);
 			if($card) {
@@ -755,6 +752,7 @@ class ImportStdCommand extends ContainerAwareCommand
 	{
 		$optionalKeys = [
 			'boost',
+			'boost_star',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
@@ -764,14 +762,24 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importHeroData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-			'health',
-			'hand_size',
 			'attack',
 			'defense',
+			'hand_size',
+			'health',
 			'thwart',
 		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		$optionalKeys = [
+			'attack_star',
+			'defense_star',
+			'health_star',
+			'thwart_star',
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
 	}
 
@@ -785,22 +793,34 @@ class ImportStdCommand extends ContainerAwareCommand
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
+
+		$optionalKeys = [
+			'health_star',
+			'recover_star',
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 	protected function importAllyData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-			'health',
 			'attack',
+			'health',
 			'thwart',
-		];
-		$optionalKeys = [
-			'attack_cost',
-			'thwart_cost',
 		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
+
+		$optionalKeys = [
+			'attack_cost',
+			'attack_star',
+			'health_star',
+			'thwart_cost',
+			'thwart_star',
+		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
@@ -809,23 +829,16 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importMinionData(Card $card, $data)
 	{
-		$mandatoryKeys = [
-
-		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
-
 		$optionalKeys = [
-				'attack',
-				'scheme',
-				'health',
-				'boost',
-				'boost_text',
-				'attack_text',
-				'scheme_text',
-				'health_per_hero',
+			'attack',
+			'attack_star',
+			'boost',
+			'boost_star',
+			'health',
+			'health_per_hero',
+			'health_star',
+			'scheme',
+			'scheme_star',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
@@ -839,25 +852,18 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importSideSchemeData(Card $card, $data)
 	{
-		$mandatoryKeys = [
-
-		];
 		$optionalKeys = [
-				'base_threat',
-				'base_threat_fixed',
-				'escalation_threat',
-				'escalation_threat_fixed',
-				'boost',
-				'boost_text',
-				'scheme_acceleration',
-				'scheme_crisis',
-				'scheme_hazard',
+			'base_threat',
+			'base_threat_fixed',
+			'boost',
+			'boost_star',
+			'escalation_threat',
+			'escalation_threat_fixed',
+			'escalation_threat_star',
+			'scheme_acceleration',
+			'scheme_crisis',
+			'scheme_hazard',
 		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
-
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
@@ -865,25 +871,20 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importMainSchemeData(Card $card, $data)
 	{
-		$mandatoryKeys = [
-
-		];
 		$optionalKeys = [
-				'threat',
-				'base_threat',
-				'threat_fixed',
-				'base_threat_fixed',
-				'escalation_threat',
-				'escalation_threat_fixed',
-				'scheme_acceleration',
-				'scheme_crisis',
-				'scheme_hazard',
+			'base_threat',
+			'base_threat_fixed',
+			'escalation_threat',
+			'escalation_threat_fixed',
+			'escalation_threat_star',
+			'scheme_acceleration',
+			'scheme_crisis',
+			'scheme_hazard',
+			'stage',
+			'threat',
+			'threat_fixed',
+			'threat_star',
 		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
-
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
@@ -894,17 +895,16 @@ class ImportStdCommand extends ContainerAwareCommand
 		$mandatoryKeys = [
 			'base_threat',
 		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
 		$optionalKeys = [
 			'base_threat_fixed',
 			'scheme_acceleration',
 			'scheme_crisis',
 			'scheme_hazard',
 		];
-
-		foreach($mandatoryKeys as $key) {
-			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
-		}
-
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
@@ -913,9 +913,8 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importEventData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'cost'
+			'cost'
 		];
-
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
@@ -929,21 +928,21 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importVillainData(Card $card, $data)
 	{
 		$mandatoryKeys = [
-				'health',
+			'health',
 		];
-		$optionalKeys = [
-				'attack',
-				'scheme',
-				'stage',
-				'attack_text',
-				'scheme_text',
-				'health_per_hero',
-		];
-
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
 		}
 
+		$optionalKeys = [
+			'attack',
+			'attack_star',
+			'health_per_hero',
+			'health_star',
+			'scheme',
+			'scheme_star',
+			'stage',
+		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
@@ -952,8 +951,8 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importTreacheryData(Card $card, $data)
 	{
 		$optionalKeys = [
-				'boost',
-				'boost_text'
+			'boost',
+			'boost_star',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
@@ -963,12 +962,12 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importAttachmentData(Card $card, $data)
 	{
 		$optionalKeys = [
-				'boost',
-				'boost_text',
-				'attack',
-				'attack_text',
-				'scheme',
-				'scheme_text',
+			'attack',
+			'attack_star',
+			'boost',
+			'boost_star',
+			'scheme',
+			'scheme_star',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);

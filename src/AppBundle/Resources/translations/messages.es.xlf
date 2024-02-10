@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="605669cab962bf944d99ce89cf9e58d9" resname="Health">
         <source>Health</source>
-        <target>Health</target>
+        <target>Salud</target>
       </trans-unit>
       <trans-unit id="ad34a9d5d87691c743dc42cbc5e8b783" resname="Sanity">
         <source>Sanity</source>
@@ -111,11 +111,11 @@
       </trans-unit>
       <trans-unit id="b7a772bd89d5f4413e9e6373f8dede2d" resname="Your query didn't match any card.">
         <source>Your query didn't match any card.</source>
-        <target>Tu buscqueda no coincide con ninguna carta.</target>
+        <target>Tu busqueda no coincide con ninguna carta.</target>
       </trans-unit>
       <trans-unit id="681aa47f963747cc19ec382e0c7944df" resname="Related Cards">
         <source>Related Cards</source>
-        <target>Related Cards</target>
+        <target>Cartas relacionadas</target>
       </trans-unit>
       <trans-unit id="d9ed9cfb2b4c0bc9bc7e2208ee80aec0" resname="Member since">
         <source>Member since</source>
@@ -131,7 +131,7 @@
       </trans-unit>
       <trans-unit id="1c5bc0508822392420c374b729785958" resname="published reviews">
         <source>published reviews</source>
-        <target>published reviews</target>
+        <target>Reviews publicadas</target>
       </trans-unit>
       <trans-unit id="f1b4b1a6504086c413e446914bcfee1d" resname="One published reviews">
         <source>One published reviews</source>
@@ -147,15 +147,15 @@
       </trans-unit>
       <trans-unit id="ae3ef38738579f5c872777896ac4e8a0" resname="Be notified when a user comments one of your decklists">
         <source>Be notified when a user comments one of your decklists</source>
-        <target>Avisar cuando un usuario comenta uno de tus Mazos</target>
+        <target>Recibir un aviso cuando un usuario comenta uno de tus Mazos.</target>
       </trans-unit>
       <trans-unit id="d67d9db427c85b89f10737cdc923b611" resname="Be notified when a user also comments a decklist you commented">
         <source>Be notified when a user also comments a decklist you commented</source>
-        <target>Avisar cuando un usuario tambien comenta un Mazo que has comentado</target>
+        <target>Recibir un aviso cuando un usuario tambien comenta un Mazo que has comentado.</target>
       </trans-unit>
       <trans-unit id="c46d2731d32c14fd9b5b8d6372021d19" resname="Be notified when a user mentions you in a comment">
         <source>Be notified when a user mentions you in a comment</source>
-        <target>Avisar cuando un usuario te menciona en un comentario</target>
+        <target>Recibir un aviso cuando un usuario te menciona en un comentario.</target>
       </trans-unit>
       <trans-unit id="ef54f55d1717398848fc37eb0e1b309f" resname="Share your decks.">
         <source>Share your decks.</source>
@@ -163,7 +163,7 @@
       </trans-unit>
       <trans-unit id="808fc528a81ffee00ce69ee6c57ce9d6" resname="Select a faction color for your username">
         <source>Select a faction color for your username</source>
-        <target>Selecciona una faccion de color para tu nombre de usuario</target>
+        <target>Selecciona una facción de color para tu nombre de usuario</target>
       </trans-unit>
       <trans-unit id="c9cc8cce247e49bae79f15173ce97354" resname="Save">
         <source>Save</source>

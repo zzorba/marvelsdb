@@ -516,7 +516,13 @@ class CardsData
 			if(file_exists($imagepath)) {
 				$cardinfo['imagesrc'] = $imageurl;
 			} else {
-				$cardinfo['imagesrc'] = null;
+				$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'a.jpg');
+				$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
+				if(file_exists($imagepath)) {
+					$cardinfo['imagesrc'] = $imageurl;
+				} else {
+					$cardinfo['imagesrc'] = null;
+				}
 			}
 		}
 
@@ -526,7 +532,6 @@ class CardsData
 		if(isset($cardinfo['faction_code']) && $cardinfo['faction_code'] == "encounter") {
 			$cardinfo['spoiler'] = 1;
 		}
-
 
 		if(isset($cardinfo['double_sided']) && $cardinfo['double_sided']) {
 			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'b.png');
@@ -543,6 +548,7 @@ class CardsData
 				}
 			}
 		}else {
+			$cardinfo['backimagesrc'] = null;
 			$cardinfo['double_sided'] = false;
 		}
 

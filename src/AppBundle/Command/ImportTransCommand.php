@@ -91,19 +91,16 @@ class ImportTransCommand extends ContainerAwareCommand
 				$cardDupe = $dupe->getDuplicateOf()->serialize();
 				$cardDupe['code'] = $dupe->getCode();
 				$this->updateEntityFromData($locale, 'AppBundle\Entity\Card', $cardDupe, [
-						'code',
-						'name'
+					'code',
+					'name'
 				], [
-						'flavor',
-						'traits',
-						'text',
-						'subname',
-						'back_name',
-						'back_flavor',
-						'back_text',
-						'boost_text',
-						'attack_text',
-						'scheme_text'
+					'flavor',
+					'traits',
+					'text',
+					'subname',
+					'back_name',
+					'back_flavor',
+					'back_text',
 				]);
 			}
 
@@ -144,19 +141,16 @@ class ImportTransCommand extends ContainerAwareCommand
 			$progress->advance();
 
 			$this->updateEntityFromData($locale, 'AppBundle\Entity\Card', $cardData, [
-					'code',
-					'name'
+				'code',
+				'name'
 			], [
-					'flavor',
-					'traits',
-					'text',
-					'subname',
-					'back_name',
-					'back_flavor',
-					'back_text',
-					'boost_text',
-					'attack_text',
-					'scheme_text'
+				'flavor',
+				'traits',
+				'text',
+				'subname',
+				'back_name',
+				'back_flavor',
+				'back_text',
 			]);
 		}
 

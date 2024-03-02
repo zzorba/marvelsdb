@@ -19,18 +19,19 @@ format.resource = function resource(value, type, css) {
 	return string;
 };
 
-
-
 /**
- * @memberOf format
+ * @memberof format
  */
-format.fancy_int = function traits(num, special_text) {
-	var string = (num != null ? (num < 0 ? "X" : num) : '&ndash;');
-	if (special_text) {
-		if (num == null) {
-			string = '<span class="icon icon-special"></span>';
+format.fancy_int = function fancy_int(num, star, per_hero) {
+	let string = (num != null ? (num < 0 ? "X" : num) : '—');
+	if (num != null && per_hero) {
+		string += '<span class="icon icon-per_hero" />';
+	}
+	if (star) {
+		if (num != null) {
+			string += '<span class="icon icon-star" />';
 		} else {
-			string = string + '<span class="icon icon-special"></span>';
+			string = '<span class="icon icon-star" />';
 		}
 	}
 	return string;
@@ -77,10 +78,10 @@ format.pack = function pack(card) {
 	}
 
 	var text = '';
-	if (card.boost || card.boost_text){
+	if (card.boost || card.boost_star) {
 		text += '<div>Boost:' +
-			(card.boost_text ? '<span class="icon icon-special color-boost"></span>' : '') +
-			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost"></span>') : '') +
+			(card.boost_star ? '<span class="icon icon-star color-boost" />' : '') +
+			(card.boost ? Array(card.boost+1).join('<span class="icon icon-boost color-boost" />') : '') +
 			'</div>';
 	}
 	text += card.pack_name + ' #' + card.position + '. ';
@@ -105,49 +106,43 @@ format.info = function info(card) {
 	switch(card.type_code) {
 		case 'side_scheme':
 		case 'main_scheme':
-			text += '<div>Starting Threat: '+format.fancy_int(card.base_threat)+(!card.base_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.';
+			text += '<div>Starting Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed) + '.';
 			if (card.type_code == 'main_scheme') {
-				if (card.escalation_threat) {
-					text += ' Escalation Threat: '+format.fancy_int(card.escalation_threat)+(!card.escalation_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+				if (card.escalation_threat || card.escalation_threat_star) {
+					text += ' Escalation Threat: ' + format.fancy_int(card.escalation_threat, card.escalation_threat_star, !card.escalation_threat_fixed) + '.</div>';
 				} else {
 					text += '</div>';
 				}
-				text += '<div>Threat: '+format.fancy_int(card.threat)+(!card.threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.</div>';
+				text += '<div>Threat: ' + format.fancy_int(card.threat, card.threat_star, !card.threat_fixed) + '.</div>';
 			} else {
 				text += '</div>';
 			}
-
 			break;
 		case 'attachment':
-			if (card.attack || card.attack_text) {
-				text += '<div>Attack: '+(card.attack>0?'+':'')+format.fancy_int(card.attack, card.attack_text)+'</div>';
+			if (card.attack || card.attack_star) {
+				text += '<div>Attack: ' + (card.attack > 0 ? '+' : '') + format.fancy_int(card.attack, card.attack_star) + '</div>';
 			}
-			if (card.scheme || card.scheme_text) {
-				text += '<div>Scheme: '+(card.scheme>0?'+':'')+format.fancy_int(card.scheme, card.scheme_text)+'</div>';
+			if (card.scheme || card.scheme_star) {
+				text += '<div>Scheme: ' + (card.scheme > 0 ? '+' : '') + format.fancy_int(card.scheme, card.scheme_star) + '</div>';
 			}
 			break;
 		case 'villain':
 		case 'minion':
-				text += '<div>Attack: '+format.fancy_int(card.attack, card.attack_text);
-				text += ' Scheme: '+format.fancy_int(card.scheme, card.scheme_text);
-
-				if (card.health_per_hero) {
-					text += ' Health per player: '+card.health;
-				} else {
-					text += ' Health: '+card.health;
-				}
+				text += '<div>Attack: ' + format.fancy_int(card.attack, card.attack_star);
+				text += ' Scheme: ' + format.fancy_int(card.scheme, card.scheme_star);
+				text += ' Health: ' + format.fancy_int(card.health, card.health_star, card.health_per_hero);
 				text += '.</div>';
 			break;
 		case 'treachery':
 		case 'obligation':
 			break;
 		case 'hero':
-			text += '<div>Thwart: '+card.thwart+'. Attack: '+card.attack+'. Defense: '+card.defense+'.</div>';
-			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
+			text += '<div>Thwart: ' + format.fancy_int(card.thwart, card.thwart_star) + '. Attack: ' + format.fancy_int(card.attack, card.attack_star) + '. Defense: ' + format.fancy_int(card.defense, card.defense_star) + '.</div>';
+			text += '<div>Hit Points: ' + card.health + '. Hand Size: ' + card.hand_size + '.</div>'
 			break;
 		case 'alter_ego':
-			text += '<div>Recover: '+card.recover+'.</div>';
-			text += '<div>Hit Points: '+card.health+'. Hand Size: '+card.hand_size+'.</div>'
+			text += '<div>Recover: ' + format.fancy_int(card.recover, card.recover_star) + '.</div>';
+			text += '<div>Hit Points: ' + card.health + '. Hand Size: ' + card.hand_size + '.</div>'
 			break;
 		case 'support':
 		case 'ally':
@@ -156,40 +151,40 @@ format.info = function info(card) {
 		case 'event':
 		case 'player_side_scheme':
 			if (card.type_code != 'resource') {
-				text += '<div>Cost: '+format.fancy_int(card.cost)+'. '+'</div>';
+				text += '<div>Cost: ' + format.fancy_int(card.cost) + '.</div>';
 			}
 			if (card.type_code == 'player_side_scheme') {
-				text += '<div>Threat: '+format.fancy_int(card.base_threat)+(!card.base_threat_fixed?'<span class="icon icon-per_hero"></span>':'') + '.';
+				text += '<div>Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed) + '.</div>';
 			}
 			if (card.resource_physical || card.resource_mental || card.resource_energy || card.resource_wild){
 				text += '<div>Resource: ';
 				if (card.resource_physical){
-					text += Array(card.resource_physical+1).join('<span class="icon icon-physical color-physical"></span>');
+					text += Array(card.resource_physical+1).join('<span class="icon icon-physical color-physical" />');
 				}
 				if (card.resource_mental){
-					text += Array(card.resource_mental+1).join('<span class="icon icon-mental color-mental"></span>');
+					text += Array(card.resource_mental+1).join('<span class="icon icon-mental color-mental" />');
 				}
 				if (card.resource_energy){
-					text += Array(card.resource_energy+1).join('<span class="icon icon-energy color-energy"></span>');
+					text += Array(card.resource_energy+1).join('<span class="icon icon-energy color-energy" />');
 				}
 				if (card.resource_wild){
-					text += Array(card.resource_wild+1).join('<span class="icon icon-wild color-wild"></span>');
+					text += Array(card.resource_wild+1).join('<span class="icon icon-wild color-wild" />');
 				}
 				text += '</div>';
 			}
 			if (card.type_code == 'ally') {
-				text += '<div>Attack: '+format.fancy_int(card.attack);
+				text += '<div>Attack: ' + format.fancy_int(card.attack, card.attack_star);
 				if (card.attack_cost) {
-					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+					text += Array(card.attack_cost+1).join('<span class="icon icon-cost color-cost" />');
 				}
-				text += ' Thwart: '+format.fancy_int(card.thwart);
+				text += ' Thwart: ' + format.fancy_int(card.thwart, card.thwart_star);
 				if (card.thwart_cost) {
-					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost"></span>');
+					text += Array(card.thwart_cost+1).join('<span class="icon icon-cost color-cost" />');
 				}
 				text += '.</div>';
 			}
 			if (card.health){
-				text += '<div>Health: '+format.fancy_int(card.health)+'.</div>';
+				text += '<div>Health: ' + format.fancy_int(card.health, card.health_star) + '.</div>';
 			}
 			break;
 	}
@@ -201,49 +196,24 @@ format.info = function info(card) {
  */
 format.text = function text(card, alternate) {
 	var text = card.text || '';
-	if (alternate){
+	if (alternate) {
 		text = card[alternate];
 	}
 	text = text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
+	text = text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1" />');
 	text = text.split("\n").join('</p><p>');
-	if (card.attack_text || card.scheme_text) {
-		if (card.attack_text) {
-		var attack_text = card.attack_text;
-			attack_text = attack_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-			attack_text = attack_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-			attack_text = attack_text.split("\n").join('</p><p>')
-			text += '<p><span class="icon icon-special"></span>: ' + attack_text + '</p>';
-		}
-		if (card.scheme_text && card.attack_text != card.scheme_text) {
-			// Some characters have the same * text on both Attack and Scheme,
-			// so don't show it twice. Yon-Rogg.
-			var scheme_text = card.scheme_text;
-			scheme_text = scheme_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-			scheme_text = scheme_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-			scheme_text = scheme_text.split("\n").join('</p><p>')
-			text += '<p><span class="icon icon-special"></span>: ' + scheme_text + '</p>';
-		}
-	}
 	if (card.scheme_acceleration || card.scheme_crisis || card.scheme_hazard) {
 		text += '<p>';
 		for (i = 0; i < (card.scheme_acceleration || 0); i++) {
-			text += '<span name="Acceleration" class="icon icon-acceleration"></span>';
+			text += '<span name="Acceleration" class="icon icon-acceleration" />';
 		}
-		for (i = 0; i < (card.scheme_crisis || 0); i++){
-			text += '<span name="Crisis" class="icon icon-crisis"></span>';
+		for (i = 0; i < (card.scheme_crisis || 0); i++) {
+			text += '<span name="Crisis" class="icon icon-crisis" />';
 		}
-		for (i = 0; i < (card.scheme_hazard || 0); i++){
-			text += '<span name="Hazard" class="icon icon-hazard"></span>';
+		for (i = 0; i < (card.scheme_hazard || 0); i++) {
+			text += '<span name="Hazard" class="icon icon-hazard" />';
 		}
 		text += '</p>';
-	}
-	if (card.boost_text) {
-		var boost_text = card.boost_text;
-		boost_text = boost_text.replace(/\[\[([^\]]+)\]\]/g, '<b class="card-traits"><i>$1</i></b>');
-		boost_text = boost_text.replace(/\[(\w+)\]/g, '<span title="$1" class="icon-$1"></span>');
-		boost_text = boost_text.split("\n").join('</p><p>');
-		text += '<hr/><p><span class="icon icon-special"></span><b>Boost</b>: ' + boost_text + '</p>';
 	}
 	return '<p>'+text+'</p>';
 };

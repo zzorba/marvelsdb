@@ -748,7 +748,12 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importUpgradeData(Card $card, $data)
 	{
-
+		$optionalKeys = [
+			'scheme_hazard',
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 	protected function importObligationData(Card $card, $data)
@@ -797,6 +802,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		$optionalKeys = [
 			'attack_cost',
 			'thwart_cost',
+			'scheme_hazard',
 		];
 		foreach($mandatoryKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);

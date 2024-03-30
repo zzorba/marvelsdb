@@ -112,14 +112,6 @@ AppBundle\Entity\Card:
         boost:
             type: smallint
             nullable: true
-        boostText:
-            type: text
-            nullable: true
-            gedmo:
-                - translatable
-        realBoostText:
-            type: text
-            nullable: true
         dateCreation:
             type: datetime
             nullable: false
@@ -167,19 +159,9 @@ AppBundle\Entity\Card:
         scheme:
             type: smallint
             nullable: true
-        schemeText:
-            type: text
-            nullable: true
-            gedmo:
-                - translatable
         attack:
             type: smallint
             nullable: true
-        attackText:
-            type: text
-            nullable: true
-            gedmo:
-                - translatable
         attackCost:
             type: smallint
             nullable: true
@@ -302,6 +284,42 @@ AppBundle\Entity\Card:
             type: string
             nullable: true
             column: octgn_id
+        attackStar:
+            type: boolean
+            nullable: true
+            column: attack_star
+        thwartStar:
+            type: boolean
+            nullable: true
+            column: thwart_star
+        defenseStar:
+            type: boolean
+            nullable: true
+            column: defense_star
+        healthStar:
+            type: boolean
+            nullable: true
+            column: health_star
+        recoverStar:
+            type: boolean
+            nullable: true
+            column: recover_star
+        schemeStar:
+            type: boolean
+            nullable: true
+            column: scheme_star
+        boostStar:
+            type: boolean
+            nullable: true
+            column: boost_star
+        threatStar:
+            type: boolean
+            nullable: true
+            column: threat_star
+        escalationThreatStar:
+            type: boolean
+            nullable: true
+            column: escalation_threat_star
     uniqueConstraints:
         card_code_idx:
             columns: [ code ]

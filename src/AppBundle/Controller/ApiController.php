@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use \DateTime;
 
 class ApiController extends Controller
 {
@@ -306,6 +307,7 @@ class ApiController extends Controller
 	 */
 	public function listCardsAction(Request $request)
 	{
+		ini_set('zlib.output_compression', 1);
 		$locale = $request->getLocale();
 
 		$response = new Response();
@@ -319,35 +321,57 @@ class ApiController extends Controller
 		$jsonp = $request->query->get('jsonp');
 		$include_encounter = $request->query->get('encounter');
 
+
 		if ($include_encounter){
-			$list_cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findAll();
+			$file = "cards-all-";
 		}else {
-			$list_cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findAllWithoutEncounter();
+			$file = "cards-player-";
 		}
+		$file .= $locale.".json";
 
-		// check the last-modified-since header
+		$webdir = $this->container->get('kernel')->getRootDir() . "/../web";
+		$file = $webdir."/".$file;
 
-		$lastModified = NULL;
-		/* @var $card \AppBundle\Entity\Card */
-		foreach($list_cards as $card) {
-			if(!$lastModified || $lastModified < $card->getDateUpdate()) {
-				$lastModified = $card->getDateUpdate();
+		if (file_exists($file)) {
+			$date = new \DateTime();
+			$lastModified = $date->setTimestamp(filemtime($file));
+			$response->setLastModified($lastModified);
+			if ($response->isNotModified($request)) {
+				return $response;
 			}
-		}
-		$response->setLastModified($lastModified);
-		if ($response->isNotModified($request)) {
-			return $response;
-		}
+			$content = file_get_contents($file);
+		} else {
 
-		// build the response
+			if ($include_encounter){
+				$list_cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findAll();
+			}else {
+				$list_cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findAllWithoutEncounter();
+			}
 
-		$cards = array();
-		/* @var $card \AppBundle\Entity\Card */
-		foreach($list_cards as $card) {
-			$cards[] = $this->get('cards_data')->getCardInfo($card, true, "en");
+			// check the last-modified-since header
+
+			$lastModified = NULL;
+			/* @var $card \AppBundle\Entity\Card */
+			foreach($list_cards as $card) {
+				if(!$lastModified || $lastModified < $card->getDateUpdate()) {
+					$lastModified = $card->getDateUpdate();
+				}
+			}
+			$response->setLastModified($lastModified);
+			if ($response->isNotModified($request)) {
+				return $response;
+			}
+
+			// build the response
+
+			$cards = array();
+			/* @var $card \AppBundle\Entity\Card */
+			foreach($list_cards as $card) {
+				$cards[] = $this->get('cards_data')->getCardInfo($card, true, "en");
+			}
+
+			$content = json_encode($cards);
 		}
-
-		$content = json_encode($cards);
 		if(isset($jsonp))
 		{
 			$content = "$jsonp($content)";

@@ -471,7 +471,7 @@ class BuilderController extends Controller
 			try {
 				$meta_json = json_decode($meta);
 				if ($meta_json && isset($meta_json->aspect)) {
-					if ($meta_json->aspect == "leadership" || $meta_json->aspect == "protection" || $meta_json->aspect == "justice" || $meta_json->aspect == "aggression") {
+					if ($meta_json->aspect == "leadership" || $meta_json->aspect == "protection" || $meta_json->aspect == "justice" || $meta_json->aspect == "aggression" || $meta_json->aspect == "pool") {
 
 					} else {
 						return false;
@@ -741,7 +741,7 @@ class BuilderController extends Controller
 			f.name,
 			f.code
 			from faction f
-			where f.code IN ('justice', 'aggression', 'leadership', 'protection')
+			where f.code IN ('justice', 'aggression', 'leadership', 'protection', 'pool')
 			order by f.name asc")
 			->fetchAll();
 

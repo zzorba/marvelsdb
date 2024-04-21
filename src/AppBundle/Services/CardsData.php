@@ -37,9 +37,13 @@ class CardsData
 			'[wild]' => '<span class="icon-wild" title="Wild"></span>',
 			'[mental]' => '<span class="icon-mental" title="Mental"></span>',
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
+			'[cost]' => '<span class="icon-cost" title="Cost"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
 			'[star]' => '<span class="icon-star" title="Star"></span>',
-			'[boost]' => '<span class="icon-boost" title="Boost"></span>'
+			'[boost]' => '<span class="icon-boost" title="Boost"></span>',
+			'[crisis]' => '<span class="icon-crisis" title="Crisis"></span>',
+			'[acceleration]' => '<span class="icon-acceleration" title="Acceleration"></span>',
+			'[hazard]' => '<span class="icon-hazard" title="Hazard"></span>'
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b class="card-traits"><i>${1}</i></b>', $text);
 		return str_replace(array_keys($displayTextReplacements), array_values($displayTextReplacements), $text);

@@ -6,29 +6,15 @@
 		}
 	});
 
-
-	var charts = [],
-		faction_colors = {
-	
-			leadership:
-				'#2b80c5',
-	
-			aggression :
-				'#cc3038',
-	
-			protection :
-				'#107116',
-	
-			basic :
-				'#808080',
-	
-			justice :
-				'#c0c000',
-	
-			hero :
-				'#AB006A'
-	
-		};
+	var faction_colors = {
+		leadership: '#2b80c5',
+		aggression: '#cc3038',
+		protection: '#107116',
+		basic: '#808080',
+		justice: '#c0c000',
+		pool: '#d074ac',
+		hero: '#AB006A'
+	};
 
 deck_charts.chart_faction = function chart_faction() {
 	var factions = {};

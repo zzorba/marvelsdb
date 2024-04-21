@@ -39,7 +39,7 @@ class CardsData
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
 			'[cost]' => '<span class="icon-cost" title="Cost"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',
-			'[star]' => '<span class="icon-special" title="Star"></span>',
+			'[star]' => '<span class="icon-star" title="Star"></span>',
 			'[boost]' => '<span class="icon-boost" title="Boost"></span>',
 			'[crisis]' => '<span class="icon-crisis" title="Crisis"></span>',
 			'[acceleration]' => '<span class="icon-acceleration" title="Acceleration"></span>',
@@ -520,7 +520,13 @@ class CardsData
 			if(file_exists($imagepath)) {
 				$cardinfo['imagesrc'] = $imageurl;
 			} else {
-				$cardinfo['imagesrc'] = null;
+				$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'a.jpg');
+				$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
+				if(file_exists($imagepath)) {
+					$cardinfo['imagesrc'] = $imageurl;
+				} else {
+					$cardinfo['imagesrc'] = null;
+				}
 			}
 		}
 
@@ -530,7 +536,6 @@ class CardsData
 		if(isset($cardinfo['faction_code']) && $cardinfo['faction_code'] == "encounter") {
 			$cardinfo['spoiler'] = 1;
 		}
-
 
 		if(isset($cardinfo['double_sided']) && $cardinfo['double_sided']) {
 			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'b.png');
@@ -547,6 +552,7 @@ class CardsData
 				}
 			}
 		}else {
+			$cardinfo['backimagesrc'] = null;
 			$cardinfo['double_sided'] = false;
 		}
 
@@ -584,9 +590,6 @@ class CardsData
 			if (isset($cardinfo['back_text'])){
 				$cardinfo['back_text'] = $this->replaceSymbols($cardinfo['back_text']);
 				$cardinfo['back_text'] = $this->splitInParagraphs($cardinfo['back_text']);
-			}
-			if (isset($cardinfo['boost_text'])){
-				$cardinfo['boost_text'] = $this->replaceSymbols($cardinfo['boost_text']);
 			}
 			if (isset($cardinfo['deck_requirements']) && $cardinfo['deck_requirements']){
 				$cardinfo['deck_requirements'] = json_decode($cardinfo['deck_requirements']);

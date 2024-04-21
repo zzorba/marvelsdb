@@ -15,41 +15,41 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 		if(empty($this->code)) return $serialized;
 
 		$mandatoryFields = [
-				'code',
-				'position',
-				'quantity',
-				'name'
+			'code',
+			'position',
+			'quantity',
+			'name'
 		];
 
 		$optionalFields = [
-				'illustrator',
-				'flavor',
-				'traits',
-				'text',
-				'cost',
-				'octgn_id',
-				'subname',
-				'deck_limit',
-				'back_text',
-				'back_name',
-				'back_flavor',
-				'permanent',
-				'hidden',
-				'double_sided',
-				'card_set',
-				'set_position',
-				'is_unique',
-				'meta'
+			'illustrator',
+			'flavor',
+			'traits',
+			'text',
+			'cost',
+			'octgn_id',
+			'subname',
+			'deck_limit',
+			'back_text',
+			'back_name',
+			'back_flavor',
+			'permanent',
+			'hidden',
+			'double_sided',
+			'card_set',
+			'set_position',
+			'is_unique',
+			'meta'
 		];
 
 		$externalFields = [
-				'faction',
-				'faction2',
-				'pack',
-				'card_set',
-				'type',
-				'linked_to',
-				'duplicate_of'
+			'faction',
+			'faction2',
+			'pack',
+			'card_set',
+			'type',
+			'linked_to',
+			'duplicate_of'
 		];
 
 		switch($this->type->getCode()) {
@@ -76,72 +76,87 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'resource_physical';
 				$optionalFields[] = 'resource_mental';
 				$optionalFields[] = 'resource_wild';
+				$optionalFields[] = 'scheme_acceleration';
+				$optionalFields[] = 'scheme_crisis';
+				$optionalFields[] = 'scheme_hazard';
 			case 'ally':
 				$mandatoryFields[] = 'cost';
-				$optionalFields[] = 'thwart';
-				$optionalFields[] = 'thwart_cost';
 				$optionalFields[] = 'attack';
 				$optionalFields[] = 'attack_cost';
+				$optionalFields[] = 'attack_star';
 				$optionalFields[] = 'health';
+				$optionalFields[] = 'health_star';
 				$optionalFields[] = 'resource_energy';
 				$optionalFields[] = 'resource_physical';
 				$optionalFields[] = 'resource_mental';
 				$optionalFields[] = 'resource_wild';
+				$optionalFields[] = 'thwart';
+				$optionalFields[] = 'thwart_cost';
+				$optionalFields[] = 'thwart_star';
 				break;
 			case 'hero':
-				$mandatoryFields[] = 'thwart';
 				$mandatoryFields[] = 'attack';
-				$mandatoryFields[] = 'defense';
-				$mandatoryFields[] = 'health';
-				$mandatoryFields[] = 'hand_size';
 				$mandatoryFields[] = 'deck_requirements';
+				$mandatoryFields[] = 'defense';
+				$mandatoryFields[] = 'hand_size';
+				$mandatoryFields[] = 'health';
+				$mandatoryFields[] = 'thwart';
+				$optionalFields[] = 'attack_star';
+				$optionalFields[] = 'defense_star';
+				$optionalFields[] = 'health_star';
+				$optionalFields[] = 'thwart_star';
 				break;
 			case 'alter_ego':
-				$mandatoryFields[] = 'recover';
-				$mandatoryFields[] = 'health';
 				$mandatoryFields[] = 'hand_size';
 				$mandatoryFields[] = 'deck_requirements';
+				$mandatoryFields[] = 'health';
+				$mandatoryFields[] = 'recover';
+				$optionalFields[] = 'health_star';
+				$optionalFields[] = 'recover_star';
 				break;
 			case "treachery":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_star';
 				break;
 			case "attachment":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'boost_text';
-				$optionalFields[] = 'boost';
 				$optionalFields[] = 'attack';
-				$optionalFields[] = 'attack_text';
+				$optionalFields[] = 'attack_star';
+				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_star';
 				$optionalFields[] = 'scheme';
-				$optionalFields[] = 'scheme_text';
+				$optionalFields[] = 'scheme_star';
 				break;
 			case "villain":
-				$optionalFields[] = 'scheme';
-				$optionalFields[] = 'scheme_text';
 				$optionalFields[] = 'attack';
-				$optionalFields[] = 'attack_text';
+				$optionalFields[] = 'attack_star';
 				$optionalFields[] = 'health';
 				$optionalFields[] = 'health_per_hero';
+				$optionalFields[] = 'health_star';
+				$optionalFields[] = 'scheme';
+				$optionalFields[] = 'scheme_star';
 				$optionalFields[] = 'stage';
 			case "minion":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'scheme';
-				$optionalFields[] = 'scheme_text';
 				$optionalFields[] = 'attack';
-				$optionalFields[] = 'attack_text';
+				$optionalFields[] = 'attack_star';
+				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_star';
 				$optionalFields[] = 'health';
 				$optionalFields[] = 'health_per_hero';
-				$optionalFields[] = 'boost';
-				$optionalFields[] = 'boost_text';
+				$optionalFields[] = 'health_star';
+				$optionalFields[] = 'scheme';
+				$optionalFields[] = 'scheme_star';
 			case "sideScheme":
 				$externalFields[] = 'subtype';
-				$optionalFields[] = 'boost';
-				$optionalFields[] = 'boost_text';
 				$optionalFields[] = 'base_threat';
 				$optionalFields[] = 'base_threat_fixed';
+				$optionalFields[] = 'boost';
+				$optionalFields[] = 'boost_star';
 				$optionalFields[] = 'escalation_threat';
 				$optionalFields[] = 'escalation_threat_fixed';
+				$optionalFields[] = 'escalation_threat_star';
 				$optionalFields[] = 'scheme_acceleration';
 				$optionalFields[] = 'scheme_crisis';
 				$optionalFields[] = 'scheme_hazard';
@@ -152,9 +167,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'base_threat_fixed';
 				$optionalFields[] = 'escalation_threat';
 				$optionalFields[] = 'escalation_threat_fixed';
+				$optionalFields[] = 'escalation_threat_star';
+				$optionalFields[] = 'stage';
 				$optionalFields[] = 'threat';
 				$optionalFields[] = 'threat_fixed';
-				$optionalFields[] = 'stage';
+				$optionalFields[] = 'threat_star';
 				break;
 		}
 
@@ -186,7 +203,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 		throw new \Exception("unserialize() method unsupported");
 	}
 
-  public function toString() {
+	public function toString() {
 		return $this->name;
 	}
 
@@ -297,35 +314,59 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	private $health;
 
 	/**
+	 * @var boolean
+	 */
+	private $healthStar;
+
+	/**
 	 * @var integer
 	 */
 	private $attack;
 
-    /**
-     * @var integer
-     */
-    private $attackCost;
+	/**
+	 * @var integer
+	 */
+	private $attackCost;
+
+	/**
+	 * @var boolean
+	 */
+	private $attackStar;
 
 	/**
 	 * @var integer
 	 */
 	private $thwart;
 
-    /**
-     * @var integer
-     */
-    private $thwartCost;
+	/**
+	 * @var integer
+	 */
+	private $thwartCost;
+
+	/**
+	 * @var boolean
+	 */
+	private $thwartStar;
 
 	/**
 	 * @var integer
 	 */
 	private $defense;
 
+	/**
+	 * @var boolean
+	 */
+	private $defenseStar;
 
 	/**
 	 * @var integer
 	 */
 	private $recover;
+
+	/**
+	 * @var boolean
+	 */
+	private $recoverStar;
 
 	/**
 	 * @var integer
@@ -337,7 +378,6 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 */
 	private $traits;
 
-
 	/**
 	 * @var string
 	 */
@@ -348,7 +388,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 */
 	private $deckRequirements;
 
-		/**
+	/**
 	 * @var string
 	 */
 	private $deckOptions;
@@ -857,6 +897,29 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	public function getHealthPerPlayer()
 	{
 		return $this->healthPerPlayer;
+	}
+
+	/**
+	 * Set healthStar
+	 *
+	 * @param boolean $healthStar
+	 *
+	 * @return Card
+	 */
+	public function setHealthStar($healthStar)
+	{
+		$this->healthStar = $healthStar;
+		return $this;
+	}
+
+	/**
+	 * Get healthStar
+	 *
+	 * @return boolean
+	 */
+	public function getHealthStar()
+	{
+		return $this->healthStar;
 	}
 
 	/**
@@ -1825,6 +1888,29 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
+     * Set thwartStar
+     *
+     * @param boolean $thwartStar
+     *
+     * @return Card
+     */
+    public function setThwartStar($thwartStar)
+    {
+        $this->thwartStar = $thwartStar;
+        return $this;
+    }
+
+    /**
+     * Get thwartStar
+     *
+     * @return boolean
+     */
+    public function getThwartStar()
+    {
+        return $this->thwartStar;
+    }
+
+    /**
      * Set attack
      *
      * @param integer $attack
@@ -1870,6 +1956,29 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getAttackCost()
     {
         return $this->attackCost;
+    }
+
+    /**
+     * Set attackStar
+     *
+     * @param boolean $attackStar
+     *
+     * @return Card
+     */
+    public function setAttackStar($attackStar)
+    {
+        $this->attackStar = $attackStar;
+        return $this;
+    }
+
+    /**
+     * Get attackStar
+     *
+     * @return boolean
+     */
+    public function getAttackStar()
+    {
+        return $this->attackStar;
     }
 
     /**
@@ -1921,6 +2030,29 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
+     * Set defenseStar
+     *
+     * @param boolean $defenseStar
+     *
+     * @return Card
+     */
+    public function setDefenseStar($defenseStar)
+    {
+        $this->defenseStar = $defenseStar;
+        return $this;
+    }
+
+    /**
+     * Get defenseStar
+     *
+     * @return boolean
+     */
+    public function getDefenseStar()
+    {
+        return $this->defenseStar;
+    }
+
+    /**
      * Set recover
      *
      * @param integer $recover
@@ -1967,62 +2099,28 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     {
         return $this->recoverCost;
     }
-    /**
-     * @var string
-     */
-    private $boostText;
 
     /**
-     * @var string
-     */
-    private $realBoostText;
-
-    /**
-     * Set boostText
+     * Set recoverStar
      *
-     * @param string $boostText
+     * @param boolean $recoverStar
      *
      * @return Card
      */
-    public function setBoostText($boostText)
+    public function setRecoverStar($recoverStar)
     {
-        $this->boostText = $boostText;
-
+        $this->recoverStar = $recoverStar;
         return $this;
     }
 
     /**
-     * Get boostText
+     * Get recoverStar
      *
-     * @return string
+     * @return boolean
      */
-    public function getBoostText()
+    public function getRecoverStar()
     {
-        return $this->boostText;
-    }
-
-    /**
-     * Set realBoostText
-     *
-     * @param string $realBoostText
-     *
-     * @return Card
-     */
-    public function setRealBoostText($realBoostText)
-    {
-        $this->realBoostText = $realBoostText;
-
-        return $this;
-    }
-
-    /**
-     * Get realBoostText
-     *
-     * @return string
-     */
-    public function getRealBoostText()
-    {
-        return $this->realBoostText;
+        return $this->recoverStar;
     }
 
     /**
@@ -2030,6 +2128,10 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
      */
     private $scheme;
 
+    /**
+     * @var boolean
+     */
+    private $schemeStar;
 
     /**
      * Set scheme
@@ -2056,10 +2158,32 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
+     * Set schemeStar
+     *
+     * @param boolean $schemeStar
+     *
+     * @return Card
+     */
+    public function setSchemeStar($schemeStar)
+    {
+        $this->schemeStar = $schemeStar;
+        return $this;
+    }
+
+    /**
+     * Get schemeStar
+     *
+     * @return boolean
+     */
+    public function getSchemeStar()
+    {
+        return $this->schemeStar;
+    }
+
+    /**
      * @var integer
      */
     private $setPosition;
-
 
     /**
      * Set setPosition
@@ -2142,11 +2266,16 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     {
         return $this->handSize;
     }
+
     /**
      * @var integer
      */
     private $boost;
 
+    /**
+     * @var boolean
+     */
+    private $boostStar;
 
     /**
      * Set boost
@@ -2171,6 +2300,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     {
         return $this->boost;
     }
+
+    /**
+     * Set boostStar
+     *
+     * @param boolean $boostStar
+     *
+     * @return Card
+     */
+    public function setBoostStar($boostStar)
+    {
+        $this->boostStar = $boostStar;
+        return $this;
+    }
+
+    /**
+     * Get boostStar
+     *
+     * @return boolean
+     */
+    public function getBoostStar()
+    {
+        return $this->boostStar;
+    }
+
     /**
      * @var boolean
      */
@@ -2187,6 +2340,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     private $escalationThreatFixed;
 
     /**
+     * @var boolean
+     */
+    private $escalationThreatStar;
+
+    /**
      * @var integer
      */
     private $threat;
@@ -2195,6 +2353,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
      * @var boolean
      */
     private $threatFixed;
+
+    /**
+     * @var boolean
+     */
+    private $threatStar;
 
 
     /**
@@ -2294,6 +2457,29 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
+     * Set escalationThreatStar
+     *
+     * @param boolean $escalationThreatStar
+     *
+     * @return Card
+     */
+    public function setEscalationThreatStar($escalationThreatStar)
+    {
+        $this->escalationThreatStar = $escalationThreatStar;
+        return $this;
+    }
+
+    /**
+     * Get escalationThreatStar
+     *
+     * @return boolean
+     */
+    public function getEscalationThreatStar()
+    {
+        return $this->escalationThreatStar;
+    }
+
+    /**
      * Set threat
      *
      * @param integer $threat
@@ -2340,6 +2526,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     {
         return $this->threatFixed;
     }
+
+    /**
+     * Set threatStar
+     *
+     * @param boolean $threatStar
+     *
+     * @return Card
+     */
+    public function setThreatStar($threatStar)
+    {
+        $this->threatStar = $threatStar;
+        return $this;
+    }
+
+    /**
+     * Get threatStar
+     *
+     * @return boolean
+     */
+    public function getThreatStar()
+    {
+        return $this->threatStar;
+    }
+
     /**
      * @var integer
      */
@@ -2426,63 +2636,5 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getSchemeHazard()
     {
         return $this->schemeHazard;
-    }
-    /**
-     * @var string
-     */
-    private $schemeText;
-
-    /**
-     * @var string
-     */
-    private $attackText;
-
-
-    /**
-     * Set schemeText
-     *
-     * @param string $schemeText
-     *
-     * @return Card
-     */
-    public function setSchemeText($schemeText)
-    {
-        $this->schemeText = $schemeText;
-
-        return $this;
-    }
-
-    /**
-     * Get schemeText
-     *
-     * @return string
-     */
-    public function getSchemeText()
-    {
-        return $this->schemeText;
-    }
-
-    /**
-     * Set attackText
-     *
-     * @param string $attackText
-     *
-     * @return Card
-     */
-    public function setAttackText($attackText)
-    {
-        $this->attackText = $attackText;
-
-        return $this;
-    }
-
-    /**
-     * Get attackText
-     *
-     * @return string
-     */
-    public function getAttackText()
-    {
-        return $this->attackText;
     }
 }

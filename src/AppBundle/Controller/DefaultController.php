@@ -37,7 +37,7 @@ class DefaultController extends Controller
 		$type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
 		$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $type], ['id' => 'ASC']);
 
-		$date1 = strtotime('2022-05-22');
+		$date1 = strtotime('2024-03-30');
 		$date2 = time();
 
 		$year1 = date('Y', $date1);
@@ -117,7 +117,7 @@ class DefaultController extends Controller
 		$cards_offset = [0,10,20];
 		if ($days_since >= 0) {
 			$card_offset = $cards_offset[$days_since % 3] + (floor($days_since / 3));
-			$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['card_set' => null], ['id' => 'ASC'], 1, $card_offset);
+			$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['card_set' => null, 'duplicate_of' => null], ['id' => 'ASC'], 1, $card_offset);
 			if (count($cards) > 0) {
 				$card_of_the_day = $cards[0];
 			} else {

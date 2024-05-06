@@ -1,0 +1,664 @@
+[
+  {
+    "code": "01001a",
+    "flavor": "\"Nur die freundliche Spinne aus der Nachbarschaft.\"",
+    "name": "Spider-Man",
+    "text": "Spinnensinn — <b>Unterbrechung</b>: Sobald der Schurke einen Angriff gegen dich einleitet, ziehe 1 Karte.",
+    "traits": "Avenger."
+  },
+  {
+    "code": "01001b",
+    "flavor": "\"Im Moment würde ich die ganze Spider-Man-Nummer gegen einen Schaukelstuhl und ein gutes Buch eintauschen.\"",
+    "name": "Peter Parker",
+    "text": "Wissenschaftler — <b>Ressource</b>: Erzeuge eine [mental]-Ressource. (Nur ein Mal pro Runde.)",
+    "traits": "Genio."
+  },
+  {
+    "code": "01002",
+    "flavor": "\"Ich bin keine Heldin. Ich bin eine Diebin.\"",
+    "name": "Black Cat",
+    "subname": "Felicia Hardy",
+    "text": "<b>Erzwungene Reaktion</b>: Nachdem du Black Cat gespielt hast, lege die obersten 2 Karten deines Decks ab. Nimm jede auf diese Weise abgelegte Karte mit einer aufgedruckten [mental]-Ressource auf deine Hand.",
+    "traits": "Held für Geld."
+  },
+  {
+    "code": "01003",
+    "flavor": "\"Hast du traininert? Da hat mich fast getroffen.\" -- Spider-Man",
+    "name": "Rückwärtssalto",
+    "text": "<b>Unterbrechung</b> <i>(Verteidigung)</i>: Sobald du eine beliebige Menge an Schaden durch einen Angriff nehmen würdest, verhindere allen Schaden davon.",
+    "traits": "Fertigkeit. Verteidigung."
+  },
+  {
+    "code": "01004",
+    "flavor": "\"Mein Spinnensinn klingelt!\" -- Spider-Man",
+    "name": "Verstärkter Spinnensinn",
+    "text": "<b>Held - Unterbrechung </b>: Sobald eine Verratskarte vom Begegnungsdeck aufgedeckt wird, hebe deren \"<b>Sobald aufgedeckt</b>\"-Effekt auf.",
+    "traits": "Superkraft."
+  },
+  {
+    "code": "01005",
+    "flavor": "\"Halali!\" -- Spider-Man",
+    "name": "Schwingender Netz-Kick",
+    "text": "<b>Held-Aktion</b> <i>(Angriff)</i>: Füge einem Gegner 8 Schaden zu.",
+    "traits": "Angriff. Fliegend. Superkraft."
+  },
+  {
+    "code": "01006",
+    "flavor": "\"Meine Güte, Peter! Du bist in letzter Zeit so ungeschickt.\"",
+    "name": "Tante May",
+    "text": "<b>Alter Ego - Aktion</b>: Erschöpfe Tante May → heile 4 Schaden von Peter Parker.",
+    "traits": "Person."
+  },
+  {
+    "code": "01007",
+    "name": "Spider-Tracer",
+    "text": "Hänge diese Karte an einen Schergen an.\n<b>Erzwungene Unterbrechung</b>: Sobald der Scherge mit diesem Upgrade besiegt wird, entferne 3 Bedrohung von einem Plan.",
+    "traits": "Gegenstand. Tech."
+  },
+  {
+    "code": "01008",
+    "name": "Netzsprüher",
+    "text": "Anwendungen (3 Netzmarker). <i>(Kommt mit 3 Marken ins Spiel Sobald all Marker entfernt sind, lege diese Karte ab)</i>\n<b>Held - Ressource</b>: Erschöpfe Netzsprüher und entferne 1 Netzmarker von ihm → erzeuge eine [wild]-Ressource.",
+    "traits": "Gegenstand. Tech."
+  },
+  {
+    "code": "01009",
+    "name": "Eingesponnen",
+    "text": "Nur Heldengestalt. Hänge diese Karte an einen Gegner an. Max. 1 pro Gegner.\n<b>Erzwungene Unterbrechung</b>: Sobald der Gegner mit diesem Upgrade angreifen würde, lege stattdessen Eingesponnen ab. Betäube dann den Gegner.",
+    "traits": "Zustand."
+  },
+  {
+    "code": "01010a",
+    "flavor": "\"Ich gebe niemals auf.\"",
+    "name": "Captain Marvel",
+    "text": "Umleiten — <b>Aktion</b>: Gib eine [energy]-Ressource aus und heile 1 Schaden von Captain Marvel → ziehe 1 Karte. (Nur einmal pro Runde.)",
+    "traits": "Avenger. Soldat.."
+  },
+  {
+    "code": "01010b",
+    "flavor": "\"Es ist mein AUfgabe, die Erde und jede darauf zu beschützen.\"",
+    "name": "Carol Danvers",
+    "text": "Commander — <b>Aktion</b>: Wähle einen Spieler. Der Spieler zieht 1 Karte. (Nur ein Mal pro Runde.)",
+    "traits": "S.H.I.E.L.D. Soldat."
+  },
+  {
+    "code": "01011",
+    "flavor": "\"Das ist es, was ich schon immer machen wollte: den Unschuldigen helfen, indem ich die Schuldigen krankenhausreif schlage.\"",
+    "name": "Spider-Woman",
+    "subname": "Jessica Drew",
+    "text": "<b>Reaktion</b>: Nachdem Spider-Woman ins Spiel gekommen ist, verwirre den Schurken.",
+    "traits": "Avenger. Spion."
+  },
+  {
+    "code": "01012",
+    "flavor": "\"Ich habe ja schon viel Mist gesehen, aber das hier ist beeindruckender als das meiste.\" -- Carol Danvers",
+    "name": "Krisenintervention",
+    "text": "<b>Held - Aktion</b> (<i>Widerstand</i>): Entferne 2 Bedrohung von einem Plan. Entferne dann 2 Bedrohung von einem anderen Plan,falls du das Merkmal [[Fliegend]], hast.",
+    "traits": "Widerstand."
+  },
+  {
+    "code": "01013",
+    "name": "Photonenstrahl",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Gegner 5 Schaden zu. Ziehe 1 Karte, falls du für diese Karte mit einer [energy]-Ressource bezahlt hast.",
+    "traits": "Angriff. Superkraft."
+  },
+  {
+    "code": "01014",
+    "flavor": "\"Es reicht!\" -- Captain Marvel",
+    "name": "Energieabsorbtion"
+  },
+  {
+    "code": "01015",
+    "flavor": "Diese Raumstation in niedriger Umlaufbahn kann Fracht und Besatzung zum und vom Triskelion beamen.",
+    "name": "Alpha Flight Station",
+    "text": "<b>Aktion</b>: Erschöpfe Alpha Flight Station, wähle 1 Karte von deier Hand und lege sie ab → ziehe 1 Karte (ziehe stattdessen 2 Karten falls du Carol Danvers bist).",
+    "traits": "Ort. S.H.I.E.L.D."
+  },
+  {
+    "code": "01016",
+    "flavor": "\"Das ist so cool!\" -- Jessica Drew",
+    "name": "Captain Marvels Helm",
+    "text": "Captain Marvel bekommt +1 VER (+2 VER stattdessen, falls du das Merkmal [[Flieged]] hast).",
+    "traits": "Rüstung. Tech."
+  },
+  {
+    "code": "01017",
+    "name": "Kosmischer Flug",
+    "text": "Captain Marvel erhält das Merkmal [[Fliegend]].\n<b>Held - Unterbrechung</b> (<i>Verteidigung</i>): Sobald Captain Marvel Schaden nehmen würde, lege kosmischer Flug ab → verhindere 3 Schaden davon.",
+    "traits": "Superkraft."
+  },
+  {
+    "code": "01018",
+    "name": "Energie kanalisieren",
+    "text": "Max. 1 pro Spieler.\n<b>Aktion</b>: Gib X [energy]-Ressource aus → Lege X Energiemarker hierhin.\n<b>Held - Aktion</b> (<i>Angriff</i>): Lege Energie kanalisieren ab → füge einem Gegner für jeden hier liegenden Energiemarker 2 Schaden zu (bis zu einem Maximum von 10).",
+    "traits": "Superkraft."
+  },
+  {
+    "code": "01019a",
+    "flavor": "\"Ich bin zwei Meter groß und hellgrün! Die Leute werden mich anstarren, egal was ich anziehe.\"",
+    "name": "She-Hulk",
+    "text": "\"Trainierst du überhaupt?\" — <b>Reaktion</b>: Nachdem du in diese Gestalt gewechselt bist, füge einem Gegner 2 Schaden zu.",
+    "traits": "Avenger. Gamma."
+  },
+  {
+    "code": "01019b",
+    "flavor": "\"Ich kann mich in einen Hulk verwandeln, wann immer ich will. Aber nur weil man etwas tun kann, heißt das nicht automatisch, dass man es auch tun sollte.",
+    "name": "Jennifer Walters",
+    "text": "\"Einspruch!\" — <b>Unterbrechung</b>: Sobald Bedrohung auf einem Plan platziert werden würde, verhindere 1 Bedrohung davo. (Nur ein Mal pro Runde.)",
+    "traits": "Anwalt. Gamma."
+  },
+  {
+    "code": "01020",
+    "flavor": "\"Drehen Sie sich um, meine Herren, und begrüßen Sie...die Hellcat!\"",
+    "name": "Hellcat",
+    "subname": "Patsy Walker",
+    "text": "<b>Aktion</b>: Schicke Hellcat zurück auf deine Hand.",
+    "traits": "Avenger."
+  },
+  {
+    "code": "01021",
+    "flavor": "\"Du hast dich mit der falschen Frau angelegt.\" -- She-Hulk",
+    "name": "Gamma-Schlag",
+    "text": "<b>Held - Aktion </b> (<i>Angriff</i>): Füge einem Gegner X Schaden zu (bis zu einem Maximum von 15). X ist die Menge an Schaden, die du erlitten hast.",
+    "traits": "Angriff. Superkraft."
+  },
+  {
+    "code": "01022",
+    "flavor": "\"Diese Stiefel wurden zum Stampfen gemacht\" -- She-Hulk",
+    "name": "Bodenstampfer",
+    "text": "<b>Held - Aktion</b>: Füge jedem Gegner 1 Schaden zu.",
+    "traits": "Superkraft."
+  },
+  {
+    "code": "01023",
+    "flavor": "\"Ich habe noch nie zuvor erlebt, wie jemand einen Kampf durch Argumente gewonnen hat.\" -- Spider-Man",
+    "name": "Juristerei",
+    "text": "<b>Alter Ego - Aktion</b> (<i>Widerstand</i>): Wähle bis zu 5 Karten von deiner Hand und lege sie ab → Entferne für jede auf diese Weise abgelegte Karte 1 Bedrohung von einem Plan.",
+    "traits": "Fertigkeit. Widerstand."
+  },
+  {
+    "code": "01024",
+    "flavor": "\"Ich kann respektlose Männer einfach nicht ausstehen.\" -- Jennifer Walters",
+    "name": "Links-Rechts-Kombination",
+    "text": "<b>Reaktion</b>: Nachdem du einen Basisangriff <i>(mit deinem ANG-Wert)</i>, durchgeführt hast, mache She-Hulk spielbereit.",
+    "traits": "Fertigkeit."
+  },
+  {
+    "code": "01025",
+    "flavor": "\"Ich kenne mich mit Zorn aus. Und diese Art von Wut... sie wird nicht vergehen, ohne jemanden mitzunehmen.\" -- Jennifer Walters",
+    "name": "Gespaltene Persönlichkeit",
+    "text": "<b>Aktion</b>: Wechsle deine Gestalt <i>(drehe deine Identitätskarte um)</i>. Dann ziehe Karten bis zum aufgedruckten Handlimit."
+  },
+  {
+    "code": "01026",
+    "flavor": "\"Ich schicke Ihnen eine Rechnung. Meine Zeit ist in diesen Tagen kostbar.\" -- Jennifer Walters",
+    "name": "Abteilung für übermenschliches Recht",
+    "text": "<b>Alter Ego - Aktion</b> (<i>Widerstand</i>): Erschöpfe Abteilung für übermenschliches Recht und gib eine [mental]-Ressource aus → entferne 2 Bedrohung von einem Plan.",
+    "traits": "Ort."
+  },
+  {
+    "code": "01027",
+    "name": "Fokussierte Wut",
+    "text": "<b>Held - Aktion</b>: Erschöpfe Fokussierte Wut und nimm 1 Schaden → ziehe 1 Karte.",
+    "traits": "Fertigkeit."
+  },
+  {
+    "code": "01028",
+    "name": "Übermenschliche Stärke",
+    "text": "She-Hulk bekommt +2 ANG.\n<b>Erzwungene Reaktion</b>: Nachdem She-Hulk angegriffen hat, lege Übermenschliche Stärke ab → betäube den angegriffenen Gegner.",
+    "traits": "Superkraft."
+  },
+  {
+    "code": "01029a",
+    "flavor": "\"Ich bin Iron Man.\"",
+    "name": "Iron Man",
+    "text": "Du bekommst +1 Handlimit für jedes [[Tech]]-Upgrade unter deiner Kontrolle (bis zu einem maximalen Handlimit von 7).",
+    "traits": "Avenger."
+  },
+  {
+    "code": "01029b",
+    "flavor": "\"Ich mache das offensichtlich nicht wegen des Geldes...\"",
+    "name": "Tony Stark",
+    "text": "Futurist — <b>Aktion</b>: Sieh dir die obersten 3 Karten deines Decks an. Nimm 1 auf deine Hand und lege die anderen ab. (Nur ein Mal pro Runde.)",
+    "traits": "Genie."
+  },
+  {
+    "code": "01030",
+    "flavor": "\"Ist das hier ein Privatkrieg - oder kann ich mitmachen?\"",
+    "name": "War Machine",
+    "subname": "James Rhodes",
+    "text": "<b>Aktion</b>: Erschöpfe War Machine und füge ihm 2 Schaden zu → füge jedem Gegner 1 Schade zu.",
+    "traits": "S.H.I.E.L.D. Soldat."
+  },
+  {
+    "code": "01031",
+    "name": "Repulsor-Strahl",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Gegner 1 Schaden zu und lege die obersten 5 Karten deines Decks ab. Für jede aufgedruckte [energy]-Ressource, die auf diese Weise abgelegt wurde, füge dem Gegner 2 zusätzliche Schaden zu.",
+    "traits": "Angriff. Superkraft."
+  },
+  {
+    "code": "01032",
+    "flavor": "\"Nette Technik. Aber wenn man es so macht... tut es mehr weh.\" -- Tony Stark",
+    "name": "Überschallschlag",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Gegner 4 Schaden zu (8 Schade stattdessen, falls du das Merkmal [[Fliegend]] hast).",
+    "traits": "Angriff."
+  },
+  {
+    "code": "01033",
+    "flavor": "\"Mach dein Ding. Ich kümmere mich um alles andere.\"",
+    "name": "Pepper Potts",
+    "text": "<b>Ressource</b>: Erschöpfe Pepper Potts → erzeuge die Ressourcen der obersten Karte in deinem Ablagestapel.",
+    "traits": "Person."
+  },
+  {
+    "code": "01034",
+    "flavor": "\"Ich hatte auf etwas Größeres gehofft. Aber das wird reichen.\" -- Tony Stark",
+    "name": "Stark Tower",
+    "text": "<b>Alter Ego - Aktion</b>: Erschöpfe Stark Tower → wähle einen Spieler. Der Spieler schickt das oberste [[Tech]]-Upgrade in seinem Ablagestapel zurück auf seine Hand.",
+    "traits": "Ort."
+  },
+  {
+    "code": "01035",
+    "flavor": "\"Wenn ich diese Rüstung anlegte, gab mir das mehr Macht, als je einem Menschen zugedacht war... und villeicht mehr Verantwortug, als mein Herz wirklich tragen kann.\" -- Tony Stark",
+    "name": "Arc-Reaktor",
+    "text": "<b>Held - Aktion</b>: Erschöpfe Arc-Reaktor → mache Iron Man spielbereit.",
+    "traits": "Gegenstand. Tech."
+  },
+  {
+    "code": "01036",
+    "flavor": "\"Ist das alles, was du draufhast?\" -- Tony Stark",
+    "name": "Mark-V-Rüstung",
+    "text": "Du bekommst +6 Lebenpunkte.",
+    "traits": "Rüstung. Tech."
+  },
+  {
+    "code": "01037",
+    "flavor": "\"Tony, bist du sicher, dass du das tun willst?\" -- P.E.P.P.E.R.",
+    "name": "Mark-V-Helm",
+    "text": "<b>Held - Aktion</b> (<i>Widerstand</i>): Erschöpfe Mark-V-Helm → entferne 1 Bedrohung von einem Plan (von jedem Plan stattdessen, falls du ds Merkmal [[Fliegend]] hast).",
+    "traits": "Rüstung. Tech."
+  },
+  {
+    "code": "01038",
+    "flavor": "\"Hier nimm... meine Hand.\" -- Tony Stark",
+    "name": "Repulsor-Handschuhe",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Erschöpfe Repulsor-Handschuhe → füge einem Gegner 1 Schaden zu (2 Schaden stattdessen, falls du das Merkmal [[Fliegend]] hast).",
+    "traits": "Rüstung. Tech."
+  },
+  {
+    "code": "01039",
+    "name": "Raketenstiefel",
+    "text": "Du bekommst +1 Lebenspunkt.\n<b>Held - Aktion</b>: Erschöpfe Raktenstiefel und gib eine [mental]-Ressource aus → du erhälst bis zum Ende der Runde da Merkmal [[Fliegend]].",
+    "traits": "Rüstung. Tech."
+  },
+  {
+    "code": "01040a",
+    "flavor": "\"Wer mich angreift, greift Wakanda an.\"",
+    "name": "Black Panther",
+    "text": "Vergeltung 1. <i>(Nachdem dieser Charakter angegriffen worden ist, füge dem angreifenden Gegner 1 Schade zu.)</i>",
+    "traits": "Avenger. Wakanda."
+  },
+  {
+    "code": "01040b",
+    "name": "T'Challa",
+    "text": "Weitsicht - <b>Spielaufbau</b>: Durchsuche dein Deck nach einem [[Black Panther]]-Upgrade und nimm es auf deine Hand. Mische dein Deck.",
+    "traits": "König. Wakanda."
+  },
+  {
+    "code": "01041",
+    "flavor": "\"Ohne mich wärst du verloren, Bruder!\"",
+    "name": "Shuri",
+    "text": "<b>Reaktion</b>: Nachdem Shuri ins Spiel gekommen ist, durchsuche dein Deck nach einem Upgrade und nimm es auf deine Hand. Mische dein Deck.",
+    "traits": "Genie. Wakanda."
+  },
+  {
+    "code": "01042",
+    "flavor": "\"In Wakanda schöpfen wir Kraft aus dem Wissen unserer Vorfahren.\" -- T'Challa",
+    "name": "Wissen der Vorfahren",
+    "text": "<b>Alter Ego - Aktion</b>: Wähle bis zum 3 unterschiedliche Karten aus deinem Ablagestapel und mische sie in dein Deck."
+  },
+  {
+    "code": "01043a",
+    "name": "Wakanda über alles!",
+    "text": "<b>Held - Aktion</b>: Handle die \"<b>Spezial</b>\"-Fähigkeit jedes [[Black Panther]]-Upgrades unter deiner Kontrolle in beliebiger Reihenfolge ab. <i>(Das Abhandeln jeder Fähigkeit ist ein Schritt in dieser Sequenz.)</i>",
+    "traits": "Taktik."
+  },
+  {
+    "code": "01043b",
+    "name": "Wakanda über alles!",
+    "text": "<b>Held - Aktion</b>: Handle die \"<b>Spezial</b>\"-Fähigkeit jedes [[Black Panther]]-Upgrades unter deiner Kontrolle in beliebiger Reihenfolge ab. <i>(Das Abhandeln jeder Fähigkeit ist ein Schritt in dieser Sequenz.)</i>",
+    "traits": "Taktik."
+  },
+  {
+    "code": "01043c",
+    "name": "Wakanda über alles!",
+    "text": "<b>Held - Aktion</b>: Handle die \"<b>Spezial</b>\"-Fähigkeit jedes [[Black Panther]]-Upgrades unter deiner Kontrolle in beliebiger Reihenfolge ab. <i>(Das Abhandeln jeder Fähigkeit ist ein Schritt in dieser Sequenz.)</i>",
+    "traits": "Taktik."
+  },
+  {
+    "code": "01043d",
+    "name": "Wakanda über alles!",
+    "text": "<b>Held - Aktion</b>: Handle die \"<b>Spezial</b>\"-Fähigkeit jedes [[Black Panther]]-Upgrades unter deiner Kontrolle in beliebiger Reihenfolge ab. <i>(Das Abhandeln jeder Fähigkeit ist ein Schritt in dieser Sequenz.)</i>",
+    "traits": "Taktik."
+  },
+  {
+    "code": "01044",
+    "flavor": "\"Seit Bashengas Zeiten konnten wi unser eigenes Schicksal bestimmen wie kaum ein anderes Land.\" -- T'Challa",
+    "name": "Vibranium"
+  },
+  {
+    "code": "01045",
+    "flavor": "Wakandas Hauptstadt ist ein architektonisches und technologisches Wunderwerk, da seinesgleichen sucht.",
+    "name": "Die Goldene Stadt",
+    "text": "<b>Alter Ego - Aktion</b>: Erschöpfe Die Goldene Stadt → ziehe 2 Karte.",
+    "traits": "Ort. Wakanda."
+  },
+  {
+    "code": "01046",
+    "name": "Energiedolche",
+    "text": "<b>Special</b>: Wähle einen Spieler. Füge dem Schurken und jedem Gegner, der mit dem Spieler im Kampf ist, 1 Schaden zu (2 Schaden stattdessen, falls dies der letzte Schritt in dieser Sequenz ist).\n<i>(Spiele das Ereignis \"Wakanda über alles!\", um diese Fähigkeit zu verwenden.)</i>",
+    "traits": "Black Panther. Waffe."
+  },
+  {
+    "code": "01047",
+    "name": "Pantherkrallen",
+    "text": "<b>Spezial</b> (<i>Angriff</i>): Füge einem Gegner 2 Schaden zu (4 Schaden stattdessen, falls dies der letzte Schritt in dieser Sequenz ist).\n<i>Spiele das Ereignis \"Wakanda über alles!\", um diese Fähigkeit zu verwenden.)</i>",
+    "traits": "Black Panther. Waffe."
+  },
+  {
+    "code": "01048",
+    "name": "Taktisches Genie",
+    "text": "<b>Spezial</b> (<i>Widerstand</i>): Entferne 1 Bedrohung von einem Plan (2 Bedrohung stattdessen, falls dies der letzte Schitt in dieser Sequenz ist).\n<i>Spiele das Ereignis \"Wakanda über alles!\", um diese Fähigkeit zu verwenden.)</i>",
+    "traits": "Black Panther. Fertigkeit."
+  },
+  {
+    "code": "01049",
+    "name": "Vibranium-Anzug",
+    "text": "<b>Spezial</b> (<i>Angriff</i>): Verschiebe 1 Schaden von deinem Helden auf einem Gegner (2 Schaden stattdessen, falls dies der letzte Schritt in dieser Sequenz ist).\n<i>(Spiele das Ereignis \"Wakanda über alles!\", um diese Fähigkeit zu verwenden.)</i>",
+    "traits": "Black Panther. Rüstung."
+  },
+  {
+    "code": "01050",
+    "name": "Hulk",
+    "subname": "Bruce Banner",
+    "text": "<b>Erzwungene Reaktion</b>: Nachdem Hulk angegriffen hat, lege die oberste Karte deines Decks ab. Falls auf der Karte folgende Ressource aufgedruckt ist:\n[physical] - Füge einem Gegner 2 Schaaden zu.\n[energy] - Füge jedem Charakter 1 Schaden zu.\n[mental] - Lege Hulk ab.\n[wild] - Alles davon.",
+    "traits": "Avenger. Gamma."
+  },
+  {
+    "code": "01051",
+    "flavor": "\"Sorry, keine Autogramme.\"",
+    "name": "Tigra",
+    "subname": "Greer Grant Nelson",
+    "text": "<b>Reaktion</b>: Nachdem Tigra einem Schergen angegriffen und besiegt hat, heile einen Schaden von ihr.",
+    "traits": "Avenger."
+  },
+  {
+    "code": "01052",
+    "flavor": "\"Kamala, wir haben keine Erkennungsmelodie. Hör bitte auf, eine zu summen...\" -- Captain Marvel",
+    "name": "Verfolgt sie!",
+    "text": "<b>Reaktion</b> (<i>Widerstand</i>): Nachdem dein Held einen Gegner angegriffen und besiegt hat, entferne 2 Bedrohung von einem Plan.",
+    "traits": "Widerstand."
+  },
+  {
+    "code": "01053",
+    "name": "Unerbitterliche Angriff",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Schergen 5 Schaden zu. Falls du für diese Karte mit einer [physical]-Ressource bezahlt hast, erhält dieser Angriff Overkill. <i>(Überschüssiger Schaden dieses Angriffs wird dem Schurken zugefügt.)</i>",
+    "traits": "Angriff."
+  },
+  {
+    "code": "01054",
+    "flavor": "SMACK!",
+    "name": "Kinnhaken",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Gegner 5 Schaden zu.",
+    "traits": "Angriff."
+  },
+  {
+    "code": "01055",
+    "name": "Kraft der Aggression",
+    "text": "Max. 2 pro Deck.\nVerdopple beim Bezahlen für eine Aggressionskarte <i>(rote Karte)</i> die Anzahl der Ressourcen, die diese Karte erzeugt."
+  },
+  {
+    "code": "01056",
+    "name": "Einsatzteam",
+    "text": "Anwendungen (3 Angriffsmarker). <i>(Kommt mit 3 Markern ins Spiel. Sobald alle Marker entfernt sind, lege diese Karte ab.)</i>\n<b>Aktion</b>: Erschöpfe Einsatzteam und entferne 1 Angriffsmarker von ihm → füge einem Gegner 2 Schaden zu.",
+    "traits": "S.H.I.E.L.D."
+  },
+  {
+    "code": "01057",
+    "flavor": "\"Tony! Sie hat es schon wieder getan!\" -- Janet Van Dyne",
+    "name": "Kampftraining",
+    "text": "Spiele diese Karte unter die Kontrolle eines beliebigen Spielers. Max. 1 pro Spieler.\nDein Held bekommt +1 ANG.",
+    "traits": "Fertigkeit."
+  },
+  {
+    "code": "01058",
+    "flavor": "\"Manchmal denke ich, dass ich mit meinen Fäusten mehr erreiche als mit meiner Anwaltskanzlei.\"",
+    "name": "Daredevil",
+    "subname": "Matt Murdock",
+    "text": "<b>Reaktion</b>: Nachdem Daredevil Widerstand leistet, füge einem Gegner 1 Schaden zu.",
+    "traits": "Defender."
+  },
+  {
+    "code": "01059",
+    "flavor": "\"Ich bin sehr gut darin, Leute zu finden.\"",
+    "name": "Jessica Jones",
+    "text": "Jessica Jones bekommt +1 WID für jeden Nebenplan im Spiel.",
+    "traits": "Defender."
+  },
+  {
+    "code": "01060",
+    "flavor": "\"Du wirst verlieren. Und du wirst dich für das verantworten, was du getan hast.\" -- Captain America",
+    "name": "Für die Gerechtigkeit!",
+    "text": "<b>Held - Aktion</b> (<i>Widerstand</i>): Entferne 3 Bedrohung von einem Plan (4 Bedrohung stattdessen, falls du für diese Karte mit einer [mental]-Ressource bezahlt hast).",
+    "traits": "Widerstand."
+  },
+  {
+    "code": "01061",
+    "name": "Grosse Verantwortung",
+    "text": "<b>Held - Unterbrechung</b>: Sobald ein beliebige Menge an Bedrohung auf einem Plan platziert werden würde, nimm du sie stattdessen als Schaden."
+  },
+  {
+    "code": "01062",
+    "name": "Kraft der Gerechtigkeit",
+    "text": "Max. 2 pro Deck.\nVerdoplle beim Bezahlen für eine Gerechtigkeitskarte <i>(gelbe Karte)</i> die Anzahl der Ressourcen, die diese Karte erzeugt."
+  },
+  {
+    "code": "01063",
+    "flavor": "\"Oh, es tut mir leid! Na dann hol ich dir die Schlüssel und besorg dir einen Mietwagen.\" -- Misty Knight",
+    "name": "Verhörzimmer",
+    "text": "Max. 1 pro Spieler.\n<b>Reaktion</b>: Nachdem du einen Schergen besiegt hast, erschöpfe Verhörzimmer → entferne 1 Bedrohung von einem Plan.",
+    "traits": "Ort."
+  },
+  {
+    "code": "01064",
+    "name": "Überwachungsteam",
+    "text": "Anwendungen (3 Überwachungsmarker). <i>(Kommt mit 3 Markern ins Spiel. Sobald alle Marker entfernt sin, lege diese Karte ab.)</i>\n<b>Aktion</b>: Erschöpfe Überwachungsteam und entferne 1 Überwachungsmarker von ihm → entferne 1 Bedrohung von einem Plan.",
+    "traits": "S.H.I.E.L.D."
+  },
+  {
+    "code": "01065",
+    "name": "Heldenhafte Eingebung",
+    "text": "Spiele diese Karte unter die Kontrolle eines beliebigen Spielers. Max. 1 pro Spieler.\nDein Held bekommt +1 WID.",
+    "traits": "Fertigkeit."
+  },
+  {
+    "code": "01066",
+    "name": "Hawkeye",
+    "subname": "Clint Barton",
+    "text": "Hawkeye kommt mit 4 Pfeilmarkern ins Spiel.\n<b>Reaktion</b>: Nachdem ein Scherge ins Spiel gekommen ist, entferne 1 Pfeilmarker von Hawkeye → füge dem Schergen 2 Schaden zu.",
+    "traits": "Avenger."
+  },
+  {
+    "code": "01067",
+    "flavor": "\"Ob Sie es glauben oder nicht, wir wollen alle dasselbe.\"",
+    "name": "Maria Hill",
+    "text": "<b>Reaktion</b>: Nachdem Maria Hill ins Spiel gekommen ist, zieht jeder Spieler 1 Karte.",
+    "traits": "S.H.I.E.L.D."
+  },
+  {
+    "code": "01068",
+    "flavor": "\"Ich erledige das.\"",
+    "name": "Vision",
+    "text": "<b>Aktion</b>: Gibe eine [energy]-Ressource aus → wähle WID oder ANG. Vision bekommt bis zum Ende der Phase +2 auf die gewählte Kraft. (Nur ein Ma pro Runde.)",
+    "traits": "Androide. Avenger."
+  },
+  {
+    "code": "01069",
+    "flavor": "\"Wir trainieren jeden Tag hart, damit wir bereit sind, wenn es so weit ist.\" -- Steve Rogers",
+    "name": "Mach dich bereit!",
+    "text": "<b>Aktion</b>: Mache einen Verbündeten spielbereit."
+  },
+  {
+    "code": "01070",
+    "flavor": "\"Mir nach, Leute!\" -- Carol Danvers",
+    "name": "An vorderster Front",
+    "text": "<b>Held - Aktion</b>: Wähle einen Spieler. Jeder Charakter unter der Kontrolle des Spielers bekommt bis zum Ende der Phase +1 WID und +1 ANG.",
+    "traits": "Taktik."
+  },
+  {
+    "code": "01071",
+    "flavor": "\"Dies ist ein Code Red! Alle Mann an Deck!\" -- Maria Hill",
+    "name": "Einsatzbefehl",
+    "text": "<b>Aktion</b>: Bezahle die aufgedruckten Kosten eines Verbündeten im Ablagestapel eines beliebigen Spielers → bringe den Verbündeten unter deiner Kontrolle ins Spiel."
+  },
+  {
+    "code": "01072",
+    "name": "Kraft der Führung",
+    "text": "Max. 2 pro Deck.\nVerdopple beim Bezahlen für eine Führugskart <i>(blaue Karte)</i> die Anzahl der Ressourcen, die diese Karte erzeugt."
+  },
+  {
+    "code": "01073",
+    "flavor": "\"Meinst du, sie haben es hoch genug gebaut?\" -- She-Hulk",
+    "name": "Das Triskelion",
+    "text": "Erhöhe dein Verbündetenlimit um 1. <i>(Dies erlaubt dir, mehr als 3 Verbündete zu kontrollieren.)</i>",
+    "traits": "Ort. S.H.I.E.L.D."
+  },
+  {
+    "code": "01074",
+    "flavor": "\"Ich bin froh, dass sie auf unserer Seite ist.\" -- Star-Lord",
+    "name": "Inspiriert",
+    "text": "Hänge diese Karte an einen Verbündeten an. Max. 1 pro Verbündeten.\nDer Verbündete mit diesem Upgrade bekommt +1 WID und +1 ANG.",
+    "traits": "Zustand."
+  },
+  {
+    "code": "01075",
+    "name": "Black Widow",
+    "subname": "Natasha Romanoff",
+    "text": "<b>Unterbrechung</b>: Sobalb eine Karte vom Begegnugsdeck aufgedeckt wird, erschöpfe Black Widow und gib eine [mental]-Ressource aus → hebe die Effekte der Karte auf und lege sie ab. Decke dann eine weitere Karte vom Begegnungsdeck auf.",
+    "traits": "S.H.I.E.L.D. Spion."
+  },
+  {
+    "code": "01076",
+    "flavor": "\"Power Man Dienstleistungen - Cage am Apparat.",
+    "name": "Luke Cage",
+    "text": "Zähigkeit. <i>(Dieser Charakter kommt mit einer \"Zäh\"-Statuskarte ins Spiel.)</i>",
+    "traits": "Defender."
+  },
+  {
+    "code": "01077",
+    "flavor": "\"Du kriegst das, was du verdienst!\" -- Iron Fist",
+    "name": "Konterschlag",
+    "text": "<b>Reaktion</b> (<i>Angriff</i>): Nachdem dein Held gegen einen Angriff eines Gegners verteidigt hat,füge dem Gegner Schaden in Höhe des ANG-Wertes deines Helden zu.",
+    "traits": "Angriff."
+  },
+  {
+    "code": "01078",
+    "flavor": "\"Ähem! Zur Seite, Bürger!\" -- Ms. Marvel",
+    "name": "Bleibt hiner mir!",
+    "text": "<b>Held - Unterbrechung</b>: Sobald eine Verratskarte vom Begegnungsdeck aufgedeckt wird, hebe ihre \"<b>Sobald aufgedeckt</b>\"-Effekt auf. Stattdessen greift dich der Schurke an."
+  },
+  {
+    "code": "01079",
+    "name": "Kraft des Schutzes",
+    "text": "Max. 2 pro Deck.\nVerdopple beim Bezahlen für eine Schutzkarte <i>(grüne Karte)</i> die Anzahl der Ressourcen, die diese Karte erzeugt."
+  },
+  {
+    "code": "01080",
+    "name": "Medizinisches Team",
+    "text": "Anwendungen (3 Behandlungsmarker). <i>(Kommt mit 3 Markern ins Spiel. Sobald alle Marker entfernt sind, lege diese Karte ab.)</i>\n<b>Aktion</b>: Erschöpfe Medizinisches Team und enferne 1 Behandlungsmarker von ihm → heile 2 Schaden von einem befreundeten Charakter.",
+    "traits": "S.H.I.E.L.D."
+  },
+  {
+    "code": "01081",
+    "flavor": "Rettet Leben und sieht gut aus.",
+    "name": "Panzerweste",
+    "text": "Spiele diese Karte unter die Kontrolle eines beliebigen Spielers. Max. 1 pro Spieler.\nDein Held bekommt +1 VER.",
+    "traits": "Rüstung."
+  },
+  {
+    "code": "01082",
+    "flavor": "\"Wir haben keine Wahl. Also kämpfen wir - un gewinnen wir. Es gibt keine andere Option.\" -- Captain America",
+    "name": "Unbezwingbar",
+    "text": "<b>Reaktion</b>: Nachdem dein Held verteidigt hat, lege Unbezwingbar ab → mache deinen Helden spielbereit.",
+    "traits": "Zustand."
+  },
+  {
+    "code": "01083",
+    "flavor": "\"Das nennst du Wissenschaft?!\"",
+    "name": "Mockingbird",
+    "subname": "Bobbi Morse",
+    "text": "<b>Reaktion</b>: Nachdem Mockingbird ins Spiel gekommen ist, betäube einen Gegner.",
+    "traits": "S.H.I.E.L.D. Spion."
+  },
+  {
+    "code": "01084",
+    "name": "Nick Fury",
+    "text": "<b>Erzwungene Reaktin</b>: Nachdem Nick Fury ins Spiel gekommen ist, wähle eins: Entferne 2 Bedrohung von einem Plan, ziehe 3 Karten oder füge einem Gegner 4 Schaden zu. Falls Nick Fury am Ende der Rund nochim Spiel ist, lege ihn ab.",
+    "traits": "S.H.I.E.L.D. Spion."
+  },
+  {
+    "code": "01085",
+    "flavor": "\"AN ALLE EINHEITEN! AN ALLE EINHEITEN!\"",
+    "name": "Notfall",
+    "text": "<b>Unterbrechung</b> (<i>Widerstand</i>): Sobald der Schurke den Plan vorantreibt, senke die Menge an Bedrohung, die auf dem Plan platziert wird, um 1.",
+    "traits": "Widerstand."
+  },
+  {
+    "code": "01086",
+    "flavor": "\"Zählt es noch als Erste Hilfe, wenn es dein zweiter Tag im Krankenhaus ist?\" -- Clint Barton",
+    "name": "Erste Hilfe",
+    "text": "<b>Aktion</b>: Heile 2 Schaden von einem beliebigen Charakter."
+  },
+  {
+    "code": "01087",
+    "flavor": "WHAM!",
+    "name": "Schwinger",
+    "text": "<b>Held - Aktion</b> (<i>Angriff</i>): Füge einem Gegner 3 Schaden zu.",
+    "traits": "Angriff."
+  },
+  {
+    "code": "01088",
+    "name": "Energie",
+    "text": "Max. 1 pro Deck."
+  },
+  {
+    "code": "01089",
+    "name": "Genie",
+    "text": "Max. 1 pro Deck."
+  },
+  {
+    "code": "01090",
+    "name": "Stärke",
+    "text": "Max. 1 pro Deck."
+  },
+  {
+    "code": "01091",
+    "flavor": "\"Hast du dran gedacht, den Herd auszumachen?\" -- Janet Van Dyne",
+    "name": "Avengers Mansion",
+    "text": "Max. 1 pro Spieler.\n<b>Aktion</b>: Erschöpfe Avengers Mansion → wähle einen Spieler. Der Spieler zieht 1 Karte.",
+    "traits": "Avenger. Ort."
+  },
+  {
+    "code": "01092",
+    "flavor": "\"Ein fliegender Flugzeugträger? Das ist ein Witz, oder?\" -- Jennifer Walters",
+    "name": "Helicarrier",
+    "text": "Max. 1 pro Spieler.\n<b>Aktion</b>: Erschöpfe Helicarrier → wähle einen Spieler. Senke die Ressourcenkosten der nächsten Karte, die der Spieler in dieser Phase spielt, um 1.",
+    "traits": "Ort. S.H.I.E.L.D."
+  },
+  {
+    "code": "01093",
+    "name": "Durchhaltevermögen",
+    "text": "<b>Held - Aktion</b>: Gib eine [physical]-Ressource aus und lege diese Karte ab → mache deinen Helden spielbereit.",
+    "traits": "Zustand."
+  }
+]

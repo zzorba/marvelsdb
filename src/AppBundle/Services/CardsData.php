@@ -505,7 +505,7 @@ class CardsData
 			$cardinfo[$fieldName] = $value;
 		}
 
-		if ($locale){
+		if ($locale && $api){
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode(), '_locale' => $locale), UrlGeneratorInterface::ABSOLUTE_URL);
 		} else {
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);

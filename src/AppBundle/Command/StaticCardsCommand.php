@@ -32,7 +32,7 @@ class StaticCardsCommand extends ContainerAwareCommand
 			$cards = array();
 			/* @var $card \AppBundle\Entity\Card */
 			foreach($list_cards as $card) {
-				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, "en");
+				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, $supported_locale);
 			}
 			$content = json_encode($cards);
 			$webdir = $this->getContainer()->get('kernel')->getRootDir() . "/../web";
@@ -43,7 +43,7 @@ class StaticCardsCommand extends ContainerAwareCommand
 			$cards = array();
 			/* @var $card \AppBundle\Entity\Card */
 			foreach($list_cards as $card) {
-				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, "en");
+				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, $supported_locale);
 			}
 			$content = json_encode($cards);
 			$webdir = $this->getContainer()->get('kernel')->getRootDir() . "/../web";

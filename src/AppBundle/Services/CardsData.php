@@ -465,7 +465,7 @@ class CardsData
 	 * @param string $api
 	 * @return multitype:multitype: string number mixed NULL unknown
 	 */
-	public function getCardInfo($card, $api = false)
+	public function getCardInfo($card, $api = false, $locale = null)
 	{
 		$cardinfo = [];
 
@@ -505,7 +505,11 @@ class CardsData
 			$cardinfo[$fieldName] = $value;
 		}
 
-		$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
+		if ($locale){
+			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode(), '_locale' => $locale), UrlGeneratorInterface::ABSOLUTE_URL);
+		} else {
+			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
+		}
 		$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'.png');
 		$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
 		if(file_exists($imagepath)) {

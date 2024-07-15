@@ -507,6 +507,7 @@ class CardsData
 
 		if ($locale && $api){
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode(), '_locale' => $locale), UrlGeneratorInterface::ABSOLUTE_URL);
+			$cardinfo['url'] = str_replace("http://", "https://", $cardinfo['url']);
 		} else {
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
 		}

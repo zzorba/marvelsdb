@@ -58,5 +58,15 @@ Resource{% if resources|length > 1 %}s{% endif %}
 {% endfor %}
 {% endif %}
 
+{% set side_schemes = deck.slots_by_type.player_side_scheme %}
+{% if side_schemes|length > 0 %}
+
+{% if side_schemes|length == 1 %}Player Side Scheme{% endif %}
+{% if side_schemes|length > 1 %}Player Side Schemes{% endif %}
+
+{% for slot in side_schemes %}
+{{ slot.quantity }}x {{ slot.card.name }} ({{ slot.card.pack.name }})
+{% endfor %}
+{% endif %}
 
 {{ footer|default('') }}

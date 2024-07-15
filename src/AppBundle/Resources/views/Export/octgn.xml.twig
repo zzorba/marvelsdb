@@ -17,6 +17,9 @@
     {% for slot in deck.slots_by_type.resource %}
     <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}
+    {% for slot in deck.slots_by_type.player_side_scheme %}
+    <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
+    {% endfor %}
   </section>
 <notes><![CDATA[]]></notes>
 </deck>

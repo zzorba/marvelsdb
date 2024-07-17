@@ -70,6 +70,7 @@ class DecklistManager
 		$qb->setFirstResult($this->start);
 		$qb->setMaxResults($this->limit);
 		$qb->distinct();
+
 		$qb->andWhere('d.nextDeck IS NULL');
 		return $qb;
 	}
@@ -78,10 +79,12 @@ class DecklistManager
 	 * creates the paginator around the query
 	 * @param Query $query
 	 */
-	private function getPaginator(Query $query)
+	private function getPaginator(Query $query, $withCount = true)
 	{
 		$paginator = new Paginator($query, $fetchJoinCollection = FALSE);
-		$this->maxcount = $paginator->count();
+		if ($withCount) {
+			$this->maxcount = $paginator->count();
+		}
 		return $paginator;
 	}
 
@@ -372,12 +375,46 @@ class DecklistManager
 				}
 			}
 			if (!empty($packs)) {
+				// find all cards and all duplicates connected to them to filter the decklists
+				$query = $this->doctrine->createQueryBuilder();
+				$query->select("c.code");
+				$query->from("AppBundle:Card","c");
+				$query->andWhere($query->expr()->in('c.pack', $packs));
+				$result = $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
+
+				$codes = [];
+				foreach($result as $card) {
+					$codes[] = $card['code'];
+				}
+
+				$query = $this->doctrine->createQueryBuilder();
+				$query->select("c2.code");
+				$query->from("AppBundle:Card","c");
+				$query->innerJoin('AppBundle:Card', 'c2', 'WITH', 'c2.duplicate_of = c');
+				$query->andWhere($query->expr()->in('c.pack', $packs));
+				$result = $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
+
+				foreach($result as $card) {
+					$codes[] = $card['code'];
+				}
+
+				$query = $this->doctrine->createQueryBuilder();
+				$query->select("c.code");
+				$query->from("AppBundle:Card","c");
+				$query->innerJoin('AppBundle:Card', 'c2', 'WITH', 'c2.duplicate_of = c');
+				$query->andWhere($query->expr()->in('c2.pack', $packs));
+				$result = $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
+
+				foreach($result as $card) {
+					$codes[] = $card['code'];
+				}
+
 				$sub = $this->doctrine->createQueryBuilder();
 				$sub->select("c");
 				$sub->from("AppBundle:Card","c");
 				$sub->innerJoin('AppBundle:Decklistslot', 's', 'WITH', 's.card = c');
 				$sub->where('s.decklist = d');
-				$sub->andWhere($sub->expr()->notIn('c.pack', $packs));
+				$sub->andWhere($sub->expr()->notIn('c.code', $codes));
 				$qb->andWhere($qb->expr()->not($qb->expr()->exists($sub->getDQL())));
 			}
 		}

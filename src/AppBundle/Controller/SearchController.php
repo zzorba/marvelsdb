@@ -284,9 +284,12 @@ class SearchController extends Controller
 
 	public function displayAction($q, $view="card", $decks="all", $sort, $page=1, $pagetitle="", $meta="", Request $request)
 	{
+
 		$response = new Response();
 		$response->setPublic();
 		$response->setMaxAge($this->container->getParameter('cache_expiration'));
+
+		$this->getDoctrine()->getRepository('AppBundle:Card')->setDefaultLocale('es');
 
 		static $availability = [];
 
@@ -384,7 +387,7 @@ class SearchController extends Controller
 			// si on a des cartes on affiche une bande de navigation/pagination
 			if(count($rows)) {
 				if(count($rows) == 1) {
-					$pagination = $this->setnavigation($this->getDoctrine(), $card, $q, $view, $sort, $decks);
+					$pagination = $this->setnavigation($card, $q, $view, $sort, $decks);
 				} else {
 					$pagination = $this->pagination($nb_per_page, count($rows), $first, $q, $view, $sort, $decks);
 				}
@@ -442,10 +445,11 @@ class SearchController extends Controller
 		), $response);
 	}
 
-	public function setnavigation($doctrine, $card, $q, $view, $sort, $encounter)
+	public function setnavigation($card, $q, $view, $sort, $encounter)
 	{
-	    $prev = $doctrine->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()-1));
-	    $next = $doctrine->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()+1));
+	    $prev = $this->getDoctrine()->getRepository('AppBundle:Card')->findPreviousCard($card);
+	    $next = $this->getDoctrine()->getRepository('AppBundle:Card')->findNextCard($card);
+
 	    return $this->renderView('AppBundle:Search:setnavigation.html.twig', array(
 	            "prevtitle" => $prev ? $prev->getName() : "",
 	            "prevhref" => $prev ? $this->get('router')->generate('cards_zoom', array('card_code' => $prev->getCode())) : "",

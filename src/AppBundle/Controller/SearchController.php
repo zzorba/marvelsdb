@@ -348,7 +348,6 @@ class SearchController extends Controller
         		}
 			}
 
-
 			// calcul de la pagination
 			$nb_per_page = $pagesizes[$view];
 			$first = $nb_per_page * ($page - 1);
@@ -385,7 +384,7 @@ class SearchController extends Controller
 			// si on a des cartes on affiche une bande de navigation/pagination
 			if(count($rows)) {
 				if(count($rows) == 1) {
-					$pagination = $this->setnavigation($card, $q, $view, $sort, $decks);
+					$pagination = $this->setnavigation($this->getDoctrine(), $card, $q, $view, $sort, $decks);
 				} else {
 					$pagination = $this->pagination($nb_per_page, count($rows), $first, $q, $view, $sort, $decks);
 				}
@@ -443,11 +442,10 @@ class SearchController extends Controller
 		), $response);
 	}
 
-	public function setnavigation($card, $q, $view, $sort, $encounter)
+	public function setnavigation($doctrine, $card, $q, $view, $sort, $encounter)
 	{
-	    $em = $this->getDoctrine();
-	    $prev = $em->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()-1));
-	    $next = $em->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()+1));
+	    $prev = $doctrine->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()-1));
+	    $next = $doctrine->getRepository('AppBundle:Card')->findOneBy(array("pack" => $card->getPack(), "position" => $card->getPosition()+1));
 	    return $this->renderView('AppBundle:Search:setnavigation.html.twig', array(
 	            "prevtitle" => $prev ? $prev->getName() : "",
 	            "prevhref" => $prev ? $this->get('router')->generate('cards_zoom', array('card_code' => $prev->getCode())) : "",

@@ -289,8 +289,6 @@ class SearchController extends Controller
 		$response->setPublic();
 		$response->setMaxAge($this->container->getParameter('cache_expiration'));
 
-		$this->getDoctrine()->getRepository('AppBundle:Card')->setDefaultLocale('es');
-
 		static $availability = [];
 
 		$show_spoilers = 1;

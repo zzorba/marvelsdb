@@ -10,7 +10,7 @@ class CardRepository extends TranslatableRepository
 	}
 
 
-	public function findAll()
+	public function findAll($locale = null)
 	{
 		$qb = $this->createQueryBuilder('c')
 			->select('c', 'p', 't', 'b', 'f', 'e')
@@ -20,10 +20,10 @@ class CardRepository extends TranslatableRepository
 			->leftJoin('c.faction', 'f')
 			->leftJoin('c.card_set', 'e');
 
-		return $this->getResult($qb);
+		return $this->getResult($qb, $locale);
 	}
 
-	public function findAllWithoutEncounter()
+	public function findAllWithoutEncounter($locale = null)
 	{
 		$qb = $this->createQueryBuilder('c')
 			->select('c', 'p', 't', 'b', 'f', 'e')
@@ -34,7 +34,7 @@ class CardRepository extends TranslatableRepository
 			->leftJoin('c.card_set', 'e')
 			->andWhere('f.code != \'encounter\'');
 
-		return $this->getResult($qb);
+		return $this->getResult($qb, $locale);
 	}
 
 	public function findByType($type)
@@ -110,7 +110,8 @@ class CardRepository extends TranslatableRepository
 			->select('c')
 			->join('c.pack', 'p')
 			->andWhere('p.code = ?1')
-			->andWhere('c.position = ?2');
+			->andWhere('c.position = ?2')
+			->andWhere('c.hidden = false');
 
 		$qb->setParameter(1, $card->getPack()->getCode());
 		$qb->setParameter(2, $card->getPosition()+$position);

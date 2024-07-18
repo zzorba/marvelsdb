@@ -385,7 +385,7 @@ class SearchController extends Controller
 			// si on a des cartes on affiche une bande de navigation/pagination
 			if(count($rows)) {
 				if(count($rows) == 1) {
-					$pagination = $this->setnavigation($cardinfo, $q, $view, $sort, $decks);
+					$pagination = $this->setnavigation($card, $q, $view, $sort, $decks);
 				} else {
 					$pagination = $this->pagination($nb_per_page, count($rows), $first, $q, $view, $sort, $decks);
 				}

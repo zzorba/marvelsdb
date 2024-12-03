@@ -27,11 +27,11 @@ api_oauth2_save_deck:
     requirements:
         id: \d+
 
-api_oauth2_upgrade_deck:
-    path: /deck/upgrade/{id}
-    methods: [PUT]
+api_oauth2_delete_deck:
+    path: /deck/delete/{id}
+    methods: [DELETE]
     defaults:
-        _controller: AppBundle:Oauth2:upgradeDeck
+        _controller: AppBundle:Oauth2:deleteDeck
     requirements:
         id: \d+
 

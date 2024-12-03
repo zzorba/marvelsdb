@@ -301,7 +301,7 @@ class Oauth2Controller extends Controller
 				$meta_json = json_decode($meta);
 				if ($meta_json && isset($meta_json->aspect)) {
 					if ($meta_json->aspect == "leadership" || $meta_json->aspect == "protection" || $meta_json->aspect == "justice" || $meta_json->aspect == "aggression" || $meta_json->aspect == "pool") {
-						
+
 					} else {
 						return false;
 					}
@@ -423,6 +423,61 @@ class Oauth2Controller extends Controller
 	}
 
 	/**
+	 * Delete the latest or all versions of a Deck of the authenticated user.
+	 *
+	 * @ApiDoc(
+	 *  section="Deck",
+	 *  resource=true,
+	 *  description="Delete One Deck",
+	 *  requirements={
+	 *      {
+	 *          "name"="id",
+	 *          "dataType"="integer",
+	 *          "requirement"="\d+",
+	 *          "description"="The numeric identifier of the Deck to delete.",
+	 *      },
+	 *  }
+	 * )
+	 *
+	 * @param int     $id
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function deleteDeckAction($id, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		if (!$id) {
+				return new JsonResponse([
+						'success' => false,
+						'msg'     => 'The ID of deck is required.'
+				], 400);
+		}
+		// A deck ID was provided, so we lookup the deck that is being modified.
+		/* @var $deck Deck */
+		$deck = $this->getDoctrine()->getRepository('AppBundle:Deck')->find($id);
+		if (!$deck) {
+				return new JsonResponse([
+						'success' => false,
+						'msg' => 'The deck could not be found'
+				], 404);
+		}
+
+		if ($deck->getUser()->getId() !== $this->getUser()->getId()) {
+				return new JsonResponse([
+						'success' => false,
+						'msg'     => 'You are not allowed to delete this deck, you are not the owner.'
+				], 401);
+		}
+
+		$em->remove($deck);
+		$em->flush();
+
+		return new JsonResponse([
+				'success' => true
+		]);
+	}
+
+	/**
 	 * Try to publish one Deck of the authenticated user
 	 * If publication is successful, update the version of the deck and return the id of the decklist
 	 *
@@ -475,26 +530,26 @@ class Oauth2Controller extends Controller
 		}
 		$precedent = $precedent_id ? $em->getRepository('AppBundle:Decklist')->find($precedent_id) : null;
 
-        try
-        {
-        	$decklist = $this->get('decklist_factory')->createDecklistFromDeck($deck, $name, $descriptionMd);
-        }
-        catch(\Exception $e)
-        {
-        	return new JsonResponse([
-        			'success' => FALSE,
-        			'msg' => $e->getMessage()
-        	]);
-        }
+		try
+		{
+			$decklist = $this->get('decklist_factory')->createDecklistFromDeck($deck, $name, $descriptionMd);
+		}
+		catch(\Exception $e)
+		{
+			return new JsonResponse([
+					'success' => FALSE,
+					'msg' => $e->getMessage()
+			]);
+		}
 
-        $decklist->setTournament($tournament);
-        $decklist->setPrecedent($precedent);
-        $this->getDoctrine()->getManager()->persist($decklist);
-        $this->getDoctrine()->getManager()->flush();
+		$decklist->setTournament($tournament);
+		$decklist->setPrecedent($precedent);
+		$this->getDoctrine()->getManager()->persist($decklist);
+		$this->getDoctrine()->getManager()->flush();
 
-        return new JsonResponse([
-        		'success' => TRUE,
-        		'msg' => $decklist->getId()
-        ]);
-    }
+		return new JsonResponse([
+				'success' => TRUE,
+				'msg' => $decklist->getId()
+		]);
+	}
 }

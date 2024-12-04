@@ -758,6 +758,9 @@ class ImportStdCommand extends ContainerAwareCommand
 		$optionalKeys = [
 			'boost',
 			'boost_star',
+			'scheme_acceleration',
+			'scheme_crisis',
+			'scheme_hazard',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
@@ -781,6 +784,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			'attack_star',
 			'defense_star',
 			'health_star',
+			'scheme_acceleration',
 			'thwart_star',
 		];
 		foreach($optionalKeys as $key) {
@@ -823,6 +827,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			'attack_cost',
 			'attack_star',
 			'health_star',
+			'scheme_acceleration',
 			'scheme_hazard',
 			'thwart_cost',
 			'thwart_star',
@@ -853,7 +858,13 @@ class ImportStdCommand extends ContainerAwareCommand
 
 	protected function importEnvironmentData(Card $card, $data)
 	{
-
+		$optionalKeys = [
+			'scheme_acceleration',
+			'scheme_hazard',
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
 	}
 
 	protected function importSideSchemeData(Card $card, $data)
@@ -973,6 +984,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			'boost',
 			'boost_star',
 			'scheme',
+			'scheme_acceleration',
+			'scheme_crisis',
+			'scheme_hazard',
 			'scheme_star',
 		];
 		foreach($optionalKeys as $key) {

@@ -15,13 +15,8 @@
     <div class="col-md-9">
         <div class="row">
 				{% for card in cards %}
-        	{% if card.type_code == "main_scheme" %}
-        	{% include 'AppBundle:Search:card-back.html.twig' %}
-        	{% include 'AppBundle:Search:card-front.html.twig' %}
-        	{% else %}
         	{% include 'AppBundle:Search:card-front.html.twig' %}
         	{% include 'AppBundle:Search:card-back.html.twig' %}
-        	{% endif %}
 	        {% if includeReviews %}
 	        	{% include 'AppBundle:Search:display-card-related.html.twig' %}
 	   	    	{% include 'AppBundle:Search:display-card-reviews.html.twig' %}

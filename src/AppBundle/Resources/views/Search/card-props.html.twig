@@ -54,14 +54,21 @@
 	{% if (card.scheme is defined and card.scheme != 0) or (card.scheme_star) %}
 	  <div>{% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.format_integer(card.scheme, card.scheme_star) }}</div>
 	{% endif %}
-{% elseif card.type_code == 'side_scheme' or card.type_code == 'main_scheme' %}
+{% elseif card.type_code == 'side_scheme' %}
 	<div>
 	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
 	{% if card.escalation_threat %}
 		{% trans %}Escalation Threat{% endtrans %}: {{ macros.format_integer(card.escalation_threat, card.escalation_threat_star, not card.escalation_threat_fixed) }}.
 	{% endif %}
 	</div>
-	{% if card.type_code == 'main_scheme' %}
+{% elseif card.type_code == 'main_scheme' %}
+	{% if card.linked_card is not defined %}
+	<div>
+	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
+	{% if card.escalation_threat %}
+		{% trans %}Escalation Threat{% endtrans %}: {{ macros.format_integer(card.escalation_threat, card.escalation_threat_star, not card.escalation_threat_fixed) }}.
+	{% endif %}
+	</div>
   	{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.threat, card.threat_star, not card.threat_fixed) }}.
 	{% endif %}
 {% else %}

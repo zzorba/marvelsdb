@@ -983,3 +983,19 @@ article.review .review-comment {
 .simulator-hand-card {
 
 }
+
+
+/********* errata on cards ************/
+
+del {
+	color: red;
+	font-style: italic;
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+}
+
+ins {
+	color: green;
+	font-style: normal;
+	text-decoration: none;
+}

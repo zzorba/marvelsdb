@@ -77,8 +77,8 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'resource_mental';
 				$optionalFields[] = 'resource_wild';
 				$optionalFields[] = 'scheme_acceleration';
-				$optionalFields[] = 'scheme_crisis';
 				$optionalFields[] = 'scheme_amplify';
+				$optionalFields[] = 'scheme_crisis';
 				$optionalFields[] = 'scheme_hazard';
 			case 'ally':
 				$mandatoryFields[] = 'cost';
@@ -159,8 +159,8 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'escalation_threat_fixed';
 				$optionalFields[] = 'escalation_threat_star';
 				$optionalFields[] = 'scheme_acceleration';
-				$optionalFields[] = 'scheme_crisis';
 				$optionalFields[] = 'scheme_amplify';
+				$optionalFields[] = 'scheme_crisis';
 				$optionalFields[] = 'scheme_hazard';
 				break;
 			case "mainScheme":
@@ -2566,7 +2566,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
      * @var integer
      */
     private $schemeAmplify;
-	
+
     /**
      * @var integer
      */
@@ -2621,7 +2621,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
         return $this->schemeAcceleration;
     }
 
-	/**
+    /**
      * Set schemeAmplify
      *
      * @param integer $schemeAmplify

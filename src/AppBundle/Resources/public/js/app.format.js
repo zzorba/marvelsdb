@@ -207,11 +207,11 @@ format.text = function text(card, alternate) {
 		for (i = 0; i < (card.scheme_acceleration || 0); i++) {
 			text += '<span name="Acceleration" class="icon icon-acceleration" />';
 		}
-		for (i = 0; i < (card.scheme_crisis || 0); i++) {
-			text += '<span name="Crisis" class="icon icon-crisis" />';
-		}
 		for (i = 0; i < (card.scheme_amplify || 0); i++) {
 			text += '<span name="Amplify" class="icon icon-amplify" />';
+		}
+		for (i = 0; i < (card.scheme_crisis || 0); i++) {
+			text += '<span name="Crisis" class="icon icon-crisis" />';
 		}
 		for (i = 0; i < (card.scheme_hazard || 0); i++) {
 			text += '<span name="Hazard" class="icon icon-hazard" />';

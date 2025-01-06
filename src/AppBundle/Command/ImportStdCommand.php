@@ -881,8 +881,8 @@ class ImportStdCommand extends ContainerAwareCommand
 			'escalation_threat_fixed',
 			'escalation_threat_star',
 			'scheme_acceleration',
-			'scheme_crisis',
 			'scheme_amplify',
+			'scheme_crisis',
 			'scheme_hazard',
 		];
 		foreach($optionalKeys as $key) {
@@ -924,8 +924,8 @@ class ImportStdCommand extends ContainerAwareCommand
 		$optionalKeys = [
 			'base_threat_fixed',
 			'scheme_acceleration',
-			'scheme_crisis',
 			'scheme_amplify',
+			'scheme_crisis',
 			'scheme_hazard',
 		];
 		foreach($optionalKeys as $key) {
@@ -991,8 +991,8 @@ class ImportStdCommand extends ContainerAwareCommand
 			'boost_star',
 			'scheme',
 			'scheme_acceleration',
-			'scheme_crisis',
 			'scheme_amplify',
+			'scheme_crisis',
 			'scheme_hazard',
 			'scheme_star',
 		];

@@ -2,6 +2,7 @@
 <div class="card-text border-{{ card.faction_code }}"><!-- div 2 -->
 	{{ card.text|raw }}
 	{% if card.scheme_acceleration %}{% for i in 1..card.scheme_acceleration %}<span name="Acceleration" class="icon icon-acceleration"></span>{% endfor %}{% endif %}
+	{% if card.scheme_amplify %}{% for i in 1..card.scheme_amplify %}<span name="Amplify" class="icon icon-amplify"></span>{% endfor %}{% endif %}
 	{% if card.scheme_crisis %}{% for i in 1..card.scheme_crisis %}<span name="Crisis" class="icon icon-crisis"></span>{% endfor %}{% endif %}
 	{% if card.scheme_hazard %}{% for i in 1..card.scheme_hazard %}<span name="Hazard" class="icon icon-hazard"></span>{% endfor %}{% endif %}
 </div><!-- div 2 -->

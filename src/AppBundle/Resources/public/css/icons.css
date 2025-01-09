@@ -1,10 +1,8 @@
 @font-face {
   font-family: 'marvel-icons';
-  src:  url('../fonts/marvel-icons.eot?4fzpq9');
-  src:  url('../fonts/marvel-icons.eot?4fzpq9#iefix') format('embedded-opentype'),
-    url('../fonts/marvel-icons.ttf?4fzpq9') format('truetype'),
-    url('../fonts/marvel-icons.woff?4fzpq9') format('woff'),
-    url('../fonts/marvel-icons.svg?4fzpq9#marvel-icons') format('svg');
+
+  src:  url('../fonts/ChampionsIcons.ttf?') format('truetype');
+
   font-weight: normal;
   font-style: normal;
 }
@@ -55,76 +53,50 @@
   font-size: 32px;
 }
 .icon-crisis:before {
-  content: "\e900";
+  content: "C";
 }
 .icon-acceleration {
   font-size: 32px;
 }
 .icon-acceleration:before {
-  content: "\e901";
+  content: "A";
+}
+.icon-amplify {
+  font-size: 32px;
+}
+.icon-amplify:before {
+  content: "F";
 }
 .icon-hazard {
   font-size: 32px;
 }
 .icon-hazard:before {
-  content: "\e902";
+  content: "H";
 }
 .icon-per_hero:before {
-  content: "\e903";
+  content: "G";
 }
 .icon-unique:before {
-  content: "\e904";
+  content: "U";
 }
 .icon-star:before {
-  content: "\e905";
+  content: "S";
 }
 .icon-boost:before {
-  content: "\e906";
+  content: "B";
 }
 .icon-cost:before {
-  content: "\e907";
-}
-.icon-energy_fill:before {
-  content: "\e908";
-  color: #86671b;
-}
-.icon-energy_outline:before {
-  content: "\e909";
-  color: #f6be33;
+  content: "D";
 }
 .icon-energy:before {
-  content: "\e90a";
-}
-.icon-mental_fill:before {
-  content: "\e90b";
-  color: #b7c9eb;
-}
-.icon-mental_outline:before {
-  content: "\e90c";
-  color: #5c72c1;
+  content: "E";
 }
 .icon-mental:before {
-  content: "\e90d";
-}
-.icon-physical_fill:before {
-  content: "\e90e";
-  color: #ee9080;
-}
-.icon-physical_outline:before {
-  content: "\e90f";
-  color: #aa3220;
+  content: "M";
 }
 .icon-physical:before {
-  content: "\e910";
-}
-.icon-wild_fill:before {
-  content: "\e911";
-  color: #45bc5c;
-}
-.icon-wild_outline:before {
-  content: "\e912";
-  color: #247034;
+  content: "P";
 }
 .icon-wild:before {
-  content: "\e913";
+  content: "W";
 }

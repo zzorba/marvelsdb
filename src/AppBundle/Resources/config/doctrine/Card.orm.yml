@@ -195,6 +195,9 @@ AppBundle\Entity\Card:
         schemeAcceleration:
             type: smallint
             nullable: true
+        schemeAmplify:
+            type: smallint
+            nullable: true
         schemeHazard:
             type: smallint
             nullable: true

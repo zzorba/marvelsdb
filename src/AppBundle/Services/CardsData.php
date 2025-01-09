@@ -43,6 +43,7 @@ class CardsData
 			'[boost]' => '<span class="icon-boost" title="Boost"></span>',
 			'[crisis]' => '<span class="icon-crisis" title="Crisis"></span>',
 			'[acceleration]' => '<span class="icon-acceleration" title="Acceleration"></span>',
+			'[amplify]' => '<span class="icon-amplify" title="Amplify"></span>',
 			'[hazard]' => '<span class="icon-hazard" title="Hazard"></span>'
 		];
 		$text = preg_replace("/\[\[([^\]]+)\]\]/", '<b class="card-traits"><i>${1}</i></b>', $text);

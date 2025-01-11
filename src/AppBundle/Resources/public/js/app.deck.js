@@ -996,17 +996,36 @@ deck.get_problem = function get_problem() {
 	}
 
 	if (deck.requirements) {
+		// Adam Warlock deck requirements
+		// Adam is required to have an equal number of cards in 4 aspects. Since the new pool aspect
+		// was added, we need to check the counts of all 5 aspects, and check that 4 of them are equal,
+		// and one of them is zero
 		if (deck.requirements.aspects && deck.requirements.aspects == 4) {
 			var counts = [
 				deck.get_aspect_count('leadership'),
 				deck.get_aspect_count('aggression'),
 				deck.get_aspect_count('protection'),
-				deck.get_aspect_count('justice')
+				deck.get_aspect_count('justice'),
+				deck.get_aspect_count('pool')
 			]
-			if (!counts.every(function(val){
-				console.log(val)
-				return val == counts[0];
-			})) {
+			// Create a map to count occurrences of each aspect count
+			const countMap = new Map();
+			for (let num of counts) {
+				countMap.set(num, (countMap.get(num) || 0) + 1);
+			}
+			let hasFourEqual = false;
+			let hasOneZero = false;
+			for (let [num, count] of countMap) {
+				if (num === 0 && count === 1) {
+					hasOneZero = true;
+				}
+				if (count === 4) {
+					hasFourEqual = true;
+				}
+			}
+			isAspectCountCorrect = hasFourEqual && hasOneZero;
+			}
+			if (!isAspectCountCorrect) {
 				return "investigator";
 			}
 		} else if (deck.requirements.aspects) {

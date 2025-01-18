@@ -7,6 +7,7 @@ class Type implements \Gedmo\Translatable\Translatable, \Serializable
 	public function serialize() {
 		return [
 				'code' => $this->code,
+				'code' => $this->category,
 				'name' => $this->name
 		];
 	}
@@ -28,6 +29,11 @@ class Type implements \Gedmo\Translatable\Translatable, \Serializable
      * @var string
      */
     private $code;
+    
+    /**
+     * @var string
+     */
+    private $category;
 
     /**
      * @var string
@@ -79,6 +85,30 @@ class Type implements \Gedmo\Translatable\Translatable, \Serializable
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     *
+     * @return Type
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**

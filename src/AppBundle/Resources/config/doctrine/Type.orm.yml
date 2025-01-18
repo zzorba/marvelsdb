@@ -20,6 +20,10 @@ AppBundle\Entity\Type:
             type: string
             length: 255
             nullable: false
+        category:
+            type: string
+            length: 255
+            nullable: false
         name:
             type: string
             length: 1024

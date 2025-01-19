@@ -1015,6 +1015,7 @@ deck.get_problem = function get_problem() {
 			}
 			let hasFourEqual = false;
 			let hasOneZero = false;
+			let hasFiveZero = false;
 			for (let [num, count] of countMap) {
 				if (num === 0 && count === 1) {
 					hasOneZero = true;

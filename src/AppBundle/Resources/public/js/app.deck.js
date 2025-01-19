@@ -999,7 +999,7 @@ deck.get_problem = function get_problem() {
 		// Adam Warlock deck requirements
 		// Adam is required to have an equal number of cards in 4 aspects. Since the new pool aspect
 		// was added, we need to check the counts of all 5 aspects, and check that 4 of them are equal,
-		// and one of them is zero
+		// and one of them is zero. We also check for if there are 0 cards in any aspect, which is legal.
 		if (deck.requirements.aspects && deck.requirements.aspects == 4) {
 			var counts = [
 				deck.get_aspect_count('leadership'),
@@ -1019,12 +1019,15 @@ deck.get_problem = function get_problem() {
 				if (num === 0 && count === 1) {
 					hasOneZero = true;
 				}
+				if (num === 0 && count === 5) {
+					hasFiveZero = true;
+				}
 				if (count === 4) {
 					hasFourEqual = true;
 				}
 			}
-			isAspectCountCorrect = hasFourEqual && hasOneZero;
-			}
+
+			isAspectCountCorrect = (hasFourEqual && hasOneZero) || hasFiveZero;
 			if (!isAspectCountCorrect) {
 				return "investigator";
 			}

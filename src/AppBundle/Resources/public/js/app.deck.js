@@ -606,7 +606,7 @@ deck.get_layout_data = function get_layout_data(options) {
 		deck.update_layout_section(data, 'meta', $('<h4 style="font-weight:bold"><a class="card card-tip" data-toggle="modal" data-remote="false" data-target="#cardModal" data-code="'+deck.get_investigator_code()+'">'+investigator_name+' ('+card.linked_card.name+')</a></h4>'));
 	}
 	if (deck.requirements && deck.requirements.aspects && deck.requirements.aspects == 4){
-		deck.update_layout_section(data, 'meta', $('<div>All Aspects</div>'));
+		deck.update_layout_section(data, 'meta', $('<div>4 Aspects</div>'));
 	} else {
 		if (deck.meta && deck.meta.aspect) {
 			deck.update_layout_section(data, 'meta', $('<div><span class="fa fa-circle fg-'+deck.meta.aspect+'" title="'+deck.meta.aspect+'"></span> '+deck.meta.aspect.charAt(0).toUpperCase() + deck.meta.aspect.slice(1)+' ('+deck.get_aspect_count(deck.meta.aspect)+')</div>'));

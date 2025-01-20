@@ -263,6 +263,7 @@ ui.init_selectors = function init_selectors() {
 		$('[data-filter=faction_selector]').val(app.deck.meta.faction_selected);
 	}
 
+	$('[data-filter=type_code]').find('input[name=ally]').prop("checked", true).parent().addClass('active');
 }
 
 function uncheck_all_others() {

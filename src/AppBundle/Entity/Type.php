@@ -7,7 +7,7 @@ class Type implements \Gedmo\Translatable\Translatable, \Serializable
 	public function serialize() {
 		return [
 				'code' => $this->code,
-				'code' => $this->category,
+				'category' => $this->category,
 				'name' => $this->name
 		];
 	}

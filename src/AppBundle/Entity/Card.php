@@ -23,6 +23,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 
 		$optionalFields = [
 			'illustrator',
+			'erratum',
 			'flavor',
 			'traits',
 			'text',
@@ -492,6 +493,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 * @var \AppBundle\Entity\Card
 	 */
 	private $linked_to;
+
+	/**
+	 * @var string
+	 */
+	private $erratum;
 
 	/**
 	 * Constructor
@@ -2636,5 +2642,28 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     public function getSchemeHazard()
     {
         return $this->schemeHazard;
+    }
+
+    /**
+     * Set erratum
+     *
+     * @param string $erratum
+     *
+     * @return Card
+     */
+    public function setErratum($erratum)
+    {
+        $this->erratum = $erratum;
+        return $this;
+    }
+
+    /**
+     * Get erratum
+     *
+     * @return string
+     */
+    public function getErratum()
+    {
+        return $this->erratum;
     }
 }

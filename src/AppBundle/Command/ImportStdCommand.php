@@ -491,6 +491,7 @@ class ImportStdCommand extends ContainerAwareCommand
 				'is_unique',
 				'hidden',
 				'permanent',
+				'erratum',
 				'octgn_id'
 
 			]);

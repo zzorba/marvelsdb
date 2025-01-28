@@ -19,6 +19,9 @@
 				{% endif %}
 				{% include 'AppBundle:Search:card-illustrator.html.twig' %}
 				{% include 'AppBundle:Search:card-pack.html.twig' %}
+				{% if card.erratum %}
+					<div style="margin-top: 2rem;"><i><b>Erratum</b>: {{card.erratum}}</i></div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

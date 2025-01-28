@@ -1,6 +1,6 @@
 {{ deck.name }}
 
-{% if deck.investigator %}{{ deck.investigator.name }}{% endif %}
+{% if deck.hero %}{{ deck.hero.name }}{% endif %}
 
 {% set first_pack = deck.included_packs|first %}
 {% set last_pack = deck.included_packs|last %}

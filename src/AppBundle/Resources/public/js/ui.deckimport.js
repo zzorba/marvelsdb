@@ -5,8 +5,8 @@ var name_regexp;
 ui.on_content_change = function on_content_change(event) {
 	var text = $(content).val(),
 		slots = {}, 
-		investigator_code, 
-		investigator_name;
+		hero_code, 
+		hero_name;
 	
 	text.match(name_regexp).forEach(function (token) {
 		var qty = 1, name = token.trim(), card;
@@ -19,32 +19,31 @@ ui.on_content_change = function on_content_change(event) {
 		}
 		console.log(name);
 		if(card = app.data.cards.findOne({ name: name })) {			
-			if (card.type_code == "investigator"){
-				investigator_code = card.code;
-				investigator_name = card.name;
+			if (card.type_code == "hero"){
+				hero_code = card.code;
+				hero_name = card.name;
 			} else {
 				slots[card.code] = qty;	
 			}
-			
 		}
 		else {
 			console.log('rejecting string ['+name+']');
 		}
 	})
 	
-	if (!investigator_code){
-		window.alert("Unable to locate investigator");
+	if (!hero_code){
+		window.alert("Unable to locate hero");
 		return;
 	}
 	
 	app.deck.init({
-		investigator_code: investigator_code,
-		investigator_name: investigator_name,
+		hero_code: hero_code,
+		hero_name: hero_name,
 		slots: slots
 	});
 	app.deck.display('#deck');
 	$('input[name=content]').val(app.deck.get_json());
-	$('input[name=faction_code]').val(investigator_code);
+	$('input[name=faction_code]').val(hero_code);
 }
 
 /**

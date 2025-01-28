@@ -100,15 +100,7 @@ class ImportGuidsCommand extends ContainerAwareCommand
 						$back_name .= (string) $prop_atr->name;
 					}
 				}
-				//if ($subtitle){
-				//	$name .= $subtitle;
-				//}
-				//if ($back_name && $type != "Investigator" && $type != "Mini") {
-				//	$name .= $back_name;
-				//}
-				//if ($level && $type != "Agenda" && $type != "Act") {
-				//	$name .= $level;
-				//}
+
 				$name  = str_replace('’', '\'', $name);
 				if (isset($guids[$name])) {
 					$guids[$name] .= ":".$guid;
@@ -127,7 +119,7 @@ class ImportGuidsCommand extends ContainerAwareCommand
 			foreach($cards as $card) {
 				$name = $card->getName();
 				$number = $card->getPosition();
-				if ($card->getType()->getCode() == "investigator") {
+				if ($card->getType()->getCode() == "hero") {
 					//if ($card->getSubname()){
 					//	$name .= $card->getSubname();
 					//}

@@ -978,15 +978,15 @@ deck.get_problem = function get_problem() {
 					deck.get_aspect_count('protection')
 				];
 
-				var differentAspectCounts = aspectCounts.filter(function (count) {
-					return count > 0;
-				});
-				var equalAspectCounts = differentAspectCounts.every(function (count) {
-					return count === differentAspectCounts[0];
-				});
-	
-				if (differentAspectCounts.length !== deck.requirements.aspects || !equalAspectCounts) {
-					return 'hero';
+				var differentAspectCounts = aspectCounts.filter((count) => count > 0);
+
+				// Allow an all basic deck.
+				if (differentAspectCounts.length > 0) {
+					var areAspectCountsEqual = differentAspectCounts.every((count) => count === differentAspectCounts[0]);
+					
+					if (differentAspectCounts.length !== deck.requirements.aspects || !areAspectCountsEqual) {
+						return 'hero';
+					}
 				}
 			}
 		}

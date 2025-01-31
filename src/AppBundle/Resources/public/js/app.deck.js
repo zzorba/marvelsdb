@@ -1092,7 +1092,7 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 				for(var j = 0; j < option.trait.length; j++){
 					var trait = option.trait[j];
 
-					if (card.real_traits && card.real_traits.toUpperCase().indexOf(trait.toUpperCase()+".") !== -1){
+					if (card.real_traits && card.real_traits.toUpperCase().indexOf(trait.toUpperCase()) !== -1){
 						trait_valid = true;
 					}
 				}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <deck game="055c536f-adba-4bc2-acbf-9aefb9756046" sleeveid="0">
   <section name="Cards" shared="False">
-    <card qty="1" id="{{ deck.investigator.getOctgnId(1) }}">{{ deck.investigator.name }}</card>
+    <card qty="1" id="{{ deck.hero.getOctgnId(1) }}">{{ deck.hero.name }}</card>
     {% for slot in deck.slots_by_type.support %}
     <card qty="{{ slot.quantity }}" id="{{ slot.card.octgnId }}">{{ slot.card.name }}</card>
     {% endfor %}

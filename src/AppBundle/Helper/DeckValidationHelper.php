@@ -77,7 +77,7 @@ class DeckValidationHelper
 							}
 							break;
 						}
-						case "investigator":{
+						case "hero":{
 							if ($param2){
 								$return_requirements[$type] = [$param1 => $param1, $param2 => $param2];
 							}else if ($param1){
@@ -125,20 +125,22 @@ class DeckValidationHelper
 	public function canIncludeCard($deck, $slot, $deck_options = []) {
 		$card = $slot->getCard();
 		$indeck = $slot->getQuantity();
-		// hide investigators
+		// hide heroes
 		if ($card->getType()->getCode() === "hero") {
 			return false;
 		}
 		
-		$investigator = $deck->getCharacter();
+		$hero = $deck->getCharacter();
 		$restrictions = $card->getRestrictions();
 		return true;
+
 		if ($restrictions){
 			$parsed = $this->parseReqString($restrictions);
-			if ($parsed && $parsed['investigator'] && !isset($parsed['investigator'][$investigator->getCode()]) ){
+			if ($parsed && $parsed['hero'] && !isset($parsed['hero'][$hero->getCode()]) ){
 				return false;
 			}
 		}
+
 		// validate deck. duplicating code from app.deck.js but in php
 		if ($deck_options){
 			foreach($deck_options as $option) {
@@ -253,11 +255,6 @@ class DeckValidationHelper
 	
 	public function findProblem($deck)
 	{
-		$investigator = $deck->getCharacter();
-
-		//foreach($deck->getSlots()->getCopiesAndDeckLimit() as $cardName => $value) {
-		//	if($value['copies'] > $value['deck_limit']) return 'too_many_copies';
-		//}
 		if(!empty($this->getInvalidCards($deck))) {
 			return 'invalid_cards';
 		}
@@ -272,10 +269,8 @@ class DeckValidationHelper
 		$labels = [
 				'too_few_cards' => "Contains too few cards",
 				'too_many_cards' => "Contains too many cards",
-				'too_many_copies' => "Contains too many copies of a card (by title)",
-				'invalid_cards' => "Contains forbidden cards. Must only contain cards from the chosen aspect.",
-				'deck_options_limit' => "Contains too many limited cards", 
-				'investigator' => "Doesn't comply with the Investigator requirements"
+				'invalid_cards' => "Contains invalid cards",
+				'hero' => "Doesn't comply with the hero requirements"
 		];
 		if(isset($labels[$problem])) {
 			return $labels[$problem];

@@ -88,8 +88,8 @@ class Oauth2Controller extends Controller
 
 	/**
 	 * Create a new deck for the authenticated user.
-	 * An investigator is required, and the deck will be created empty with only
-	 * the 'required' cards for that investigator.
+	 * A hero is required, and the deck will be created empty with only
+	 * the 'required' cards for that hero.
 	 * If successful, id of new Deck is in the msg.
 	 *
 	 * @ApiDoc(
@@ -98,7 +98,7 @@ class Oauth2Controller extends Controller
 	 *  description="Create a New Deck",
  	 *  requirements={},
 	 *  parameters={
-	 *      {"name"="investigator", "dataType"="string", "required"=true, "description"="Code of the investigator card."},
+	 *      {"name"="hero", "dataType"="string", "required"=true, "description"="Code of the hero card."},
 	 *      {"name"="name", "dataType"="string", "required"=false, "description"="Name of the Deck. A default name will be generated if it is not specified."},
 	 *      {"name"="meta", "dataType"="string", "required"=false, "description"="JSON formatted meta data"},
 	 *  },
@@ -110,25 +110,25 @@ class Oauth2Controller extends Controller
 		/* @var $em \Doctrine\ORM\EntityManager */
 		$em = $this->getDoctrine()->getManager();
 
-		$investigator = false;
-		$investigator_code = filter_var($request->get('investigator'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if ($investigator_code && $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $investigator_code])){
-			$investigator = $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $investigator_code]);
+		$hero = false;
+		$hero_code = filter_var($request->get('hero'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if ($hero_code && $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $hero_code])){
+			$hero = $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $hero_code]);
 		}
 
-		if (!$investigator) {
+		if (!$hero) {
 			return new JsonResponse([
 				'success' => FALSE,
-				'msg' => "investigator is required to build a new deck."
+				'msg' => "hero is required to build a new deck."
 			]);
 		}
 
-		$tags = [ $investigator->getFaction()->getCode() ];
+		$tags = [ $hero->getFaction()->getCode() ];
 		$cards_to_add = [];
 
 		// Parse deck requirements and pre-fill deck with needed cards
-		if ($investigator->getDeckRequirements()){
-			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($investigator->getDeckRequirements());
+		if ($hero->getDeckRequirements()){
+			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($hero->getDeckRequirements());
 			if (isset($deck_requirements['card']) && $deck_requirements['card']){
 				foreach($deck_requirements['card'] as $card_code => $alternates){
 					if ($card_code){
@@ -161,22 +161,11 @@ class Oauth2Controller extends Controller
 			}
 		}
 
-		$pack = $investigator->getPack();
+		$pack = $hero->getPack();
 		$name = filter_var($request->get('name'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(!$name) {
 			// Set a default name if one was not provided.
-			$name = sprintf("%s", $investigator->getName());
-			if ($investigator->getFaction()->getCode() == "guardian"){
-				$name = sprintf("The Adventures of %s", $investigator->getName());
-			} else if ($investigator->getFaction()->getCode() == "seeker"){
-				$name = sprintf("%s Investigates", $investigator->getName());
-			} else if ($investigator->getFaction()->getCode() == "mystic"){
-				$name = sprintf("The %s Mysteries", $investigator->getName());
-			} else if ($investigator->getFaction()->getCode() == "rogue"){
-				$name = sprintf("The %s Job", $investigator->getName());
-			} else if ($investigator->getFaction()->getCode() == "survivor"){
-				$name = sprintf("%s on the Road", $investigator->getName());
-			}
+			$name = sprintf("%s", $hero->getName());
 		}
 
 		$meta = filter_var($request->get('meta', ""), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -196,7 +185,7 @@ class Oauth2Controller extends Controller
 		$deck = new Deck();
 		// Make most of these fields empty by default, they can be set later.
 		$deck->setDescriptionMd("");
-		$deck->setCharacter($investigator);
+		$deck->setCharacter($hero);
 		$deck->setLastPack($pack);
 		$deck->setName($name);
 		if ($meta_json){
@@ -249,7 +238,7 @@ class Oauth2Controller extends Controller
 	 *      {"name"="description_md", "dataType"="string", "required"=false, "description"="Description of the Decklist in Markdown"},
 	 *      {"name"="tags", "dataType"="string", "required"=false, "description"="Space-separated list of tags"},
 	 *      {"name"="slots", "dataType"="string", "required"=true, "description"="Content of the Decklist as a JSON object"},
-	 *      {"name"="problem", "dataType"="string", "required"=true, "description"="A short code description of the problem with the provided slots, if one exists. Must be one of: too_few_cards,too_many_cards,too_many_copies,invalid_cards,deck_options_limit,investigator"},
+	 *      {"name"="problem", "dataType"="string", "required"=true, "description"="A short code description of the problem with the provided slots, if one exists. Must be one of: too_few_cards,too_many_cards,invalid_cards,hero"},
 	 *      {"name"="meta", "dataType"="string", "required"=false, "description"="JSON formatted meta data"},
    *  },
 	 * )
@@ -282,13 +271,13 @@ class Oauth2Controller extends Controller
 			]);
 		}
 
-		// Don't allow investigator to be changed when 'editing' a deck.
+		// Don't allow hero to be changed when 'editing' a deck.
 		// Seems unnecessary and is bound to break something.
-		$investigator = $deck->getCharacter();
-		if (!$investigator) {
+		$hero = $deck->getCharacter();
+		if (!$hero) {
 			return new JsonResponse([
 				'success' => FALSE,
-				'msg' => "Investigator code invalid"
+				'msg' => "Hero code invalid"
 			]);
 		}
 
@@ -355,10 +344,8 @@ class Oauth2Controller extends Controller
 		if (!empty($problem) && !in_array($problem, [
 			'too_few_cards',
 			'too_many_cards',
-			'too_many_copies',
 			'invalid_cards',
-			'deck_options_limit',
-			'investigator'], true)) {
+			'hero'], true)) {
 			return new JsonResponse([
 					'success' => FALSE,
 					'msg' => "Invalid problem"
@@ -396,7 +383,7 @@ class Oauth2Controller extends Controller
 		}
 
 		// Save the deck.
-		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $investigator, $description, $tags, $slots, $deck , $problem, $ignored);
+		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $hero, $description, $tags, $slots, $deck , $problem, $ignored);
 		if ($meta_json) {
 			$deck->setMeta($meta);
 		}

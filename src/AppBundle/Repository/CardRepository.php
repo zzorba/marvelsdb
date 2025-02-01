@@ -157,7 +157,7 @@ class CardRepository extends TranslatableRepository
 		return $this->getResult($qb);
 	}
 
-	public function findInvestigators()
+	public function findHeroes()
 	{
 		$qb = $this->createQueryBuilder('c')
 			->select('c', 'p', 't', 'b', 'f', 'e')
@@ -169,7 +169,7 @@ class CardRepository extends TranslatableRepository
 			->andWhere('t.code = ?1')
 			->orderBY('c.name', 'ASC');
 
-		$qb->setParameter(1, "investigator");
+		$qb->setParameter(1, "hero");
 
 		return $this->getResult($qb);
 	}

@@ -44,8 +44,8 @@ class ExportableDeck
 			'date_update' => $this->getDateUpdate()->format('c'),
 			'description_md' => $this->getDescriptionMd(),
 			'user_id' => $this->getUser() ? $this->getUser()->getId() : null,
-			'investigator_code' => $this->getCharacter()->getCode(),
-			'investigator_name' => $this->getCharacter()->getName(),
+			'hero_code' => $this->getCharacter()->getCode(),
+			'hero_name' => $this->getCharacter()->getName(),
 			'slots' => $slots->getContent(),
 			'ignoreDeckLimitSlots' => $slots->getIgnoreDeckLimitContent(),
 			'version' => $this->getVersion(),
@@ -61,7 +61,7 @@ class ExportableDeck
 		$slots = $this->getSlots();
 		return [
 				'name' => $this->getName(),
-				'investigator' => $this->getCharacter(),
+				'hero' => $this->getCharacter(),
 				'draw_deck_size' => $slots->getDrawDeck()->countCards(),
 				'included_packs' => $slots->getIncludedPacks(),
 				'slots_by_type' => $slots->getSlotsByType()
@@ -73,7 +73,7 @@ class ExportableDeck
 		$slots = $this->getSlots();
 		return [
 				'name' => $this->getName(),
-				'investigator' => $this->getCharacter(),
+				'hero' => $this->getCharacter(),
 				'draw_deck_size' => $slots->getDrawDeck()->countCards(),
 				'included_packs' => $slots->getIncludedPacks(),
 				'slots_by_type' => $slots->getSlotsByType(1)

@@ -988,6 +988,8 @@ class ImportStdCommand extends ContainerAwareCommand
 			'scheme_crisis',
 			'scheme_hazard',
 			'scheme_star',
+			'thwart',
+			'thwart_star',
 		];
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);

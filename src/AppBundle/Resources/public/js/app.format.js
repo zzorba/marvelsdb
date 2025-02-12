@@ -23,7 +23,7 @@ format.resource = function resource(value, type, css) {
  * @memberof format
  */
 format.fancy_int = function fancy_int(num, star, per_hero) {
-	let string = (num != null ? (num < 0 ? "X" : num) : '—');
+	let string = (num != null ? (num === 99 ? "X" : num) : '—');
 	if (num != null && per_hero) {
 		string += '<span class="icon icon-per_hero" />';
 	}

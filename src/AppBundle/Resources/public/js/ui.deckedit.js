@@ -253,10 +253,9 @@ ui.build_pack_selector = function build_pack_selector() {
  */
 ui.init_selectors = function init_selectors() {
 	$('[data-filter=faction_code]').find('input[name=basic]').prop("checked", true).parent().addClass('active');
-	var investigator = app.data.cards.findById(app.deck.get_investigator_code());
-	//console.log(investigator);
-	if (investigator.faction_code){
-		$('[data-filter=faction_code]').find('input[name='+investigator.faction_code+']').prop("checked", true).parent().addClass('active');
+	var hero = app.data.cards.findById(app.deck.get_hero_code());
+	if (hero.faction_code){
+		$('[data-filter=faction_code]').find('input[name='+hero.faction_code+']').prop("checked", true).parent().addClass('active');
 	}
 
 	if (app.deck.meta && app.deck.meta.faction_selected){
@@ -1034,8 +1033,8 @@ ui.on_all_loaded = function on_all_loaded() {
 	ui.setup_typeahead();
 	ui.setup_dataupdate();
 
-	var investigator = app.data.cards.findById(app.deck.get_investigator_code());
-	app.suggestions.query("sugg-"+investigator.code);
+	var hero = app.data.cards.findById(app.deck.get_hero_code());
+	app.suggestions.query("sugg-"+hero.code);
 
 };
 

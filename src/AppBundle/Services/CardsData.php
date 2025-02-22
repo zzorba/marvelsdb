@@ -161,7 +161,7 @@ class CardsData
 			switch($searchType)
 			{
 				case 'special':{
-					// for now this is just parsing the investigator special requirements and then making it a query magically somehow
+					// for now this is just parsing the hero special requirements and then making it a query magically somehow
 					$card_code = $condition[0];
 					$card = $this->doctrine->getRepository('AppBundle:Card')->findOneBy(array("code" => $card_code));
 					if ($card && $card->getDeckOptions()){

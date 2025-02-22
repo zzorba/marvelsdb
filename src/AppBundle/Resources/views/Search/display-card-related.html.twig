@@ -1,12 +1,12 @@
 
-{% if card.type_code == "investigator" %}
+{% if card.type_code == "hero" %}
 <div class="col-md-12">
 	<div class="row">
 		<div class="col-md-9">
 			<div style="line-height:34px" id="related-header">
 				<span style="font-size:24px">{% trans %}Deck Building{% endtrans %}</span>
 			</div>
-			<a href="{{ path('cards_find',{q:'do:' ~ card.code}) }}" >Search for cards usable by this investigator</a></li>
+			<a href="{{ path('cards_find',{q:'do:' ~ card.code}) }}" >Search for cards usable by this hero</a></li>
 		</div>
 	</div>
 </div>

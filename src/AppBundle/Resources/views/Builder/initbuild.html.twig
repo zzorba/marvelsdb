@@ -10,17 +10,15 @@
 {% block body %}
 
 <style>
-	.investigator-selection {
+	.hero-selection {
 		display: flex;
 		vertical-align: center;
 		align-items: center;
 		margin-bottom: 5px;
 		flex-wrap: wrap;
 	}
-	.investigator-selection > div {
+	.hero-selection > div {
 		padding: 5px;
-	}
-	.investigator-attributes span {
 	}
 	h4 {
 		padding: 5px;
@@ -32,7 +30,7 @@
 
 <form action="{{ path('deck_initbuild') }}" class="form-inline" method="post" enctype="application/x-www-form-urlencoded">
 <div>
-	<div class="investigator-select">
+	<div class="hero-select">
 		<h2>Choose a Hero
 		<select class="form-control" id="deck_init_all" onchange="app.deck_init.update_build_init();">
 			<option value="your">Your Heroes</option>
@@ -41,26 +39,21 @@
 		</h2>
 		<div>
 			<div id="my_inv">
-			{% for class, investigators in my_investigators_by_class %}
-				<h4 class="faint-{{class|lower}}"> <span class="icon icon-{{class|lower}}"></span> {{class}}</h4>
-				<div style="display: flex; flex-wrap: wrap;" class="faint-{{class|lower}}">
-				{% for investigator in investigators %}
-					{% include 'AppBundle:Builder:initbuild-investigator.html.twig' %}
+				<h4>Hero</h4>
+				<div style="display: flex; flex-wrap: wrap;">
+				{% for hero in my_heroes %}
+					{% include 'AppBundle:Builder:initbuild-hero.html.twig' %}
 				{% endfor %}
 				</div>
-			{% endfor %}
 			</div>
 			
-
 			<div class="hidden" id="all_inv">
-				{% for class, investigators in all_investigators_by_class %}
-					<h4 class="faint-{{class|lower}}"> <span class="icon icon-{{class|lower}}"></span> {{class}}</h4>
-					<div style="display: flex; flex-wrap: wrap;" class="faint-{{class|lower}}">
-					{% for investigator in investigators %}
-						{% include 'AppBundle:Builder:initbuild-investigator.html.twig' %}
-					{% endfor %}
-					</div>
+				<h4>Hero</h4>
+				<div style="display: flex; flex-wrap: wrap;">
+				{% for hero in all_heroes %}
+					{% include 'AppBundle:Builder:initbuild-hero.html.twig' %}
 				{% endfor %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -69,6 +62,5 @@
 </form>
 
 </div>
-
 
 {% endblock %}

@@ -32,60 +32,37 @@ class BuilderController extends Controller
 		$packs_owned = explode(",", $collection);
 
 		$type = $em->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero']);
-		$investigators = $em->getRepository('AppBundle:Card')->findBy(['type' => $type], ["name"=>"ASC" ]);
-		$my_investigators = [];
-		$other_investigators = [];
-		$all_investigators = [];
-		$all_investigators_by_class = [];
-		$my_investigators_by_class = [];
-		$all_unique_investigators = [];
-		$my_unique_investigators = [];
+		$heroes = $em->getRepository('AppBundle:Card')->findBy(['type' => $type], ["name"=>"ASC" ]);
+		$all_heroes = [];
+		$all_unique_heroes = [];
+		$my_heroes = [];
+		$my_unique_heroes = [];
 
-		// 'hero_meta' => json_decode($decklist->getCharacter()->getMeta())
-
-		foreach($investigators as $investigator){
-			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($investigator->getDeckRequirements());
-			$unique_key = $investigator->getCardSet()->getCode();
-			$faction_name = $investigator->getFaction()->getName();
-			$pack_id = $investigator->getPack()->getId();
-			$hero_meta = json_decode($investigator->getMeta());
+		foreach($heroes as $hero){
+			$deck_requirements = $this->get('deck_validation_helper')->parseReqString($hero->getDeckRequirements());
+			$unique_key = $hero->getCardSet()->getCode();
+			$pack_id = $hero->getPack()->getId();
+			$hero_meta = json_decode($hero->getMeta());
 
 			if (!$hero_meta) {
 				continue;
 			}
 
-			if (in_array($pack_id, $packs_owned) && !isset($my_unique_investigators[$unique_key]) ){
-				$my_investigators[] = ["meta" => $hero_meta, "card" => $investigator];
-				$my_unique_investigators[$unique_key] = true;
-				if (!isset($my_investigators_by_class[$faction_name]) ) {
-					$my_investigators_by_class[$faction_name] = [];
-				}
-				$my_investigators_by_class[$faction_name][] = $investigator;
+			if (!isset($all_unique_heroes[$unique_key])) {
+				$all_unique_heroes[$unique_key] = true;
+				$all_heroes[] = $hero;
 			}
 
-			// only have one investigator per name
-			if (!isset($all_unique_investigators[$unique_key])) {
-				$all_unique_investigators[$unique_key] = true;
-				if (!isset($all_investigators_by_class[$faction_name]) ) {
-					$all_investigators_by_class[$faction_name] = [];
-				}
-				$all_investigators_by_class[$faction_name][] = $investigator;
-
-				$all_investigators[] = $investigator;
+			if (in_array($pack_id, $packs_owned) && !isset($my_unique_heroes[$unique_key])) {
+				$my_unique_heroes[$unique_key] = true;
+				$my_heroes[] = $hero;
 			}
 		}
 
-		arsort($all_investigators_by_class);
-		arsort($my_investigators_by_class);
-
 		return $this->render('AppBundle:Builder:initbuild.html.twig', [
 			'pagetitle' => "New deck",
-			'investigators' => $all_investigators,
-			'my_investigators' => $my_investigators,
-			'all_investigators_by_class' => $all_investigators_by_class,
-			'my_investigators_by_class' => $my_investigators_by_class
-			//'my_investigators' => $my_investigators,
-			//'other_investigators' => $other_investigators
+			'all_heroes' => $all_heroes,
+			'my_heroes' => $my_heroes
 		], $response);
 	}
 
@@ -94,7 +71,7 @@ class BuilderController extends Controller
 		/* @var $em \Doctrine\ORM\EntityManager */
 		$em = $this->getDoctrine()->getManager();
 
-		$hero_code = $request->request->get('investigator');
+		$hero_code = $request->request->get('hero');
 
 		if(!$hero_code){
 			$this->get('session')->getFlashBag()->set('error', "A hero is required.");
@@ -426,12 +403,11 @@ class BuilderController extends Controller
 			}
 		}
 
-		// XXX
-		// check for investigator here
-		$investigator = false;
-		$investigator_code = filter_var($request->get('faction_code'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if ($investigator_code && $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $investigator_code])){
-			$investigator = $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $investigator_code]);
+		// check for hero here
+		$hero = false;
+		$hero_code = filter_var($request->get('faction_code'), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if ($hero_code && $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $hero_code])){
+			$hero = $card = $em->getRepository('AppBundle:Card')->findOneBy(["code" => $hero_code]);
 		}
 
 		$cancel_edits = (boolean) filter_var($request->get('cancel_edits'), FILTER_SANITIZE_NUMBER_INT);
@@ -485,7 +461,7 @@ class BuilderController extends Controller
 			}
 		}
 
-		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $investigator, $description, $tags, $content, $source_deck ? $source_deck : null, $problem, $ignored);
+		$this->get('decks')->saveDeck($this->getUser(), $deck, $decklist_id, $name, $hero, $description, $tags, $content, $source_deck ? $source_deck : null, $problem, $ignored);
 
 
 		if ($request->get('exiles') && $request->get('exiles_string')){

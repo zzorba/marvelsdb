@@ -184,49 +184,46 @@ draw_simulator.update_odds = function update_odds() {
  * @memberOf draw_simulator
  */
 draw_simulator.handle_click = function handle_click(event) {
-
 	event.preventDefault();
 
 	var command = $(this).data('command');
-	if(command === 'redraw') {
+	if (command === 'redraw') {
 		draw_simulator.reshuffle(true);
 		return;
 	}
 	
-	if(command === 'reshuffle') {
+	if (command === 'reshuffle') {
 		draw_simulator.reshuffle(false);
 		return;
 	}
 	
 	$('[data-command=clear]').prop('disabled', false);
-	if(command === 'clear') {
+	if (command === 'clear') {
 		draw_simulator.reset();
 		return;
 	}
 	
-	if(event.shiftKey) {
+	if (event.shiftKey) {
 		draw_simulator.reset();
 	}
 	var draw;
-	var identityCardCode=app.deck.get_investigator_code()
-	var heroCard = app.data.cards.findById(identityCardCode);
+	var heroCard = app.data.cards.findById(app.deck.get_hero_code());
 	var alteregoCard = app.data.cards.findById(heroCard.linked_to_code)
 
-	if(command === 'hero_hand') {
-		draw=heroCard.hand_size;
+	if (command === 'hero_hand') {
+		draw = heroCard.hand_size;
 	} 
-	else if(command === 'alterego_hand') {
-		draw=alteregoCard.hand_size;
+	else if (command === 'alterego_hand') {
+		draw = alteregoCard.hand_size;
 	} 
-	else if(command === 'all') {
+	else if (command === 'all') {
 		draw = deck.length;
 	} else {
 		draw = command;
 	}
 
-	if(isNaN(draw)) return;
+	if (isNaN(draw)) return;
 	draw_simulator.draw(draw);
-
 };
 
 })(app.draw_simulator = {}, jQuery);

@@ -23,18 +23,18 @@ class SuggestionsCommand extends ContainerAwareCommand
 		$dbh = $this->getContainer()->get('doctrine')->getConnection();
 		ini_set('memory_limit', '1G');
 		$webdir = $this->getContainer()->get('kernel')->getRootDir() . "/../web";
-		// generate suggestions per investigator
-		$investigators = $dbh->executeQuery(
-			"SELECT
-			c.id,
-			c.code
-			from card c
-			inner join `type` on type.id = c.type_id
-			where type.code = 'hero'
-			order by c.id
+		// generate suggestions per hero
+		$heroes = $dbh->executeQuery("
+		    SELECT
+			    c.id,
+			    c.code
+			FROM card c
+			JOIN type t ON t.id = c.type_id
+			WHERE t.code = 'hero'
+			ORDER BY c.id
 		")->fetchAll();
 
-		foreach($investigators as $index => $card) {
+		foreach($heroes as $index => $card) {
 			$runner = $this->getSuggestionsForSide($card['id']);
 			file_put_contents($webdir."/sugg-".$card['code'].".json", json_encode($runner));
 		}

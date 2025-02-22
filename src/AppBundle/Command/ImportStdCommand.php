@@ -849,6 +849,8 @@ class ImportStdCommand extends ContainerAwareCommand
 			'health_per_hero',
 			'health_star',
 			'scheme',
+			'scheme_acceleration',
+			'scheme_hazard',
 			'scheme_star',
 		];
 		foreach($optionalKeys as $key) {

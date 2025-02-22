@@ -323,7 +323,7 @@ AppBundle\Entity\Card:
             type: boolean
             nullable: true
             column: escalation_threat_star
-        erratum:
+        errata:
             type: text
             nullable: true
     uniqueConstraints:

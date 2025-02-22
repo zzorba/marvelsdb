@@ -23,7 +23,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 
 		$optionalFields = [
 			'illustrator',
-			'erratum',
+			'errata',
 			'flavor',
 			'traits',
 			'text',
@@ -499,7 +499,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	/**
 	 * @var string
 	 */
-	private $erratum;
+	private $errata;
 
 	/**
 	 * Constructor
@@ -2676,25 +2676,25 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
     }
 
     /**
-     * Set erratum
+     * Set errata
      *
-     * @param string $erratum
+     * @param string $errata
      *
      * @return Card
      */
-    public function setErratum($erratum)
+    public function setErrata($errata)
     {
-        $this->erratum = $erratum;
+        $this->errata = $errata;
         return $this;
     }
 
     /**
-     * Get erratum
+     * Get errata
      *
      * @return string
      */
-    public function getErratum()
+    public function getErrata()
     {
-        return $this->erratum;
+        return $this->errata;
     }
 }

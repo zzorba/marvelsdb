@@ -215,19 +215,52 @@ class ImportStdCommand extends ContainerAwareCommand
 				if (isset($new_card['quantity'])) {
 					$new_card_data['quantity'] = $new_card['quantity'];
 				}
+				if (isset($new_card['flavor'])) {
+					$new_card_data['flavor'] = $new_card['flavor'];
+				}
 				$new_cards = [];
 				$new_cards[] = $new_card_data;
 				$duplicates_added = $this->importCardsFromJsonData($new_cards);
 				print_r(count($duplicates_added));
 				if ($duplicates_added && isset($duplicates_added[0])) {
 					$duplicates_added[0]->setDuplicateOf($duplicate_of);
-					print_r($new_card_data);
+					//print_r($new_card_data);
 				}
 			}
 
 			$this->em->flush();
 		}
 
+
+		$output->writeln("Generate cards json.");
+		$doctrine = $this->getContainer()->get('doctrine');
+
+		$supported_locales = $this->getContainer()->getParameter('supported_locales');
+		$default_locale = $this->getContainer()->getParameter('locale');
+		foreach($supported_locales as $supported_locale) {
+			$doctrine->getRepository('AppBundle:Card')->setDefaultLocale($supported_locale);
+			$list_cards = $doctrine->getRepository('AppBundle:Card')->findAll();
+			// build the file
+			$cards = array();
+			/* @var $card \AppBundle\Entity\Card */
+			foreach($list_cards as $card) {
+				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, "en");
+			}
+			$content = json_encode($cards);
+			$webdir = $this->getContainer()->get('kernel')->getRootDir() . "/../web";
+			file_put_contents($webdir."/cards-all-".$supported_locale.".json", $content);
+
+			$list_cards = $doctrine->getRepository('AppBundle:Card')->findAllWithoutEncounter();
+			// build the file
+			$cards = array();
+			/* @var $card \AppBundle\Entity\Card */
+			foreach($list_cards as $card) {
+				$cards[] = $this->getContainer()->get('cards_data')->getCardInfo($card, true, "en");
+			}
+			$content = json_encode($cards);
+			$webdir = $this->getContainer()->get('kernel')->getRootDir() . "/../web";
+			file_put_contents($webdir."/cards-player-".$supported_locale.".json", $content);
+		}
 		$output->writeln("Done.");
 
 	}
@@ -491,7 +524,7 @@ class ImportStdCommand extends ContainerAwareCommand
 				'is_unique',
 				'hidden',
 				'permanent',
-				'erratum',
+				'errata',
 				'octgn_id'
 
 			]);

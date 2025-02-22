@@ -565,13 +565,13 @@ deck.get_layout_data = function get_layout_data(options) {
 	var hero = app.data.cards.findById(hero_code);
 	var minDeckSize = 40;
 
-	if (hero.meta?.colors) {
+	if (hero.meta && hero.meta.colors) {
 		data['hero_color_1'] = hero.meta.colors[0];
 		data['hero_color_2'] = hero.meta.colors[1];
 		data['hero_color_3'] = hero.meta.colors[2];
 	}
 	var offset = "";
-	if (hero.meta?.offset) {
+	if (hero.meta && hero.meta.offset) {
 		offset = "background-position: "+hero.meta.offset+";";
 	}
 	deck.update_layout_section(data, 'image1', $('<div class="card-thumbnail-wide card-thumbnail-hero" style="'+offset+'background-image:url(/bundles/cards/'+hero.code+'.jpg)"></div>'));
@@ -611,7 +611,7 @@ deck.get_layout_data = function get_layout_data(options) {
 			deck.update_layout_section(data, 'meta', $('<div class="text-danger small"><span class="fa fa-exclamation-triangle"></span> '+problem_labels[problem]+'</div>'));
 		}
 	}
-	
+
 	var layout_template = 2;
 	if (deck.sort_type == "name"){
 		deck.update_layout_section(data, "cards", deck.get_layout_section({'name': 1}, null, null));
@@ -983,7 +983,7 @@ deck.get_problem = function get_problem() {
 				// Allow an all basic deck.
 				if (differentAspectCounts.length > 0) {
 					var areAspectCountsEqual = differentAspectCounts.every((count) => count === differentAspectCounts[0]);
-					
+
 					if (differentAspectCounts.length !== deck.requirements.aspects || !areAspectCountsEqual) {
 						return 'hero';
 					}

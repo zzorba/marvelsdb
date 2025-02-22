@@ -320,6 +320,9 @@ AppBundle\Entity\Card:
             type: boolean
             nullable: true
             column: escalation_threat_star
+        erratum:
+            type: text
+            nullable: true
     uniqueConstraints:
         card_code_idx:
             columns: [ code ]

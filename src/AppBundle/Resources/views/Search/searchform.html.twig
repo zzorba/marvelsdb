@@ -55,8 +55,8 @@
 				<div class="form-group">
 			<div class="btn-group" data-toggle="buttons">
 			{% for faction in factions %}
-				<label class="btn btn-default active" title="{{ faction.name }}" data-toggle="tooltip" data-container="body">
-					<input type="checkbox" name="f[]" checked value="{{ faction.code }}">
+				<label class="btn btn-default" title="{{ faction.name }}" data-toggle="tooltip" data-container="body">
+					<input type="checkbox" name="f[]" value="{{ faction.code }}">
 					<span class="icon icon-{{ faction.code }}"></span>{{ faction.name }}
 				</label>
 			{% endfor %}

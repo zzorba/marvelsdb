@@ -295,6 +295,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		{
 			$type = $this->getEntityFromData('AppBundle\\Entity\\Type', $data, [
 					'code',
+					'category',
 					'name'
 			], [], []);
 			if($type) {

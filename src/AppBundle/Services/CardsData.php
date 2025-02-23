@@ -125,7 +125,7 @@ class CardsData
 		return $factions;
 	}
 
-	public function get_search_rows($conditions, $sortorder, $forceempty = false, $encounter = false)
+	public function get_search_rows($conditions, $sortorder, $forceempty = false, $decks = "all")
 	{
 		$i=0;
 
@@ -142,12 +142,13 @@ class CardsData
 			->leftJoin('c.faction2', 'f2');
 		$qb2 = null;
 		$qb3 = null;
-		if ($encounter === "encounter"){
-			$qb->andWhere("(f.code = 'encounter')");
-		}else if ($encounter === true || $encounter === "1"){
-			//$qb->andWhere("(c.encounter IS NULL)");
-		}else {
-			$qb->andWhere("(f.code != 'encounter')");
+
+		if ($decks === "encounter") {
+			$qb->andWhere("t.category = 'encounter'");
+		} else if ($decks === "player") {
+			$qb->andWhere("t.category = 'player'");
+		} else {
+			// get both player and encounter cards in this case ("all")
 		}
 		$qb->andWhere("c.hidden is null or c.hidden = false");
 
@@ -489,6 +490,9 @@ class CardsData
 				$cardinfo[$fieldName.'_name'] = $associationEntity->getName();
 				if ($fieldName == "card_set") {
 					$cardinfo[$fieldName.'_type_name_code'] = $associationEntity->getCardSetType()->getCode();
+				}
+				if ($fieldName == "type") {
+					$cardinfo[$fieldName.'_category'] = $associationEntity->getCategory();
 				}
 			}
 		}

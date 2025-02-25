@@ -125,6 +125,9 @@ format.info = function info(card) {
 			if (card.scheme || card.scheme_star) {
 				text += '<div>Scheme: ' + (card.scheme > 0 ? '+' : '') + format.fancy_int(card.scheme, card.scheme_star) + '</div>';
 			}
+			if (card.thwart || card.thwart_star) {
+				text += '<div>Thwart: ' + (card.thwart > 0 ? '+' : '') + format.fancy_int(card.thwart, card.thwart_star) + '</div>';
+			}
 			break;
 		case 'villain':
 		case 'minion':

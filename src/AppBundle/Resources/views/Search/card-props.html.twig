@@ -54,6 +54,9 @@
 	{% if (card.scheme is defined and card.scheme != 0) or (card.scheme_star) %}
 	  <div>{% trans %}Scheme{% endtrans %}: {% if card.scheme > 0 %}+{% endif %}{{ macros.format_integer(card.scheme, card.scheme_star) }}</div>
 	{% endif %}
+	{% if (card.thwart is defined and card.thwart != 0) or (card.thwart_star) %}
+	  <div>{% trans %}Thwart{% endtrans %}: {% if card.thwart > 0 %}+{% endif %}{{ macros.format_integer(card.thwart, card.thwart_star) }}</div>
+	{% endif %}
 {% elseif card.type_code == 'side_scheme' %}
 	<div>
 	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.

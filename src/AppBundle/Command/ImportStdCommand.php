@@ -232,6 +232,7 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 
 
+		$output->writeln("");
 		$output->writeln("Generate cards json.");
 		$doctrine = $this->getContainer()->get('doctrine');
 
@@ -764,6 +765,15 @@ class ImportStdCommand extends ContainerAwareCommand
 			if ($cleanName == "Player Side Scheme") {
 				$cleanName = "PlayerSideScheme";
 			}
+			if ($cleanName == "Evidence - Means") {
+				$cleanName = "EvidenceMeans";
+			}
+			if ($cleanName == "Evidence - Motive") {
+				$cleanName = "EvidenceMotive";
+			}
+			if ($cleanName == "Evidence - Opportunity") {
+				$cleanName = "EvidenceOpportunity";
+			}
 			$functionName = 'import' . $cleanName . 'Data';
 			$this->$functionName($entity, $data);
 		}
@@ -907,6 +917,21 @@ class ImportStdCommand extends ContainerAwareCommand
 		foreach($optionalKeys as $key) {
 			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
 		}
+	}
+
+	protected function importEvidenceMeansData(Card $card, $data)
+	{
+
+	}
+
+	protected function importEvidenceMotiveData(Card $card, $data)
+	{
+
+	}
+
+	protected function importEvidenceOpportunityData(Card $card, $data)
+	{
+
 	}
 
 	protected function importSideSchemeData(Card $card, $data)

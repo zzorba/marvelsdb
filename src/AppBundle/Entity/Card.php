@@ -256,6 +256,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	private $cost;
 
 	/**
+	 * @var boolean
+	 */
+	private $costPerHero;
+
+	/**
 	 * @var string
 	 */
 	private $text;
@@ -687,6 +692,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	public function getCost()
 	{
 		return $this->cost;
+	}
+
+	/**
+	 * Set costPerHero
+	 *
+	 * @param boolean $costPerHero
+	 *
+	 * @return Card
+	 */
+	public function setCostPerHero($costPerHero)
+	{
+		$this->costPerHero = $costPerHero;
+
+		return $this;
+	}
+
+	/**
+	 * Get costPerHero
+	 *
+	 * @return boolean
+	 */
+	public function getCostPerHero()
+	{
+		return $this->costPerHero;
 	}
 
 	/**

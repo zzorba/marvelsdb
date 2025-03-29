@@ -455,7 +455,7 @@ class CardsData
 			case 'set': $qb->orderBy('p.position')->addOrderBy('c.position'); break;
 			case 'faction': $qb->orderBy('c.faction')->addOrderBy('c.type'); break;
 			case 'type': $qb->orderBy('c.type')->addOrderBy('c.faction'); break;
-			case 'cost': $qb->orderBy('c.type')->addOrderBy('c.cost'); break;
+			case 'cost': $qb->orderBy('c.cost')->addOrderBy('c.type'); break;
 		}
 		$qb->addOrderBy('c.name');
 		$qb->addOrderBy('c.code');

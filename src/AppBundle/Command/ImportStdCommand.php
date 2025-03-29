@@ -898,6 +898,8 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importEnvironmentData(Card $card, $data)
 	{
 		$optionalKeys = [
+			'boost',
+			'boost_star',
 			'scheme_acceleration',
 			'scheme_amplify',
 			'scheme_hazard',

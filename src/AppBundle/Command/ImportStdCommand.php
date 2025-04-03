@@ -790,6 +790,8 @@ class ImportStdCommand extends ContainerAwareCommand
 	protected function importUpgradeData(Card $card, $data)
 	{
 		$optionalKeys = [
+			'scheme_acceleration',
+			'scheme_amplify',
 			'scheme_crisis',
 			'scheme_hazard',
 		];
@@ -897,6 +899,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			'health_star',
 			'scheme',
 			'scheme_acceleration',
+			'scheme_amplify',
 			'scheme_hazard',
 			'scheme_star',
 		];

@@ -6,7 +6,7 @@
 
 {% if card.type_code == 'upgrade' or card.type_code == 'event' or card.type_code == 'support' or card.type_code == 'ally' %}
 <div class="card-props">
-	{% trans %}Cost{% endtrans %}: {{ macros.format_integer(card.cost) }}.
+	{% trans %}Cost{% endtrans %}: {{ macros.format_integer(card.cost, null, card.cost_per_hero) }}.
 	{% if card.type_code == 'ally' %}
 	<div>
 	{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star) }}.

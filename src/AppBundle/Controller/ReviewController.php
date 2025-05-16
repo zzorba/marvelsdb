@@ -405,6 +405,11 @@ class ReviewController extends Controller
 			throw $this->createAccessDeniedException("You are not logged in.");
 		}
 
+		if (count($user->getDecks()) <= 0) {
+			// have at least one deck created before commenting
+			throw $this->createAccessDeniedException("You need to create at least one deck to comment.");
+		}
+
 		$review_id = filter_var($request->get('comment_review_id'), FILTER_SANITIZE_NUMBER_INT);
 		/* @var $review Review */
 		$review = $em->getRepository('AppBundle:Review')->find($review_id);

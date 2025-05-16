@@ -771,6 +771,11 @@ class SocialController extends Controller
 			throw new UnauthorizedHttpException('You must be logged in to comment.');
 		}
 
+		if (count($user->getDecks()) <= 0) {
+			// have at least one deck created before commenting
+			throw new UnauthorizedHttpException('You need to create at least one deck to comment.');
+		}
+
 		$decklist_id = filter_var($request->get('id'), FILTER_SANITIZE_NUMBER_INT);
 		$decklist = $this->getDoctrine()
 		->getRepository('AppBundle:Decklist')

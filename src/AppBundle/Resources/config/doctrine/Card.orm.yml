@@ -101,6 +101,9 @@ AppBundle\Entity\Card:
         cost:
             type: smallint
             nullable: true
+        costPerHero:
+            type: boolean
+            nullable: true
         text:
             type: text
             nullable: true

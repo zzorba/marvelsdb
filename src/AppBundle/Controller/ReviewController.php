@@ -29,6 +29,11 @@ class ReviewController extends Controller
 			throw $this->createAccessDeniedException("You are not logged in.");
 		}
 
+		if (count($user->getDecks()) <= 0) {
+                        // have at least one deck created before creating a review
+                        throw $this->createAccessDeniedException("You need to create at least one deck to comment.");
+		}
+
 		$is_faq = false;
 		$is_question = false;
 		if ($request->get('is_faq')){
@@ -403,6 +408,11 @@ class ReviewController extends Controller
 		$user = $this->getUser();
 		if(!$user) {
 			throw $this->createAccessDeniedException("You are not logged in.");
+		}
+
+		if (count($user->getDecks()) <= 0) {
+			// have at least one deck created before commenting
+			throw $this->createAccessDeniedException("You need to create at least one deck to comment.");
 		}
 
 		$review_id = filter_var($request->get('comment_review_id'), FILTER_SANITIZE_NUMBER_INT);

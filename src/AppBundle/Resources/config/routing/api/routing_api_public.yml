@@ -69,6 +69,15 @@ api_decklists_by_date:
         _format: json
         date: \d\d\d\d-\d\d-\d\d
 
+api_popular_decklists:
+    path: /decklists/popular/
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Api:getPopularDecklists
+        _format: json
+    requirements:
+        _format: json
+
 api_public_deck:
     path: /deck/{deck_id}.{_format}
     methods: [GET]

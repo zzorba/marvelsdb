@@ -33,6 +33,7 @@ class CardType extends AbstractType
             ->add('resourceMental')
             ->add('resourceWild')
             ->add('health')
+            ->add('healthPerGroup')
             ->add('healthPerHero')
             ->add('healthStar')
             ->add('thwart')

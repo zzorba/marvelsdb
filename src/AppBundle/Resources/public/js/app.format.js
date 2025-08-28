@@ -22,19 +22,20 @@ format.resource = function resource(value, type, css) {
 /**
  * @memberof format
  */
-format.fancy_int = function fancy_int(num, star, per_hero) {
-	let string = (num != null ? (num < 0 ? "X" : num) : '—');
-	if (num != null && per_hero) {
-		string += '<span class="icon icon-per_hero" />';
-	}
-	if (star) {
-		if (num != null) {
-			string += '<span class="icon icon-star" />';
-		} else {
-			string = '<span class="icon icon-star" />';
+format.fancy_int = function fancy_int(num, star, per_hero, per_group) {
+	if (num != null) {
+		let string = num < 0 ? 'X' : num;
+		if (per_hero) {
+			string += '<span class="icon icon-per_hero" />';
+		} else if (per_group) {
+			string += '<span class="icon icon-per_group" />';
 		}
+		if (star) {
+			string += '<span class="icon icon-star" />';
+		}
+		return string;
 	}
-	return string;
+	return star ? '<span class="icon icon-star" />' : '—';
 };
 
 /**
@@ -106,14 +107,14 @@ format.info = function info(card) {
 	switch(card.type_code) {
 		case 'side_scheme':
 		case 'main_scheme':
-			text += '<div>Starting Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed) + '.';
+			text += '<div>Starting Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed && !card.base_threat_per_group, card.base_threat_per_group) + '.';
 			if (card.type_code == 'main_scheme') {
 				if (card.escalation_threat || card.escalation_threat_star) {
 					text += ' Escalation Threat: ' + format.fancy_int(card.escalation_threat, card.escalation_threat_star, !card.escalation_threat_fixed) + '.</div>';
 				} else {
 					text += '</div>';
 				}
-				text += '<div>Threat: ' + format.fancy_int(card.threat, card.threat_star, !card.threat_fixed) + '.</div>';
+				text += '<div>Threat: ' + format.fancy_int(card.threat, card.threat_star, !card.threat_fixed && !card.threat_per_group, card.threat_per_group) + '.</div>';
 			} else {
 				text += '</div>';
 			}
@@ -130,7 +131,7 @@ format.info = function info(card) {
 		case 'minion':
 				text += '<div>Attack: ' + format.fancy_int(card.attack, card.attack_star);
 				text += ' Scheme: ' + format.fancy_int(card.scheme, card.scheme_star);
-				text += ' Health: ' + format.fancy_int(card.health, card.health_star, card.health_per_hero);
+				text += ' Health: ' + format.fancy_int(card.health, card.health_star, card.health_per_hero, card.health_per_group);
 				text += '.</div>';
 			break;
 		case 'treachery':
@@ -154,7 +155,7 @@ format.info = function info(card) {
 				text += '<div>Cost: ' + format.fancy_int(card.cost, null, card.cost_per_hero) + '.</div>';
 			}
 			if (card.type_code == 'player_side_scheme') {
-				text += '<div>Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed) + '.</div>';
+				text += '<div>Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed && !card.base_threat_per_group, card.base_threat_per_group) + '.</div>';
 			}
 			if (card.resource_physical || card.resource_mental || card.resource_energy || card.resource_wild){
 				text += '<div>Resource: ';

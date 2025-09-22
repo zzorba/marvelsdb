@@ -215,7 +215,8 @@ AppBundle\Entity\Card:
             nullable: true
             column: deck_limit
         stage:
-            type: smallint
+            type: string
+            length: 4
             nullable: true
         traits:
             type: string

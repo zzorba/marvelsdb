@@ -408,7 +408,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	private $restrictions;
 
 	/**
-	 * @var integer
+	 * @var string
 	 */
 	private $stage;
 
@@ -1234,7 +1234,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	/**
 	 * Set stage
 	 *
-	 * @param integer $stage
+	 * @param string $stage
 	 *
 	 * @return Card
 	 */
@@ -1248,7 +1248,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	/**
 	 * Get stage
 	 *
-	 * @return integer
+	 * @return string
 	 */
 	public function getStage()
 	{

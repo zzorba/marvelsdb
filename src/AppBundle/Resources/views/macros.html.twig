@@ -1,5 +1,5 @@
-{% macro format_integer(value, star, per_hero) %}
-{% if value is null %}{% if star != true %}&mdash;{% endif %}{% elseif value < 0 %}X{% else %}{{ value }}{% endif %}{% if per_hero and value is not null %}<span class="icon icon-per_hero"></span>{% endif %}{% if star %}<span class="icon icon-star"></span>{% endif %}
+{% macro format_integer(value, star, per_hero, per_group) %}
+{% if value is null %}{% if star != true %}&mdash;{% endif %}{% elseif value < 0 %}X{% else %}{{ value }}{% endif %}{% if per_hero and value is not null %}<span class="icon icon-per_hero"></span>{% endif %}{% if per_group and value is not null %}<span class="icon icon-per_group"></span>{% endif %}{% if star %}<span class="icon icon-star"></span>{% endif %}
 {% endmacro %}
 
 {% macro card_name_with_pack_no_link(card) %}

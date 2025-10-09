@@ -48,7 +48,7 @@ format.stage = function stage(card) {
  */
 format.name = function name(card) {
 	var name = (card.is_unique ? '<span class="icon-unique"></span> ' : "") + card.name;
-	if (card.type_code == 'villain' && card.stage) {
+	if ((card.type_code == 'villain' || card.type_code == 'leader') && card.stage) {
 		var stages = ['0', 'I', 'II', 'III', 'IV', 'V'];
 		name += ' (' + (stages[card.stage] || card.stage) + ')';
 	}
@@ -126,6 +126,7 @@ format.info = function info(card) {
 				text += '<div>Scheme: ' + (card.scheme > 0 ? '+' : '') + format.fancy_int(card.scheme, card.scheme_star) + '</div>';
 			}
 			break;
+		case 'leader':
 		case 'villain':
 		case 'minion':
 				text += '<div>Attack: ' + format.fancy_int(card.attack, card.attack_star);

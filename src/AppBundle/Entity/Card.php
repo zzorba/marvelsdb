@@ -131,6 +131,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 				$optionalFields[] = 'scheme';
 				$optionalFields[] = 'scheme_star';
 				break;
+			case "leader":
 			case "villain":
 				$optionalFields[] = 'attack';
 				$optionalFields[] = 'attack_star';

@@ -41,7 +41,7 @@
 	<div>
 		{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star) }}. {% trans %}Hand Size{% endtrans %}: {{ macros.format_integer(card.hand_size) }}.
 	</div>
-{% elseif card.type_code == 'minion' or card.type_code == 'villain' %}
+{% elseif card.type_code == 'minion' or card.type_code == 'villain' or card.type_code == 'leader' %}
 	<div>
 	{% trans %}Attack{% endtrans %}: {{ macros.format_integer(card.attack, card.attack_star) }}.
 	{% trans %}Scheme{% endtrans %}: {{ macros.format_integer(card.scheme, card.scheme_star) }}.

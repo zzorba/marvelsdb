@@ -9,7 +9,7 @@ function getCardText(card) {
 	var content = image
 	+ '<h4 class="card-name">' + app.format.name(card) + '</h4>'
 	+ '<div class="card-faction">' + app.format.faction(card) + '</div>'
-	+ '<div><span class="card-type">' + card.type_name + '.' + (card.stage && (card.type_code == "main_scheme" || card.type_code == 'villain') ? ' Stage ' + card.stage + '.' : '') + '</span></div>'
+	+ '<div><span class="card-type">' + card.type_name + '.' + (card.stage && (card.type_code == "main_scheme" || card.type_code == 'villain' || card.type_code == 'leader') ? ' Stage ' + card.stage + '.' : '') + '</span></div>'
 	+ '<div class="card-traits">' + app.format.traits(card) + '</div>'
 	;
 

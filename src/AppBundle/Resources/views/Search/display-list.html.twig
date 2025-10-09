@@ -21,7 +21,7 @@
 	<td data-th="Name">
 		<span class="icon icon-{{ card.type_code}} fg-{{ card.faction_code }}"></span>
 		<a href="{{ card.url }}" class="{% if card.spoiler is defined and not show_spoilers %} spoiler{% endif %} card-tip{% if card.available == false %} card-preview{% endif %}" data-code="{{ card.code }}">
-		{{ card.name }}{% if card.type_code == 'villain' %}{% include 'AppBundle:Search:card-stage.html.twig' %}{% endif %}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
+		{{ card.name }}{% if card.type_code == 'villain' or card.type_code == 'leader' %}{% include 'AppBundle:Search:card-stage.html.twig' %}{% endif %}{% if card.subname%}: {{ card.subname }}{% endif %}</a>
 	</td>
 	<td data-th="Faction" style="width : 100px;" class="fg-{{ card.faction_code }}"><span class="icon-{{card.faction_code}}"></span>{% if card.faction2_code is defined %}<span class="icon-{{card.faction2_code}}"></span> {% else %} {{ card.faction_name }} {% endif %}  </td>
 	<td data-th="Cost" style="width : 30px;">{{ card.cost }}</td>

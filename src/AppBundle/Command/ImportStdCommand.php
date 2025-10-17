@@ -1040,6 +1040,29 @@ class ImportStdCommand extends ContainerAwareCommand
 		}
 	}
 
+	protected function importLeaderData(Card $card, $data)
+	{
+		$mandatoryKeys = [
+			'health',
+		];
+		foreach($mandatoryKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, TRUE);
+		}
+
+		$optionalKeys = [
+			'attack',
+			'attack_star',
+			'health_per_hero',
+			'health_star',
+			'scheme',
+			'scheme_star',
+			'stage',
+		];
+		foreach($optionalKeys as $key) {
+			$this->copyKeyToEntity($card, 'AppBundle\Entity\Card', $data, $key, FALSE);
+		}
+	}
+
 	protected function importTreacheryData(Card $card, $data)
 	{
 		$optionalKeys = [

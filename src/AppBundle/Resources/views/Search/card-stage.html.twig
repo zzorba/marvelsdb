@@ -1,4 +1,4 @@
-{% if card.type_code == 'villain' and card.stage %}
+{% if (card.type_code == 'villain' or card.type_code == 'leader') and card.stage %}
  ({{card.stage}})
 {% elseif card.type_code == 'main_scheme' %}
   - {{ card.stage }}

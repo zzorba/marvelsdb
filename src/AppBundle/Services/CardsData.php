@@ -36,6 +36,7 @@ class CardsData
 			'[energy]' => '<span class="icon-energy" title="Energy"></span>',
 			'[wild]' => '<span class="icon-wild" title="Wild"></span>',
 			'[mental]' => '<span class="icon-mental" title="Mental"></span>',
+			'[per_group]' => '<span class="icon-per_group" title="Per-Group"></span>',
 			'[per_hero]' => '<span class="icon-per_hero" title="Per-Hero"></span>',
 			'[cost]' => '<span class="icon-cost" title="Cost"></span>',
 			'[unique]' => '<span class="icon-unique" title="Unique"></span>',

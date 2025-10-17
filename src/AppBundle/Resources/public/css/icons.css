@@ -73,6 +73,9 @@
 .icon-hazard:before {
   content: "H";
 }
+.icon-per_group:before {
+  content: "T";
+}
 .icon-per_hero:before {
   content: "G";
 }

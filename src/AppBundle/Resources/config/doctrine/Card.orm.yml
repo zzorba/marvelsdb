@@ -150,6 +150,9 @@ AppBundle\Entity\Card:
         health:
             type: smallint
             nullable: true
+        healthPerGroup:
+            type: boolean
+            nullable: true
         healthPerHero:
             type: boolean
             nullable: true
@@ -186,6 +189,9 @@ AppBundle\Entity\Card:
         baseThreatFixed:
             type: boolean
             nullable: true
+        baseThreatPerGroup:
+            type: boolean
+            nullable: true
         escalationThreat:
             type: smallint
             nullable: true
@@ -208,6 +214,9 @@ AppBundle\Entity\Card:
             type: smallint
             nullable: true
         threatFixed:
+            type: boolean
+            nullable: true
+        threatPerGroup:
             type: boolean
             nullable: true
         deckLimit:

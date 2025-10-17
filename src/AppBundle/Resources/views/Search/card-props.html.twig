@@ -23,7 +23,7 @@
 <div class="card-props">
   {% trans %}Cost{% endtrans %}: {{ macros.format_integer(card.cost) }}.
 	<div>
-		{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
+		{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed and not card.base_threat_per_group, card.base_threat_per_group) }}.
 	</div>
 </div>
 {% endif %}
@@ -45,7 +45,7 @@
 	<div>
 	{% trans %}Attack{% endtrans %}: {{ macros.format_integer(card.attack, card.attack_star) }}.
 	{% trans %}Scheme{% endtrans %}: {{ macros.format_integer(card.scheme, card.scheme_star) }}.
-	{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star, card.health_per_hero) }}.
+	{% trans %}Health{% endtrans %}: {{ macros.format_integer(card.health, card.health_star, card.health_per_hero, card.health_per_group) }}.
 	</div>
 {% elseif card.type_code == 'attachment' %}
 	{% if (card.attack is defined and card.attack != 0) or (card.attack_star) %}
@@ -56,7 +56,7 @@
 	{% endif %}
 {% elseif card.type_code == 'side_scheme' %}
 	<div>
-	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
+	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed and not card.base_threat_per_group, card.base_threat_per_group) }}.
 	{% if card.escalation_threat %}
 		{% trans %}Escalation Threat{% endtrans %}: {{ macros.format_integer(card.escalation_threat, card.escalation_threat_star, not card.escalation_threat_fixed) }}.
 	{% endif %}
@@ -64,12 +64,12 @@
 {% elseif card.type_code == 'main_scheme' %}
 	{% if card.linked_card is not defined %}
 	<div>
-	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed) }}.
+	{% trans %}Starting Threat{% endtrans %}: {{ macros.format_integer(card.base_threat, null, not card.base_threat_fixed and not card.base_threat_per_group, card.base_threat_per_group) }}.
 	{% if card.escalation_threat %}
 		{% trans %}Escalation Threat{% endtrans %}: {{ macros.format_integer(card.escalation_threat, card.escalation_threat_star, not card.escalation_threat_fixed) }}.
 	{% endif %}
 	</div>
-  	{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.threat, card.threat_star, not card.threat_fixed) }}.
+  	{% trans %}Threat{% endtrans %}: {{ macros.format_integer(card.threat, card.threat_star, not card.threat_fixed and not card.threat_per_group, card.threat_per_group) }}.
 	{% endif %}
 {% else %}
 	{% if card.resource_mental or card.resource_physical or card.resource_energy or card.resource_wild %}

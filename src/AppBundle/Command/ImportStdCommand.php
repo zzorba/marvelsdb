@@ -375,11 +375,13 @@ class ImportStdCommand extends ContainerAwareCommand
 		foreach($list as $data)
 		{
 			$type = $this->getEntityFromData('AppBundle\\Entity\\Cardset', $data, [
-					'code',
-					'name'
+				'code',
+				'name'
 			], [
 				'card_set_type_code'
-			], []);
+			], [
+				'parent_code'
+			]);
 			if($type) {
 				$result[] = $type;
 				$this->em->persist($type);
@@ -729,8 +731,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			if (!$foreignCode){
 				continue;
 			}
-			//echo "\n";
-			//print("hvor mange ".count($this->collections[$foreignEntityShortName]));
+
 			if(!key_exists($foreignCode, $this->collections[$foreignEntityShortName])) {
 				throw new \Exception("Invalid code [$foreignCode] for key [$key] in ".json_encode($data));
 			}

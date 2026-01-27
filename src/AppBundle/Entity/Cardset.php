@@ -9,9 +9,10 @@ class Cardset implements \Gedmo\Translatable\Translatable, \Serializable
 {
     public function serialize() {
         return [
-                'code' => $this->code,
-                'name' => $this->name,
-                'cardset_type' => $this->cardset_type ? $this->cardset_type->getCode() : null,
+            'code' => $this->code,
+            'name' => $this->name,
+            'cardset_type' => $this->cardset_type ? $this->cardset_type->getCode() : null,
+            'parentCode' => $this->parentCode
         ];
     }
     
@@ -37,6 +38,11 @@ class Cardset implements \Gedmo\Translatable\Translatable, \Serializable
      * @var string
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $parentCode;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -107,6 +113,30 @@ class Cardset implements \Gedmo\Translatable\Translatable, \Serializable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set parentCode
+     *
+     * @param string $parentCode
+     *
+     * @return Cardset
+     */
+    public function setParentCode($parentCode)
+    {
+        $this->parentCode = $parentCode;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCode
+     *
+     * @return string
+     */
+    public function getParentCode()
+    {
+        return $this->parentCode;
     }
 
     /**

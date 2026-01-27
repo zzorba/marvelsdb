@@ -490,6 +490,7 @@ class CardsData
 				$cardinfo[$fieldName.'_name'] = $associationEntity->getName();
 				if ($fieldName == "card_set") {
 					$cardinfo[$fieldName.'_type_name_code'] = $associationEntity->getCardSetType()->getCode();
+					$cardinfo[$fieldName.'_parent_code'] = $associationEntity->getParentCode();
 				}
 			}
 		}

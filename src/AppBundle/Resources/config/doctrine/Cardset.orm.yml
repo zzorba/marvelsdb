@@ -33,6 +33,11 @@ AppBundle\Entity\Cardset:
             nullable: false
             gedmo:
                 - translatable
+        parentCode:
+            type: string
+            length: 255
+            nullable: true
+            column: parent_code
     uniqueConstraints:
         encounter_code_idx:
             columns: [ code ]

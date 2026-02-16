@@ -771,7 +771,7 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 deck.get_layout_hero_special_sets = function get_layout_hero_special_sets() {
 	var section = $('<div>');
 
-	var special_sets = hero_special_cards.reduce(function (acc, card) {
+	var special_sets = _.reduce(hero_special_cards, function (acc, card) {
 		if (!acc.includes(card.card_set_code)) {
 			acc.push(card.card_set_code);
 		}
@@ -779,11 +779,11 @@ deck.get_layout_hero_special_sets = function get_layout_hero_special_sets() {
 	}, []);
 
 	special_sets.forEach(function (specialSet) {
-		var cardsInSet = hero_special_cards.filter(function (card) {
+		var cardsInSet = _.filter(hero_special_cards, function (card) {
 			return card.card_set_code === specialSet;
 		});
 		if (cardsInSet.length) {
-			var quantity = cardsInSet.reduce(function (acc, card) {
+			var quantity = _.reduce(cardsInSet, function (acc, card) {
 				return acc + card.quantity;
 			}, 0);
 			$(header_tpl({ code: cardsInSet[0].card_set_code, name: cardsInSet[0].card_set_name, quantity })).appendTo(section);

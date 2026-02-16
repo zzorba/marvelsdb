@@ -763,7 +763,7 @@ deck.get_layout_hero_special_sets = function get_layout_hero_special_sets() {
 			var quantity = cardsInSet.reduce(function (acc, card) {
 				return acc + card.quantity;
 			}, 0);
-			$(header_tpl({ code: cardsInSet[0].card_set_code, name: cardsInSet[0].card_set_name, quantity })).appendTo(section);
+			$(header_tpl({ code: cardsInSet[0].card_set_code, name: cardsInSet[0].card_set_name, quantity: quantity })).appendTo(section);
 			cardsInSet.forEach(function (card) {
 				var div = deck.create_card(card, true);
 				div.appendTo(section);

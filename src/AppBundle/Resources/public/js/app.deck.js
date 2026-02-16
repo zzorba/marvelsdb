@@ -15,6 +15,7 @@ var date_creation,
 	hero_code,
 	hero_name,
 	hero,
+	hero_special_cards = [],
 	deck_options,
 	unsaved,
 	user_id,
@@ -39,9 +40,32 @@ var date_creation,
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one column view
-layouts[1] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div class="col-sm-10 col-print-10"><%= cards %></div><div></div></div></div>');
+layouts[1] = _.template(`
+	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
+		<div class="deck-header">
+			<div class="deck-meta"><%= meta %></div>
+			<div class="deck-hero-image"><%= image1 %><%= image2 %></div>
+		</div>
+		<div class="deck-content">
+			<div class="col-sm-10 col-print-10"><%= cards %></div>
+		</div>
+		<div class="special-hero-sets"><%= special_sets %></div>
+	</div>
+`);
 // two column view (default for most)
-layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div></div>');
+layouts[2] = _.template(`
+	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
+		<div class="deck-header">
+			<div class="deck-meta"><%= meta %></div>
+			<div class="deck-hero-image"><%= image1 %><%= image2 %></div>
+		</div>
+		<div class="deck-content">
+			<div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div>
+			<div><%= supports %><%= upgrades %> <%= permanent %></div>
+		</div>
+		<div class="special-hero-sets"><%= special_sets %></div>
+	</div>
+`);
 
 /**
  * @memberOf deck
@@ -58,6 +82,7 @@ deck.init = function init(data) {
 	hero_code = data.hero_code;
 	hero_name = data.hero_name;
 	hero = false;
+	hero_special_cards = [];
 	unsaved = data.unsaved;
 	user_id = data.user_id;
 	exile_string = data.exile_string;
@@ -104,12 +129,17 @@ deck.onloaded = function(data){
 				}
 			})
 		}
-		if (deck.hero && deck.hero.deck_options && deck.hero.deck_options.length) {
+		if (deck.hero.deck_options && deck.hero.deck_options.length) {
 			deck.deck_options = deck.hero.deck_options;
 		}
+
+		// Search for hero_special sets where the parent code belongs to the hero's set.
+		// Each of the cards in those sets are special hero cards that aren't in the traditional deck
+		// but should be displayed in a separate section to help aid with deckbuilding decisions.
+		var special_cards_query = { card_set_parent_code: deck.hero.card_set_code, card_set_type_name_code: 'hero_special' };
+		var special_cards_options = { '$orderBy': { code: 1 } };
+		hero_special_cards =  app.data.cards.find(special_cards_query, special_cards_options);
 	}
-
-
 
 	if (data.meta){
 		deck.meta = JSON.parse(data.meta);
@@ -556,7 +586,8 @@ deck.get_layout_data = function get_layout_data(options) {
 		cards: '',
 		hero_color_1: '',
 		hero_color_2: '',
-		hero_color_3: ''
+		hero_color_3: '',
+		special_sets: ''
 	};
 
 	var problem = deck.get_problem();
@@ -660,6 +691,9 @@ deck.get_layout_data = function get_layout_data(options) {
 
 		deck.update_layout_section(data, 'permanent', deck.get_layout_data_one_section({permanent: true}, 'type_name'));
 	}
+	if (hero_special_cards.length) {
+		deck.update_layout_section(data, 'special_sets', deck.get_layout_hero_special_sets());
+	}
 	if (options && options.layout) {
 		layout_template = options.layout;
 	}
@@ -722,7 +756,7 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 			$(header_tpl({code: name, name: name, quantity: deck.get_nb_cards(cards)})).appendTo(section);
 		}
 		cards.forEach(function (card) {
-			var div = deck.create_card(card);
+			var div = deck.create_card(card, false);
 			div.appendTo(section);
 		});
 
@@ -730,18 +764,51 @@ deck.get_layout_data_one_section = function get_layout_data_one_section(query, d
 	return section;
 }
 
+/**
+ * Write out the special sets for cards associated with the hero but are not in the traditional
+ * hero deck (Dr. Strange, Storm, Iceman, etc).
+ */
+deck.get_layout_hero_special_sets = function get_layout_hero_special_sets() {
+	var section = $('<div>');
+
+	const special_sets = hero_special_cards.reduce(function (acc, card) {
+		if (!acc.includes(card.card_set_code)) {
+			acc.push(card.card_set_code);
+		}
+		return acc;
+	}, []);
+
+	special_sets.forEach(function (specialSet) {
+		const cardsInSet = hero_special_cards.filter(function (card) {
+			return card.card_set_code === specialSet;
+		});
+		if (cardsInSet.length) {
+			var quantity = cardsInSet.reduce(function (acc, card) {
+				return acc + card.quantity;
+			}, 0);
+			$(header_tpl({ code: cardsInSet[0].card_set_code, name: cardsInSet[0].card_set_name, quantity })).appendTo(section);
+			cardsInSet.forEach(function (card) {
+				var div = deck.create_card(card, true);
+				div.appendTo(section);
+			});
+		}
+	});
+
+	return section;
+}
+
 
 deck.create_card_group = function(cards, context){
 	var section = $('<div>');
 	cards.forEach(function (card) {
-		var $div = deck.create_card(card);
+		var $div = deck.create_card(card, false);
 		$div.appendTo(section);
 	});
 	return section;
 }
 
-deck.create_card = function create_card(card){
-	var $div = $('<div>').addClass(deck.can_include_card(card) ? '' : 'invalid-card');
+deck.create_card = function create_card(card, isSpecialHeroCard) {
+	var $div = $('<div>').addClass(deck.can_include_card(card) || isSpecialHeroCard ? '' : 'invalid-card');
 
 	$div.append($(card_line_tpl({card:card})));
 
@@ -758,7 +825,11 @@ deck.create_card = function create_card(card){
 		}
 	}
 
-	$div.prepend(card.indeck+'x ');
+	if (isSpecialHeroCard) {
+		$div.prepend(card.quantity+'x ');
+	} else {
+		$div.prepend(card.indeck+'x ');
+	}
 
 	var $span = $('<span style="float: right"></span>');
 
@@ -1143,6 +1214,28 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 				if (option.limit_count > option.limit) {
 					overflow = option.limit_count - option.limit;
 					option.limit_count = option.limit;
+					continue;
+				}
+			}
+
+			if (option.resource) {
+				// needs to match at least one resource type
+				var resource_valid = false;
+
+				for (var j = 0; j < option.resource.length; j++) {
+					var resource = option.resource[j].toLowerCase();
+
+					if (
+						(resource === 'energy' && card.resource_energy && card.resource_energy > 0) ||
+						(resource === 'mental' && card.resource_mental && card.resource_mental > 0) ||
+						(resource === 'physical' && card.resource_physical && card.resource_physical > 0) ||
+						(resource === 'wild' && card.resource_wild && card.resource_wild > 0)
+					) {
+						resource_valid = true;
+					}
+				}
+
+				if (!resource_valid) {
 					continue;
 				}
 			}

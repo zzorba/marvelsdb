@@ -319,7 +319,6 @@ div.tags span.tag:not(:first-child)::before {
 .deck-content {
 	display: flex;
 	justify-content: stretch;
-	background-color: #fdfdfd;
 	background-color: rgba(255,255,255, 1);
 	border-radius: 5px;
 	padding: 0.8rem;
@@ -340,6 +339,14 @@ div.tags span.tag:not(:first-child)::before {
 		flex-direction: row;
 		justify-content: center;
 	}
+}
+.special-hero-sets > div {
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(240,240,240, 1);
+	border-radius: 5px;
+	padding: 0.8rem;
+	margin-top: 0.5rem;
 }
 
 .invalid-card {

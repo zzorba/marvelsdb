@@ -179,21 +179,6 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 		$this->em->flush();
-		// reload the cards so we can link cards
-		if ($this->links && count($this->links) > 0){
-			$output->writeln("Resolving Links");
-			$this->loadCollection('Card');
-			foreach($this->links as $link){
-				$card = $this->em->getRepository('AppBundle\\Entity\\Card')->findOneBy(['code' => $link['card_id']]);
-				$target = $this->em->getRepository('AppBundle\\Entity\\Card')->findOneBy(['code' => $link['target_id']]);
-				if ($card && $target){
-					$card->setLinkedTo($target);
-					$target->setLinkedTo();
-					$output->writeln("Importing link between ".$card->getName()." and ".$target->getName().".");
-				}
-			}
-			$this->em->flush();
-		}
 
 		// go over duplicates and create them based on the cards they are duplicating
 		if ($this->duplicates && count($this->duplicates) > 0) {
@@ -218,6 +203,17 @@ class ImportStdCommand extends ContainerAwareCommand
 				if (isset($new_card['flavor'])) {
 					$new_card_data['flavor'] = $new_card['flavor'];
 				}
+				if (isset($new_card['back_link'])) {
+					// If the duplicate card has a back link, add the relationship to the links array.
+					$this->links[] = ['card_id'=> $new_card['code'], 'target_id'=> $new_card['back_link']];
+				}
+				if (isset($new_card['set_code'])) {
+					$new_card_data['set_code'] = $new_card['set_code'];
+				}
+				if (isset($new_card['set_position'])) {
+					$new_card_data['set_position'] = $new_card['set_position'];
+				}
+				
 				$new_cards = [];
 				$new_cards[] = $new_card_data;
 				$duplicates_added = $this->importCardsFromJsonData($new_cards);
@@ -228,6 +224,22 @@ class ImportStdCommand extends ContainerAwareCommand
 				}
 			}
 
+			$this->em->flush();
+		}
+
+		// reload the cards so we can link cards
+		if ($this->links && count($this->links) > 0){
+			$output->writeln("Resolving Links");
+			$this->loadCollection('Card');
+			foreach($this->links as $link){
+				$card = $this->em->getRepository('AppBundle\\Entity\\Card')->findOneBy(['code' => $link['card_id']]);
+				$target = $this->em->getRepository('AppBundle\\Entity\\Card')->findOneBy(['code' => $link['target_id']]);
+				if ($card && $target){
+					$card->setLinkedTo($target);
+					$target->setLinkedTo();
+					$output->writeln("Importing link between ".$card->getName()." and ".$target->getName().".");
+				}
+			}
 			$this->em->flush();
 		}
 
@@ -375,11 +387,13 @@ class ImportStdCommand extends ContainerAwareCommand
 		foreach($list as $data)
 		{
 			$type = $this->getEntityFromData('AppBundle\\Entity\\Cardset', $data, [
-					'code',
-					'name'
+				'code',
+				'name'
 			], [
 				'card_set_type_code'
-			], []);
+			], [
+				'parent_code'
+			]);
 			if($type) {
 				$result[] = $type;
 				$this->em->persist($type);
@@ -729,8 +743,7 @@ class ImportStdCommand extends ContainerAwareCommand
 			if (!$foreignCode){
 				continue;
 			}
-			//echo "\n";
-			//print("hvor mange ".count($this->collections[$foreignEntityShortName]));
+
 			if(!key_exists($foreignCode, $this->collections[$foreignEntityShortName])) {
 				throw new \Exception("Invalid code [$foreignCode] for key [$key] in ".json_encode($data));
 			}

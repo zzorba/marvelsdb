@@ -40,32 +40,9 @@ var date_creation,
  * Templates for the different deck layouts, see deck.get_layout_data
  */
 // one column view
-layouts[1] = _.template(`
-	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
-		<div class="deck-header">
-			<div class="deck-meta"><%= meta %></div>
-			<div class="deck-hero-image"><%= image1 %><%= image2 %></div>
-		</div>
-		<div class="deck-content">
-			<div class="col-sm-10 col-print-10"><%= cards %></div>
-		</div>
-		<div class="special-hero-sets"><%= special_sets %></div>
-	</div>
-`);
+layouts[1] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div class="col-sm-10 col-print-10"><%= cards %></div></div><div class="special-hero-sets"><%= special_sets %></div></div>');
 // two column view (default for most)
-layouts[2] = _.template(`
-	<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);">
-		<div class="deck-header">
-			<div class="deck-meta"><%= meta %></div>
-			<div class="deck-hero-image"><%= image1 %><%= image2 %></div>
-		</div>
-		<div class="deck-content">
-			<div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div>
-			<div><%= supports %><%= upgrades %> <%= permanent %></div>
-		</div>
-		<div class="special-hero-sets"><%= special_sets %></div>
-	</div>
-`);
+layouts[2] = _.template('<div class="deck-block" style="background-image: linear-gradient(100deg, <%= hero_color_1 %> 49.5%, <%= hero_color_3 %> 50%, <%= hero_color_3 %> 51%, <%= hero_color_2 %> 51.5%, <%= hero_color_2 %> 100%);"><div class="deck-header"><div class="deck-meta"><%= meta %></div><div class="deck-hero-image"><%= image1 %><%= image2 %></div></div><div class="deck-content"><div><%= allies %><%= events %><%= player_side_schemes %><%= resources %></div><div><%= supports %><%= upgrades %> <%= permanent %></div></div><div class="special-hero-sets"><%= special_sets %></div></div>');
 
 /**
  * @memberOf deck

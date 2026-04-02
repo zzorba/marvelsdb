@@ -1,5 +1,5 @@
 {% import "AppBundle::macros.html.twig" as macros %}
-<div style="width: 360px; padding : 2px; padding-top : 10px; border : solid #dfdfdf 1px; background-color: rgba(255, 255, 255, 0.4)">
+<div data-legacy="{{ hero.pack.legacy }}" style="width: 360px; padding : 2px; padding-top : 10px; border : solid #dfdfdf 1px; background-color: rgba(255, 255, 255, 0.4)">
 	<div style="display: flex;">
 		<div>
 		<span class="deck-list-hero-image card-thumbnail-2x card-thumbnail-hero" title="{{ hero.name }}" style="background-image:url({{ asset('/bundles/cards/'~hero.code~'.png') }})"></span>

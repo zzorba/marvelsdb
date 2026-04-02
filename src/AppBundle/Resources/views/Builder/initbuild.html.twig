@@ -33,8 +33,12 @@
 	<div class="hero-select">
 		<h2>Choose a Hero
 		<select class="form-control" id="deck_init_all" onchange="app.deck_init.update_build_init();">
-			<option value="your">Your Heroes</option>
 			<option value="all">All Heroes</option>
+			<option value="your">Your Heroes</option>
+		</select>
+		<select class="form-control" id="deck_init_format" onchange="app.deck_init.update_build_init();">
+			<option value="legacy">Legacy (default)</option>
+			<option value="current">Current</option>
 		</select>
 		</h2>
 		<div>
@@ -46,7 +50,7 @@
 				{% endfor %}
 				</div>
 			</div>
-			
+
 			<div class="hidden" id="all_inv">
 				<h4>Hero</h4>
 				<div style="display: flex; flex-wrap: wrap;">

@@ -33,6 +33,14 @@ AppBundle\Entity\Pack:
             nullable: false
             gedmo:
                 - translatable
+        wave:
+            type: smallint
+            nullable: true
+        legacy:
+            type: boolean
+            nullable: false
+            options:
+                default: false
         cgdbId:
             type: smallint
             nullable: true
@@ -63,4 +71,4 @@ AppBundle\Entity\Pack:
     uniqueConstraints:
         pack_code_idx:
             columns: [ code ]
-            
+

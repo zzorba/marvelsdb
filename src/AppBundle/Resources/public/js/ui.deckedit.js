@@ -262,6 +262,10 @@ ui.init_selectors = function init_selectors() {
 		$('[data-filter=faction_selector]').val(app.deck.meta.faction_selected);
 	}
 
+	if (app.deck.meta && app.deck.meta.format){
+		$('#format').val(app.deck.meta.format);
+	}
+
 }
 
 function uncheck_all_others() {
@@ -631,6 +635,14 @@ ui.setup_event_handlers = function setup_event_handlers() {
 		}
 	});
 
+	$('#format').on({
+		change : function(event){
+			app.deck.meta.format = event.target.value;
+			ui.refresh_deck();
+			ui.refresh_lists();
+		}
+	});
+
 	$('#filter-text').on('input', ui.on_input_smartfilter);
 	$('#filter-text-personal').on('input', ui.on_input_smartfilter2);
 
@@ -720,6 +732,10 @@ ui.get_filters = function get_filters(prefix) {
 			}
 		}
 	);
+
+	if ($('#format').val() == "current"){
+		filters['pack_legacy'] = false;
+	}
 
 	filters['deck_limit'] = {};
 	filters['deck_limit']['$exists'] = true;

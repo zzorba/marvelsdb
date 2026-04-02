@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\Entity;
 
@@ -12,17 +12,19 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
 				'name' => $this->name,
 				'position' => $this->position,
 				'size' => $this->size,
+                'legacy' => $this->legacy,
+                'wave' => $this->wave
 		];
 	}
-	
+
 	public function unserialize($serialized) {
 		throw new \Exception("unserialize() method unsupported");
 	}
-	
+
     public function toString() {
 		return $this->name;
 	}
-	
+
     /**
      * @var integer
      */
@@ -72,6 +74,16 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
      * @var \Doctrine\Common\Collections\Collection
      */
     private $cards;
+
+    /**
+     * @var integer
+     */
+    private $wave;
+
+    /**
+     * @var boolean
+     */
+    private $legacy;
 
     /**
      * Constructor
@@ -209,6 +221,28 @@ class Pack implements \Gedmo\Translatable\Translatable, \Serializable
     public function getSize()
     {
         return $this->size;
+    }
+
+    public function setWave($wave)
+    {
+        $this->wave = $wave;
+        return $this;
+    }
+
+    public function getWave()
+    {
+        return $this->wave;
+    }
+
+    public function setLegacy($legacy)
+    {
+        $this->legacy = $legacy;
+        return $this;
+    }
+
+    public function getLegacy()
+    {
+        return $this->legacy;
     }
 
     /**

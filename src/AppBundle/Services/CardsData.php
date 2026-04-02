@@ -492,6 +492,10 @@ class CardsData
 					$cardinfo[$fieldName.'_type_name_code'] = $associationEntity->getCardSetType()->getCode();
 					$cardinfo[$fieldName.'_parent_code'] = $associationEntity->getParentCode();
 				}
+				if ($fieldName == "pack") {
+					$cardinfo[$fieldName.'_legacy'] = $associationEntity->getLegacy();
+					$cardinfo[$fieldName.'_wave'] = $associationEntity->getWave();
+				}
 			}
 		}
 

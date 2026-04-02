@@ -213,7 +213,7 @@ class ImportStdCommand extends ContainerAwareCommand
 				if (isset($new_card['set_position'])) {
 					$new_card_data['set_position'] = $new_card['set_position'];
 				}
-				
+
 				$new_cards = [];
 				$new_cards[] = $new_card_data;
 				$duplicates_added = $this->importCardsFromJsonData($new_cards);
@@ -486,7 +486,9 @@ class ImportStdCommand extends ContainerAwareCommand
 			], [
 				'pack_type_code'
 			], [
-					'cgdb_id'
+					'cgdb_id',
+					'wave',
+					'legacy'
 			]);
 			if($pack) {
 				$result[] = $pack;
@@ -647,6 +649,11 @@ class ImportStdCommand extends ContainerAwareCommand
 			}
 		}
 		if ($key == "hidden"){
+			if (!$value){
+				$value = false;
+			}
+		}
+		if ($key == "legacy"){
 			if (!$value){
 				$value = false;
 			}

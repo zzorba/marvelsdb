@@ -1095,6 +1095,12 @@ deck.can_include_card = function can_include_card(card, limit_count, hard_count)
 		return false;
 	}
 
+	if (deck.meta.format && deck.meta.format == "current") {
+		if (card.pack_legacy === true) {
+			return false;
+		}
+	}
+
 	// for now always allow basic cards!
 	if (card.faction_code == "basic") {
 		return true;

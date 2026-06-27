@@ -28,7 +28,7 @@ class UpdatePopularityCommand extends ContainerAwareCommand
                 SET pop = (1 + nb_votes) / (1 + DATEDIFF(NOW(), date_creation))
                 WHERE next_deck IS NULL";
 
-        $rows = $conn->executeStatement($sql);
+        $rows = $conn->executeUpdate($sql);
 
         $output->writeln(sprintf('Successfully processed %d records.', $rows));
 

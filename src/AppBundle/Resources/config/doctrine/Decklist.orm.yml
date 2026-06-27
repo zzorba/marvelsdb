@@ -103,6 +103,17 @@ AppBundle\Entity\Decklist:
                 inverseJoinColumns:
                     user_id:
                         referencedColumnName: id
+    indexes:
+        idx_decklist_popularity:
+            columns: [ pop ]
+        idx_perf_date:
+            columns: [ date_creation ]
+        idx_perf_favorites:
+            columns: [ nb_favorites ]
+        idx_perf_name_canonical:
+            columns: [ name_canonical ]
+        idx_perf_votes:
+            columns: [ nb_votes ]
     fields:
         id:
             type: integer
@@ -168,6 +179,9 @@ AppBundle\Entity\Decklist:
         nbComments:
             type: integer
             column: nb_comments
+        pop:
+            type: float
+            nullable: true
         version:
             type: string
             length: 8

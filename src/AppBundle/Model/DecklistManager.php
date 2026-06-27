@@ -97,18 +97,16 @@ class DecklistManager
 	public function findDecklistsByPopularity()
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect($this->$popularityString.' AS HIDDEN popularity');
-		$qb->orderBy('popularity', 'DESC');
+		$qb->orderBy('d.pop', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
 
 	public function findDecklistsByTrending()
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 		$qb->andWhere('d.dateCreation > :twoMonthsAgo');
 		$qb->setParameter(':twoMonthsAgo', new \DateTime('-2 months'));
-		$qb->orderBy('popularity', 'DESC');
+		$qb->orderBy('d.pop', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
 
@@ -144,14 +142,13 @@ class DecklistManager
 	public function findDecklistsByCard(Card $card, $ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 		$qb->innerJoin('d.slots', "s");
 		$qb->andWhere("s.card = :card");
 		$qb->setParameter("card", $card);
 		if ($ignoreEmptyDescriptions){
 			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
 		}
-		$qb->addOrderBy('popularity', 'DESC');
+		$qb->addOrderBy('d.pop', 'DESC');
 		$qb->addOrderBy('d.dateCreation', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
@@ -159,13 +156,12 @@ class DecklistManager
 	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE)
 	{
 		$qb = $this->getQueryBuilder();
-		$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
 		$qb->andWhere('d.character = :character');
 		$qb->setParameter('character', $character);
 		if ($ignoreEmptyDescriptions){
 			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
 		}
-		$qb->orderBy('popularity', 'DESC');
+		$qb->orderBy('d.pop', 'DESC');
 		return $this->getPaginator($qb->getQuery());
 	}
 
@@ -442,8 +438,7 @@ class DecklistManager
 				break;
 			case 'popularity':
 			default:
-				$qb->addSelect($this->popularityString.' AS HIDDEN popularity');
-				$qb->orderBy('popularity', 'DESC');
+				$qb->orderBy('d.pop', 'DESC');
 				break;
 		}
 

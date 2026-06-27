@@ -24,7 +24,7 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
 	 */
 	public function getUpgrades()
 	{
-		
+
 		$upgrades = [];
 		$previousDeck = $this->getPreviousDeck();
 		while ($previousDeck){
@@ -48,10 +48,10 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
 	public function jsonSerialize()
 	{
 		$array = parent::getArrayExport();
-	
+
 		return $array;
 	}
-	
+
     /**
      * @var integer
      */
@@ -86,7 +86,7 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
      * @var integer
      */
     private $xpAdjustment;
-    
+
 
     /**
      * @var \DateTime
@@ -139,10 +139,15 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     private $nbComments;
 
     /**
+     * @var float
+     */
+    private $pop;
+
+    /**
      * @var integer
      */
     private $version;
-    
+
      /**
      * @var \AppBundle\Entity\Decklist
      */
@@ -554,6 +559,30 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
 
 
     /**
+     * Set pop
+     *
+     * @param float $pop
+     *
+     * @return Decklist
+     */
+    public function setPop($pop)
+    {
+        $this->pop = $pop;
+        return $this;
+    }
+
+    /**
+     * Get pop
+     *
+     * @return float
+     */
+    public function getPop()
+    {
+        return $this->pop;
+    }
+
+
+    /**
      * Set tags
      *
      * @param string $tags
@@ -703,7 +732,7 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     {
         return $this->previousDeck;
     }
-    
+
     /**
      * Set nextDeck
      *
@@ -738,8 +767,8 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     {
         return $this->xp;
     }
-    
-    
+
+
     /**
      * Set xp
      *
@@ -764,8 +793,8 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     {
         return $this->xpSpent;
     }
-    
-    
+
+
     /**
      * Set xpSpent
      *
@@ -790,8 +819,8 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
     {
         return $this->xpAdjustment;
     }
-    
-    
+
+
     /**
      * Set xpSpent
      *

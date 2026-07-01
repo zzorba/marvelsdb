@@ -82,6 +82,8 @@ class DecklistManager
 	private function getPaginator(Query $query, $withCount = true)
 	{
 		$paginator = new Paginator($query, $fetchJoinCollection = FALSE);
+
+		$paginator->setUseOutputWalkers(false);
 		if ($withCount) {
 			$this->maxcount = $paginator->count();
 		}
@@ -94,30 +96,31 @@ class DecklistManager
 		return new ArrayCollection([]);
 	}
 
-	public function findDecklistsByPopularity()
+	public function findDecklistsByPopularity($withCount = true)
 	{
 		$qb = $this->getQueryBuilder();
 		$qb->orderBy('d.pop', 'DESC');
-		return $this->getPaginator($qb->getQuery());
+
+		return $this->getPaginator($qb->getQuery(), $withCount);
 	}
 
-	public function findDecklistsByTrending()
+	public function findDecklistsByTrending($withCount = true)
 	{
 		$qb = $this->getQueryBuilder();
 		$qb->andWhere('d.dateCreation > :twoMonthsAgo');
 		$qb->setParameter(':twoMonthsAgo', new \DateTime('-2 months'));
 		$qb->orderBy('d.pop', 'DESC');
-		return $this->getPaginator($qb->getQuery());
+		return $this->getPaginator($qb->getQuery(), $withCount);
 	}
 
-	public function findDecklistsByAge($ignoreEmptyDescriptions = FALSE)
+	public function findDecklistsByAge($ignoreEmptyDescriptions = FALSE, $withCount = true)
 	{
 		$qb = $this->getQueryBuilder();
 		if ($ignoreEmptyDescriptions){
 			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
 		}
 		$qb->orderBy('d.dateCreation', 'DESC');
-		return $this->getPaginator($qb->getQuery());
+		return $this->getPaginator($qb->getQuery(), $withCount);
 	}
 
 	public function findDecklistsByFavorite(User $user)
@@ -153,7 +156,7 @@ class DecklistManager
 		return $this->getPaginator($qb->getQuery());
 	}
 
-	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE)
+	public function findDecklistsByHero(Card $character, $ignoreEmptyDescriptions = FALSE, $withCount = true)
 	{
 		$qb = $this->getQueryBuilder();
 		$qb->andWhere('d.character = :character');
@@ -162,7 +165,7 @@ class DecklistManager
 			$qb->andWhere('LENGTH(d.descriptionHtml) > 199');
 		}
 		$qb->orderBy('d.pop', 'DESC');
-		return $this->getPaginator($qb->getQuery());
+		return $this->getPaginator($qb->getQuery(), $withCount);
 	}
 
 	public function findDecklistsInHallOfFame()

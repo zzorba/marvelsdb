@@ -37,7 +37,7 @@ class DefaultController extends Controller
 		$type = $this->getDoctrine()->getRepository('AppBundle:Type')->findOneBy(['code' => 'hero'], ['id' => 'DESC']);
 		$cards = $this->getDoctrine()->getRepository('AppBundle:Card')->findBy(['type' => $type], ['id' => 'ASC']);
 
-		$date1 = strtotime('2024-03-30');
+		$date1 = strtotime('2025-06-21');
 		$date2 = time();
 
 		$year1 = date('Y', $date1);
@@ -61,7 +61,7 @@ class DefaultController extends Controller
 			throw new \Exception("Ran out of heroes for spotlight.");
 		}
 
-		$paginator = $decklist_manager->findDecklistsByHero($card, true);
+		$paginator = $decklist_manager->findDecklistsByHero($card, true, false);
 		$iterator = $paginator->getIterator();
 		$userCheck = [];
 		while($iterator->valid() && count($decklists_by_hero) < 10)
@@ -75,7 +75,7 @@ class DefaultController extends Controller
 			$iterator->next();
 		}
 
-		$paginator = $decklist_manager->findDecklistsByTrending();
+		$paginator = $decklist_manager->findDecklistsByTrending(false);
 		$iterator = $paginator->getIterator();
 		while($iterator->valid() && count($decklists_by_popular) < 8)
 		{
@@ -86,7 +86,7 @@ class DefaultController extends Controller
 			}
 			$iterator->next();
 		}
-		$paginator = $decklist_manager->findDecklistsByAge(true);
+		$paginator = $decklist_manager->findDecklistsByAge(true, false);
 		$iterator = $paginator->getIterator();
 		$userCheck = [];
 		while($iterator->valid() && count($decklists_by_recent) < 8)

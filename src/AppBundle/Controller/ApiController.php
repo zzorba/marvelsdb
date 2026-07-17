@@ -591,9 +591,13 @@ class ApiController extends Controller
 			return $decklist->getDateUpdate();
 		})->toArray();
 
-		$response->setLastModified(max($dateUpdates));
-		if ($response->isNotModified($request)) {
-			return $response;
+		// max() fails on an empty array, so only handle Last-Modified when
+		// the day has decklists; an empty day returns an empty array below
+		if (count($dateUpdates)) {
+			$response->setLastModified(max($dateUpdates));
+			if ($response->isNotModified($request)) {
+				return $response;
+			}
 		}
 
 		$content = json_encode($decklists->toArray());

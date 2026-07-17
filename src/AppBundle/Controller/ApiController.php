@@ -799,4 +799,145 @@ class ApiController extends Controller
 		$response->setContent($content);
 		return $response;
 	}
+
+	/**
+	 * Get the public profile information of a user as a JSON object.
+	 *
+	 * @ApiDoc(
+	 *  section="User",
+	 *  resource=true,
+	 *  description="One User",
+	 *  parameters={
+	 *      {"name"="jsonp", "dataType"="string", "required"=false, "description"="JSONP callback"}
+	 *  },
+	 *  requirements={
+     *      {
+     *          "name"="user_id",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="The numeric identifier of the user"
+     *      },
+     *      {
+     *          "name"="_format",
+     *          "dataType"="string",
+     *          "requirement"="json",
+     *          "description"="The format of the returned data. Only 'json' is supported at the moment."
+     *      }
+     *  },
+	 * )
+	 * @param Request $request
+	 */
+	public function getUserAction($user_id, Request $request)
+	{
+		$response = new Response();
+		$response->setPublic();
+		$response->setMaxAge($this->container->getParameter('cache_expiration'));
+		$response->headers->add(array('Access-Control-Allow-Origin' => '*'));
+
+		$jsonp = $request->query->get('jsonp');
+
+		/* @var $user \AppBundle\Entity\User */
+		$user = $this->getDoctrine()->getRepository('AppBundle:User')->find($user_id);
+		if(!$user) {
+			throw $this->createNotFoundException("No such user.");
+		}
+
+		$response->setLastModified($user->getDateUpdate());
+		if ($response->isNotModified($request)) {
+			return $response;
+		}
+
+		$content = json_encode($this->getUserPublicInfo($user));
+
+		if(isset($jsonp)) {
+			$content = "$jsonp($content)";
+			$response->headers->set('Content-Type', 'application/javascript');
+		} else {
+			$response->headers->set('Content-Type', 'application/json');
+		}
+
+		$response->setContent($content);
+		return $response;
+	}
+
+	/**
+	 * Get the public profile information of up to 100 users as an array of JSON objects.
+	 *
+	 * @ApiDoc(
+	 *  section="User",
+	 *  resource=true,
+	 *  description="Several Users at once",
+	 *  parameters={
+	 *      {"name"="jsonp", "dataType"="string", "required"=false, "description"="JSONP callback"}
+	 *  },
+	 *  requirements={
+     *      {
+     *          "name"="user_ids",
+     *          "dataType"="string",
+     *          "requirement"="\d+(,\d+)*",
+     *          "description"="Comma-separated numeric identifiers of the users, e.g. '1,2,3'. Maximum 100."
+     *      },
+     *      {
+     *          "name"="_format",
+     *          "dataType"="string",
+     *          "requirement"="json",
+     *          "description"="The format of the returned data. Only 'json' is supported at the moment."
+     *      }
+     *  },
+	 * )
+	 * @param Request $request
+	 */
+	public function listUsersAction($user_ids, Request $request)
+	{
+		$response = new Response();
+		$response->setPublic();
+		$response->setMaxAge($this->container->getParameter('cache_expiration'));
+		$response->headers->add(array('Access-Control-Allow-Origin' => '*'));
+
+		$jsonp = $request->query->get('jsonp');
+
+		$ids = array_slice(array_unique(explode(',', $user_ids)), 0, 100);
+		$users = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('id' => $ids));
+
+		// unknown ids are silently omitted from the result
+		$dateUpdates = array_map(function ($user) {
+			return $user->getDateUpdate();
+		}, $users);
+
+		if (count($dateUpdates)) {
+			$response->setLastModified(max($dateUpdates));
+			if ($response->isNotModified($request)) {
+				return $response;
+			}
+		}
+
+		$content = json_encode(array_values(array_map(array($this, 'getUserPublicInfo'), $users)));
+
+		if(isset($jsonp)) {
+			$content = "$jsonp($content)";
+			$response->headers->set('Content-Type', 'application/javascript');
+		} else {
+			$response->headers->set('Content-Type', 'application/json');
+		}
+
+		$response->setContent($content);
+		return $response;
+	}
+
+	/**
+	 * The user fields shown on the public profile page — never expose
+	 * email or other private account data here.
+	 *
+	 * @param \AppBundle\Entity\User $user
+	 * @return array
+	 */
+	private function getUserPublicInfo($user)
+	{
+		return array(
+			'id' => $user->getId(),
+			'username' => $user->getUsername(),
+			'reputation' => $user->getReputation(),
+			'color' => $user->getColor(),
+		);
+	}
 }

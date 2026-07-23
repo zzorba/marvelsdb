@@ -526,6 +526,7 @@ class ImportStdCommand extends ContainerAwareCommand
 				'text',
 				'cost',
 				'cost_per_hero',
+				'cost_star',
 				'resource_physical',
 				'resource_mental',
 				'resource_energy',

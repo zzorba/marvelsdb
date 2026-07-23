@@ -153,7 +153,7 @@ format.info = function info(card) {
 		case 'event':
 		case 'player_side_scheme':
 			if (card.type_code != 'resource') {
-				text += '<div>Cost: ' + format.fancy_int(card.cost, null, card.cost_per_hero) + '.</div>';
+				text += '<div>Cost: ' + format.fancy_int(card.cost, card.cost_star, card.cost_per_hero) + '.</div>';
 			}
 			if (card.type_code == 'player_side_scheme') {
 				text += '<div>Threat: ' + format.fancy_int(card.base_threat, null, !card.base_threat_fixed && !card.base_threat_per_group, card.base_threat_per_group) + '.</div>';

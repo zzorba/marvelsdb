@@ -29,6 +29,7 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 			'text',
 			'cost',
 			'cost_per_hero',
+			'cost_star',
 			'octgn_id',
 			'subname',
 			'deck_limit',
@@ -267,6 +268,11 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	 * @var boolean
 	 */
 	private $costPerHero;
+
+	/**
+	 * @var boolean
+	 */
+	private $costStar;
 
 	/**
 	 * @var string
@@ -734,6 +740,30 @@ class Card implements \Gedmo\Translatable\Translatable, \Serializable
 	public function getCostPerHero()
 	{
 		return $this->costPerHero;
+	}
+
+	/**
+	 * Set costStar
+	 *
+	 * @param boolean $costStar
+	 *
+	 * @return Card
+	 */
+	public function setCostStar($costStar)
+	{
+		$this->costStar = $costStar;
+
+		return $this;
+	}
+
+	/**
+	 * Get costStar
+	 *
+	 * @return boolean
+	 */
+	public function getCostStar()
+	{
+		return $this->costStar;
 	}
 
 	/**

@@ -104,6 +104,9 @@ AppBundle\Entity\Card:
         costPerHero:
             type: boolean
             nullable: true
+        costStar:
+            type: boolean
+            nullable: true
         text:
             type: text
             nullable: true

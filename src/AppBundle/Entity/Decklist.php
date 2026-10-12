@@ -48,6 +48,9 @@ class Decklist extends \AppBundle\Model\ExportableDeck implements \JsonSerializa
 	public function jsonSerialize()
 	{
 		$array = parent::getArrayExport();
+		$array['like_count'] = $this->getnbVotes();
+		$array['favorite_count'] = $this->getNbFavorites();
+		$array['comment_count'] = $this->getNbComments();
 
 		return $array;
 	}

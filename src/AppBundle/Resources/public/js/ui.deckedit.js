@@ -160,6 +160,8 @@ ui.build_type_selector = function build_type_selector() {
 ui.build_pack_selector = function build_pack_selector() {
 	$('[data-filter=pack_code]').empty();
 
+	$('<li class="pack-filter-actions"><button type="button" class="btn btn-default btn-xs" data-pack-select="all">Select All</button> <button type="button" class="btn btn-default btn-xs" data-pack-select="none">Deselect All</button></li><li role="separator" class="divider"></li>').appendTo('[data-filter=pack_code]');
+
 	//$('<li><h2>Defaults to packs in your collection</p></h2>').appendTo('[data-filter=pack_code]');
 
 	// parse pack owner string
@@ -217,7 +219,7 @@ ui.build_pack_selector = function build_pack_selector() {
 			checked = true;
 		}
 
-		$('<li><a href="#"><label><input type="checkbox" name="' + record.code + '"' + (checked ? ' checked="checked"' : '') + '>' + record.name + '</label></a></li>').appendTo('[data-filter=pack_code]');
+		$('<li><a tabindex="0"><label><input type="checkbox" tabindex="-1" name="' + record.code + '"' + (checked ? ' checked="checked"' : '') + '>' + record.name + '</label></a></li>').appendTo('[data-filter=pack_code]');
 		// special case for core set 2
 		if (record.code == "core"){
 			if (collection[record.id+"-2"]){
@@ -242,7 +244,7 @@ ui.build_pack_selector = function build_pack_selector() {
 			});
 			if(cards.length) checked = true;
 
-			$('<li><a href="#"><label><input type="checkbox" name="' + record.code + '-2"' + (checked ? ' checked="checked"' : '') + '>Second ' + record.name + '</label></a></li>').appendTo('[data-filter=pack_code]');
+			$('<li><a tabindex="0"><label><input type="checkbox" tabindex="-1" name="' + record.code + '-2"' + (checked ? ' checked="checked"' : '') + '>Second ' + record.name + '</label></a></li>').appendTo('[data-filter=pack_code]');
 		}
 	});
 }
@@ -406,6 +408,56 @@ ui.on_core_change = function on_core_change(event) {
 }
 
 
+/**
+ * checks or unchecks every pack in the pack filter
+ * @memberOf ui
+ * @param event
+ */
+ui.on_pack_select_all = function on_pack_select_all(event) {
+	event.preventDefault();
+	// keep the dropdown open
+	event.stopPropagation();
+	var checked = $(this).data('pack-select') === 'all';
+	$(this).closest('[data-filter=pack_code]').find('input[type=checkbox]').each(function(index, element) {
+		if ($(element).prop('checked') !== checked) {
+			$(element).prop('checked', checked).trigger('change');
+		}
+	});
+}
+
+/**
+ * keyboard support for the pack filter rows
+ * space/enter toggles the highlighted pack, up/down also work from a checkbox
+ * runs before the bootstrap dropdown handler, which is delegated from document
+ * @memberOf ui
+ * @param event
+ */
+ui.on_pack_keydown = function on_pack_keydown(event) {
+	var target = $(event.target);
+	var row = target.closest('li').children('a');
+	if (!row.length) return;
+	switch (event.which) {
+	case 13: // enter
+	case 32: // space
+		// a focused checkbox toggles itself on space
+		if (event.which == 32 && target.is('input')) return;
+		event.preventDefault();
+		event.stopPropagation();
+		var checkbox = row.find('input[type=checkbox]');
+		checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+		break;
+	case 38: // up
+	case 40: // down
+		// bootstrap ignores arrow keys on inputs, so move between rows here
+		if (!target.is('input')) return;
+		event.preventDefault();
+		event.stopPropagation();
+		var rows = $(this).find('li:not(.disabled):visible a');
+		var index = rows.index(row) + (event.which == 40 ? 1 : -1);
+		rows.eq(Math.max(0, Math.min(index, rows.length - 1))).trigger('focus');
+		break;
+	}
+}
 
 ui.toggle_suggestions = function toggle_suggestions() {
 	app.suggestions.number = Config['show-suggestions'];
@@ -669,6 +721,8 @@ ui.setup_event_handlers = function setup_event_handlers() {
 
 	$('#config-options').on('change', 'input', ui.on_config_change);
 	$('#global_filters [data-filter=pack_code]').on('change', 'input', ui.on_core_change);
+	$('#global_filters [data-filter=pack_code]').on('click', '[data-pack-select]', ui.on_pack_select_all);
+	$('#global_filters [data-filter=pack_code]').on('keydown', ui.on_pack_keydown);
 
 	$('#collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
 	$('#special-collection').on('change', 'input[type=radio]', ui.on_list_quantity_change);
@@ -729,6 +783,11 @@ ui.get_filters = function get_filters(prefix) {
 						'$in': arr
 					};
 				}
+			} else if (column_name == "pack_code") {
+				// no packs selected means no cards shown
+				filters[column_name] = {
+					'$in': []
+				};
 			}
 		}
 	);

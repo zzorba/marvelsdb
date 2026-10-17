@@ -112,6 +112,20 @@ body {
 .dropdown-menu input[type=checkbox], .dropdown-menu input[type=radio] {
   margin: -4px 8px 0 -6px;
 }
+[data-filter=pack_code] > li > a {
+  padding: 0;
+}
+[data-filter=pack_code] > li > a > label {
+  display: block;
+  padding: 3px 20px;
+  cursor: pointer;
+}
+.pack-filter-actions {
+  display: flex;
+  padding: 4px;
+  justify-content: center;
+  gap: 30px;
+}
 
 html, body {
 	height: 100%;

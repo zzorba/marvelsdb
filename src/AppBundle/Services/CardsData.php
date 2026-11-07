@@ -466,6 +466,21 @@ class CardsData
 	}
 
 	/**
+	 * Returns the URL of the first existing card image <code><suffix>, or null.
+	 */
+	private function findCardImage($code, array $suffixes)
+	{
+		foreach ($suffixes as $suffix) {
+			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$code.$suffix);
+			$imagepath = $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
+			if (file_exists($imagepath)) {
+				return $imageurl;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 *
 	 * @param \AppBundle\Entity\Card $card
 	 * @param string $api
@@ -522,24 +537,33 @@ class CardsData
 		} else {
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
 		}
-		$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'.png');
-		$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
-		if(file_exists($imagepath)) {
-			$cardinfo['imagesrc'] = $imageurl;
-		} else {
-			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'.jpg');
-			$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
-			if(file_exists($imagepath)) {
-				$cardinfo['imagesrc'] = $imageurl;
+		$code = $card->getCode();
+		$doubleSided = !empty($cardinfo['double_sided']);
+		if ($doubleSided && (($cardinfo['type_code'] ?? null) === 'main_scheme')) {
+			// For main schemes the front panel shows side B's text and the back panel
+			// shows side A's text, so pictures are assigned by their printed side:
+			// <code>a.* is 1A and <code>b.* is 1B.
+			$plain = $this->findCardImage($code, ['.png', '.jpg']);
+			$aImg = $this->findCardImage($code, ['a.png', 'a.jpg']);
+			$bImg = $this->findCardImage($code, ['b.png', 'b.jpg']);
+			if ($plain && $bImg && !$aImg) {
+				// Legacy (Core Set) convention: <code>.png is 1B, <code>b.png is 1A.
+				$cardinfo['imagesrc'] = $plain;
+				$cardinfo['backimagesrc'] = $bImg;
+			} elseif ($aImg || $bImg) {
+				$cardinfo['imagesrc'] = $bImg;
+				$cardinfo['backimagesrc'] = $aImg;
 			} else {
-				$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'a.jpg');
-				$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
-				if(file_exists($imagepath)) {
-					$cardinfo['imagesrc'] = $imageurl;
-				} else {
-					$cardinfo['imagesrc'] = null;
-				}
+				$cardinfo['imagesrc'] = $plain;
+				$cardinfo['backimagesrc'] = null;
 			}
+		} else {
+			$cardinfo['imagesrc'] = $this->findCardImage($code, ['.png', '.jpg', 'a.jpg']);
+			$cardinfo['backimagesrc'] = $doubleSided ? $this->findCardImage($code, ['b.png', 'b.jpg']) : null;
+		}
+		if (!$doubleSided) {
+			$cardinfo['backimagesrc'] = null;
+			$cardinfo['double_sided'] = false;
 		}
 
 		if(isset($cardinfo['encounter_code']) && $cardinfo['encounter_code']) {
@@ -547,25 +571,6 @@ class CardsData
 		}
 		if(isset($cardinfo['faction_code']) && $cardinfo['faction_code'] == "encounter") {
 			$cardinfo['spoiler'] = 1;
-		}
-
-		if(isset($cardinfo['double_sided']) && $cardinfo['double_sided']) {
-			$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'b.png');
-			$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
-			if ( file_exists($imagepath)){
-				$cardinfo['backimagesrc'] = $imageurl;
-			}else {
-				$imageurl = $this->assets_helper->getUrl('bundles/cards/'.$card->getCode().'b.jpg');
-				$imagepath= $this->rootDir . '/../web' . preg_replace('/\?.*/', '', $imageurl);
-				if ( file_exists($imagepath)){
-					$cardinfo['backimagesrc'] = $imageurl;
-				}else {
-					$cardinfo['backimagesrc'] = null;
-				}
-			}
-		}else {
-			$cardinfo['backimagesrc'] = null;
-			$cardinfo['double_sided'] = false;
 		}
 
 		if (isset($cardinfo['linked_to_code']) && $cardinfo['linked_to_code']){

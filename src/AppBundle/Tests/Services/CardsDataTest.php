@@ -320,4 +320,57 @@ class CardsDataTest extends TestCase
         $this->assertEquals('/bundles/cards/42001c.png', $infoAngelC['imagesrc']);
         $this->assertNull($infoAngelC['backimagesrc']);
     }
+
+    /**
+     * Duplicate card without its own image (e.g. Falcon 23014 -> 03011)
+     * Expected: imagesrc falls back to the original card's image.
+     */
+    public function testDuplicateOfFallsBackToOriginalImage()
+    {
+        $this->createFakeImage('03011.png');
+
+        $original = $this->createCard('03011', 'ally', false);
+        $duplicate = $this->createCard('23014', 'ally', false);
+        $duplicate->setDuplicateOf($original);
+
+        $info = $this->cardsData->getCardInfo($duplicate);
+        $this->assertEquals('/bundles/cards/03011.png', $info['imagesrc']);
+        $this->assertNull($info['backimagesrc']);
+    }
+
+    /**
+     * Duplicate card that has its own image (e.g. alternate art reprint)
+     * Expected: its own image takes precedence over the original card's image.
+     */
+    public function testDuplicateOfPrefersOwnImageWhenPresent()
+    {
+        $this->createFakeImage('03011.png');
+        $this->createFakeImage('23014.png');
+
+        $original = $this->createCard('03011', 'ally', false);
+        $duplicate = $this->createCard('23014', 'ally', false);
+        $duplicate->setDuplicateOf($original);
+
+        $info = $this->cardsData->getCardInfo($duplicate);
+        $this->assertEquals('/bundles/cards/23014.png', $info['imagesrc']);
+        $this->assertNull($info['backimagesrc']);
+    }
+
+    /**
+     * Double-sided duplicate card without its own images
+     * Expected: both imagesrc and backimagesrc fall back to the original card's images.
+     */
+    public function testDoubleSidedDuplicateOfFallsBackToOriginalImages()
+    {
+        $this->createFakeImage('01094a.png');
+        $this->createFakeImage('01094b.png');
+
+        $original = $this->createCard('01094', 'main_scheme', true);
+        $duplicate = $this->createCard('99094', 'main_scheme', true);
+        $duplicate->setDuplicateOf($original);
+
+        $info = $this->cardsData->getCardInfo($duplicate);
+        $this->assertEquals('/bundles/cards/01094b.png', $info['imagesrc']);
+        $this->assertEquals('/bundles/cards/01094a.png', $info['backimagesrc']);
+    }
 }

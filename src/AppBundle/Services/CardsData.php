@@ -481,6 +481,34 @@ class CardsData
 	}
 
 	/**
+	 * Resolves [imagesrc, backimagesrc] for a given card code.
+	 */
+	private function resolveCardImages($code, $typeCode, $doubleSided)
+	{
+		if ($doubleSided && ($typeCode === 'main_scheme')) {
+			// For main schemes the front panel shows side B's text and the back panel
+			// shows side A's text, so pictures are assigned by their printed side:
+			// <code>a.* is 1A and <code>b.* is 1B.
+			$plain = $this->findCardImage($code, ['.png', '.jpg']);
+			$aImg = $this->findCardImage($code, ['a.png', 'a.jpg']);
+			$bImg = $this->findCardImage($code, ['b.png', 'b.jpg']);
+			if ($plain && $bImg && !$aImg) {
+				// Legacy (Core Set) convention: <code>.png is 1B, <code>b.png is 1A.
+				return [$plain, $bImg];
+			} elseif ($aImg || $bImg) {
+				return [$bImg, $aImg];
+			} else {
+				return [$plain, null];
+			}
+		}
+
+		return [
+			$this->findCardImage($code, ['.png', '.jpg', 'a.jpg']),
+			$doubleSided ? $this->findCardImage($code, ['b.png', 'b.jpg']) : null,
+		];
+	}
+
+	/**
 	 *
 	 * @param \AppBundle\Entity\Card $card
 	 * @param string $api
@@ -538,31 +566,23 @@ class CardsData
 			$cardinfo['url'] = $this->router->generate('cards_zoom', array('card_code' => $card->getCode()), UrlGeneratorInterface::ABSOLUTE_URL);
 		}
 		$code = $card->getCode();
+		$typeCode = $cardinfo['type_code'] ?? null;
 		$doubleSided = !empty($cardinfo['double_sided']);
-		if ($doubleSided && (($cardinfo['type_code'] ?? null) === 'main_scheme')) {
-			// For main schemes the front panel shows side B's text and the back panel
-			// shows side A's text, so pictures are assigned by their printed side:
-			// <code>a.* is 1A and <code>b.* is 1B.
-			$plain = $this->findCardImage($code, ['.png', '.jpg']);
-			$aImg = $this->findCardImage($code, ['a.png', 'a.jpg']);
-			$bImg = $this->findCardImage($code, ['b.png', 'b.jpg']);
-			if ($plain && $bImg && !$aImg) {
-				// Legacy (Core Set) convention: <code>.png is 1B, <code>b.png is 1A.
-				$cardinfo['imagesrc'] = $plain;
-				$cardinfo['backimagesrc'] = $bImg;
-			} elseif ($aImg || $bImg) {
-				$cardinfo['imagesrc'] = $bImg;
-				$cardinfo['backimagesrc'] = $aImg;
-			} else {
-				$cardinfo['imagesrc'] = $plain;
-				$cardinfo['backimagesrc'] = null;
+
+		list($imagesrc, $backimagesrc) = $this->resolveCardImages($code, $typeCode, $doubleSided);
+		if ($card->getDuplicateOf() && ($imagesrc === null || ($doubleSided && $backimagesrc === null))) {
+			list($dupeFront, $dupeBack) = $this->resolveCardImages($card->getDuplicateOf()->getCode(), $typeCode, $doubleSided);
+			if ($imagesrc === null) {
+				$imagesrc = $dupeFront;
 			}
-		} else {
-			$cardinfo['imagesrc'] = $this->findCardImage($code, ['.png', '.jpg', 'a.jpg']);
-			$cardinfo['backimagesrc'] = $doubleSided ? $this->findCardImage($code, ['b.png', 'b.jpg']) : null;
+			if ($doubleSided && $backimagesrc === null) {
+				$backimagesrc = $dupeBack;
+			}
 		}
+
+		$cardinfo['imagesrc'] = $imagesrc;
+		$cardinfo['backimagesrc'] = $doubleSided ? $backimagesrc : null;
 		if (!$doubleSided) {
-			$cardinfo['backimagesrc'] = null;
 			$cardinfo['double_sided'] = false;
 		}
 
